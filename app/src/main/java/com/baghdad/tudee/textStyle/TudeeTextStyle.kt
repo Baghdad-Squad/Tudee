@@ -1,4 +1,4 @@
-package com.baghdad.tudee.ui.designSystem.font
+package com.baghdad.tudee.textStyle
 
 import androidx.compose.ui.text.TextStyle
 
