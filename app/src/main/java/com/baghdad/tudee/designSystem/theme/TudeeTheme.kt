@@ -16,9 +16,13 @@ fun TudeeTheme(
 ) {
     val theme = if (isDarkTheme) darkThemeColor else lightThemeColor
 
-    CompositionLocalProvider() {
-        localTudeeColor provides theme
-        localTudeeTextStyle provides tudeeTextStyle
+    CompositionLocalProvider(
+        values = arrayOf(
+            localTudeeColor provides theme,
+            localTudeeTextStyle provides tudeeTextStyle
+        )
+    ) {
+        content()
     }
 
 }
