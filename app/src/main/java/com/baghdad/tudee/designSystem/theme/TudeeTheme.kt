@@ -5,6 +5,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import com.baghdad.tudee.designSystem.color.darkThemeColor
 import com.baghdad.tudee.designSystem.color.lightThemeColor
 import com.baghdad.tudee.designSystem.color.localTudeeColor
+import com.baghdad.tudee.designSystem.textStyle.localTudeeTextStyle
+import com.baghdad.tudee.designSystem.textStyle.tudeeTextStyle
 
 
 @Composable
@@ -16,6 +18,7 @@ fun TudeeTheme(
 
     CompositionLocalProvider() {
         localTudeeColor provides theme
+        localTudeeTextStyle provides tudeeTextStyle
     }
 
 }

@@ -1,4 +1,4 @@
-package com.baghdad.tudee.textStyle
+package com.baghdad.tudee.designSystem.textStyle
 
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.baghdad.tudee.R
-import com.baghdad.tudee.textStyle.TudeeTextStyle.SizedTextStyle
+import com.baghdad.tudee.designSystem.textStyle.TudeeTextStyle.SizedTextStyle
 
 val nunito = FontFamily(
     Font(R.font.nunito_medium, FontWeight.Medium),

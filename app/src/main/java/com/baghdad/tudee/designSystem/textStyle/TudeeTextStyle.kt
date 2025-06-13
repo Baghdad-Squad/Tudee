@@ -1,5 +1,6 @@
-package com.baghdad.tudee.textStyle
+package com.baghdad.tudee.designSystem.textStyle
 
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 
 data class TudeeTextStyle(
@@ -16,3 +17,7 @@ data class TudeeTextStyle(
     )
 
 }
+
+
+val localTudeeTextStyle = staticCompositionLocalOf { tudeeTextStyle }
+
