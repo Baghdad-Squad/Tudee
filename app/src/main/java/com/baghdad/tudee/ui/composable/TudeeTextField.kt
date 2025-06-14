@@ -8,16 +8,15 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,6 +29,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,12 +37,16 @@ import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 
-@Preview(showBackground = true)
 @Composable
 fun TudeeTextField(
-    modifier: Modifier = Modifier
+    text: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    modifier: Modifier = Modifier,
+    paint: Painter? = null,
+    textFieldHeight: Int = 56,
+    lineMax: Int = 1,
 ) {
-    var text by remember { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
     var hasBeenTyped by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
@@ -66,37 +70,38 @@ fun TudeeTextField(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(56.dp)
+            .height(textFieldHeight.dp)
             .border(
                 1.dp, animatedBorderColor, RoundedCornerShape(16.dp)
             ),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.TopStart
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 12.dp)
+                .padding(start = 12.dp).padding(vertical = 13.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_use),
-                contentDescription = null,
-                colorFilter = ColorFilter.tint(animatedContentColor),
-                modifier = Modifier.size(24.dp)
-            )
-
-            Box(
-                Modifier
-                    .background(Theme.color.textColor.stroke)
-                    .height(30.dp)
-                    .width(1.dp)
-            )
+            if (paint != null) {
+                Image(
+                    painter = paint,
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(animatedContentColor),
+                    modifier = Modifier.size(24.dp)
+                )
+                Box(
+                    Modifier
+                        .background(Theme.color.textColor.stroke)
+                        .fillMaxHeight()
+                        .width(1.dp)
+                )
+            }
 
             Box(Modifier.fillMaxWidth()) {
                 if (text.isEmpty() && !isFocused) {
-                    Text(
-                        text = "Full name",
+                    BasicText(
+                        text = label,
                         style = TextStyle(
                             color = Theme.color.textColor.hint,
                             fontSize = Theme.typography.body.small.fontSize,
@@ -106,14 +111,14 @@ fun TudeeTextField(
                 }
                 BasicTextField(
                     value = text,
-                    onValueChange = { text = it },
+                    onValueChange = onValueChange,
                     modifier = Modifier
                         .fillMaxWidth()
                         .focusRequester(focusRequester)
                         .onFocusChanged { focusState ->
                             isFocused = focusState.isFocused
                         },
-                    singleLine = false,
+                    maxLines = lineMax,
                     textStyle = TextStyle(
                         color = animatedContentColor,
                         fontSize = Theme.typography.body.small.fontSize,
@@ -122,6 +127,5 @@ fun TudeeTextField(
                 )
             }
         }
-
     }
 }
