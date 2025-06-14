@@ -10,8 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
@@ -23,33 +21,28 @@ fun LoadingSecondaryButton(
     icon: Int = R.drawable.ic_blue_loading,
     color: Brush = Brush.verticalGradient(
         listOf(
-            Color.White,
-            Color.White
+            Color.Transparent,
+            Color.Transparent
         )
-    )
+    ),
 ) {
     BasicButton(
         borderRadius = 100.dp,
-        borderStroke =  BorderStroke(1.dp,Theme.color.textColor.stroke)
-        ,
+        borderStroke = BorderStroke(1.dp, Theme.color.textColor.stroke),
         onClick = {}, backgroundColor = color,
         modifier = modifier
 
     ) {
         Row() {
-
             BasicText(
                 text = text,
                 style = Theme.typography.label.large.copy(color = Theme.color.primaryColor.normal)
-
             )
             Spacer(Modifier.width(10.dp))
             Image(
                 painter = painterResource(icon), contentDescription = null,
-//                colorFilter = ColorFilter.tint(
-//                    Color.White
-//                )
-            )
+
+                )
         }
 
     }

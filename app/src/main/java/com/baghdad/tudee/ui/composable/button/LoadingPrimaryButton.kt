@@ -3,14 +3,11 @@ package com.baghdad.tudee.ui.composable.button
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicText
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -22,12 +19,7 @@ import com.baghdad.tudee.designSystem.theme.Theme
 fun LoadingPrimaryButton(
     text: String, modifier: Modifier = Modifier,
     icon: Int = R.drawable.ic_white_loading,
-    color: Brush = Brush.verticalGradient(
-        listOf(
-            Theme.color.primaryColor.normal,
-            Color(0xFF3A9CCD)
-        )
-    )
+    color: Brush = Theme.color.primaryColor.gradient
 ) {
     BasicButton(
         borderRadius = 100.dp,

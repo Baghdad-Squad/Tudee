@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -17,12 +17,7 @@ import com.baghdad.tudee.designSystem.theme.Theme
 fun NormalFloatingActionButton(
     modifier: Modifier = Modifier,
     icon: Int = R.drawable.ic_white_download,
-    color: Brush = Brush.verticalGradient(
-        listOf(
-            Theme.color.primaryColor.normal,
-            Color(0xFF3A9CCD)
-        )
-    )
+    color: Brush = Theme.color.primaryColor.gradient, iconSize: Dp = 28.dp
 
 ) {
     BasicButton(
@@ -35,7 +30,7 @@ fun NormalFloatingActionButton(
             painter = painterResource(icon), contentDescription = null,
             colorFilter = ColorFilter.tint(
                 Theme.color.textColor.onPrimary
-            )
+            ), modifier = Modifier.size(iconSize)
         )
     }
 }

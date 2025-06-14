@@ -5,25 +5,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 
-
 @Composable
 fun LoadingFloatingActionButton(
     modifier: Modifier = Modifier,
     icon: Int = R.drawable.ic_white_loading,
-    color: Brush = Brush.verticalGradient(
-        listOf(
-            Theme.color.primaryColor.normal,
-            Color(0xFF3A9CCD)
-        )
-    )
-
+    color: Brush = Theme.color.primaryColor.gradient
 ) {
     BasicButton(
         borderRadius = 100.dp,

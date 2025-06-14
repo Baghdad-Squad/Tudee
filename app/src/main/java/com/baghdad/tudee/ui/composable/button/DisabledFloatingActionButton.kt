@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
+import com.baghdad.tudee.designSystem.theme.Theme
 
 @Composable
 fun DisabledFloatingActionButton(
@@ -16,8 +16,8 @@ fun DisabledFloatingActionButton(
     icon: Int = R.drawable.ic_black_download,
     color: Brush = Brush.verticalGradient(
         listOf(
-            Color(0xFFE8EBED),
-            Color(0xFFE8EBED)
+            Theme.color.textColor.disable,
+            Theme.color.textColor.disable
         )
     )
 

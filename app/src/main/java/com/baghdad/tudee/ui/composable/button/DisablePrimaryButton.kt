@@ -14,8 +14,8 @@ fun DisablePrimaryButton(
     text: String, modifier: Modifier = Modifier,
     color: Brush = Brush.verticalGradient(
         listOf(
-            Color(0xFFE8EBED),
-            Color(0xFFE8EBED)
+            Theme.color.textColor.disable,
+            Theme.color.textColor.disable
         )
     )
 ) {
