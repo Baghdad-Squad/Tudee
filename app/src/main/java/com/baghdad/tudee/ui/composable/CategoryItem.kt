@@ -117,13 +117,3 @@ fun CategoryItem(
         )
     }
 }
-
-@Preview
-@Composable
-fun Al() {
-    CategoryItem(
-        label = "sd",
-        icon = painterResource(R.drawable.ic_baseball_bat),
-        count = 20
-    )
-}
