@@ -36,6 +36,7 @@ data class SurfaceColor(
     val surfaceLow: Color,
     val surface: Color,
     val surfaceHigh: Color,
+    val ellipsisGradientColor : Brush,
 )
 
 data class StatusColor(
