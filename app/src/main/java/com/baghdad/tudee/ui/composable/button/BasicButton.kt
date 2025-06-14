@@ -6,7 +6,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LocalContentColor
@@ -15,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,21 +26,18 @@ import com.baghdad.tudee.designSystem.theme.Theme
 fun BasicButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = Theme.color.primaryColor.normal,
-    contentColor: Color = Theme.color.primaryColor.normal,
+    backgroundColor: Brush = Brush.linearGradient(listOf( Theme.color.primaryColor.normal,Theme.color.primaryColor.normal)),
     borderRadius: Dp = 8.dp,
     shape: Shape = RoundedCornerShape(borderRadius),
     borderStroke: BorderStroke? = null,
-    height:Dp= 65.dp,
     padding: PaddingValues = PaddingValues(12.dp),
     content: @Composable () -> Unit
 ) {
-    CompositionLocalProvider(LocalContentColor provides contentColor) {
         Box(
             modifier = modifier
                 .clickable(onClick = onClick)
                 .background(
-                    color = backgroundColor,
+                    brush = backgroundColor,
                     shape = shape
                 )
                 .let { currentModifier ->
@@ -53,23 +50,19 @@ fun BasicButton(
                         currentModifier
                     }
                 }
-                .padding(padding).height(height),
+                .padding(padding),
             contentAlignment = Alignment.Center
-
 
         ) {
             content()
         }
     }
-}
 
 @Preview(showBackground = true)
 @Composable
 fun ExampleUsage() {
     BasicButton(
         onClick = {  },
-        backgroundColor = Color(0xFF4A90E2),
-        contentColor = Color.Black,
         borderStroke = BorderStroke(2.dp, Color.Black),
         borderRadius = 12.dp
     ) {
