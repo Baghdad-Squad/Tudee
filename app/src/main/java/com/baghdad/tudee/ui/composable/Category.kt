@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -66,6 +67,44 @@ fun PriorityChip(text: String, modifier: Modifier = Modifier) {
             color = Color.White,
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium
+        )
+    }
+}
+
+@Composable
+fun TaskInfo(title: String, description: String, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(2.dp)
+    ) {
+        Text(
+            text = title,
+            modifier = Modifier
+                .offset(x = 8.dp, y = 0.dp)  // Position X:8, Y:0
+                .width(296.dp)  // Width:296 (Fill available space)
+                .height(19.dp)  // Height:19 (Hug content)
+                .fillMaxWidth(),  // Fill available width
+            color = Color(0x991F1F1F),  // Default text color
+            fontWeight = FontWeight.Normal,  // Bold weight
+            fontSize = 16.sp,  // Font size 16
+            textAlign = TextAlign.Start,  // Left alignment
+            maxLines = 1,  // Single line
+            overflow = TextOverflow.Ellipsis,  // Ellipsis if overflow
+            style = TextStyle(
+                lineHeight = 19.sp,  // Matches height
+                letterSpacing = 0.sp  // No letter spacing
+            )
+        )
+        Text(
+            text = description,
+            modifier = Modifier
+                .offset(x = 8.dp, y = 0.dp)
+                .fillMaxWidth(),
+            color = Color(0xFF1F1F1F).copy(alpha = 0.6f),
+            fontSize = 12.sp,
+            textAlign = TextAlign.Start,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
@@ -118,42 +157,24 @@ fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
                     contentDescription = item.title,
                     modifier = Modifier.size(56.dp)
                 )
+                Column(
+                    // Column parameters handle alignment and spacing
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
 
-            }
-
-            Box(
-                modifier = Modifier
-                    .offset(4.dp, 62.dp)
-                    .fillMaxWidth()  // Fill available width (304px from parent)
-                    .wrapContentHeight()  // Hug content height (37px)
-                    .padding(start = 8.dp)  // Left padding 8px, others 0
-                    .weight(1f),  // Take remaining space in parent
-            ) {
-                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                    Text(
-                        text = item.title,
-                        modifier = Modifier.fillMaxWidth(),      // W: Fill
-                        color = Color(0xFF1F1F1F),             // Fill: Body
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Start              // Alignment: Left
-                    )
-                    Text(
-                        text = item.description,
-                        modifier = Modifier.fillMaxWidth(),      // Corresponds to W: Fill
-                        color = Color(0xFF1F1F1F).copy(alpha = 0.6f), // Corresponds to Fill: Hint
-                        fontSize = 12.sp,                        // Corresponds to "Label small"
-                        textAlign = TextAlign.Start,             // Corresponds to left alignment
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                    // The modifier chain handles sizing and padding
+                    modifier = Modifier
+                        .offset(4.dp,62.dp)
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(start = 8.dp)
+                ) {
+                    TaskInfo(title = item.title, description = item.description)
                 }
             }
         }
     }
-
 }
-
 
 
 // --- 3. Screen and Preview ---
@@ -169,7 +190,7 @@ fun TaskListScreen() {
             "High"
         ),
         TaskItemData(
-            R.drawable.ic_quran_blue,
+            R.drawable.ic_quran,
             Color(0xFF87D4B3),
             "Review Project Goals",
             "Finalize Q3 objectives.",
@@ -218,7 +239,7 @@ fun TaskListScreen() {
             "Medium"
         ),
         TaskItemData(
-            R.drawable.ic_blue_gym,
+            R.drawable.ic_gym,
             Color(0xFF87CFF5),
             "Workout Session",
             "Focus on cardio.",
@@ -232,7 +253,7 @@ fun TaskListScreen() {
             "High"
         ),
         TaskItemData(
-            R.drawable.ic_programming,
+            R.drawable.ic_developer,
             Color(0xFFB098F5),
             "Finish Compose UI",
             "Implement the settings screen.",
@@ -281,12 +302,12 @@ fun TaskListScreen() {
             "High"
         ),
 
-    )
+        )
 
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF0F0F0))
+            .background(Color.White)
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
