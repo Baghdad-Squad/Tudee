@@ -74,11 +74,11 @@ fun PriorityChip(text: String, modifier: Modifier = Modifier) {
 fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
     Column(
         modifier = Modifier
-            .width(320.dp)  // Fixed width of 320px
-            .height(111.dp)  // Fixed height of 111px
+            .width(320.dp)
+            .height(111.dp)
             .background(
-                color = Color(0xFFFFFFFF),  // White background
-                shape = RoundedCornerShape(16.dp)  // 16px corner radius
+                color = Color(0xFFFFFFFF),
+                shape = RoundedCornerShape(16.dp)
             )
             .border(
                 width = 1.dp,  // 1px border
@@ -121,37 +121,39 @@ fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
 
             }
 
-            Column(
+            Box(
                 modifier = Modifier
-                    .offset(4.dp,62.dp)
+                    .offset(4.dp, 62.dp)
                     .fillMaxWidth()  // Fill available width (304px from parent)
                     .wrapContentHeight()  // Hug content height (37px)
                     .padding(start = 8.dp)  // Left padding 8px, others 0
                     .weight(1f),  // Take remaining space in parent
-                verticalArrangement = Arrangement.spacedBy(2.dp)  // 2px gap between children
             ) {
-                Text(
-                    text = item.title,
-                    modifier = Modifier.fillMaxWidth(),      // W: Fill
-                    color = Color(0xFF1F1F1F),             // Fill: Body
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Start              // Alignment: Left
-                )
-                Text(
-                    text = item.description,
-                    modifier = Modifier.fillMaxWidth(),      // Corresponds to W: Fill
-                    color = Color(0xFF1F1F1F).copy(alpha = 0.6f), // Corresponds to Fill: Hint
-                    fontSize = 12.sp,                        // Corresponds to "Label small"
-                    textAlign = TextAlign.Start,             // Corresponds to left alignment
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    Text(
+                        text = item.title,
+                        modifier = Modifier.fillMaxWidth(),      // W: Fill
+                        color = Color(0xFF1F1F1F),             // Fill: Body
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Start              // Alignment: Left
+                    )
+                    Text(
+                        text = item.description,
+                        modifier = Modifier.fillMaxWidth(),      // Corresponds to W: Fill
+                        color = Color(0xFF1F1F1F).copy(alpha = 0.6f), // Corresponds to Fill: Hint
+                        fontSize = 12.sp,                        // Corresponds to "Label small"
+                        textAlign = TextAlign.Start,             // Corresponds to left alignment
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
         }
-
     }
+
 }
+
 
 
 // --- 3. Screen and Preview ---
@@ -160,21 +162,21 @@ fun TaskListScreen() {
     // Sample data - In a real app, this would come from a ViewModel
     val tasks = listOf(
         TaskItemData(
-            R.drawable.ic_birthday_cake,
+            R.drawable.ic_pur_book,
             Color(0xFFF587A1),
             "Organize Birthday Party",
             "Plan guest list and order cake...",
             "High"
         ),
         TaskItemData(
-            R.drawable.ic_orange_bag,
+            R.drawable.ic_quran_blue,
             Color(0xFF87D4B3),
             "Review Project Goals",
             "Finalize Q3 objectives.",
             "Medium"
         ),
         TaskItemData(
-            R.drawable.ic_orange_multi_user,
+            R.drawable.user_multiple,
             Color(0xFFF5A671),
             "Prepare for Meeting",
             "Review presentation slides.",
@@ -195,14 +197,14 @@ fun TaskListScreen() {
             "Low"
         ),
         TaskItemData(
-            R.drawable.ic_orange_shopping,
+            R.drawable.ic_chef,
             Color(0xFFF5A671),
             "Go Grocery Shopping",
             "Get vegetables and milk.",
             "Medium"
         ),
         TaskItemData(
-            R.drawable.ic_green_plate,
+            R.drawable.ic_airplane,
             Color(0xFF87D4B3),
             "Water the Plants",
             "Especially the new fern.",
@@ -230,7 +232,7 @@ fun TaskListScreen() {
             "High"
         ),
         TaskItemData(
-            R.drawable.ic_thinking_person,
+            R.drawable.ic_programming,
             Color(0xFFB098F5),
             "Finish Compose UI",
             "Implement the settings screen.",
@@ -251,33 +253,34 @@ fun TaskListScreen() {
             "High"
         ),
         TaskItemData(
-            R.drawable.ic_purple_book,
+            R.drawable.ic_shopping,
             Color(0xFFB098F5),
             "Read a Chapter",
             "Continue reading 'Atomic Habits'.",
             "Low"
         ),
         TaskItemData(
-            R.drawable.ic_quran,
+            R.drawable.ic_plant,
             Color(0xFF87CFF5),
             "Daily Reading",
             "Recite Surah Al-Kahf.",
             "Medium"
         ),
         TaskItemData(
-            R.drawable.ic_orange_multi_user,
+            R.drawable.ic_baseball_bat,
             Color(0xFFF5A671),
             "Team Sync-up",
             "Discuss project progress.",
             "Medium"
         ),
         TaskItemData(
-            R.drawable.ic_orange_shopping,
+            R.drawable.ic_gym,
             Color(0xFFF587A1),
             "Buy Baby Supplies",
             "Need diapers and formula.",
             "High"
-        )
+        ),
+
     )
 
     LazyColumn(
