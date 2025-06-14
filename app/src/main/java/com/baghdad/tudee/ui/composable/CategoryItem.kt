@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +20,7 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -33,6 +33,9 @@ fun CategoryItem(
     count: Int = -1,
     isSelected: Boolean? = null,
 ) {
+
+    if (count == -1 && isSelected == null) return
+
     Column(
         modifier = modifier
             .width(104.dp)
@@ -68,7 +71,7 @@ fun CategoryItem(
 
                 (isSelected == false || isSelected == null)
                         && count >= 0 -> {
-                    val notificationCounter =
+                    val notificationCount =
                         if (count in 0..99) count.toString() else "+99"
 
                     Box(
@@ -78,11 +81,13 @@ fun CategoryItem(
                             .background(color = Theme.color.surfaceColor.surfaceLow)
                             .align(alignment = Alignment.End)
                     ) {
-                        Text(
-                            text = notificationCounter,
-                            style = Theme.typography.label.small,
-                            color = Theme.color.textColor.hint,
-                            modifier = Modifier.align(Alignment.Center)
+                        BasicText(
+                            text = notificationCount,
+                            modifier = Modifier
+                                .align(alignment = Alignment.Center),
+                            style = Theme.typography.label.small.copy(
+                                color = Theme.color.textColor.hint
+                            )
                         )
                     }
 
@@ -111,4 +116,14 @@ fun CategoryItem(
             )
         )
     }
+}
+
+@Preview
+@Composable
+fun Al() {
+    CategoryItem(
+        label = "sd",
+        icon = painterResource(R.drawable.ic_baseball_bat),
+        count = 20
+    )
 }
