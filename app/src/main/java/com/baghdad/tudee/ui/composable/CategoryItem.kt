@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -29,13 +28,10 @@ import com.baghdad.tudee.designSystem.theme.Theme
 fun CategoryItem(
     label: String,
     icon: Painter,
+    isSelected: Boolean,
     modifier: Modifier = Modifier,
-    count: Int = -1,
-    isSelected: Boolean? = null,
+    count: Int? = null,
 ) {
-
-    if (count == -1 && isSelected == null) return
-
     Column(
         modifier = modifier
             .width(104.dp)
@@ -49,7 +45,7 @@ fun CategoryItem(
                 .align(Alignment.CenterHorizontally)
         ) {
             when {
-                isSelected == true && count < 0 -> {
+                isSelected == true && count == null -> {
                     Box(
                         modifier = Modifier
                             .size(width = 22.dp, height = 22.dp)
@@ -65,12 +61,11 @@ fun CategoryItem(
                     }
                 }
 
-                isSelected == false && count < 0 -> {
+                isSelected == false && count == null -> {
                     Spacer(Modifier.height(22.dp))
                 }
 
-                (isSelected == false || isSelected == null)
-                        && count >= 0 -> {
+                isSelected == false && count != null -> {
                     val notificationCount =
                         if (count in 0..99) count.toString() else "+99"
 
@@ -90,7 +85,6 @@ fun CategoryItem(
                             )
                         )
                     }
-
                     Spacer(modifier = Modifier.height(2.dp))
                 }
             }
