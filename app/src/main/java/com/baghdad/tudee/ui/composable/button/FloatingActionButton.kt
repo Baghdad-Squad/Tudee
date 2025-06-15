@@ -20,8 +20,8 @@ import com.baghdad.tudee.ui.composable.StripedCircularProgressIndicator
 
 @Composable
 fun FloatingActionButton(
-    onClick: () -> Unit,
     painter: Painter,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     isError: Boolean = false,
