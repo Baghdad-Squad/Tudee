@@ -29,13 +29,13 @@ import com.baghdad.tudee.R
 fun TudeeHeader(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
-            .offset(8.dp,y=25.dp)
+            .offset(8.dp, y = 25.dp)
             .fillMaxWidth()
-            .wrapContentHeight()
             .background(
                 color = Color(0xFF4AC0F2),
                 shape = RoundedCornerShape(16.dp)
             )
+            .wrapContentHeight()
             .padding(0.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -83,7 +83,7 @@ fun CircularIconButton(
             .background(color = backgroundColor, shape = CircleShape)
     ) {
         Icon(
-            imageVector = icon,
+            painter = painterResource(id = R.drawable.ic_back_button),
             contentDescription = contentDescription,
             tint = iconTintColor
         )
@@ -95,13 +95,10 @@ fun CircularIconButton(
 fun TasksAppBar(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
-            .offset(y=20.dp)
+            .offset(y = 20.dp)
             .fillMaxWidth()
             .height(64.dp)
-            .background(
-                color = Color(0xFF4AC0F2),
-                shape = RoundedCornerShape(16.dp)
-            )
+            .background(Color.White, shape = RoundedCornerShape(16.dp))
             .padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -126,13 +123,7 @@ fun TasksAppBar(modifier: Modifier = Modifier) {
 fun CombinedScreen() {
     Column(
         modifier = Modifier
-
-            .size(400.dp,400.dp)
-            .background(
-                color = Color(0xFF4AC0F2),
-                shape = RoundedCornerShape(0.dp)
-            )
-            ,
+            .size(400.dp, 400.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TudeeHeader(modifier = Modifier.padding(16.dp))
