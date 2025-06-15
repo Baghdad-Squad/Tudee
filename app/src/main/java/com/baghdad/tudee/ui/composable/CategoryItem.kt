@@ -2,6 +2,8 @@ package com.baghdad.tudee.ui.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,12 +31,19 @@ fun CategoryItem(
     icon: Painter,
     isSelected: Boolean,
     modifier: Modifier = Modifier,
-    count: Int? = null
+    count: Int? = null,
+    onClick: () -> Unit
 ) {
     Column(
         modifier = modifier
             .width(104.dp)
-            .padding(top = 40.dp),
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                enabled = true
+            ) {
+                onClick()
+            },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -97,3 +107,4 @@ fun CategoryItem(
         )
     }
 }
+
