@@ -1,55 +1,101 @@
 package com.baghdad.tudee.ui.composable.button
 
-import androidx.compose.foundation.Image
+import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.designSystem.theme.TudeeTheme
+import com.baghdad.tudee.ui.composable.StripedCircularProgressIndicator
 
 @Composable
 fun FloatingActionButton(
+    onClick: () -> Unit,
+    painter: Painter,
     modifier: Modifier = Modifier,
-    icon: Int = R.drawable.ic_white_loading,
-    color: Brush = Theme.color.primaryColor.gradient,
-    onClick: () -> Unit = {},
-    isLoading: Boolean = true,
-    isDisabled: Boolean = false,
-    size: Dp = 64.dp,
-    borderRadius: Dp = 100.dp, disabledColor: Brush = Brush.verticalGradient(
-        listOf(
-            Theme.color.textColor.disable,
-            Theme.color.textColor.disable
-        )
-    ), iconColorFilter: ColorFilter = ColorFilter.tint(Theme.color.textColor.onPrimary)
+    isLoading: Boolean = false,
+    isError: Boolean = false,
+    enabled: Boolean = true,
 ) {
-    val iconColor = if (isDisabled) {
-        ColorFilter.tint(Theme.color.textColor.stroke)
-    } else {
-        iconColorFilter
+    val backgroundColor = when {
+        enabled.not() -> Theme.color.textColor.disable
+        isError -> Theme.color.status.errorVariant
+        else -> Theme.color.primaryColor.normal
     }
-    val backgroundColor = if (isDisabled) disabledColor else color
+    val contentColor = when {
+        enabled.not() -> Theme.color.textColor.stroke
+        isError -> Theme.color.status.error
+        else -> Theme.color.textColor.onPrimary
+
+    }
     BasicButton(
-        borderRadius = borderRadius,
-        onClick = onClick, backgroundColor = backgroundColor,
-        modifier = modifier.size(size), isLoading = isLoading, isDiabled = isDisabled
+        onClick = onClick,
+        modifier = modifier.size(64.dp),
+        enabled = enabled,
+        contentPadding = PaddingValues(18.dp),
+        colors = ButtonDefaults.colors(
+            backgroundColor = backgroundColor,
+            contentColor = contentColor
+        ),
+        shape = CircleShape,
     ) {
-        if (isLoading) {
-            Image(
-                painter = painterResource(icon), contentDescription = null,
-            )
-        } else {
-            Image(
-                painter = painterResource(R.drawable.ic_white_download),
-                contentDescription = null,
-                colorFilter =
-                    iconColor
-            )
+        Crossfade(
+            targetState = isLoading
+        ) { state ->
+            if (state) {
+                StripedCircularProgressIndicator(
+                    size = 18.dp,
+                    lineLength = 4.dp,
+                    lineWidth = 3.dp,
+                    color = contentColor
+                )
+            } else {
+                Box(
+                    modifier =
+                        Modifier
+                            .size(28.dp)
+                            .paint(
+                                painter,
+                                colorFilter = ColorFilter.tint(
+                                    color = contentColor
+                                )
+                            )
+                )
+            }
         }
+    }
+}
+
+
+@Preview(name = "Not Loading", showBackground = true)
+@Composable
+private fun FloatingActionButtonPreview1() {
+    TudeeTheme {
+        FloatingActionButton(
+            onClick = { },
+            painter = painterResource(R.drawable.ic_blue_note)
+        )
+    }
+}
+
+@Preview(name = "Loading", showBackground = true)
+@Composable
+private fun FloatingActionButtonPreview2() {
+    TudeeTheme {
+        FloatingActionButton(
+            onClick = { },
+            isLoading = true,
+            painter = painterResource(R.drawable.ic_blue_note)
+        )
     }
 }
