@@ -80,19 +80,19 @@ fun TaskInfo(title: String, description: String, modifier: Modifier = Modifier) 
         Text(
             text = title,
             modifier = Modifier
-                .offset(x = 8.dp, y = 0.dp)  // Position X:8, Y:0
-                .width(296.dp)  // Width:296 (Fill available space)
-                .height(19.dp)  // Height:19 (Hug content)
-                .fillMaxWidth(),  // Fill available width
-            color = Color(0x991F1F1F),  // Default text color
-            fontWeight = FontWeight.Normal,  // Bold weight
-            fontSize = 16.sp,  // Font size 16
-            textAlign = TextAlign.Start,  // Left alignment
-            maxLines = 1,  // Single line
-            overflow = TextOverflow.Ellipsis,  // Ellipsis if overflow
+                .offset(x = 8.dp, y = 0.dp)
+                .width(296.dp)
+                .height(19.dp)
+                .fillMaxWidth(),
+            color = Color(0x991F1F1F),
+            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp,
+            textAlign = TextAlign.Start,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             style = TextStyle(
-                lineHeight = 19.sp,  // Matches height
-                letterSpacing = 0.sp  // No letter spacing
+                lineHeight = 19.sp,
+                letterSpacing = 0.sp
             )
         )
         Text(
@@ -120,9 +120,9 @@ fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
                 shape = RoundedCornerShape(16.dp)
             )
             .border(
-                width = 1.dp,  // 1px border
-                color = Color(0xFFFFFFFF),  // White border (same as background)
-                shape = RoundedCornerShape(16.dp)  // Same radius as background
+                width = 1.dp,
+                color = Color(0xFFFFFFFF),
+                shape = RoundedCornerShape(16.dp)
             )
             .padding(
                 top = 4.dp,
@@ -130,7 +130,7 @@ fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
                 bottom = 12.dp,
                 start = 4.dp
             ),
-        verticalArrangement = Arrangement.spacedBy(2.dp)  // 2px gap between children
+        verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         Row(
             modifier = modifier
@@ -158,11 +158,9 @@ fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
                     modifier = Modifier.size(56.dp)
                 )
                 Column(
-                    // Column parameters handle alignment and spacing
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.spacedBy(2.dp),
 
-                    // The modifier chain handles sizing and padding
                     modifier = Modifier
                         .offset(4.dp,62.dp)
                         .fillMaxWidth()
