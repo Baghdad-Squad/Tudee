@@ -1,4 +1,5 @@
 package com.baghdad.tudee.ui.composable
+
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -55,10 +56,11 @@ fun PriorityChip(text: String, modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        Image(
+        Icon(
             painter = painterResource(id = R.drawable.ic_alert),
-            contentDescription = "alert Image for task ranking ",
+            contentDescription = null,
             modifier = Modifier.size(16.dp),
+            tint = Color.White
         )
         Text(
             text = text,
@@ -138,7 +140,7 @@ fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            SubTaskItem(
+            TaskImage(
                 item = item,
                 modifier = Modifier
                     .width(248.dp)
@@ -149,7 +151,7 @@ fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun SubTaskItem(item: TaskItemData, modifier: Modifier = Modifier){
+fun TaskImage(item: TaskItemData, modifier: Modifier = Modifier) {
     Box(
         modifier = Modifier
             .size(304.dp, 56.dp),
@@ -158,21 +160,25 @@ fun SubTaskItem(item: TaskItemData, modifier: Modifier = Modifier){
         Row(
             modifier = Modifier
                 .size(248.dp, 28.dp)
-                .offset(x = 200.dp)
+                .offset(x = 250.dp)
         ) {
             PriorityChip(text = item.priority)
         }
-        Image(
-            painter = painterResource(id = item.iconRes),
-            contentDescription = item.title,
-            modifier = Modifier.size(56.dp)
-        )
+        Box(
+            modifier = Modifier.offset(x=8.dp)
+        ) {
+            Image(
+                painter = painterResource(id = item.iconRes),
+                contentDescription = item.title,
+                modifier = Modifier.size(56.dp)
+            )
+        }
         Column(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(2.dp),
 
             modifier = Modifier
-                .offset(4.dp,62.dp)
+                .offset(4.dp, 62.dp)
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .padding(start = 8.dp)
