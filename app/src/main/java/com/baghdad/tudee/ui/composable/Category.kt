@@ -138,40 +138,49 @@ fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Box(
+            SubTaskItem(
+                item = item,
                 modifier = Modifier
-                    .size(304.dp, 56.dp),
-                contentAlignment = Alignment.TopStart
-            ) {
-                Row(
-                    modifier = Modifier
-                        .size(248.dp, 28.dp)
-                        .offset(x = 200.dp)
-                ) {
-                    PriorityChip(text = item.priority)
-                }
-                Image(
-                    painter = painterResource(id = item.iconRes),
-                    contentDescription = item.title,
-                    modifier = Modifier.size(56.dp)
-                )
-                Column(
-                    horizontalAlignment = Alignment.Start,
-                    verticalArrangement = Arrangement.spacedBy(2.dp),
-
-                    modifier = Modifier
-                        .offset(4.dp,62.dp)
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .padding(start = 8.dp)
-                ) {
-                    TaskInfo(title = item.title, description = item.description)
-                }
-            }
+                    .width(248.dp)
+                    .height(56.dp)
+            )
         }
     }
 }
 
+@Composable
+fun SubTaskItem(item: TaskItemData, modifier: Modifier = Modifier){
+    Box(
+        modifier = Modifier
+            .size(304.dp, 56.dp),
+        contentAlignment = Alignment.TopStart
+    ) {
+        Row(
+            modifier = Modifier
+                .size(248.dp, 28.dp)
+                .offset(x = 200.dp)
+        ) {
+            PriorityChip(text = item.priority)
+        }
+        Image(
+            painter = painterResource(id = item.iconRes),
+            contentDescription = item.title,
+            modifier = Modifier.size(56.dp)
+        )
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+
+            modifier = Modifier
+                .offset(4.dp,62.dp)
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(start = 8.dp)
+        ) {
+            TaskInfo(title = item.title, description = item.description)
+        }
+    }
+}
 
 @Composable
 fun TaskListScreen() {
