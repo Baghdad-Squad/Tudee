@@ -1,14 +1,22 @@
 package com.baghdad.tudee.ui.composable.button
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.ui.composable.StripedCircularProgressIndicator
@@ -16,8 +24,8 @@ import com.baghdad.tudee.ui.composable.StripedCircularProgressIndicator
 @Composable
 fun PrimaryButton(
     label: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {},
     isLoading: Boolean = false,
     isEnabled: Boolean = true,
     isError: Boolean = false,
@@ -38,8 +46,8 @@ fun PrimaryButton(
     }
     BasicButton(
         onClick = onClick,
-        modifier = modifier,
-        enabled = isEnabled,
+        modifier = modifier.height(ButtonDefaults.defaultHeight),
+        isEnabled = isEnabled,
         contentPadding = PaddingValues(vertical = 18.dp, horizontal = 24.dp),
         colors = buttonColors,
         shape = RoundedCornerShape(100.dp),
@@ -66,7 +74,7 @@ fun PrimaryButton(
 @Composable
 private fun PrimaryButtonPreview1() {
     TudeeTheme {
-        PrimaryButton(label = "Submit")
+        PrimaryButton(label = "Submit", onClick = {})
     }
 }
 
@@ -74,17 +82,17 @@ private fun PrimaryButtonPreview1() {
 @Preview(showBackground = true)
 @Composable
 private fun PrimaryButtonPreview2() {
-    PrimaryButton("Submit", isLoading = true)
+    PrimaryButton("Submit", isLoading = true, onClick = {})
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun PrimaryButtonPreview3() {
-    PrimaryButton("Submit", isError = true)
+    PrimaryButton("Submit", isError = true, onClick = {})
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun PrimaryButtonPreview4() {
-    PrimaryButton("Submit", isEnabled = false)
+    PrimaryButton("Submit", isEnabled = false, onClick = {})
 }

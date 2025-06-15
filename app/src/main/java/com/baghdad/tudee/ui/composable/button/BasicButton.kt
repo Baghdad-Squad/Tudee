@@ -27,7 +27,7 @@ import com.baghdad.tudee.designSystem.theme.Theme
 fun BasicButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true,
+    isEnabled: Boolean = true,
     contentPadding: PaddingValues = ButtonDefaults.defaultPadding,
     shape: Shape = ButtonDefaults.defaultShape,
     colors: ButtonColors = ButtonDefaults.colors(),
@@ -44,7 +44,7 @@ fun BasicButton(
                 ) else Modifier.background(colors.backgroundColor, shape)
             )
             .then(if (border != null) Modifier.border(border, shape) else Modifier)
-            .clickable(enabled = enabled) { onClick() },
+            .clickable(enabled = isEnabled) { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Row(

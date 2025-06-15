@@ -25,15 +25,15 @@ fun FloatingActionButton(
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     isError: Boolean = false,
-    enabled: Boolean = true,
+    isEnabled: Boolean = true,
 ) {
     val backgroundColor = when {
-        enabled.not() -> Theme.color.textColor.disable
+        isEnabled.not() -> Theme.color.textColor.disable
         isError -> Theme.color.status.errorVariant
         else -> Theme.color.primaryColor.normal
     }
     val contentColor = when {
-        enabled.not() -> Theme.color.textColor.stroke
+        isEnabled.not() -> Theme.color.textColor.stroke
         isError -> Theme.color.status.error
         else -> Theme.color.textColor.onPrimary
 
@@ -41,7 +41,7 @@ fun FloatingActionButton(
     BasicButton(
         onClick = onClick,
         modifier = modifier.size(64.dp),
-        enabled = enabled,
+        isEnabled = isEnabled,
         contentPadding = PaddingValues(18.dp),
         colors = ButtonDefaults.colors(
             backgroundColor = backgroundColor,
@@ -94,7 +94,7 @@ private fun FloatingActionButtonPreview2() {
     TudeeTheme {
         FloatingActionButton(
             onClick = { },
-            isLoading = true,
+            isEnabled = false,
             painter = painterResource(R.drawable.ic_blue_note)
         )
     }
