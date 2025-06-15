@@ -1,5 +1,6 @@
 package com.baghdad.tudee.ui.composable
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -13,24 +14,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
 
 
 @Composable
-fun Priority(
-    modifier: Modifier = Modifier,
+fun TaskPriority(
     priorityTask: PriorityTask,
+    modifier: Modifier = Modifier,
 ) {
+    val priorityProperties = when(priorityTask) {
+        PriorityTask.HIGH -> PriorityProperties(
+            Theme.color.status.pinkAccent,
+            R.drawable.ic_flag,
+            "High"
+        )
+        PriorityTask.MEDIUM -> PriorityProperties(
+            Theme.color.status.yellowAccent,
+            R.drawable.ic_alert,
+            "Medium"
+        )
+        PriorityTask.LOW -> PriorityProperties(
+            Theme.color.status.greenAccent,
+            R.drawable.ic_trade_down,
+            "Low"
+        )
+    }
 
     Row(
         modifier = modifier
-            .background(
-                when (priorityTask) {
-                    PriorityTask.HIGH -> Theme.color.status.pinkAccent
-                    PriorityTask.MEDIUM -> Theme.color.status.yellowAccent
-                    PriorityTask.LOW -> Theme.color.status.greenAccent
-                },
+            .background(priorityProperties.color,
                 shape = RoundedCornerShape(100)
             )
             .padding(vertical = 6.dp, horizontal = 8.dp),
@@ -38,39 +52,36 @@ fun Priority(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            painter = painterResource(
-                when (priorityTask) {
-                    PriorityTask.HIGH -> com.baghdad.tudee.R.drawable.ic_flag
-                    PriorityTask.MEDIUM -> com.baghdad.tudee.R.drawable.ic_alert
-                    PriorityTask.LOW -> com.baghdad.tudee.R.drawable.ic_trade_down
-                }
-            ),
-            null,
+            painter = painterResource(priorityProperties.iconRes),
+            "" +
+                    "Priority of task is ${priorityTask.name}",
             tint = Theme.color.textColor.onPrimary
         )
         Text(
-            text = when (priorityTask) {
-                PriorityTask.HIGH -> "High"
-                PriorityTask.MEDIUM -> "Medium"
-                PriorityTask.LOW -> "Low"
-            },
+            text = priorityProperties.text,
             style = Theme.typography.label.small,
             color = Theme.color.textColor.onPrimary
         )
     }
 }
 
-
-@Composable
-@Preview
-private fun PriorityPreview() {
-    TudeeTheme {
-        Priority(priorityTask = PriorityTask.LOW)
-    }
-}
+private data class PriorityProperties(
+    val color: androidx.compose.ui.graphics.Color,
+    @DrawableRes val iconRes: Int,
+    val text: String
+)
 
 enum class PriorityTask {
     HIGH,
     MEDIUM,
     LOW
 }
+
+@Composable
+@Preview
+private fun PriorityPreview() {
+    TudeeTheme {
+        TaskPriority(priorityTask = PriorityTask.LOW)
+    }
+}
+
