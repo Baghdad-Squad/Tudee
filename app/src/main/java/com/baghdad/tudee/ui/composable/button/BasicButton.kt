@@ -24,9 +24,10 @@ import com.baghdad.tudee.designSystem.theme.Theme
 @Composable
 fun BasicButton(
     onClick: () -> Unit,
+    isLoading:Boolean=false,
+    isDiabled:Boolean=false,
     modifier: Modifier = Modifier,
-    backgroundColor: Brush = Theme.color.primaryColor.gradient
-    ,
+    backgroundColor: Brush = Theme.color.primaryColor.gradient,
     borderRadius: Dp = 8.dp,
     shape: Shape = RoundedCornerShape(borderRadius),
     borderStroke: BorderStroke? = null,
@@ -48,7 +49,10 @@ fun BasicButton(
                 } else {
                     currentModifier
                 }.clip(shape)
-            }
+            }.then(
+                if (isDiabled&&isLoading) Modifier
+                else Modifier.clickable(onClick=onClick)
+            )
             .clickable(onClick = onClick)
             .padding(padding),
         contentAlignment = Alignment.Center

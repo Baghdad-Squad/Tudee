@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 
-
 @Composable
 fun LoadingPrimaryButton(
     text: String, modifier: Modifier = Modifier,
@@ -25,14 +24,11 @@ fun LoadingPrimaryButton(
         borderRadius = 100.dp,
         onClick = {}, backgroundColor = color,
         modifier = modifier
-
     ) {
         Row() {
-
             BasicText(
                 text = text,
                 style = Theme.typography.label.large.copy(color = Theme.color.textColor.onPrimary)
-
             )
             Spacer(Modifier.width(10.dp))
             Image(
@@ -42,6 +38,5 @@ fun LoadingPrimaryButton(
                 )
             )
         }
-
     }
 }

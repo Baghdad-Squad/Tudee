@@ -20,7 +20,6 @@ fun DisabledFloatingActionButton(
             Theme.color.textColor.disable
         )
     )
-
 ) {
     BasicButton(
         borderRadius = 100.dp,

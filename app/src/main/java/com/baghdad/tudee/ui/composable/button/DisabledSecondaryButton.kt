@@ -24,16 +24,13 @@ fun DisabledSecondaryButton(
         borderStroke = BorderStroke(1.dp, Theme.color.textColor.stroke),
         onClick = {}, backgroundColor = color,
         modifier = modifier
-
     ) {
         Row() {
-
             BasicText(
                 text = text,
                 style = Theme.typography.label.large.copy(color = Theme.color.textColor.stroke)
 
             )
-
         }
 
     }

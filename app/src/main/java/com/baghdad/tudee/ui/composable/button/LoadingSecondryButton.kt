@@ -31,7 +31,6 @@ fun LoadingSecondaryButton(
         borderStroke = BorderStroke(1.dp, Theme.color.textColor.stroke),
         onClick = {}, backgroundColor = color,
         modifier = modifier
-
     ) {
         Row() {
             BasicText(
@@ -41,9 +40,7 @@ fun LoadingSecondaryButton(
             Spacer(Modifier.width(10.dp))
             Image(
                 painter = painterResource(icon), contentDescription = null,
-
                 )
         }
-
     }
 }

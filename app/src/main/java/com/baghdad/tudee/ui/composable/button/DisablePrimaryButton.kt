@@ -8,7 +8,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.designSystem.theme.Theme
 
-
 @Composable
 fun DisablePrimaryButton(
     text: String, modifier: Modifier = Modifier,
@@ -17,18 +16,18 @@ fun DisablePrimaryButton(
             Theme.color.textColor.disable,
             Theme.color.textColor.disable
         )
-    )
+    ),onKlick:()->Unit={}
+
 ) {
     BasicButton(
         borderRadius = 100.dp,
-        onClick = {}, backgroundColor = color,
+        onClick = onKlick, backgroundColor = color,
         modifier = modifier
-
+        , isDiabled = true
     ) {
         BasicText(
             text = text,
             style = Theme.typography.label.large.copy(color = Color(0x1F1F1F1F))
-
         )
     }
 }

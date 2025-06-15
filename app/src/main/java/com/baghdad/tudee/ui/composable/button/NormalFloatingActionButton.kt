@@ -24,7 +24,6 @@ fun NormalFloatingActionButton(
         borderRadius = 100.dp,
         onClick = {}, backgroundColor = color,
         modifier = modifier.size(64.dp)
-
     ) {
         Image(
             painter = painterResource(icon), contentDescription = null,
@@ -37,6 +36,6 @@ fun NormalFloatingActionButton(
 
 @Preview
 @Composable
-fun fvgbh() {
+fun peviewforfloatingbutton() {
     NormalFloatingActionButton()
 }

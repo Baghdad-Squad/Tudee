@@ -18,12 +18,10 @@ fun NormalPrimaryButton(
         borderRadius = 100.dp,
         onClick = {}, backgroundColor = color,
         modifier = modifier
-
     ) {
         BasicText(
             text = text,
             style = Theme.typography.label.large.copy(color = Theme.color.textColor.onPrimary)
-
         )
     }
 }

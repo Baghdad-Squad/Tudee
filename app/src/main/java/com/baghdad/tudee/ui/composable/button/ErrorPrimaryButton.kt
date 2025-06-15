@@ -17,7 +17,6 @@ fun ErrorPrimaryButton(
         borderRadius = 100.dp,
         onClick = {}, backgroundColor = color,
         modifier = modifier
-
     ) {
         BasicText(
             text = text,

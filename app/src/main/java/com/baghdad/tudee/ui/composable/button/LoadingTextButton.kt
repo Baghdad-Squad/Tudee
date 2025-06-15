@@ -1,6 +1,5 @@
 package com.baghdad.tudee.ui.composable.button
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,7 +13,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
-
 
 @Composable
 fun LoadingTextButton(
@@ -31,7 +29,6 @@ fun LoadingTextButton(
         borderRadius = 100.dp,
         onClick = {}, backgroundColor = color,
         modifier = modifier
-
     ) {
         Row() {
             BasicText(
@@ -41,9 +38,7 @@ fun LoadingTextButton(
             Spacer(Modifier.width(10.dp))
             Image(
                 painter = painterResource(icon), contentDescription = null,
-
                 )
         }
-
     }
 }
