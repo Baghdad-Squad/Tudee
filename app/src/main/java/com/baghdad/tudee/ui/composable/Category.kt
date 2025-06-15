@@ -57,7 +57,7 @@ fun PriorityChip(text: String, modifier: Modifier = Modifier) {
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_alert),
-            contentDescription = null,
+            contentDescription = "alert Image for task ranking ",
             modifier = Modifier.size(16.dp),
         )
         Text(
@@ -173,10 +173,8 @@ fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
 }
 
 
-// --- 3. Screen and Preview ---
 @Composable
 fun TaskListScreen() {
-    // Sample data - In a real app, this would come from a ViewModel
     val tasks = listOf(
         TaskItemData(
             R.drawable.ic_pur_book,
