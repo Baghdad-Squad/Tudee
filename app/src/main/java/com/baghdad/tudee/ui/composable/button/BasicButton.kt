@@ -25,12 +25,8 @@ import com.baghdad.tudee.designSystem.theme.Theme
 fun BasicButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    backgroundColor: Brush = Brush.linearGradient(
-        listOf(
-            Theme.color.primaryColor.normal,
-            Theme.color.primaryColor.normal
-        )
-    ),
+    backgroundColor: Brush = Theme.color.primaryColor.gradient
+    ,
     borderRadius: Dp = 8.dp,
     shape: Shape = RoundedCornerShape(borderRadius),
     borderStroke: BorderStroke? = null,

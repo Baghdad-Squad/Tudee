@@ -6,6 +6,7 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.designSystem.theme.Theme
 
@@ -13,10 +14,7 @@ import com.baghdad.tudee.designSystem.theme.Theme
 fun NormalSecondaryButton(
     text: String, modifier: Modifier = Modifier,
     color: Brush = Brush.verticalGradient(
-        listOf(
-            Theme.color.textColor.disable,
-            Theme.color.textColor.disable
-        )
+        listOf(Color.Unspecified, Color.Unspecified,)
     )
 ) {
     BasicButton(
