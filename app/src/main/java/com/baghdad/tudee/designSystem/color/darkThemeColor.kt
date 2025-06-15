@@ -8,7 +8,7 @@ val darkThemeColor = TudeeColor(
     primaryColor = Primary(
         normal = Color(0xFF3090BF),
         variant = Color(0xFF05202E),
-        gradient = Brush.verticalGradient(
+        gradient = Brush.linearGradient(
             colors = listOf(
                 Color(0xFF3DB6F2),
                 Color(0xFF3A9CCD)

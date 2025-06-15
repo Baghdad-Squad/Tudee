@@ -9,7 +9,7 @@ val lightThemeColor = TudeeColor(
     primaryColor = Primary(
         normal = Color(0xFF49BAF2),
         variant = Color(0xFFEFF9FE),
-        gradient = Brush.verticalGradient(
+        gradient = Brush.linearGradient(
             colors = listOf(
                 Color(0xFF49BAF2),
                 Color(0xFF3A9CCD)

@@ -52,10 +52,7 @@ data class StatusColor(
     val errorVariant : Color
 )
 
-
-internal val  localTudeeColor= staticCompositionLocalOf {
-    lightThemeColor
-}
+val  localTudeeColor= staticCompositionLocalOf { lightThemeColor }
 
 
 

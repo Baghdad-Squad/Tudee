@@ -4,6 +4,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 
 data class TudeeTextStyle(
+    val logo : TextStyle,
     val headline: SizedTextStyle,
     val title: SizedTextStyle,
     val body: SizedTextStyle,
