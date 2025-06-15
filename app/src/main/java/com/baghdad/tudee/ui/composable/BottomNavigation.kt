@@ -1,6 +1,5 @@
 package com.baghdad.tudee.ui.composable
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -16,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,8 +26,8 @@ import com.baghdad.tudee.designSystem.theme.Theme
 @Composable
 fun BottomNavigation(
     modifier: Modifier = Modifier,
-    selectedIndex: Int = 0,
-    onItemSelected: (Int) -> Unit,
+    selectedIcon: Int = 0,
+    unSelectedIcon: (Int) -> Unit,
 ) {
     Row(
         modifier = modifier
@@ -38,9 +38,9 @@ fun BottomNavigation(
     ) {
         drawableNavItems.forEachIndexed { index, item ->
             NavItem(
-                icon = if (index == selectedIndex) item.whenSelected else item.whenNotSelected,
-                isSelected = index == selectedIndex,
-                onClick = { onItemSelected(index) }
+                icon = if (index == selectedIcon) painterResource(item.selectedIcon) else painterResource(item.unSelectedIcon),
+                isSelected = index == selectedIcon,
+                onClick = { unSelectedIcon(index) }
             )
         }
     }
@@ -48,7 +48,7 @@ fun BottomNavigation(
 
 @Composable
 fun NavItem(
-    @DrawableRes icon: Int,
+    icon: Painter,
     isSelected: Boolean = false,
     onClick: () -> Unit,
 ) {
@@ -56,7 +56,7 @@ fun NavItem(
         modifier = Modifier
             .size(56.dp)
             .background(
-                if (isSelected) Theme.color.primaryColor.variant.copy(alpha = 0.12f)
+                if (isSelected) Theme.color.primaryColor.variant
                 else Color.Transparent,
                 shape = CircleShape
             )
@@ -66,7 +66,7 @@ fun NavItem(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            painter = painterResource(icon),
+            painter = icon,
             contentDescription = null,
             tint = if (isSelected) Theme.color.primaryColor.normal
             else Theme.color.textColor.hint,
@@ -77,26 +77,26 @@ fun NavItem(
 
 private val drawableNavItems = listOf(
     DrawableNavItem(
-        whenSelected = R.drawable.ic_blue_home,
-        whenNotSelected = R.drawable.ic_black_home
+        selectedIcon = R.drawable.ic_blue_home,
+        unSelectedIcon = R.drawable.ic_black_home
     ),
     DrawableNavItem(
-        whenSelected = R.drawable.ic_blue_note,
-        whenNotSelected = R.drawable.ic_black_note
+        selectedIcon = R.drawable.ic_blue_note,
+        unSelectedIcon = R.drawable.ic_black_note
     ),
     DrawableNavItem(
-        whenSelected = R.drawable.ic_blue_menu,
-        whenNotSelected = R.drawable.ic_menu_circle
+        selectedIcon = R.drawable.ic_blue_menu,
+        unSelectedIcon = R.drawable.ic_menu_circle
     )
 )
 
 private data class DrawableNavItem(
-    @DrawableRes val whenSelected: Int,
-    @DrawableRes val whenNotSelected: Int,
+    val selectedIcon: Int,
+    val unSelectedIcon: Int,
 )
 
 @Composable
 @Preview
 private fun BottomNavigationPreview() {
-    BottomNavigation() {}
+    BottomNavigation {}
 }
