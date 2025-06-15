@@ -8,6 +8,9 @@ import androidx.compose.ui.unit.sp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.textStyle.TudeeTextStyle.SizedTextStyle
 
+val cherryBomOne = FontFamily(
+    Font(R.font.cherry_bom_one_regular, FontWeight.Normal)
+)
 val nunito = FontFamily(
     Font(R.font.nunito_medium, FontWeight.Medium),
     Font(R.font.nunito_regular, FontWeight.Normal),
@@ -16,6 +19,11 @@ val nunito = FontFamily(
 )
 
 val tudeeTextStyle = TudeeTextStyle(
+    logo = TextStyle(
+        fontFamily = cherryBomOne,
+        fontWeight = FontWeight.Normal,
+        fontSize = 18.sp
+    ),
     headline = SizedTextStyle(
         large = TextStyle(
             fontFamily = nunito,
