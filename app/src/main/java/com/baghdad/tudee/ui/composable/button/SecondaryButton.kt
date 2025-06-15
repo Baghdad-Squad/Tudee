@@ -23,17 +23,11 @@ fun SecondaryButton(
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     isEnabled: Boolean = true,
-    isError: Boolean = false,
 ) {
     val buttonColors = when {
         isEnabled.not() -> ButtonColors(
             backgroundColor = Color.Transparent,
             contentColor = Theme.color.textColor.stroke
-        )
-
-        isError -> ButtonDefaults.colors(
-            backgroundColor = Color.Transparent,
-            contentColor = Theme.color.status.error
         )
 
         else -> ButtonColors(
@@ -86,12 +80,6 @@ private fun SecondaryButtonPreview1() {
 @Composable
 private fun SecondaryButtonPreview2() {
     SecondaryButton("Submit", isLoading = true, onClick = {})
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun SecondaryButtonPreview3() {
-    SecondaryButton("Submit", isError = true, onClick = {})
 }
 
 @Preview(showBackground = true)

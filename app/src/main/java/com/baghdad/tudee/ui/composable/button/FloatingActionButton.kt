@@ -24,17 +24,14 @@ fun FloatingActionButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
-    isError: Boolean = false,
     isEnabled: Boolean = true,
 ) {
     val backgroundColor = when {
         isEnabled.not() -> Theme.color.textColor.disable
-        isError -> Theme.color.status.errorVariant
         else -> Theme.color.primaryColor.normal
     }
     val contentColor = when {
         isEnabled.not() -> Theme.color.textColor.stroke
-        isError -> Theme.color.status.error
         else -> Theme.color.textColor.onPrimary
 
     }

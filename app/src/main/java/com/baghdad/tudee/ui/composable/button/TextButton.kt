@@ -22,17 +22,11 @@ fun TextButton(
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     isEnabled: Boolean = true,
-    isError: Boolean = false,
 ) {
     val buttonColors = when {
         isEnabled.not() -> ButtonColors(
             backgroundColor = Color.Transparent,
             contentColor = Theme.color.textColor.stroke
-        )
-
-        isError -> ButtonDefaults.colors(
-            backgroundColor = Color.Transparent,
-            contentColor = Theme.color.status.error
         )
 
         else -> ButtonColors(
@@ -80,12 +74,6 @@ private fun TextButtonPreview1() {
 @Composable
 private fun TextButtonPreview2() {
     TextButton("Submit", isLoading = true, onClick = {})
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun TextButtonPreview3() {
-    TextButton("Submit", isError = true, onClick = {})
 }
 
 @Preview(showBackground = true)

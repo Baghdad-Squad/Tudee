@@ -28,16 +28,11 @@ fun PrimaryButton(
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     isEnabled: Boolean = true,
-    isError: Boolean = false,
 ) {
     val buttonColors =  when {
         isEnabled.not() -> ButtonColors(
             backgroundColor = Theme.color.textColor.disable,
             contentColor = Theme.color.textColor.stroke
-        )
-        isError -> ButtonDefaults.colors(
-            backgroundColor = Theme.color.status.errorVariant,
-            contentColor = Theme.color.status.error
         )
         else -> ButtonColors(
             backgroundGradient = Theme.color.primaryColor.gradient,
@@ -85,11 +80,6 @@ private fun PrimaryButtonPreview2() {
     PrimaryButton("Submit", isLoading = true, onClick = {})
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun PrimaryButtonPreview3() {
-    PrimaryButton("Submit", isError = true, onClick = {})
-}
 
 @Preview(showBackground = true)
 @Composable
