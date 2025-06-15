@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Tudee</string>
-    <string name="close_text">Close</string>
+    <string name="cancel_text">Cancel</string>
     <string name="ok_text">Ok</string>
+    <string name="clear_text">Clear</string>
+    <string name="edit_text">Edit</string>
+    <string name="select_text">Select a date</string>
 </resources>

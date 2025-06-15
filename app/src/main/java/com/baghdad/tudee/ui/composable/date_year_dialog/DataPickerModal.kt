@@ -47,12 +47,12 @@ fun DatePickerModal(
 
     DatePickerDialog(modifier = Modifier.padding(horizontal = 21.dp),
         onDismissRequest = onDismiss,
-        colors = DatePickerDefaults.colors(Color.White),
+        colors = DatePickerDefaults.colors(Theme.color.primaryColor.variant),
         confirmButton = {
             Row(horizontalArrangement = Arrangement.Start) {
                 TextButton(onClick = onDismiss) {
                     Text(
-                        stringResource(id = R.string.close_text),
+                        stringResource(id = R.string.clear_text),
                         color = Theme.color.primaryColor.normal
                     )
                 }
@@ -61,13 +61,19 @@ fun DatePickerModal(
                 ) {
                     TextButton(onClick = onDismiss) {
                         Text(
-                            text = "Cancel", color = Theme.color.primaryColor.normal
+                            text = stringResource(id = R.string.cancel_text),
+                            color = Theme.color.primaryColor.normal
                         )
                     }
                     TextButton(onClick = {
                         onDateSelected(datePickerState.selectedDateMillis)
                         onDismiss()
-                    }) { Text("OK", color = Color(0xFF49BAF2)) }
+                    }) {
+                        Text(
+                            stringResource(id = R.string.ok_text),
+                            color = Theme.color.primaryColor.normal
+                        )
+                    }
                 }
             }
         },
@@ -75,7 +81,6 @@ fun DatePickerModal(
         Column {
             DatePicker(state = datePickerState,
                 showModeToggle = false,
-                modifier = Modifier.padding(top = 8.dp),
                 colors = DatePickerDefaults.colors(
                     containerColor = Color.White,
                     selectedDayContainerColor = Theme.color.primaryColor.normal,
@@ -96,8 +101,7 @@ fun DatePickerModal(
                             Text(
                                 text = "${
                                     selectedDate.dayOfWeek.getDisplayName(
-                                        TextStyle.SHORT,
-                                        Locale.getDefault()
+                                        TextStyle.SHORT, Locale.getDefault()
                                     )
                                 }, ${
                                     selectedDate.month.getDisplayName(
@@ -108,12 +112,13 @@ fun DatePickerModal(
                             )
                         } else {
                             Text(
-                                text = "Select a date", style = MaterialTheme.typography.titleLarge
+                                text = stringResource(id = R.string.select_text),
+                                style = MaterialTheme.typography.titleLarge
                             )
                         }
                         if (showEditIcon) {
                             Icon(painter = painterResource(id = R.drawable.ic_black_edit),
-                                contentDescription = "Edit",
+                                contentDescription = stringResource(id = R.string.edit_text),
                                 modifier = Modifier.clickable { })
                         }
                     }

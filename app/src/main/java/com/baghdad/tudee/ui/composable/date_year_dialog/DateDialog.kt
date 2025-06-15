@@ -29,8 +29,9 @@ fun DateDialog() {
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .padding(16.dp)) {
+        .padding(vertical = 20.dp)) {
         Column(
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
