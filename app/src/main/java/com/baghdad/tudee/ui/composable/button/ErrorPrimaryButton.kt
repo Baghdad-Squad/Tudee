@@ -12,11 +12,16 @@ fun ErrorPrimaryButton(
     text: String, modifier: Modifier = Modifier,
     color: Brush = Brush.verticalGradient(listOf(Theme.color.status.errorVariant,
         Theme.color.status.errorVariant))
+    ,onKlick:()->Unit={}
+    ,isLoading:Boolean=false
+    , isDiabled: Boolean = false
 ) {
     BasicButton(
         borderRadius = 100.dp,
-        onClick = {}, backgroundColor = color,
-        modifier = modifier
+        onClick = onKlick, backgroundColor = color,
+        modifier = modifier,
+        isLoading = isLoading,
+        isDiabled = isDiabled
     ) {
         BasicText(
             text = text,

@@ -9,7 +9,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.designSystem.theme.Theme
 
-
 @Composable
 fun DisabledTextButton(
     text: String, modifier: Modifier = Modifier,
@@ -18,22 +17,23 @@ fun DisabledTextButton(
             Color.Unspecified,
             Color.Unspecified
         )
-    )
+    ),onKlick:()->Unit={}
+    , isDiabled :Boolean= true
+    ,isLoading:Boolean=false
 ) {
     BasicButton(
         borderRadius = 100.dp,
-        onClick = {}, backgroundColor = color,
-        modifier = modifier
-
+        onClick = onKlick, backgroundColor = color,
+        modifier = modifier,
+        isDiabled=isDiabled,
+        isLoading = isLoading
     ) {
         Row() {
-
             BasicText(
                 text = text,
                 style = Theme.typography.label.large.copy(color = Theme.color.textColor.stroke)
 
             )
-
         }
     }
 }

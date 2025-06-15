@@ -13,11 +13,16 @@ import com.baghdad.tudee.designSystem.theme.TudeeTheme
 fun NormalPrimaryButton(
     text: String, modifier: Modifier = Modifier,
     color: Brush = Theme.color.primaryColor.gradient
+    ,onKlick:()->Unit={}
+    ,isLoading:Boolean=false
+    , isDiabled :Boolean= false
 ) {
     BasicButton(
         borderRadius = 100.dp,
-        onClick = {}, backgroundColor = color,
+        onClick = onKlick, backgroundColor = color,
         modifier = modifier
+        , isLoading = isLoading
+        , isDiabled = isDiabled
     ) {
         BasicText(
             text = text,

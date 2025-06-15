@@ -18,12 +18,16 @@ fun NormalFloatingActionButton(
     modifier: Modifier = Modifier,
     icon: Int = R.drawable.ic_white_download,
     color: Brush = Theme.color.primaryColor.gradient, iconSize: Dp = 28.dp
-
+    ,onKlick:()->Unit={}
+    ,isLoading:Boolean=false
+    , isDiabled :Boolean= false
 ) {
     BasicButton(
         borderRadius = 100.dp,
-        onClick = {}, backgroundColor = color,
+        onClick =onKlick, backgroundColor = color,
         modifier = modifier.size(64.dp)
+        , isLoading = isLoading
+        , isDiabled = isDiabled
     ) {
         Image(
             painter = painterResource(icon), contentDescription = null,

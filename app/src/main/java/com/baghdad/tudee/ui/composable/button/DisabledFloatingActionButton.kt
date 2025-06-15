@@ -19,12 +19,16 @@ fun DisabledFloatingActionButton(
             Theme.color.textColor.disable,
             Theme.color.textColor.disable
         )
-    )
+    ),onKlick:()->Unit={}
+    , isDiabled :Boolean= true
+    ,isLoading:Boolean=false
 ) {
     BasicButton(
         borderRadius = 100.dp,
-        onClick = {}, backgroundColor = color,
-        modifier = modifier.size(64.dp)
+        onClick = onKlick, backgroundColor = color,
+        modifier = modifier.size(64.dp),
+        isDiabled = isDiabled,
+        isLoading = isLoading
     ) {
         Image(
             painter = painterResource(icon),

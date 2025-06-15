@@ -17,13 +17,17 @@ fun DisabledSecondaryButton(
         listOf(
            Color.Unspecified, Color.Unspecified
         )
-    )
+    ),onKlick:()->Unit={},
+    isDiabled :Boolean= true,
+    isLoading:Boolean=false
 ) {
     BasicButton(
         borderRadius = 100.dp,
         borderStroke = BorderStroke(1.dp, Theme.color.textColor.stroke),
-        onClick = {}, backgroundColor = color,
-        modifier = modifier
+        onClick =onKlick, backgroundColor = color,
+        modifier = modifier,
+        isDiabled = isDiabled
+        , isLoading = isLoading
     ) {
         Row() {
             BasicText(

@@ -17,12 +17,14 @@ fun NormalTextButton(
             Color.Unspecified,
             Color.Unspecified
         )
-    )
+    ), onKlick: () -> Unit = {}
+    , isLoading: Boolean = false
+    , isDiabled: Boolean = false
 ) {
     BasicButton(
         borderRadius = 100.dp,
-        onClick = {}, backgroundColor = color,
-        modifier = modifier
+        onClick = onKlick, backgroundColor = color,
+        modifier = modifier, isLoading = isLoading, isDiabled = isDiabled
     ) {
         Row() {
             BasicText(

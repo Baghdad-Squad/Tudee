@@ -24,13 +24,17 @@ fun LoadingSecondaryButton(
             Color.Transparent,
             Color.Transparent
         )
-    ),
+    ),onKlick:()->Unit={}
+    ,isLoading:Boolean=true
+    , isDiabled :Boolean= false
 ) {
     BasicButton(
         borderRadius = 100.dp,
         borderStroke = BorderStroke(1.dp, Theme.color.textColor.stroke),
-        onClick = {}, backgroundColor = color,
+        onClick = onKlick, backgroundColor = color,
         modifier = modifier
+        , isLoading = isLoading
+        , isDiabled = isDiabled
     ) {
         Row() {
             BasicText(

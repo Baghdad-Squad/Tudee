@@ -50,10 +50,9 @@ fun BasicButton(
                     currentModifier
                 }.clip(shape)
             }.then(
-                if (isDiabled&&isLoading) Modifier
+                if (isDiabled || isLoading) Modifier
                 else Modifier.clickable(onClick=onClick)
             )
-            .clickable(onClick = onClick)
             .padding(padding),
         contentAlignment = Alignment.Center
 

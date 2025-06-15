@@ -17,13 +17,15 @@ fun DisablePrimaryButton(
             Theme.color.textColor.disable
         )
     ),onKlick:()->Unit={}
-
+    , isDiabled :Boolean= true
+    ,isLoading:Boolean=false
 ) {
     BasicButton(
         borderRadius = 100.dp,
         onClick = onKlick, backgroundColor = color,
         modifier = modifier
-        , isDiabled = true
+        , isDiabled = isDiabled,
+        isLoading = isLoading
     ) {
         BasicText(
             text = text,

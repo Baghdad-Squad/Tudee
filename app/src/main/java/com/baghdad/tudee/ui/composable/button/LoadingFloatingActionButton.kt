@@ -16,11 +16,16 @@ fun LoadingFloatingActionButton(
     modifier: Modifier = Modifier,
     icon: Int = R.drawable.ic_white_loading,
     color: Brush = Theme.color.primaryColor.gradient
+    ,onKlick:()->Unit={}
+    ,isLoading:Boolean=true
+    , isDiabled :Boolean= false
 ) {
     BasicButton(
         borderRadius = 100.dp,
-        onClick = {}, backgroundColor = color,
+        onClick = onKlick, backgroundColor = color,
         modifier = modifier.size(64.dp)
+        , isLoading = isLoading
+        , isDiabled = isDiabled
     ) {
         Image(
             painter = painterResource(icon), contentDescription = null,
