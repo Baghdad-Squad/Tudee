@@ -3,7 +3,7 @@ package com.baghdad.tudee.data.service
 import com.baghdad.tudee.domain.service.ThemeService
 
 class ThemeServiceImpl(): ThemeService {
-    override suspend fun getTheme(): Boolean {
+    override suspend fun isDarkTheme(): Boolean {
         TODO("Not yet implemented")
     }
 
