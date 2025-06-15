@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Tudee</string>
+    <string name="close_text">Close</string>
+    <string name="ok_text">Ok</string>
 </resources>
