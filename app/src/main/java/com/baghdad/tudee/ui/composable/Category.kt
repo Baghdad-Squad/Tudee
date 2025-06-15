@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -66,6 +67,44 @@ fun PriorityChip(text: String, modifier: Modifier = Modifier) {
             color = Color.White,
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium
+        )
+    }
+}
+
+@Composable
+fun TaskInfo(title: String, description: String, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(2.dp)
+    ) {
+        Text(
+            text = title,
+            modifier = Modifier
+                .offset(x = 8.dp, y = 0.dp)
+                .width(296.dp)
+                .height(19.dp)
+                .fillMaxWidth(),
+            color = Color(0x991F1F1F),
+            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp,
+            textAlign = TextAlign.Start,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            style = TextStyle(
+                lineHeight = 19.sp,
+                letterSpacing = 0.sp
+            )
+        )
+        Text(
+            text = description,
+            modifier = Modifier
+                .offset(x = 8.dp, y = 0.dp)
+                .fillMaxWidth(),
+            color = Color(0xFF1F1F1F).copy(alpha = 0.6f),
+            fontSize = 12.sp,
+            textAlign = TextAlign.Start,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
@@ -118,57 +157,43 @@ fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
                     contentDescription = item.title,
                     modifier = Modifier.size(56.dp)
                 )
+                Column(
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
 
-            }
-
-            Column(
-                modifier = Modifier
-                    .offset(4.dp,62.dp)
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(start = 8.dp)
-                    .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(2.dp)
-            ) {
-                Text(
-                    text = item.title,
-                    modifier = Modifier.fillMaxWidth(),
-                    color = Color(0xFF1F1F1F),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Start
-                )
-                Text(
-                    text = item.description,
-                    modifier = Modifier.fillMaxWidth(),
-                    color = Color(0xFF1F1F1F).copy(alpha = 0.6f),
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Start,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                    modifier = Modifier
+                        .offset(4.dp, 62.dp)
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(start = 8.dp)
+                ) {
+                    TaskInfo(title = item.title, description = item.description)
+                }
             }
         }
-
     }
 }
 
 
+// --- 3. Screen and Preview ---
 @Composable
 fun TaskListScreen() {
+    // Sample data - In a real app, this would come from a ViewModel
     val tasks = listOf(
         TaskItemData(
-            R.drawable.ic_birthday_cake,
+            R.drawable.ic_pur_book,
             Color(0xFFF587A1),
             "Organize Birthday Party",
             "Plan guest list and order cake...",
             "High"
-    ),
+
+        ),
+    )
 
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF0F0F0))
+            .background(Color.White)
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
