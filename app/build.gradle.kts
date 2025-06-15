@@ -56,11 +56,12 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-   // androidTestImplementation(platform(libs.androidx.compose.bom.v20250600))
     //material 3
     implementation (libs.material3)
     implementation (libs.ui)
     implementation (libs.androidx.runtime)
+
+    implementation(libs.kotlinx.datetime)
 
 
 }

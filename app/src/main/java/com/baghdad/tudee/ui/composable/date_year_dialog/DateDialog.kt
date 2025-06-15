@@ -27,25 +27,11 @@ fun DateDialog() {
     val datePickerState = rememberDatePickerState()
     var selectedDateMillis by remember { mutableStateOf(datePickerState.selectedDateMillis) }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(vertical = 20.dp)) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Button(onClick = { showDatePicker = true }) {
-                Text("Open Date Picker")
-            }
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-
         if (showDatePicker) {
             DatePickerModal(onDateSelected = { millis ->
                 selectedDateMillis = millis
             }, onDismiss = { showDatePicker = false })
         }
     }
-}
+
 
