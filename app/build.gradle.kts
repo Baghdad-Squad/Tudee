@@ -62,6 +62,4 @@ dependencies {
     implementation (libs.androidx.runtime)
 
     implementation(libs.kotlinx.datetime)
-
-    implementation(libs.kotlinx.datetime)
 }

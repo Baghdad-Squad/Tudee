@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
@@ -22,7 +23,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -44,8 +44,8 @@ fun DatePickerModal(
     LaunchedEffect(datePickerState.selectedDateMillis) {
         showEditIcon = datePickerState.selectedDateMillis != null
     }
-
-    DatePickerDialog(modifier = Modifier.padding(horizontal = 21.dp),
+    DatePickerDialog(modifier = Modifier
+        .padding(horizontal = 12.dp),
         onDismissRequest = onDismiss,
         colors = DatePickerDefaults.colors(Theme.color.surfaceColor.surface),
         confirmButton = {
@@ -58,7 +58,8 @@ fun DatePickerModal(
                     )
                 }
                 Row(
-                    modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(end = 2.dp), horizontalArrangement = Arrangement.End
                 ) {
                     TextButton(onClick = onDismiss) {
                         Text(
@@ -73,7 +74,7 @@ fun DatePickerModal(
                     }) {
                         Text(
                             stringResource(id = R.string.ok_text),
-                            color = Theme.color.primaryColor.normal,
+                            color = Theme.color.primaryColor.normal ,
                             style = Theme.typography.label.large
                         )
                     }
@@ -90,8 +91,8 @@ fun DatePickerModal(
                     todayDateBorderColor = Theme.color.primaryColor.normal,
                     todayContentColor = Theme.color.primaryColor.normal,
                     selectedYearContainerColor = Theme.color.primaryColor.normal,
-                    dayContentColor = Theme.color.textColor.title,
-                    selectedDayContentColor = Theme.color.textColor.title,
+
+                    selectedDayContentColor = Theme.color.textColor.onPrimary,
                     weekdayContentColor = Theme.color.textColor.title,
                     titleContentColor =  Theme.color.textColor.title,
                     headlineContentColor =  Theme.color.textColor.title,
