@@ -26,10 +26,10 @@ import com.baghdad.tudee.designSystem.theme.Theme
 
 @Composable
 fun CategoryItem(
+    modifier: Modifier = Modifier,
     label: String,
     icon: Painter,
-    isSelected: Boolean,
-    modifier: Modifier = Modifier,
+    isSelected: Boolean = false,
     count: Int? = null,
 ) {
     Column(
@@ -45,7 +45,7 @@ fun CategoryItem(
                 .align(Alignment.CenterHorizontally)
         ) {
             when {
-                isSelected == true && count == null -> {
+                isSelected && count == null -> {
                     Box(
                         modifier = Modifier
                             .size(width = 22.dp, height = 22.dp)
@@ -61,11 +61,11 @@ fun CategoryItem(
                     }
                 }
 
-                isSelected == false && count == null -> {
+                !isSelected && count == null -> {
                     Spacer(Modifier.height(22.dp))
                 }
 
-                isSelected == false && count != null -> {
+                !isSelected && count != null -> {
                     val notificationCount =
                         if (count in 0..99) count.toString() else "+99"
 
