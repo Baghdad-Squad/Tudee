@@ -4,11 +4,14 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,7 +19,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -24,51 +26,52 @@ import com.baghdad.tudee.designSystem.theme.Theme
 @Composable
 fun BasicButton(
     onClick: () -> Unit,
-    isLoading:Boolean=false,
-    isDiabled:Boolean=false,
     modifier: Modifier = Modifier,
-    backgroundColor: Brush = Theme.color.primaryColor.gradient,
-    borderRadius: Dp = 8.dp,
-    shape: Shape = RoundedCornerShape(borderRadius),
-    borderStroke: BorderStroke? = null,
-    padding: PaddingValues = PaddingValues(12.dp),
-    content: @Composable () -> Unit
+    enabled: Boolean = true,
+    contentPadding: PaddingValues = ButtonDefaults.defaultPadding,
+    shape: Shape = ButtonDefaults.defaultShape,
+    colors: ButtonColors = ButtonDefaults.colors(),
+    border: BorderStroke? = null,
+    content: @Composable RowScope.() -> Unit
 ) {
     Box(
         modifier = modifier
-            .background(
-                brush = backgroundColor,
-                shape = shape
+            .clip(shape)
+            .then(
+                if (colors.backgroundGradient != null) Modifier.background(
+                    colors.backgroundGradient,
+                    shape
+                ) else Modifier.background(colors.backgroundColor, shape)
             )
-            .let { currentModifier ->
-                if (borderStroke != null) {
-                    currentModifier.border(
-                        border = borderStroke,
-                        shape = shape
-                    )
-                } else {
-                    currentModifier
-                }.clip(shape)
-            }.then(
-                if (isDiabled || isLoading) Modifier
-                else Modifier.clickable(onClick=onClick)
-            )
-            .padding(padding),
+            .then(if (border != null) Modifier.border(border, shape) else Modifier)
+            .clickable(enabled = enabled) { onClick() },
         contentAlignment = Alignment.Center
-
     ) {
-        content()
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(contentPadding)
+        ) {
+            content()
+        }
     }
+
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ExampleUsage() {
-    BasicButton(
-        onClick = { },
-        borderStroke = BorderStroke(2.dp, Color.Black),
-        borderRadius = 12.dp
-    ) {
-        Text(text = "Custom Button")
-    }
+data class ButtonColors(
+    val backgroundColor: Color = Color.Unspecified,
+    val contentColor: Color = Color.Unspecified,
+    val backgroundGradient: Brush? = null,
+)
+
+object ButtonDefaults {
+    val defaultHeight: Dp = 56.dp
+    val defaultShape: RoundedCornerShape = CircleShape
+    val defaultPadding: PaddingValues = PaddingValues(horizontal = 24.dp, vertical = 16.dp)
+
+    @Composable
+    fun colors(
+        backgroundColor: Color = Theme.color.primaryColor.normal,
+        contentColor: Color = Theme.color.textColor.onPrimary,
+    ) = ButtonColors(backgroundColor, contentColor)
 }
