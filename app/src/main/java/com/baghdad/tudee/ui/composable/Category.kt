@@ -1,5 +1,4 @@
 package com.baghdad.tudee.ui.composable
-
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -56,11 +55,10 @@ fun PriorityChip(text: String, modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        Icon(
+        Image(
             painter = painterResource(id = R.drawable.ic_alert),
             contentDescription = null,
             modifier = Modifier.size(16.dp),
-            tint = Color.White
         )
         Text(
             text = text,
@@ -162,7 +160,7 @@ fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
                     verticalArrangement = Arrangement.spacedBy(2.dp),
 
                     modifier = Modifier
-                        .offset(4.dp, 62.dp)
+                        .offset(4.dp,62.dp)
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .padding(start = 8.dp)
@@ -186,9 +184,9 @@ fun TaskListScreen() {
             "Organize Birthday Party",
             "Plan guest list and order cake...",
             "High"
-
         ),
-    )
+
+        )
 
     LazyColumn(
         modifier = Modifier
