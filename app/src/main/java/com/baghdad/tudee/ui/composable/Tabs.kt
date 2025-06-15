@@ -42,7 +42,7 @@ import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.ui.shared.Selectable
 
 @Composable
-fun TabBar(
+fun Tabs(
     selectableTabs: List<Selectable<TabItem>>,
     onTabSelected: (TabItem) -> Unit,
     modifier: Modifier = Modifier
