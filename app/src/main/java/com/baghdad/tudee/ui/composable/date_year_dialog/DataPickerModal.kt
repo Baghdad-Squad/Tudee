@@ -47,13 +47,14 @@ fun DatePickerModal(
 
     DatePickerDialog(modifier = Modifier.padding(horizontal = 21.dp),
         onDismissRequest = onDismiss,
-        colors = DatePickerDefaults.colors(Theme.color.primaryColor.variant),
+        colors = DatePickerDefaults.colors(Theme.color.surfaceColor.surface),
         confirmButton = {
             Row(horizontalArrangement = Arrangement.Start) {
                 TextButton(onClick = onDismiss) {
                     Text(
-                        stringResource(id = R.string.clear_text),
-                        color = Theme.color.primaryColor.normal
+                        stringResource(id = R.string.close_text),
+                        color = Theme.color.primaryColor.normal,
+                        style = Theme.typography.label.large
                     )
                 }
                 Row(
@@ -62,7 +63,8 @@ fun DatePickerModal(
                     TextButton(onClick = onDismiss) {
                         Text(
                             text = stringResource(id = R.string.cancel_text),
-                            color = Theme.color.primaryColor.normal
+                            color = Theme.color.primaryColor.normal,
+                            style = Theme.typography.label.large
                         )
                     }
                     TextButton(onClick = {
@@ -71,7 +73,8 @@ fun DatePickerModal(
                     }) {
                         Text(
                             stringResource(id = R.string.ok_text),
-                            color = Theme.color.primaryColor.normal
+                            color = Theme.color.primaryColor.normal,
+                            style = Theme.typography.label.large
                         )
                     }
                 }
@@ -82,10 +85,18 @@ fun DatePickerModal(
             DatePicker(state = datePickerState,
                 showModeToggle = false,
                 colors = DatePickerDefaults.colors(
-                    containerColor = Color.White,
+                    containerColor = Theme.color.surfaceColor.surface,
                     selectedDayContainerColor = Theme.color.primaryColor.normal,
                     todayDateBorderColor = Theme.color.primaryColor.normal,
-                    selectedYearContainerColor = Theme.color.primaryColor.normal
+                    todayContentColor = Theme.color.primaryColor.normal,
+                    selectedYearContainerColor = Theme.color.primaryColor.normal,
+                    dayContentColor = Theme.color.textColor.title,
+                    selectedDayContentColor = Theme.color.textColor.title,
+                    weekdayContentColor = Theme.color.textColor.title,
+                    titleContentColor =  Theme.color.textColor.title,
+                    headlineContentColor =  Theme.color.textColor.title,
+                    yearContentColor = Theme.color.textColor.title,
+                    navigationContentColor = Theme.color.textColor.title
                 ),
                 headline = {
                     val selectedDate = datePickerState.selectedDateMillis?.let {
