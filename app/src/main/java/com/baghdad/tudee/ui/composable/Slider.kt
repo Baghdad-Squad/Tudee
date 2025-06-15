@@ -1,5 +1,6 @@
 package com.baghdad.tudee.ui.composable
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,8 +28,8 @@ import com.baghdad.tudee.designSystem.theme.TudeeTheme
 fun Slider(
     title: String,
     description: String,
-    icon: Int,
-    image: Int,
+    @DrawableRes icon: Int,
+    @DrawableRes image: Int,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -38,40 +39,71 @@ fun Slider(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                BasicText(
-                    text = title,
-                    style = Theme.typography.title.small.copy(
-                        color = Theme.color.textColor.title.copy(alpha = 0.87f)
-                    )
-                )
-                Image(
-                    painter = painterResource(id = icon),
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-            BasicText(
-                text = description,
-                style = Theme.typography.body.small.copy(
-                    color = Theme.color.textColor.body.copy(alpha = 0.6f)
-                )
-            )
 
-        }
-        Image(
-            painter = painterResource(id = image),
-            contentDescription = null,
-            modifier = Modifier
-                .height(92.dp)
+        SliderContent(
+            title = title,
+            description = description,
+            icon = icon,
+            image = image
         )
     }
+
+}
+
+@Composable
+fun SliderContent(
+    title: String,
+    description: String,
+    @DrawableRes icon: Int,
+    @DrawableRes image: Int,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            BasicText(
+                text = title,
+                style = Theme.typography.title.small.copy(
+                    color = Theme.color.textColor.title
+                )
+            )
+            Image(
+                painter = painterResource(id = icon),
+                contentDescription = null,
+                modifier = Modifier.size(20.dp)
+            )
+        }
+        BasicText(
+            text = description,
+            style = Theme.typography.body.small.copy(
+                color = Theme.color.textColor.body
+            )
+        )
+    }
+    SliderIllustration(
+        image = image,
+        title = title
+    )
+
+}
+
+
+@Composable
+fun SliderIllustration(
+    title: String,
+    @DrawableRes image: Int,
+    modifier: Modifier = Modifier
+) {
+    Image(
+        painter = painterResource(id = image),
+        contentDescription = title,
+        modifier = modifier
+            .height(92.dp)
+    )
 }
 
 @Preview
