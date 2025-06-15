@@ -81,7 +81,7 @@ fun TudeeTextField(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 12.dp).padding(vertical = 13.dp)
+                .padding(start = 12.dp, top =  13.dp, bottom = 13.dp)
         ) {
             if (paint != null) {
                 Image(
@@ -98,7 +98,8 @@ fun TudeeTextField(
                 )
             }
 
-            Box(Modifier.fillMaxWidth()) {
+            Box(Modifier.fillMaxWidth()
+                .padding(vertical= 7.dp)) {
                 if (text.isEmpty() && !isFocused) {
                     BasicText(
                         text = label,
