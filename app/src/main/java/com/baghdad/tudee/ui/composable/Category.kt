@@ -74,16 +74,16 @@ fun PriorityChip(text: String, modifier: Modifier = Modifier) {
 fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
     Column(
         modifier = Modifier
-            .width(320.dp)  // Fixed width of 320px
-            .height(111.dp)  // Fixed height of 111px
+            .width(320.dp)
+            .height(111.dp)
             .background(
-                color = Color(0xFFFFFFFF),  // White background
-                shape = RoundedCornerShape(16.dp)  // 16px corner radius
+                color = Color(0xFFFFFFFF),
+                shape = RoundedCornerShape(16.dp)
             )
             .border(
-                width = 1.dp,  // 1px border
-                color = Color(0xFFFFFFFF),  // White border (same as background)
-                shape = RoundedCornerShape(16.dp)  // Same radius as background
+                width = 1.dp,
+                color = Color(0xFFFFFFFF),
+                shape = RoundedCornerShape(16.dp)
             )
             .padding(
                 top = 4.dp,
@@ -91,7 +91,7 @@ fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
                 bottom = 12.dp,
                 start = 4.dp
             ),
-        verticalArrangement = Arrangement.spacedBy(2.dp)  // 2px gap between children
+        verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         Row(
             modifier = modifier
@@ -124,26 +124,26 @@ fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
             Column(
                 modifier = Modifier
                     .offset(4.dp,62.dp)
-                    .fillMaxWidth()  // Fill available width (304px from parent)
-                    .wrapContentHeight()  // Hug content height (37px)
-                    .padding(start = 8.dp)  // Left padding 8px, others 0
-                    .weight(1f),  // Take remaining space in parent
-                verticalArrangement = Arrangement.spacedBy(2.dp)  // 2px gap between children
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(start = 8.dp)
+                    .weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
                     text = item.title,
-                    modifier = Modifier.fillMaxWidth(),      // W: Fill
-                    color = Color(0xFF1F1F1F),             // Fill: Body
+                    modifier = Modifier.fillMaxWidth(),
+                    color = Color(0xFF1F1F1F),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
-                    textAlign = TextAlign.Start              // Alignment: Left
+                    textAlign = TextAlign.Start
                 )
                 Text(
                     text = item.description,
-                    modifier = Modifier.fillMaxWidth(),      // Corresponds to W: Fill
-                    color = Color(0xFF1F1F1F).copy(alpha = 0.6f), // Corresponds to Fill: Hint
-                    fontSize = 12.sp,                        // Corresponds to "Label small"
-                    textAlign = TextAlign.Start,             // Corresponds to left alignment
+                    modifier = Modifier.fillMaxWidth(),
+                    color = Color(0xFF1F1F1F).copy(alpha = 0.6f),
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Start,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -154,10 +154,8 @@ fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
 }
 
 
-// --- 3. Screen and Preview ---
 @Composable
 fun TaskListScreen() {
-    // Sample data - In a real app, this would come from a ViewModel
     val tasks = listOf(
         TaskItemData(
             R.drawable.ic_birthday_cake,
@@ -165,120 +163,7 @@ fun TaskListScreen() {
             "Organize Birthday Party",
             "Plan guest list and order cake...",
             "High"
-        ),
-        TaskItemData(
-            R.drawable.ic_orange_bag,
-            Color(0xFF87D4B3),
-            "Review Project Goals",
-            "Finalize Q3 objectives.",
-            "Medium"
-        ),
-        TaskItemData(
-            R.drawable.ic_orange_multi_user,
-            Color(0xFFF5A671),
-            "Prepare for Meeting",
-            "Review presentation slides.",
-            "High"
-        ),
-        TaskItemData(
-            R.drawable.ic_blush_brush,
-            Color(0xFFB098F5),
-            "Update Budget",
-            "Allocate funds for new software.",
-            "Medium"
-        ),
-        TaskItemData(
-            R.drawable.ic_in_love,
-            Color(0xFFF5D071),
-            "Call Family",
-            "Check in with everyone.",
-            "Low"
-        ),
-        TaskItemData(
-            R.drawable.ic_orange_shopping,
-            Color(0xFFF5A671),
-            "Go Grocery Shopping",
-            "Get vegetables and milk.",
-            "Medium"
-        ),
-        TaskItemData(
-            R.drawable.ic_green_plate,
-            Color(0xFF87D4B3),
-            "Water the Plants",
-            "Especially the new fern.",
-            "Low"
-        ),
-        TaskItemData(
-            R.drawable.ic_baseball_bat,
-            Color(0xFFF5D071),
-            "Go to the Gym",
-            "Leg day.",
-            "Medium"
-        ),
-        TaskItemData(
-            R.drawable.ic_blue_gym,
-            Color(0xFF87CFF5),
-            "Workout Session",
-            "Focus on cardio.",
-            "High"
-        ),
-        TaskItemData(
-            R.drawable.ic_airplane,
-            Color(0xFFF5D071),
-            "Book Flight Tickets",
-            "Trip to Istanbul.",
-            "High"
-        ),
-        TaskItemData(
-            R.drawable.ic_thinking_person,
-            Color(0xFFB098F5),
-            "Finish Compose UI",
-            "Implement the settings screen.",
-            "High"
-        ),
-        TaskItemData(
-            R.drawable.ic_bug,
-            Color(0xFFF587A1),
-            "Fix Login Bug",
-            "Investigate the crash report.",
-            "Critical"
-        ),
-        TaskItemData(
-            R.drawable.ic_hospital_location,
-            Color(0xFF87CFF5),
-            "Doctor's Appointment",
-            "Annual check-up at 3 PM.",
-            "High"
-        ),
-        TaskItemData(
-            R.drawable.ic_purple_book,
-            Color(0xFFB098F5),
-            "Read a Chapter",
-            "Continue reading 'Atomic Habits'.",
-            "Low"
-        ),
-        TaskItemData(
-            R.drawable.ic_quran,
-            Color(0xFF87CFF5),
-            "Daily Reading",
-            "Recite Surah Al-Kahf.",
-            "Medium"
-        ),
-        TaskItemData(
-            R.drawable.ic_orange_multi_user,
-            Color(0xFFF5A671),
-            "Team Sync-up",
-            "Discuss project progress.",
-            "Medium"
-        ),
-        TaskItemData(
-            R.drawable.ic_orange_shopping,
-            Color(0xFFF587A1),
-            "Buy Baby Supplies",
-            "Need diapers and formula.",
-            "High"
-        )
-    )
+    ),
 
     LazyColumn(
         modifier = Modifier
