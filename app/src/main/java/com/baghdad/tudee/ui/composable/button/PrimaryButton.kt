@@ -1,22 +1,15 @@
 package com.baghdad.tudee.ui.composable.button
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicText
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.ui.composable.StripedCircularProgressIndicator
@@ -29,11 +22,12 @@ fun PrimaryButton(
     isLoading: Boolean = false,
     isEnabled: Boolean = true,
 ) {
-    val buttonColors =  when {
+    val buttonColors = when {
         isEnabled.not() -> ButtonColors(
             backgroundColor = Theme.color.textColor.disable,
             contentColor = Theme.color.textColor.stroke
         )
+
         else -> ButtonColors(
             backgroundGradient = Theme.color.primaryColor.gradient,
             contentColor = Theme.color.textColor.onPrimary
@@ -46,8 +40,8 @@ fun PrimaryButton(
         contentPadding = PaddingValues(vertical = 18.dp, horizontal = 24.dp),
         colors = buttonColors,
         shape = RoundedCornerShape(100.dp),
-    ){
-        BasicText(
+    ) {
+        Text(
             text = label,
             style = Theme.typography.label.large.copy(
                 color = buttonColors.contentColor
@@ -65,7 +59,7 @@ fun PrimaryButton(
     }
 }
 
-@Preview(showBackground = true,)
+@Preview(showBackground = true)
 @Composable
 private fun PrimaryButtonPreview1() {
     TudeeTheme {

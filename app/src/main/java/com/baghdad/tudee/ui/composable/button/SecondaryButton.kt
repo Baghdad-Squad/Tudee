@@ -2,15 +2,13 @@ package com.baghdad.tudee.ui.composable.button
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColor
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicText
-import androidx.compose.material3.ButtonDefaults.buttonColors
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -61,7 +59,7 @@ fun SecondaryButton(
         border = BorderStroke(width = 1.dp, color = animatedBorderColor),
         shape = RoundedCornerShape(100.dp),
     ) {
-        BasicText(
+        Text(
             text = label,
             style = Theme.typography.label.large.copy(
                 color = animatedContentColor
@@ -79,7 +77,7 @@ fun SecondaryButton(
     }
 }
 
-@Preview(showBackground = true,)
+@Preview(showBackground = true)
 @Composable
 private fun SecondaryButtonPreview1() {
     TudeeTheme {
