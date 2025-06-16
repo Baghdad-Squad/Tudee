@@ -22,6 +22,8 @@ fun OnboardingBackground(
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
     val screenHeight = LocalConfiguration.current.screenHeightDp
+    val ellipsisColor = Theme.color.surfaceColor.ellipsisGradientColor
+
     Box {
         Box(
             modifier = Modifier
@@ -45,7 +47,7 @@ fun OnboardingBackground(
                         y = -(0.53 * screenHeight).dp
                     )
                     .rotate(-314f)
-                    .background(brush = Theme.color.surfaceColor.ellipsisGradientColor)
+                    .background(brush = ellipsisColor)
             )
             Box(
                 modifier = Modifier
@@ -56,7 +58,7 @@ fun OnboardingBackground(
                         y = -(0.15 * screenHeight).dp
                     )
                     .rotate(-314f)
-                    .background(brush = Theme.color.surfaceColor.ellipsisGradientColor)
+                    .background(brush = ellipsisColor)
             )
             Box(
                 modifier = Modifier
@@ -67,7 +69,7 @@ fun OnboardingBackground(
                         y = -(0.014 * screenHeight).dp
                     )
                     .rotate(-314f)
-                    .background(brush = Theme.color.surfaceColor.ellipsisGradientColor)
+                    .background(brush = ellipsisColor)
             )
         }
     }
