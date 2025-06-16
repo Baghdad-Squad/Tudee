@@ -1,12 +1,14 @@
 package com.baghdad.tudee.ui.composable.button
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,29 +26,27 @@ fun NegativeTextButton(
     isLoading: Boolean = false,
     isEnabled: Boolean = true,
 ) {
-    val buttonColors = when {
-        isEnabled.not() -> ButtonColors(
-            backgroundColor = Color.Transparent,
-            contentColor = Theme.color.textColor.stroke
-        )
-
-        else -> ButtonColors(
-            backgroundColor = Color.Transparent,
-            contentColor = Theme.color.status.error
-        )
-    }
+    val animatedContentColor by animateColorAsState(
+        targetValue = if (isEnabled) Theme.color.status.error
+        else Theme.color.textColor.stroke,
+        animationSpec = ButtonDefaults.defaultColorAnimationSpec,
+        label = "negative_text_button_content_color"
+    )
     BasicButton(
         onClick = onClick,
         modifier = modifier.height(ButtonDefaults.defaultHeight),
         isEnabled = isEnabled,
         contentPadding = PaddingValues(vertical = 18.dp, horizontal = 24.dp),
-        colors = buttonColors,
+        colors = ButtonColors(
+            backgroundColor = Color.Transparent,
+            contentColor = animatedContentColor
+        ),
         shape = RoundedCornerShape(100.dp),
     ) {
         BasicText(
             text = label,
             style = Theme.typography.label.large.copy(
-                color = buttonColors.contentColor
+                color = animatedContentColor
             )
         )
         AnimatedVisibility(isLoading) {
@@ -55,7 +55,7 @@ fun NegativeTextButton(
                 size = 18.dp,
                 lineLength = 5.dp,
                 lineWidth = 2.dp,
-                color = buttonColors.contentColor
+                color = animatedContentColor
             )
         }
     }

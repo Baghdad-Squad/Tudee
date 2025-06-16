@@ -1,5 +1,6 @@
 package com.baghdad.tudee.ui.composable.button
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -34,16 +35,16 @@ fun BasicButton(
     border: BorderStroke? = null,
     content: @Composable RowScope.() -> Unit
 ) {
+    val backgroundModifier = if (colors.backgroundGradient != null) Modifier.background(
+        colors.backgroundGradient,
+        shape
+    ) else Modifier.background(colors.backgroundColor, shape)
+    val borderModifier = if (border != null) Modifier.border(border, shape) else Modifier
     Box(
         modifier = modifier
             .clip(shape)
-            .then(
-                if (colors.backgroundGradient != null) Modifier.background(
-                    colors.backgroundGradient,
-                    shape
-                ) else Modifier.background(colors.backgroundColor, shape)
-            )
-            .then(if (border != null) Modifier.border(border, shape) else Modifier)
+            .then(backgroundModifier)
+            .then(borderModifier)
             .clickable(enabled = isEnabled) { onClick() },
         contentAlignment = Alignment.Center
     ) {
@@ -68,6 +69,7 @@ object ButtonDefaults {
     val defaultHeight: Dp = 56.dp
     val defaultShape: RoundedCornerShape = CircleShape
     val defaultPadding: PaddingValues = PaddingValues(horizontal = 24.dp, vertical = 16.dp)
+    val defaultColorAnimationSpec = tween<Color>(200)
 
     @Composable
     fun colors(

@@ -1,11 +1,15 @@
 package com.baghdad.tudee.ui.composable.button
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.ColorFilter
@@ -26,14 +30,25 @@ fun FloatingActionButton(
     isLoading: Boolean = false,
     isEnabled: Boolean = true,
 ) {
-    val backgroundColor = when {
-        isEnabled.not() -> Theme.color.textColor.disable
-        else -> Theme.color.primaryColor.normal
-    }
-    val contentColor = when {
-        isEnabled.not() -> Theme.color.textColor.stroke
-        else -> Theme.color.textColor.onPrimary
+    val transition = updateTransition(
+        targetState = isEnabled,
+        label = "fab_state"
+    )
 
+    val animatedBackgroundColor by transition.animateColor(
+        label = "fab_background_color",
+        transitionSpec = { ButtonDefaults.defaultColorAnimationSpec }
+    ) { enabled ->
+        if (enabled) Theme.color.primaryColor.normal
+        else Theme.color.textColor.disable
+    }
+
+    val animatedContentColor by transition.animateColor(
+        label = "fab_background_color",
+        transitionSpec = { ButtonDefaults.defaultColorAnimationSpec }
+    ) { enabled ->
+        if (enabled) Theme.color.textColor.onPrimary
+        else Theme.color.textColor.stroke
     }
     BasicButton(
         onClick = onClick,
@@ -41,8 +56,8 @@ fun FloatingActionButton(
         isEnabled = isEnabled,
         contentPadding = PaddingValues(18.dp),
         colors = ButtonDefaults.colors(
-            backgroundColor = backgroundColor,
-            contentColor = contentColor
+            backgroundColor = animatedBackgroundColor,
+            contentColor = animatedContentColor
         ),
         shape = CircleShape,
     ) {
@@ -54,7 +69,7 @@ fun FloatingActionButton(
                     size = 18.dp,
                     lineLength = 4.dp,
                     lineWidth = 3.dp,
-                    color = contentColor
+                    color = animatedBackgroundColor
                 )
             } else {
                 Box(
@@ -64,7 +79,7 @@ fun FloatingActionButton(
                             .paint(
                                 painter,
                                 colorFilter = ColorFilter.tint(
-                                    color = contentColor
+                                    color = animatedContentColor
                                 )
                             )
                 )

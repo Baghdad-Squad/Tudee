@@ -1,13 +1,18 @@
 package com.baghdad.tudee.ui.composable.button
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,35 +29,42 @@ fun SecondaryButton(
     isLoading: Boolean = false,
     isEnabled: Boolean = true,
 ) {
-    val buttonColors = when {
-        isEnabled.not() -> ButtonColors(
-            backgroundColor = Color.Transparent,
-            contentColor = Theme.color.textColor.stroke
-        )
+    val transition = updateTransition(
+        targetState = isEnabled,
+        label = "secondary_button_state"
+    )
 
-        else -> ButtonColors(
-            backgroundColor = Color.Transparent,
-            contentColor = Theme.color.primaryColor.normal
-        )
+    val animatedBorderColor by transition.animateColor(
+        label = "secondary_button_border_color",
+        transitionSpec = { ButtonDefaults.defaultColorAnimationSpec }
+    ) { enabled ->
+        if (enabled) Theme.color.textColor.stroke
+        else Theme.color.textColor.disable
     }
-    val borderColor = if(isEnabled){
-        Theme.color.textColor.stroke
-    } else {
-        Theme.color.textColor.disable
+
+    val animatedContentColor by transition.animateColor(
+        label = "secondary_button_content_color",
+        transitionSpec = { ButtonDefaults.defaultColorAnimationSpec }
+    ) { enabled ->
+        if (enabled) Theme.color.primaryColor.normal
+        else Theme.color.textColor.stroke
     }
     BasicButton(
         onClick = onClick,
         modifier = modifier.height(ButtonDefaults.defaultHeight),
         isEnabled = isEnabled,
         contentPadding = PaddingValues(vertical = 18.dp, horizontal = 24.dp),
-        colors = buttonColors,
-        border = BorderStroke(width = 1.dp, color = borderColor),
+        colors = ButtonColors(
+            backgroundColor = Color.Transparent,
+            contentColor = animatedContentColor
+        ),
+        border = BorderStroke(width = 1.dp, color = animatedBorderColor),
         shape = RoundedCornerShape(100.dp),
     ) {
         BasicText(
             text = label,
             style = Theme.typography.label.large.copy(
-                color = buttonColors.contentColor
+                color = animatedContentColor
             )
         )
         AnimatedVisibility(isLoading) {
@@ -61,7 +73,7 @@ fun SecondaryButton(
                 size = 18.dp,
                 lineLength = 5.dp,
                 lineWidth = 2.dp,
-                color = buttonColors.contentColor
+                color = animatedContentColor
             )
         }
     }
