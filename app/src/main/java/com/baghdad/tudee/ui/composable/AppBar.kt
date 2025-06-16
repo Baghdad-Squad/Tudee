@@ -62,7 +62,7 @@ fun TudeeHeader(modifier: Modifier = Modifier) {
             )
             Text(
                 text = "Your cute Helper for Every Task",
-                color = Color.White.copy(alpha = 0.9f),
+                color = lightThemeColor.textColor.onPrimary.copy(alpha = 0.9f),
                 style = TextStyle(
                     fontWeight = FontWeight.W500,
                     fontSize = 12.sp,
@@ -79,8 +79,8 @@ fun CircularIconButton(
     icon: Painter,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
-    backgroundColor: Color = Color.White,
-    iconTintColor: Color = Color.Black
+    backgroundColor: Color =lightThemeColor.textColor.onPrimary,
+    iconTintColor: Color =lightThemeColor.status.emojiTint
 ) {
     IconButton(
         onClick = onClick,
@@ -113,13 +113,13 @@ fun TasksAppBar(modifier: Modifier = Modifier) {
             icon = painterResource(id = R.drawable.ic_back_button),
             contentDescription = "Back",
             modifier = Modifier.size(40.dp),
-            iconTintColor = Color.Black
+            iconTintColor = lightThemeColor.status.emojiTint
         )
         Text(
             modifier = Modifier,
             text = "Tasks",
             style = MaterialTheme.typography.titleLarge,
-            color = Color.Black
+            color = lightThemeColor.status.emojiTint
         )
     }
 }
