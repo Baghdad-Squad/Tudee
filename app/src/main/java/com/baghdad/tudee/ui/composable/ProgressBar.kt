@@ -19,17 +19,17 @@ import com.baghdad.tudee.designSystem.theme.Theme
 fun ProgressBar(
     currentScreen: Int,
     modifier: Modifier = Modifier,
+    numOfScreens :Int =3,
 ) {
     val activeColor = Theme.color.primaryColor.normal
     val inactiveColor = Theme.color.textColor.disable
-    val screen = listOf(1, 2, 3)
 
     Row(
         horizontalArrangement = Arrangement.SpaceEvenly,
         modifier = modifier
             .fillMaxWidth()
     ) {
-        screen.forEach() { screen ->
+        for (screen in 1..numOfScreens){
             val color = if (currentScreen == screen) activeColor else inactiveColor
 
             Box(
