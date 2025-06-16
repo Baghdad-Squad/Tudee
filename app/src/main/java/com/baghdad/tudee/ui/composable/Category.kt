@@ -35,7 +35,7 @@ import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.color.lightThemeColor
 import com.baghdad.tudee.designSystem.textStyle.tudeeTextStyle
 import com.baghdad.tudee.designSystem.theme.Theme
-
+import com.baghdad.tudee.ui.composable.Priority
 data class TaskItemData(
     val iconRes: Painter,
     val iconBackgroundColor: Color,
@@ -44,33 +44,6 @@ data class TaskItemData(
     val priority: String
 )
 
-@Composable
-fun PriorityChip(text: String, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .background(
-                color = Theme.color.status.yellowAccent,
-                shape = CircleShape
-            )
-            .padding(horizontal = 8.dp, vertical = 6.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(2.dp)
-    )
-    {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_alert),
-            contentDescription = null,
-            modifier = Modifier.size(16.dp),
-            tint = Theme.color.surfaceColor.surfaceHigh
-        )
-        Text(
-            text = text,
-            style = tudeeTextStyle.label.small,
-            color = Theme.color.textColor.onPrimary,
-            modifier = Modifier.align(Alignment.CenterVertically)
-        )
-    }
-}
 
 @Composable
 fun TaskInfo(title: String, description: String, modifier: Modifier = Modifier) {
@@ -125,23 +98,28 @@ fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
 
         TaskImage(
             item = item,
-            modifier = Modifier.size(56.dp)
+            imagePainter = item.iconRes
         )
-
         TaskInfo(
             title = item.title,
             description = item.description
         )
-        PriorityChip(
-            text = item.priority,
-            modifier = Modifier
-                .align(Alignment.End),
-            )
+        Priority(
+            priorityTask = when (item.priority) {
+                "High" -> PriorityTask.HIGH
+                "Medium" -> PriorityTask.MEDIUM
+                else -> PriorityTask.LOW
+            }
+        )
     }
 }
 
 @Composable
-fun TaskImage(item: TaskItemData, modifier: Modifier = Modifier) {
+fun TaskImage(
+item: TaskItemData,
+imagePainter: Painter,
+modifier: Modifier = Modifier
+) {
     Box(
         modifier = Modifier
             .size(304.dp, 56.dp),
@@ -152,7 +130,13 @@ fun TaskImage(item: TaskItemData, modifier: Modifier = Modifier) {
                 .offset(285.dp, 25.dp)
                 .size(248.dp, 28.dp)
         ) {
-            PriorityChip(text = item.priority)
+            Priority(
+                priorityTask = when (item.priority) {
+                    "High" -> PriorityTask.HIGH
+                    "Medium" -> PriorityTask.MEDIUM
+                    else -> PriorityTask.LOW
+                }
+            )
         }
         Image(
             painter = painterResource(
@@ -169,7 +153,7 @@ fun TaskImage(item: TaskItemData, modifier: Modifier = Modifier) {
 fun TaskList() {
     val tasks = listOf(
         TaskItemData(
-            painterResource(id = R.drawable.ic_bag),
+            painterResource(id = R.drawable.ic_alert),
             Theme.color.status.pinkAccent,
             "Organize Birthday Party",
             "Plan guest list and order cake...",
