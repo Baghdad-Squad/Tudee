@@ -69,6 +69,7 @@ fun CategoryItem(
             }
 
             AnimatedContent(
+                modifier = Modifier.align(Alignment.TopEnd),
                 targetState = isSelected to count,
                 transitionSpec = {
                     ( scaleIn() togetherWith
