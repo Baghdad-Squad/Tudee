@@ -63,7 +63,7 @@ fun CategoryItem(
                 )
             }
             when {
-                isSelected && count == null -> {
+                isSelected -> {
                     Image(
                         painter = painterResource(R.drawable.selected_icon),
                         contentDescription = "$label badge icon",
