@@ -25,6 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.ui.composable.dateYearDialog.DateDialog
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import java.time.Instant
 import java.time.ZoneId
 
@@ -37,33 +39,6 @@ class MainActivity : ComponentActivity() {
                 TudeeTheme {
                     var showDatePicker by remember { mutableStateOf(false) }
                     var selectedDateMillis by remember { mutableStateOf<Long?>(null) }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp)
-                    ) {
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.align(Alignment.Center)
-                        ) {
-                            Button(onClick = { showDatePicker = true }) {
-                                Text("Open Date Picker")
-                            }
-
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            Text(
-                                text = selectedDateMillis?.let {
-                                    val date = Instant.ofEpochMilli(it)
-                                        .atZone(ZoneId.systemDefault())
-                                        .toLocalDate()
-                                    "${date.dayOfWeek}, ${date.month} ${date.dayOfMonth}"
-                                } ?: "No date selected",
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        }
-
                         DateDialog(
                             isShowDatePicker = showDatePicker,
                             onDismiss = { showDatePicker = false },

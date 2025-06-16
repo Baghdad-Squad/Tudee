@@ -113,13 +113,6 @@ fun DatePickerModal(
                         )
                     }
 
-                    AnimatedVisibility(visible = isShownEditIcon) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_black_edit),
-                            contentDescription = stringResource(id = R.string.edit_text),
-                            modifier = Modifier.clickable { }
-                        )
-                    }
                 }
             }
         )
