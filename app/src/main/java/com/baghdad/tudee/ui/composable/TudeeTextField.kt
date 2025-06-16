@@ -36,7 +36,7 @@ fun TudeeTextField(
     hint: String,
     modifier: Modifier = Modifier,
     leadingIcon: Painter? = null,
-    textFieldHeight: Int = 56,
+    height: Int = 56,
     maxLines: Int = 1,
 ) {
     var isFocused by remember { mutableStateOf(false) }
@@ -56,7 +56,7 @@ fun TudeeTextField(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(textFieldHeight.dp)
+            .height(height.dp)
             .border(
                 1.dp, animatedBorderColor, RoundedCornerShape(16.dp)
             ),
@@ -82,14 +82,13 @@ fun TudeeTextField(
             Box(
                 Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 7.dp)
+                    .align(Alignment.CenterVertically)
             ) {
                 if (value.isEmpty() && !isFocused) {
                     Text(
                         text = hint,
                         color = Theme.color.textColor.hint,
-                        fontSize = Theme.typography.body.small.fontSize,
-                        fontWeight = Theme.typography.body.medium.fontWeight
+                        style = Theme.typography.body.medium
                     )
                 }
                 BasicTextField(
