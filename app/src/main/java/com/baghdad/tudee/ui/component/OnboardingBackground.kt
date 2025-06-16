@@ -12,12 +12,21 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
 
 @Composable
-fun OnboardingBackground() {
-
+fun OnboardingBackground(
+    content: @Composable () -> Unit = {},
+) {
+Box {
+    Box(
+        modifier = Modifier.zIndex(1f)
+            .fillMaxSize()
+    ) {
+        content()
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -59,6 +68,10 @@ fun OnboardingBackground() {
                 .background(brush = Theme.color.surfaceColor.ellipsisGradientColor)
         )
     }
+
+
+}
+
 }
 
 
