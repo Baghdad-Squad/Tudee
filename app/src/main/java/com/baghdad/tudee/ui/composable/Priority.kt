@@ -15,21 +15,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
+import com.baghdad.tudee.domain.entity.Task
 
 
 @Composable
 fun Priority(
     modifier: Modifier = Modifier,
-    priorityTask: PriorityTask,
+    priorityTask: Task.Priority,
 ) {
 
     Row(
         modifier = modifier
             .background(
                 when (priorityTask) {
-                    PriorityTask.HIGH -> Theme.color.status.pinkAccent
-                    PriorityTask.MEDIUM -> Theme.color.status.yellowAccent
-                    PriorityTask.LOW -> Theme.color.status.greenAccent
+                    Task.Priority.HIGH -> Theme.color.status.pinkAccent
+                    Task.Priority.MEDIUM -> Theme.color.status.yellowAccent
+                    Task.Priority.LOW -> Theme.color.status.greenAccent
                 },
                 shape = RoundedCornerShape(100)
             )
@@ -40,9 +41,9 @@ fun Priority(
         Icon(
             painter = painterResource(
                 when (priorityTask) {
-                    PriorityTask.HIGH -> com.baghdad.tudee.R.drawable.ic_flag
-                    PriorityTask.MEDIUM -> com.baghdad.tudee.R.drawable.ic_alert
-                    PriorityTask.LOW -> com.baghdad.tudee.R.drawable.ic_trade_down
+                    Task.Priority.HIGH -> com.baghdad.tudee.R.drawable.ic_flag
+                    Task.Priority.MEDIUM -> com.baghdad.tudee.R.drawable.ic_alert
+                    else -> com.baghdad.tudee.R.drawable.ic_trade_down
                 }
             ),
             null,
@@ -50,9 +51,9 @@ fun Priority(
         )
         Text(
             text = when (priorityTask) {
-                PriorityTask.HIGH -> "High"
-                PriorityTask.MEDIUM -> "Medium"
-                PriorityTask.LOW -> "Low"
+                Task.Priority.HIGH -> "High"
+                Task.Priority.MEDIUM -> "Medium"
+                else -> "Low"
             },
             style = Theme.typography.label.small,
             color = Theme.color.textColor.onPrimary
@@ -65,12 +66,7 @@ fun Priority(
 @Preview
 private fun PriorityPreview() {
     TudeeTheme {
-        Priority(priorityTask = PriorityTask.LOW)
+        Priority(priorityTask = Task.Priority.LOW)
     }
 }
 
-enum class PriorityTask {
-    HIGH,
-    MEDIUM,
-    LOW
-}
