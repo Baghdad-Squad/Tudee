@@ -34,9 +34,9 @@ import com.baghdad.tudee.designSystem.theme.TudeeTheme
 
 
 @Composable
-fun DayNightSwitch(isDay: Boolean, onClick: () -> Unit) {
+fun DayNightSwitch(isDay: Boolean, onClick: () -> Unit , modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .size(height = 36.dp, width = 64.dp)
             .clip(RoundedCornerShape(100.dp))
             .border(width = 1.dp, color = Color(0x1F1F1F1F), shape = RoundedCornerShape(100.dp))
