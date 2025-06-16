@@ -20,58 +20,57 @@ import com.baghdad.tudee.designSystem.theme.TudeeTheme
 fun OnboardingBackground(
     content: @Composable () -> Unit = {},
 ) {
-Box {
-    Box(
-        modifier = Modifier.zIndex(1f)
-            .fillMaxSize()
-    ) {
-        content()
+    val screenWidth = LocalConfiguration.current.screenWidthDp
+    val screenHeight = LocalConfiguration.current.screenHeightDp
+    Box {
+        Box(
+            modifier = Modifier
+                .zIndex(1f)
+                .fillMaxSize()
+        ) {
+            content()
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Theme.color.surfaceColor.surface)
+                .background(color = Theme.color.status.overlay)
+        ) {
+            Box(
+                modifier = Modifier
+                    .height(900.dp)
+                    .width(70.dp)
+                    .offset(
+                        x = (0.8 * screenWidth).dp,
+                        y = -(0.53 * screenHeight).dp
+                    )
+                    .rotate(-314f)
+                    .background(brush = Theme.color.surfaceColor.ellipsisGradientColor)
+            )
+            Box(
+                modifier = Modifier
+                    .height(600.dp)
+                    .width(160.dp)
+                    .offset(
+                        x = (0.8 * screenWidth).dp,
+                        y = -(0.15 * screenHeight).dp
+                    )
+                    .rotate(-314f)
+                    .background(brush = Theme.color.surfaceColor.ellipsisGradientColor)
+            )
+            Box(
+                modifier = Modifier
+                    .height(600.dp)
+                    .width(70.dp)
+                    .offset(
+                        x = (1.16 * screenWidth).dp,
+                        y = -(0.014 * screenHeight).dp
+                    )
+                    .rotate(-314f)
+                    .background(brush = Theme.color.surfaceColor.ellipsisGradientColor)
+            )
+        }
     }
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Theme.color.surfaceColor.surface)
-            .background(color = Theme.color.status.overlay)
-    ) {
-        LocalConfiguration.current.screenWidthDp
-        Box(
-            modifier = Modifier
-                .height(900.dp)
-                .width(70.dp)
-                .offset(
-                    x = (0.8 * LocalConfiguration.current.screenWidthDp).dp,
-                    y = -(0.53 * LocalConfiguration.current.screenHeightDp).dp
-                )
-                .rotate(-314f)
-                .background(brush = Theme.color.surfaceColor.ellipsisGradientColor)
-        )
-        Box(
-            modifier = Modifier
-                .height(600.dp)
-                .width(160.dp)
-                .offset(
-                    x = (0.8 * LocalConfiguration.current.screenWidthDp).dp,
-                    y = -(0.15 * LocalConfiguration.current.screenHeightDp).dp
-                )
-                .rotate(-314f)
-                .background(brush = Theme.color.surfaceColor.ellipsisGradientColor)
-        )
-        Box(
-            modifier = Modifier
-                .height(600.dp)
-                .width(70.dp)
-                .offset(
-                    x = (1.16 * LocalConfiguration.current.screenWidthDp).dp,
-                    y = -(0.014 * LocalConfiguration.current.screenHeightDp).dp
-                )
-                .rotate(-314f)
-                .background(brush = Theme.color.surfaceColor.ellipsisGradientColor)
-        )
-    }
-
-
-}
-
 }
 
 
