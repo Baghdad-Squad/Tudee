@@ -1,5 +1,6 @@
 package com.baghdad.tudee.ui.composable
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,14 +32,15 @@ fun ProgressBar(
             .fillMaxWidth()
     ) {
         for (screen in 1..numOfScreens){
-            val color = if (currentScreen == screen) activeColor else inactiveColor
-
+            val animatedColor by animateColorAsState(
+                targetValue = if (currentScreen == screen) activeColor else inactiveColor
+            )
             Box(
                 modifier = Modifier
                     .height(5.dp)
                     .width(100.dp)
                     .clip(RoundedCornerShape(100.dp))
-                    .background(color = color)
+                    .background(color = animatedColor)
             )
         }
     }
