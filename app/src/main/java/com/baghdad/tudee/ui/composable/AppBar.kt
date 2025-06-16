@@ -2,11 +2,16 @@ package com.baghdad.tudee.ui.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -17,18 +22,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.baghdad.tudee.R
-import com.baghdad.tudee.designSystem.textStyle.nunito
-import com.baghdad.tudee.designSystem.textStyle.cherryBomOne
-import  com.baghdad.tudee.designSystem.color.lightThemeColor
+import com.baghdad.tudee.designSystem.textStyle.tudeeTextStyle
+import com.baghdad.tudee.designSystem.theme.Theme
 
 @Composable
 fun TudeeHeader(modifier: Modifier = Modifier) {
@@ -37,8 +36,7 @@ fun TudeeHeader(modifier: Modifier = Modifier) {
             .offset(8.dp, y = 25.dp)
             .fillMaxWidth()
             .background(
-                color = lightThemeColor.primaryColor.normal,
-                shape = RoundedCornerShape(16.dp)
+                color = Theme.color.primaryColor.normal,
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -53,21 +51,13 @@ fun TudeeHeader(modifier: Modifier = Modifier) {
         Column {
             Text(
                 text = "Tudee",
-                color =  lightThemeColor.primaryColor.variant,
-                style = TextStyle(
-                    fontFamily = (cherryBomOne),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 22.sp,
-                )
+                color = Theme.color.primaryColor.variant,
+                style = tudeeTextStyle.logo
             )
             Text(
                 text = "Your cute Helper for Every Task",
-                color = lightThemeColor.textColor.onPrimary.copy(alpha = 0.9f),
-                style = TextStyle(
-                    fontWeight = FontWeight.W500,
-                    fontSize = 12.sp,
-                    fontFamily = (nunito),
-                )
+                color = Theme.color.textColor.onPrimary.copy(alpha = 0.9f),
+                style = tudeeTextStyle.label.small
             )
         }
     }
@@ -79,8 +69,8 @@ fun CircularIconButton(
     icon: Painter,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
-    backgroundColor: Color =lightThemeColor.textColor.onPrimary,
-    iconTintColor: Color =lightThemeColor.status.emojiTint
+    backgroundColor: Color = Theme.color.textColor.onPrimary,
+    iconTintColor: Color = Theme.color.status.emojiTint
 ) {
     IconButton(
         onClick = onClick,
@@ -103,7 +93,7 @@ fun TasksAppBar(modifier: Modifier = Modifier) {
             .offset(y = 20.dp)
             .fillMaxWidth()
             .height(64.dp)
-            .background(Color.White)
+            .background(Theme.color.surfaceColor.surfaceHigh)
             .padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -113,13 +103,13 @@ fun TasksAppBar(modifier: Modifier = Modifier) {
             icon = painterResource(id = R.drawable.ic_back_button),
             contentDescription = "Back",
             modifier = Modifier.size(40.dp),
-            iconTintColor = lightThemeColor.status.emojiTint
+            iconTintColor = Theme.color.status.emojiTint
         )
         Text(
             modifier = Modifier,
             text = "Tasks",
             style = MaterialTheme.typography.titleLarge,
-            color = lightThemeColor.status.emojiTint
+            color = Theme.color.status.emojiTint
         )
     }
 }
