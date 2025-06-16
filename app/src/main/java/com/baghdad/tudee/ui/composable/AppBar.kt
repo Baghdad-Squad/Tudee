@@ -18,12 +18,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.baghdad.tudee.R
-import com.baghdad.tudee.designSystem.*
+import com.baghdad.tudee.designSystem.textStyle.nunito
+import com.baghdad.tudee.designSystem.textStyle.cherryBomOne
 @Composable
 fun TudeeHeader(modifier: Modifier = Modifier) {
     Row(
@@ -51,7 +53,7 @@ fun TudeeHeader(modifier: Modifier = Modifier) {
                 text = "Tudee",
                 color = Color.White,
                 style = TextStyle(
-//                    fontFamily = cherryBombFamily, // Use the variable you defined
+                    fontFamily = (cherryBomOne) ,
                     fontWeight = FontWeight.Bold,
                     fontSize = 22.sp,
                 )
@@ -60,9 +62,9 @@ fun TudeeHeader(modifier: Modifier = Modifier) {
                 text = "Your cute Helper for Every Task",
                 color = Color.White.copy(alpha = 0.9f),
                 style = TextStyle(
-//                    fontFamily = nunitoFamily,
                     fontWeight = FontWeight.W500,
                     fontSize = 12.sp,
+                    fontFamily = (nunito) ,
                 )
             )
         }
