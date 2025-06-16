@@ -148,35 +148,3 @@ modifier: Modifier = Modifier
 
     }
 }
-
-@Composable
-fun TaskList() {
-    val tasks = listOf(
-        TaskItemData(
-            painterResource(id = R.drawable.ic_alert),
-            Theme.color.status.pinkAccent,
-            "Organize Birthday Party",
-            "Plan guest list and order cake...",
-            "High"
-        ),
-
-        )
-
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Theme.color.surfaceColor.surfaceHigh)
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        items(tasks) { taskItem ->
-            TaskItem(item = taskItem)
-        }
-    }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun TaskListScreenPreview() {
-    TaskList()
-}
