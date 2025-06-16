@@ -8,8 +8,7 @@ import kotlin.uuid.Uuid
 @OptIn(ExperimentalUuidApi::class)
 fun CategoryDto.toEntity():Category = Category(
     id = Uuid.parse(this.id),
-    categoryTitle = this.categoryTitle,
-    taskCount = this.taskCount,
+    title = this.title,
     imageUri = this.imageUri
 )
 
@@ -17,6 +16,5 @@ fun CategoryDto.toEntity():Category = Category(
 fun Category.toDto():CategoryDto = CategoryDto(
     id = this.id.toString(),
     imageUri = this.imageUri,
-    categoryTitle = this.categoryTitle,
-    taskCount = this.taskCount
+    title = this.title,
 )
