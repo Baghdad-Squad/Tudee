@@ -1,5 +1,4 @@
 package com.baghdad.tudee.ui.composable
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.baghdad.tudee.R
-
+import com.baghdad.tudee.designSystem.*
 @Composable
 fun TudeeHeader(modifier: Modifier = Modifier) {
     Row(
@@ -52,6 +51,7 @@ fun TudeeHeader(modifier: Modifier = Modifier) {
                 text = "Tudee",
                 color = Color.White,
                 style = TextStyle(
+//                    fontFamily = cherryBombFamily, // Use the variable you defined
                     fontWeight = FontWeight.Bold,
                     fontSize = 22.sp,
                 )
@@ -60,6 +60,7 @@ fun TudeeHeader(modifier: Modifier = Modifier) {
                 text = "Your cute Helper for Every Task",
                 color = Color.White.copy(alpha = 0.9f),
                 style = TextStyle(
+//                    fontFamily = nunitoFamily,
                     fontWeight = FontWeight.W500,
                     fontSize = 12.sp,
                 )
