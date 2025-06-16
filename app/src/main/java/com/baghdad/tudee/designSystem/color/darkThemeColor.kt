@@ -33,6 +33,13 @@ val darkThemeColor = TudeeColor(
         surfaceLow = Color(0xFF020108),
         surface = Color(0xFF0D0C14),
         surfaceHigh = Color(0xFF0F0E19),
+        ellipsisGradientColor = Brush.linearGradient(
+            colors = listOf(
+                Color(0x8005202E),
+                Color(0x0005202E),
+
+            )
+        ),
     ),
     status = StatusColor(
         pinkAccent = Color(0xFFF4869A),
