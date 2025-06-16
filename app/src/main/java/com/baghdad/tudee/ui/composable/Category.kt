@@ -1,6 +1,5 @@
 package com.baghdad.tudee.ui.composable
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,9 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,6 +34,8 @@ import androidx.compose.ui.unit.sp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.color.lightThemeColor
 import com.baghdad.tudee.designSystem.textStyle.tudeeTextStyle
+import com.baghdad.tudee.designSystem.theme.Theme
+
 data class TaskItemData(
     val iconRes: Painter,
     val iconBackgroundColor: Color,
@@ -51,24 +49,25 @@ fun PriorityChip(text: String, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .background(
-                color = lightThemeColor.status.yellowAccent,
+                color = Theme.color.status.yellowAccent,
                 shape = CircleShape
             )
             .padding(horizontal = 8.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(2.dp)
-    ) {
+    )
+    {
         Icon(
             painter = painterResource(id = R.drawable.ic_alert),
             contentDescription = null,
             modifier = Modifier.size(16.dp),
-            tint = lightThemeColor.surfaceColor.surfaceHigh
+            tint = Theme.color.surfaceColor.surfaceHigh
         )
         Text(
             text = text,
-            color = lightThemeColor.textColor.onPrimary,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium
+            style = tudeeTextStyle.label.small,
+            color = Theme.color.textColor.onPrimary,
+            modifier = Modifier.align(Alignment.CenterVertically)
         )
     }
 }
@@ -82,27 +81,18 @@ fun TaskInfo(title: String, description: String, modifier: Modifier = Modifier) 
         Text(
             text = title,
             modifier = Modifier
-                .offset(x = 8.dp, y = 0.dp)
                 .width(296.dp)
-                .height(19.dp)
-                .fillMaxWidth(),
-            color = lightThemeColor.textColor.body,
-            style = tudeeTextStyle.body.medium.copy(
-                lineHeight = 19.sp,
-                letterSpacing = 0.sp
-            ),
-            textAlign = TextAlign.Start,
+                .height(19.dp),
+            color = Theme.color.textColor.body,
+            style = tudeeTextStyle.body.medium,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
         )
         Text(
             text = description,
             modifier = Modifier
-                .offset(x = 8.dp, y = 0.dp)
                 .fillMaxWidth(),
-            color = lightThemeColor.textColor.title,
-            fontSize = 12.sp,
-            textAlign = TextAlign.Start,
+            color = Theme.color.textColor.title,
+            style = tudeeTextStyle.label.small,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
@@ -116,12 +106,12 @@ fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
             .width(320.dp)
             .height(111.dp)
             .background(
-                color = lightThemeColor.surfaceColor.surfaceHigh,
+                color = Theme.color.surfaceColor.surfaceHigh,
                 shape = RoundedCornerShape(16.dp)
             )
             .border(
                 width = 1.dp,
-                color = lightThemeColor.surfaceColor.surfaceHigh,
+                color = Theme.color.surfaceColor.surfaceHigh,
                 shape = RoundedCornerShape(16.dp)
             )
             .padding(
@@ -132,24 +122,21 @@ fun TaskItem(item: TaskItemData, modifier: Modifier = Modifier) {
             ),
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        Row(
-            modifier = modifier
-                .size(304.dp, 56.dp)
-                .background(
-                    lightThemeColor.surfaceColor.surfaceHigh,
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            TaskImage(
-                item = item,
-                modifier = Modifier
-                    .width(248.dp)
-                    .height(56.dp)
+
+        TaskImage(
+            item = item,
+            modifier = Modifier.size(56.dp)
+        )
+
+        TaskInfo(
+            title = item.title,
+            description = item.description
+        )
+        PriorityChip(
+            text = item.priority,
+            modifier = Modifier
+                .align(Alignment.End),
             )
-        }
     }
 }
 
@@ -162,43 +149,28 @@ fun TaskImage(item: TaskItemData, modifier: Modifier = Modifier) {
     ) {
         Row(
             modifier = Modifier
+                .offset(285.dp, 25.dp)
                 .size(248.dp, 28.dp)
-                .offset(x = 250.dp)
         ) {
             PriorityChip(text = item.priority)
         }
-        Box(
-            modifier = Modifier.offset(x = 8.dp)
-        ) {
-            Image(
-                painter = painterResource(
-                    id = R.drawable.ic_pur_book
-                ),
-                contentDescription = item.title,
-                modifier = Modifier.size(56.dp)
-            )
-        }
-        Column(
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(2.dp),
+        Image(
+            painter = painterResource(
+                id = R.drawable.ic_pur_book
+            ),
+            contentDescription = item.title,
+            modifier = Modifier.size(56.dp)
+        )
 
-            modifier = Modifier
-                .offset(4.dp, 62.dp)
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(start = 8.dp)
-        ) {
-            TaskInfo(title = item.title, description = item.description)
-        }
     }
 }
 
 @Composable
-fun TaskListScreen() {
+fun TaskList() {
     val tasks = listOf(
         TaskItemData(
-            painterResource(id = R.drawable.ic_pur_book),
-            lightThemeColor.status.pinkAccent,
+            painterResource(id = R.drawable.ic_bag),
+            Theme.color.status.pinkAccent,
             "Organize Birthday Party",
             "Plan guest list and order cake...",
             "High"
@@ -209,7 +181,7 @@ fun TaskListScreen() {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(lightThemeColor.surfaceColor.surfaceHigh)
+            .background(Theme.color.surfaceColor.surfaceHigh)
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -222,5 +194,5 @@ fun TaskListScreen() {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun TaskListScreenPreview() {
-    TaskListScreen()
+    TaskList()
 }
