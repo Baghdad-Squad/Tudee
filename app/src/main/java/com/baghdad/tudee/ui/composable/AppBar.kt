@@ -1,4 +1,5 @@
 package com.baghdad.tudee.ui.composable
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -26,6 +28,8 @@ import androidx.compose.ui.unit.sp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.textStyle.nunito
 import com.baghdad.tudee.designSystem.textStyle.cherryBomOne
+import  com.baghdad.tudee.designSystem.color.lightThemeColor
+
 @Composable
 fun TudeeHeader(modifier: Modifier = Modifier) {
     Row(
@@ -33,11 +37,9 @@ fun TudeeHeader(modifier: Modifier = Modifier) {
             .offset(8.dp, y = 25.dp)
             .fillMaxWidth()
             .background(
-                color = Color(0xFF4AC0F2),
+                color = lightThemeColor.primaryColor.normal,
                 shape = RoundedCornerShape(16.dp)
-            )
-            .wrapContentHeight()
-            .padding(0.dp),
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -45,15 +47,15 @@ fun TudeeHeader(modifier: Modifier = Modifier) {
             painter = painterResource(id = R.drawable.icon),
             contentDescription = "Tudee avatar",
             modifier = Modifier
-                .size(56.dp)
+                .size(48.dp)
                 .clip(RoundedCornerShape(16.dp))
         )
         Column {
             Text(
                 text = "Tudee",
-                color = Color.White,
+                color =  lightThemeColor.primaryColor.variant,
                 style = TextStyle(
-                    fontFamily = (cherryBomOne) ,
+                    fontFamily = (cherryBomOne),
                     fontWeight = FontWeight.Bold,
                     fontSize = 22.sp,
                 )
@@ -64,7 +66,7 @@ fun TudeeHeader(modifier: Modifier = Modifier) {
                 style = TextStyle(
                     fontWeight = FontWeight.W500,
                     fontSize = 12.sp,
-                    fontFamily = (nunito) ,
+                    fontFamily = (nunito),
                 )
             )
         }
@@ -74,7 +76,7 @@ fun TudeeHeader(modifier: Modifier = Modifier) {
 @Composable
 fun CircularIconButton(
     onClick: () -> Unit,
-    icon: ImageVector,
+    icon: Painter,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
     backgroundColor: Color = Color.White,
@@ -101,14 +103,14 @@ fun TasksAppBar(modifier: Modifier = Modifier) {
             .offset(y = 20.dp)
             .fillMaxWidth()
             .height(64.dp)
-            .background(Color.White, shape = RoundedCornerShape(16.dp))
+            .background(Color.White)
             .padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         CircularIconButton(
             onClick = { /* Handle back button click */ },
-            icon = Icons.AutoMirrored.Filled.ArrowBack,
+            icon = painterResource(id = R.drawable.ic_back_button),
             contentDescription = "Back",
             modifier = Modifier.size(40.dp),
             iconTintColor = Color.Black
