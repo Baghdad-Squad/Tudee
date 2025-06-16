@@ -2,7 +2,9 @@ package com.baghdad.tudee.ui.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,109 +30,94 @@ import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.textStyle.tudeeTextStyle
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.ui.utils.insideBorder
+import com.baghdad.tudee.ui.utils.noRippleClickable
 
 @Composable
-fun TudeeHeader(modifier: Modifier = Modifier) {
+fun TopTudeeBar(
+    title: String,
+    description: String,
+    modifier: Modifier = Modifier,
+    onChangeTheme: () -> Unit,
+) {
     Row(
         modifier = modifier
-            .offset(8.dp, y = 25.dp)
             .fillMaxWidth()
-            .background(
-                color = Theme.color.primaryColor.normal,
-            ),
+            .height(72.dp)
+            .background(Theme.color.primaryColor.normal)
+            .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.icon),
-            contentDescription = "Tudee avatar",
+        LogoAndTitle(title = title, description = description)
+        // replace with theme switch icon
+        Box(
+            modifier = Modifier
+                .size(36.dp)
+                .border(
+                    width = 1.dp,
+                    color = Theme.color.textColor.onPrimaryStroke,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(6.dp)
+                .insideBorder(1.dp, Theme.color.textColor.onPrimaryStroke, cornerRadius = 8.dp)
+                .background(Theme.color.primaryColor.variant, shape = RoundedCornerShape(8.dp))
+                .noRippleClickable(onClick = onChangeTheme)
+        ){
+
+        }
+
+
+
+    }
+
+}
+
+
+@Composable
+private fun LogoAndTitle(
+    title: String,
+    description: String,
+) {
+    Row(
+
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
             modifier = Modifier
                 .size(48.dp)
-                .clip(RoundedCornerShape(16.dp))
-        )
+                .background(Color(0x66FFFFFF), shape = RoundedCornerShape(12.dp))
+                .insideBorder(1.dp, Color(0x66FFFFFF), cornerRadius = 12.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(R.drawable.ic_logo_robort),
+                contentDescription = "Tudee Logo",
+                modifier = Modifier
+            )
+        }
         Column {
             Text(
-                text = "Tudee",
-                color = Theme.color.primaryColor.variant,
-                style = tudeeTextStyle.logo
+                title,
+                color = Theme.color.textColor.onPrimary,
+                style = Theme.typography.logo,
             )
             Text(
-                text = "Your cute Helper for Every Task",
-                color = Theme.color.textColor.onPrimary.copy(alpha = 0.9f),
-                style = tudeeTextStyle.label.small
+                description,
+                color = Theme.color.textColor.onPrimaryCaption,
+                style = Theme.typography.label.small,
             )
         }
     }
 }
 
 @Composable
-fun CircularIconButton(
-    onClick: () -> Unit,
-    icon: Painter,
-    modifier: Modifier = Modifier,
-    contentDescription: String? = null,
-    backgroundColor: Color = Theme.color.textColor.onPrimary,
-    iconTintColor: Color = Theme.color.status.emojiTint
-) {
-    IconButton(
-        onClick = onClick,
-        modifier = modifier
-            .background(color = backgroundColor, shape = CircleShape)
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_back_button),
-            contentDescription = contentDescription,
-            tint = iconTintColor
-        )
-    }
-}
-
-
-@Composable
-fun TasksAppBar(modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .offset(y = 20.dp)
-            .fillMaxWidth()
-            .height(64.dp)
-            .background(Theme.color.surfaceColor.surfaceHigh)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        CircularIconButton(
-            onClick = { /* Handle back button click */ },
-            icon = painterResource(id = R.drawable.ic_back_button),
-            contentDescription = "Back",
-            modifier = Modifier.size(40.dp),
-            iconTintColor = Theme.color.status.emojiTint
-        )
-        Text(
-            modifier = Modifier,
-            text = "Tasks",
-            style = MaterialTheme.typography.titleLarge,
-            color = Theme.color.status.emojiTint
-        )
-    }
-}
-
-@Composable
-fun CombinedScreen() {
-    Column(
-        modifier = Modifier
-            .size(400.dp, 400.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        TudeeHeader(modifier = Modifier.padding(16.dp))
-        TasksAppBar(modifier = Modifier.padding(horizontal = 16.dp))
-    }
-}
-
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun CombinedScreenPreview() {
-    MaterialTheme {
-        CombinedScreen()
-    }
+@Preview
+fun TopTudeeBarPreview() {
+    TopTudeeBar(
+        title = "Tudee",
+        description = "Your personal assistant",
+        onChangeTheme = {}
+    )
 }
