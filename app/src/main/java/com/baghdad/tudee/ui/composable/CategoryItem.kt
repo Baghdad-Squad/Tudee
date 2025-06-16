@@ -1,5 +1,11 @@
 package com.baghdad.tudee.ui.composable
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -62,35 +68,41 @@ fun CategoryItem(
                         .align(Alignment.Center)
                 )
             }
-            when {
-                isSelected -> {
-                    Image(
-                        painter = painterResource(R.drawable.selected_icon),
-                        contentDescription = "$label badge icon",
-                        modifier = Modifier
-                            .size(20.dp)
-                            .align(Alignment.TopEnd)
-                            .offset(x = (-2).dp, y = 2.dp)
-                    )
-                }
 
-                !isSelected && count != null -> {
-                    val notificationCount = if (count in 0..99) count.toString() else "+99"
-                    Box(
-                        modifier = Modifier
-                            .size(width = 36.dp, height = 20.dp)
-                            .clip(RoundedCornerShape(100.dp))
-                            .background(color = Theme.color.surfaceColor.surfaceLow)
-                            .align(Alignment.TopEnd)
-                    ) {
-                        BasicText(
-                            text = notificationCount,
-                            modifier = Modifier.align(Alignment.Center),
-                            style = Theme.typography.label.small.copy(
-                                color = Theme.color.textColor.hint
-                            )
+            this@Column.AnimatedVisibility(
+                visible = isSelected,
+                enter = fadeIn(tween(300)) + expandHorizontally(tween(300)),
+                exit = fadeOut(tween(300)) + shrinkHorizontally(tween(300))
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.selected_icon),
+                    contentDescription = "$label badge icon",
+                    modifier = Modifier
+                        .size(20.dp)
+                        .align(Alignment.TopEnd)
+                        .offset(x = (-2).dp, y = 2.dp)
+                )
+            }
+
+            this@Column.AnimatedVisibility(
+                visible = !isSelected && count != null,
+                enter = fadeIn(tween(300)) + expandHorizontally(tween(300)),
+                exit = fadeOut(tween(300)) + shrinkHorizontally(tween(300))
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(width = 36.dp, height = 20.dp)
+                        .clip(RoundedCornerShape(100.dp))
+                        .background(color = Theme.color.surfaceColor.surfaceLow)
+                        .align(Alignment.TopEnd)
+                ) {
+                    BasicText(
+                        text = if (count in 0..99) count.toString() else "+99",
+                        modifier = Modifier.align(Alignment.Center),
+                        style = Theme.typography.label.small.copy(
+                            color = Theme.color.textColor.hint
                         )
-                    }
+                    )
                 }
             }
         }
