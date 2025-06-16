@@ -26,7 +26,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 
 @Composable
@@ -83,6 +86,10 @@ fun TudeeTextField(
                 Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterVertically)
+                    .then(
+                       if (leadingIcon == null) Modifier.padding(top = 5.dp)
+                       else Modifier.align(Alignment.CenterVertically)
+                    )
             ) {
                 if (value.isEmpty() && !isFocused) {
                     Text(
@@ -114,5 +121,18 @@ fun VerticalSeparator(){
             .background(Theme.color.textColor.stroke)
             .fillMaxHeight()
             .width(1.dp)
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TudeeTextFieldPreview(modifier: Modifier = Modifier){
+    var name by remember { mutableStateOf("") }
+    TudeeTextField(
+        value = name,
+        onValueChange = { name = it },
+        hint = "aziz",
+        modifier = modifier,
+        leadingIcon = painterResource(id = R.drawable.ic_use),
     )
 }

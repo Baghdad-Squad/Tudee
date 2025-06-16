@@ -1,26 +1,23 @@
 package com.baghdad.tudee.ui.composable
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicText
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
 
@@ -28,8 +25,8 @@ import com.baghdad.tudee.designSystem.theme.TudeeTheme
 fun Slider(
     title: String,
     description: String,
-    @DrawableRes icon: Int,
-    @DrawableRes image: Int,
+     icon: Painter,
+     image: Painter,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -54,11 +51,14 @@ fun Slider(
 fun SliderContent(
     title: String,
     description: String,
-    @DrawableRes icon: Int,
-    @DrawableRes image: Int,
+    icon: Painter,
+    image: Painter,
+
     modifier: Modifier = Modifier
 ) {
+
     Column(
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Row(
@@ -71,11 +71,10 @@ fun SliderContent(
                     color = Theme.color.textColor.title
                 )
             )
-            Image(
-                painter = painterResource(id = icon),
-                contentDescription = null,
-                modifier = Modifier.size(20.dp)
+            StatusSlider(
+                icon = icon,
             )
+
         }
         BasicText(
             text = description,
@@ -95,11 +94,11 @@ fun SliderContent(
 @Composable
 fun SliderIllustration(
     title: String,
-    @DrawableRes image: Int,
+    image: Painter,
     modifier: Modifier = Modifier
 ) {
     Image(
-        painter = painterResource(id = image),
+        painter = image,
         contentDescription = title,
         modifier = modifier
             .height(92.dp)
@@ -113,8 +112,8 @@ private fun SliderPreview() {
         Slider(
             title = "Start working!",
             description = "You've completed 3 out of 10 tasks \n Keep going!",
-            icon = com.baghdad.tudee.R.drawable.ic_okay_feedback,
-            image = com.baghdad.tudee.R.drawable.happy_robot,
+            icon = painterResource(R.drawable.ic_good_feedback),
+            image = painterResource(R.drawable.happy_robot),
             modifier = Modifier.background(Color.White)
         )
     }
