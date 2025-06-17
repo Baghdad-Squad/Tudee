@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,8 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.ui.composable.dateYearDialog.DateDialog
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import java.time.Instant
 import java.time.ZoneId
 
@@ -37,15 +37,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             setContent {
                 TudeeTheme {
-                    var showDatePicker by remember { mutableStateOf(false) }
-                    var selectedDateMillis by remember { mutableStateOf<Long?>(null) }
-                        DateDialog(
-                            isShowDatePicker = showDatePicker,
-                            onDismiss = { showDatePicker = false },
-                            onDateSelected = { millis -> selectedDateMillis = millis },
-                        )
-                    }
+
                 }
+            }
             }
 
         }
@@ -66,4 +60,3 @@ class MainActivity : ComponentActivity() {
             Greeting("Android")
         }
     }
-}
