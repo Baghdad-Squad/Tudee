@@ -12,7 +12,6 @@ import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,12 +19,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,11 +38,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.ui.composable.button.PrimaryButton
 import kotlinx.coroutines.launch
 
 @Composable
 fun CustomModalBottomSheet(
-    show: Boolean,
+    isVisible: Boolean,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     sheetBackgroundColor: Color =Theme.color.surfaceColor.surface,
@@ -61,9 +58,9 @@ fun CustomModalBottomSheet(
     val visibleState = remember { MutableTransitionState(false) }
     val offsetY = remember { Animatable(0f) }
 
-    LaunchedEffect(show) {
-        visibleState.targetState = show
-        if (show) {
+    LaunchedEffect(isVisible) {
+        visibleState.targetState = isVisible
+        if (isVisible) {
             offsetY.snapTo(0f)
         }
     }
@@ -154,56 +151,8 @@ fun CustomModalBottomSheet(
 }
 
 
-
-
-
-
-@Composable
-fun ExampleScreen() {
-    var showSheet by remember { mutableStateOf(false) }
-
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Button(onClick = { showSheet = true }) {
-            Text("Open Sheet")
-        }
-
-        CustomModalBottomSheet(
-            show = showSheet,
-            onDismissRequest = { showSheet = false }
-        ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-                    .background(Color.White)
-                ,
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp)
-            ) {
-                item{
-                    Text(
-                        text = "Add Task",
-                        style = Theme.typography.title.large
-                    )
-                }
-                item{
-                    var text by remember { mutableStateOf("") }
-
-                    TudeeTextField(
-                        value = text,
-                        onValueChange = { text = it },
-                        hint = "Task title",
-                        //  leadingIcon = painterResource(id = R.drawable.ic_black_note),
-                        height = 150,
-                        maxLines = 10
-                    )
-                }
-            }
-
-        }
-    }
-}
-
-
 @Preview(showBackground = true)
 @Composable
 fun CustomModalBottomSheetPreview() {
-    ExampleScreen()
+
 }
