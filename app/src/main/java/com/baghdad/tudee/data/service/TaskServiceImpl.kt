@@ -5,9 +5,12 @@ import com.baghdad.tudee.domain.service.TaskService
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 import java.util.UUID
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 class TaskServiceImpl(): TaskService {
-    override suspend fun getTasksByCategory(categoryId: UUID): Flow<List<Task>> {
+    @OptIn(ExperimentalUuidApi::class)
+    override suspend fun getTasksByCategory(categoryId: Uuid): Flow<List<Task>> {
         TODO("Not yet implemented")
     }
 
