@@ -4,7 +4,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 
-
 val lightThemeColor = TudeeColor(
     primaryColor = Primary(
         normal = Color(0xFF49BAF2),
@@ -34,6 +33,13 @@ val lightThemeColor = TudeeColor(
         surfaceLow = Color(0xFFF0F0F0),
         surface = Color(0xFFF9F9F9),
         surfaceHigh = Color(0xFFFFFFFF),
+        ellipsisGradientColor = Brush.linearGradient(
+            colors = listOf(
+                Color(0x80EFF9FE),
+                Color(0x00EFF9FE),
+
+                )
+        ),
     ),
     status = StatusColor(
         pinkAccent = Color(0XFFF4869A),
