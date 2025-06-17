@@ -6,7 +6,7 @@ import kotlin.uuid.Uuid
 
 data class Task @OptIn(ExperimentalUuidApi::class) constructor(
     val id: Uuid,
-    val taskTitle: String,
+    val title: String,
     val description: String,
     val date: LocalDate,
     val priority: Priority,

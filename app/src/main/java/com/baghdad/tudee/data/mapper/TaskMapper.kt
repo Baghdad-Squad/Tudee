@@ -9,7 +9,7 @@ import kotlin.uuid.Uuid
 @OptIn(ExperimentalUuidApi::class)
 fun TaskDto.toEntity(): Task = Task(
     id = Uuid.parse(this.id),
-    taskTitle = this.taskTitle,
+    title = this.title,
     description = this.description,
     state = Task.State.valueOf(this.state),
     date = LocalDate.parse(this.date),
@@ -20,7 +20,7 @@ fun TaskDto.toEntity(): Task = Task(
 @OptIn(ExperimentalUuidApi::class)
 fun Task.toDto():TaskDto = TaskDto(
     id = this.id.toString(),
-    taskTitle = this.taskTitle,
+    title = this.title,
     description = this.description,
     date = this.date.toString(),
     priority = this.priority.toString(),
