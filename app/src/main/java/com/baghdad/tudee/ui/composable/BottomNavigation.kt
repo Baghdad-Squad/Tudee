@@ -1,8 +1,6 @@
 package com.baghdad.tudee.ui.composable
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -11,24 +9,27 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.baghdad.tudee.R
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.ui.navigation.AppScreen
+import com.baghdad.tudee.ui.utils.noRippleClickable
 
 
 @Composable
 fun BottomNavigation(
+    navController: NavController,
+    screens: List<AppScreen>,
     modifier: Modifier = Modifier,
-    selectedIcon: Int = 0,
-    unSelectedIcon: (Int) -> Unit,
 ) {
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+    if(currentRoute?.startsWith(AppScreen.OnBoardingScreen.route) == false)
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -36,12 +37,19 @@ fun BottomNavigation(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        drawableNavItems.forEachIndexed { index, item ->
-            NavItem(
-                icon = if (index == selectedIcon) painterResource(item.selectedIcon) else painterResource(item.unSelectedIcon),
-                isSelected = index == selectedIcon,
-                onClick = { unSelectedIcon(index) }
-            )
+        screens.forEach{item ->
+            (if (currentRoute == item.route) item.selectedIcon
+            else item.unSelectedIcon)?.let {
+                painterResource(it)
+            }?.let {
+                NavItem(
+                    isSelected = currentRoute == item.route,
+                    onClick = {
+                        navController.navigate(item.route)
+                    },
+                    icon = it
+                )
+            }
         }
     }
 }
@@ -60,7 +68,7 @@ fun NavItem(
                 else Color.Transparent,
                 shape = CircleShape
             )
-            .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null){
+            .noRippleClickable{
                 onClick()
             },
         contentAlignment = Alignment.Center
@@ -73,30 +81,4 @@ fun NavItem(
             modifier = Modifier.size(24.dp)
         )
     }
-}
-
-private val drawableNavItems = listOf(
-    DrawableNavItem(
-        selectedIcon = R.drawable.ic_blue_home,
-        unSelectedIcon = R.drawable.ic_black_home
-    ),
-    DrawableNavItem(
-        selectedIcon = R.drawable.ic_blue_note,
-        unSelectedIcon = R.drawable.ic_black_note
-    ),
-    DrawableNavItem(
-        selectedIcon = R.drawable.ic_blue_menu,
-        unSelectedIcon = R.drawable.ic_menu_circle
-    )
-)
-
-private data class DrawableNavItem(
-    val selectedIcon: Int,
-    val unSelectedIcon: Int,
-)
-
-@Composable
-@Preview
-private fun BottomNavigationPreview() {
-    BottomNavigation {}
 }
