@@ -15,25 +15,22 @@ import kotlin.uuid.Uuid
 @Dao
 @OptIn(ExperimentalUuidApi::class)
 interface TaskDao {
-    @Insert
-    suspend fun insertTask(task: TaskDto)
-
 
     @Query("SELECT * FROM tasks WHERE categoryId = :categoryId")
-    suspend fun getTasksByCategory(categoryId: Uuid): Flow<List<Task>>
+    suspend fun getTasksByCategory(categoryId: String): Flow<List<Task>>
 
 
     @Query("SELECT * FROM tasks WHERE date = :date")
-    suspend fun getTasksByDate(date: LocalDate): Flow<List<Task>>
+    suspend fun getTasksByDate(date: String ): Flow<List<Task>>
 
 
     @Insert
-    suspend fun createTask(task: Task)
+    suspend fun createTask(task: TaskDto)
 
     @Update
-    suspend fun editTask(task: Task)
+    suspend fun editTask(task: TaskDto)
 
 
     @Delete
-    suspend fun deleteTask(taskId: Uuid)
+    suspend fun deleteTask(taskId: String)
 }
