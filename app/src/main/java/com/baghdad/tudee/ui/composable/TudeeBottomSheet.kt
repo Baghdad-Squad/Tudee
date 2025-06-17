@@ -24,11 +24,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,16 +35,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.designSystem.theme.Theme
-import com.baghdad.tudee.ui.composable.button.PrimaryButton
 import kotlinx.coroutines.launch
 
 @Composable
-fun CustomModalBottomSheet(
+fun TudeeBottomSheet(
     isVisible: Boolean,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     sheetBackgroundColor: Color =Theme.color.surfaceColor.surface,
-    scrimColor: Color =  Color(0x99000000),
     sheetHeightFraction: Float = 0.5f,
     content: @Composable ColumnScope.() -> Unit
 ) {
@@ -80,7 +75,7 @@ fun CustomModalBottomSheet(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(scrimColor)
+                    .background(Color(0x99000000))
             )
 
             AnimatedVisibility(
@@ -153,6 +148,5 @@ fun CustomModalBottomSheet(
 
 @Preview(showBackground = true)
 @Composable
-fun CustomModalBottomSheetPreview() {
-
+fun TudeeBottomSheet() {
 }
