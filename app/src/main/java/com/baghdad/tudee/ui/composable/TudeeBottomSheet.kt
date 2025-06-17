@@ -15,8 +15,8 @@ import com.baghdad.tudee.designSystem.theme.Theme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TudeeBottomSheet(
-    onDismissRequest: () -> Unit,
-    isVisible: Boolean, // state came from ViewModel
+    isVisible: Boolean,
+    onDismiss: () -> Unit,
     content: @Composable ColumnScope.() -> Unit
 ) {
 
@@ -31,7 +31,7 @@ fun TudeeBottomSheet(
 
     if (sheetState.isVisible) {
         ModalBottomSheet(
-            onDismissRequest = onDismissRequest,
+            onDismissRequest = onDismiss,
             sheetState = sheetState,
             shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
             containerColor = Theme.color.surfaceColor.surface,
@@ -42,8 +42,3 @@ fun TudeeBottomSheet(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun TudeeBottomSheetPreview() {
-    // TudeeBottomSheet()
-}
