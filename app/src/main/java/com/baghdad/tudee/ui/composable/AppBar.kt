@@ -92,7 +92,7 @@ private fun LogoAndTitle(
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(R.drawable.ic_logo_robort),
+                painter = painterResource(R.drawable.selected_icon),
                 contentDescription = "Tudee Logo",
                 modifier = Modifier
             )
