@@ -27,3 +27,7 @@ fun Task.toDto():TaskDto = TaskDto(
     categoryId = this.categoryId.toString(),
     state = this.state.toString()
 )
+
+fun List<TaskDto>.toEntities(): List<Task> = this.map { it.toEntity() }
+
+fun List<Task>.toDtos(): List<TaskDto> = this.map { it.toDto() }

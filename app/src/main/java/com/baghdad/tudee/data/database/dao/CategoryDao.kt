@@ -9,14 +9,14 @@ import androidx.room.Update
 import com.baghdad.tudee.data.model.CategoryDto
 import kotlinx.coroutines.flow.Flow
 import kotlin.uuid.ExperimentalUuidApi
-
+import com.baghdad.tudee.data.model.CategoryDto.Companion.CATEGORIES_TABLE_NAME
 
 @Dao
 interface CategoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun createCategory(category: CategoryDto)
 
-    @Query("SELECT * FROM categories")
+    @Query("SELECT * FROM $CATEGORIES_TABLE_NAME")
     fun getCategories(): Flow<List<CategoryDto>>
 
     @Update

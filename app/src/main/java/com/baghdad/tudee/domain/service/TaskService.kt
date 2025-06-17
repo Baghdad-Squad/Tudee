@@ -9,12 +9,9 @@ import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
 interface TaskService {
-
    suspend fun getTasksByCategory(categoryId: Uuid): Flow<List<Task>>
    suspend fun getTasksByDate(date: LocalDate): Flow<List<Task>>
    suspend fun createTask(task: Task)
    suspend fun editTask(task: Task)
-
-   @OptIn(ExperimentalUuidApi::class)
    suspend fun deleteTask(taskId: Uuid)
 }

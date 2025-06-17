@@ -3,7 +3,6 @@ package com.baghdad.tudee.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.baghdad.tudee.data.database.TudeeDatabase
 import com.baghdad.tudee.data.model.TaskDto.Companion.TASKS_TABLE_NAME
 
 @Entity(tableName = TASKS_TABLE_NAME)
@@ -23,7 +22,7 @@ data class TaskDto(
     val categoryId: String,
     @ColumnInfo(name = COLUMN_STATE)
     val state: String
-){
+) {
     companion object {
         const val TASKS_TABLE_NAME = "tasks"
         const val COLUMN_ID = "id"

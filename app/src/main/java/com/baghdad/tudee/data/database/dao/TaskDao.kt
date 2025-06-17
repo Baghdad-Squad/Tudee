@@ -6,23 +6,22 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.baghdad.tudee.data.model.TaskDto
-import com.baghdad.tudee.domain.entity.Task
+import com.baghdad.tudee.data.model.TaskDto.Companion.COLUMN_CATEGORY_ID
+import com.baghdad.tudee.data.model.TaskDto.Companion.COLUMN_DATE
+import com.baghdad.tudee.data.model.TaskDto.Companion.TASKS_TABLE_NAME
 import kotlinx.coroutines.flow.Flow
-import kotlinx.datetime.LocalDate
 import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 @Dao
 @OptIn(ExperimentalUuidApi::class)
 interface TaskDao {
 
-    @Query("SELECT * FROM tasks WHERE categoryId = :categoryId")
-    suspend fun getTasksByCategory(categoryId: String): Flow<List<Task>>
+    @Query("SELECT * FROM $TASKS_TABLE_NAME WHERE $COLUMN_CATEGORY_ID = :categoryId")
+    suspend fun getTasksByCategory(categoryId: String): Flow<List<TaskDto>>
 
 
-    @Query("SELECT * FROM tasks WHERE date = :date")
-    suspend fun getTasksByDate(date: String ): Flow<List<Task>>
-
+    @Query("SELECT * FROM $TASKS_TABLE_NAME WHERE $COLUMN_DATE = :date")
+    suspend fun getTasksByDate(date: String): Flow<List<TaskDto>>
 
     @Insert
     suspend fun createTask(task: TaskDto)
