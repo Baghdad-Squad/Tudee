@@ -17,25 +17,26 @@ import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
+import com.baghdad.tudee.domain.entity.Task
 
 
 @Composable
 fun TaskPriority(
-    priorityTask: PriorityTask,
+    priorityTask: Task.Priority,
     modifier: Modifier = Modifier,
 ) {
     val priorityProperties = when(priorityTask) {
-        PriorityTask.HIGH -> PriorityProperties(
+        Task.Priority.HIGH -> PriorityProperties(
             Theme.color.status.pinkAccent,
             R.drawable.ic_flag,
             "High"
         )
-        PriorityTask.MEDIUM -> PriorityProperties(
+        Task.Priority.MEDIUM -> PriorityProperties(
             Theme.color.status.yellowAccent,
             R.drawable.ic_alert,
             "Medium"
         )
-        PriorityTask.LOW -> PriorityProperties(
+        Task.Priority.LOW -> PriorityProperties(
             Theme.color.status.greenAccent,
             R.drawable.ic_trade_down,
             "Low"
@@ -71,17 +72,11 @@ private data class PriorityProperties(
     val text: String
 )
 
-enum class PriorityTask {
-    HIGH,
-    MEDIUM,
-    LOW
-}
-
 @Composable
 @Preview
 private fun PriorityPreview() {
     TudeeTheme {
-        TaskPriority(priorityTask = PriorityTask.LOW)
+        TaskPriority(priorityTask = Task.Priority.LOW)
     }
 }
 
