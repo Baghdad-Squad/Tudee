@@ -51,7 +51,9 @@ fun deleteTaskBottomSheet(
             Text(
                 text = "Delete task",
                 style = Theme.typography.title.large,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp),
                 textAlign = TextAlign.Start
             )
 
@@ -61,7 +63,9 @@ fun deleteTaskBottomSheet(
                 text = "Are you sure to continue?",
                 style = Theme.typography.body.medium,
                 color = Theme.color.textColor.body,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp),
                 textAlign = TextAlign.Start
             )
 
