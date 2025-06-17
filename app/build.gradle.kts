@@ -57,6 +57,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+
     //material 3
     implementation (libs.material3)
     implementation (libs.ui)
@@ -67,3 +68,11 @@ dependencies {
     implementation(libs.kotlinx.datetime)
 
 }
+
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
+
+    // Koin core and Android
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+}
+
