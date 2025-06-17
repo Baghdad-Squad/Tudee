@@ -1,12 +1,15 @@
 package com.baghdad.tudee.data.service
 
+import com.baghdad.tudee.data.database.dao.TaskDao
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.domain.service.TaskService
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 import java.util.UUID
 
-class TaskServiceImpl(): TaskService {
+class TaskServiceImpl(
+    private val taskDao: TaskDao
+): TaskService {
     override suspend fun getTasksByCategory(categoryId: UUID): Flow<List<Task>> {
         TODO("Not yet implemented")
     }
