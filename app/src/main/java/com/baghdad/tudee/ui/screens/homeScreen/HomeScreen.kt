@@ -407,19 +407,19 @@ fun OverviewCard(
             )
         }
 
-//        Icon(
-//            painter = painterResource(R.drawable.overview_card_background),
-//            contentDescription = "Overview Card Background",
-//            modifier = Modifier
-//                .zIndex(-1f)
-//                .align(Alignment.TopEnd)
-//                .background(
-//                    Color.Transparent, shape = RoundedCornerShape(
-//                        topEnd = 24.dp, topStart = 24.dp
-//                    )
-//                ),
-//            tint = Color.Unspecified
-//        )
+        Icon(
+            painter = painterResource(R.drawable.overview_card_background),
+            contentDescription = "Overview Card Background",
+            modifier = Modifier
+                .zIndex(-1f)
+                .align(Alignment.TopEnd)
+                .background(
+                    Color.Transparent, shape = RoundedCornerShape(
+                        topEnd = 24.dp, topStart = 24.dp
+                    )
+                ),
+            tint = Color.Unspecified
+        )
 
     }
 }
@@ -474,11 +474,11 @@ private fun ChipTextWithArrowIcon(
             style = Theme.typography.label.medium,
             color = Theme.color.textColor.body
         )
-//        Icon(
-//            painter = painterResource(R.drawable.ic_arrow),
-//            contentDescription = "Arrow Icon",
-//            tint = Theme.color.textColor.body
-//        )
+        Icon(
+            painter = painterResource(R.drawable.ic_arrow),
+            contentDescription = "Arrow Icon",
+            tint = Theme.color.textColor.body
+        )
 
     }
 
