@@ -31,6 +31,6 @@ class CategoryServiceImpl(
 
     @OptIn(ExperimentalUuidApi::class)
     override suspend fun deleteCategory(categoryId: Uuid) = executeWithErrorHandling {
-        categoryDao.deleteCategory(id = categoryId)
+        categoryDao.deleteCategory(id = categoryId.toString())
     }
 }
