@@ -18,15 +18,15 @@ fun FadedMoonCircles(isDay: Boolean) {
         enter = fadeIn(initialAlpha = 1f),
         exit = fadeOut(targetAlpha = 1f)
     ) {
-        Box(modifier = Modifier.Companion.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize()) {
             Circle(
-                Modifier.Companion
+                Modifier
                     .size(14.dp)
                     .offset(38.dp, 14.dp)
 
             )
             Circle(
-                Modifier.Companion
+                Modifier
                     .size(4.dp)
                     .offset(53.dp, 22.dp)
             )

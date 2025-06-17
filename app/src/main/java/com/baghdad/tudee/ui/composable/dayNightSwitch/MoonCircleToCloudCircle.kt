@@ -54,9 +54,9 @@ fun MoonCircleToCloudCircle(isDay: Boolean) {
             ) else Offset(24f, 28f)
         }
 
-    Box(Modifier.Companion.fillMaxSize()) {
+    Box(Modifier.fillMaxSize()) {
         Circle(
-            Modifier.Companion
+            Modifier
                 .size(firstCircleSize.value)
                 .offset(firstCircleOffset.value.x.dp, firstCircleOffset.value.y.dp)
                 .zIndex(1f),
@@ -66,7 +66,7 @@ fun MoonCircleToCloudCircle(isDay: Boolean) {
         )
 
         Circle(
-            Modifier.Companion
+            Modifier
                 .size(secondCircleSize.value - 2.dp, secondCircleSize.value)
                 .offset(
                     secondCircleOffset.value.x.dp,

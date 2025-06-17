@@ -27,28 +27,28 @@ fun CloudCircles(isDay: Boolean) {
         exit = slideOut(
             animationSpec = spring(
                 stiffness = Spring.StiffnessMedium,
-                visibilityThreshold = IntOffset.Companion.VisibilityThreshold
+                visibilityThreshold = IntOffset.VisibilityThreshold
             )
         ) { IntOffset(10, 30) }
     ) {
-        Box(modifier = Modifier.Companion.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize()) {
             Circle(
-                Modifier.Companion
+                Modifier
                     .size(31.33.dp, 32.dp)
                     .offset(x = 9.5.dp, y = -1.dp)
-                    .align(Alignment.Companion.TopEnd),
+                    .align(Alignment.TopEnd),
                 Color(0xFFF0F0F0), Color(0xFFF0F0F0)
             )
             Circle(
-                Modifier.Companion
+                Modifier
                     .size(16.dp)
                     .offset(-4.dp, 1.dp)
-                    .align(Alignment.Companion.BottomEnd)
+                    .align(Alignment.BottomEnd)
                     .zIndex(1f),
                 Color(0xFFFFFFFF), Color(0xFFFFFFFF)
             )
             Circle(
-                Modifier.Companion
+                Modifier
                     .size(24.dp)
                     .offset(29.dp, 20.dp),
                 Color(0xFFF0F0F0), Color(0xFFF0F0F0)

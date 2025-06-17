@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 
 @Composable
 fun Circle(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     firstColor: Color = Color(0xFFCDDBFF),
     secondColor: Color = Color(0xFFBFD2FF)
 ) {
@@ -19,7 +19,7 @@ fun Circle(
         modifier = modifier
             .clip(CircleShape)
             .background(
-                brush = Brush.Companion.radialGradient(
+                brush = Brush.radialGradient(
                     listOf(
                         firstColor,
                         secondColor

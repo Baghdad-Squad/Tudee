@@ -40,12 +40,12 @@ fun NightStars(isDay: Boolean) {
         enter = fadeIn(initialAlpha = 1f),
         exit = fadeOut(targetAlpha = 0f)
     ) {
-        Box(Modifier.Companion.fillMaxWidth()) {
+        Box(Modifier.fillMaxWidth()) {
             stars.forEach { star ->
                 Image(
                     painter = painterResource(id = R.drawable.vector),
                     contentDescription = null,
-                    modifier = Modifier.Companion
+                    modifier = Modifier
                         .size(star.size)
                         .offset(star.offset.x.dp, star.offset.y.dp)
                 )
