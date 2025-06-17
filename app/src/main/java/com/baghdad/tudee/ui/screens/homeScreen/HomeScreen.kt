@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -47,7 +50,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 @Composable
 fun HomeScreenContent(modifier: Modifier = Modifier) {
 
-    Column(modifier.fillMaxSize()) {
+    Column(modifier.fillMaxSize().background(Theme.color.primaryColor.normal).padding( WindowInsets.statusBars.asPaddingValues())) {
         TopTudeeBar(
             title = "Tudee",
             description = "Your personal task manager",
@@ -102,12 +105,24 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
-                        Image(
-                            painter = painterResource(
-                                R.drawable.happy_robot
-                            ),
-                            contentDescription = "happy robot",
-                        )
+                        Box(contentAlignment = Alignment.Center) {
+
+                            Box(
+                                modifier = Modifier
+                                    .size(64.dp)
+                                    .background(
+                                        Theme.color.primaryColor.normal.copy(0.4f),
+                                        shape = RoundedCornerShape(100)
+                                    )
+                            )
+
+                            Image(
+                                painter = painterResource(
+                                    R.drawable.happy_robot
+                                ),
+                                contentDescription = "happy robot",
+                            )
+                        }
 
                     }
 
@@ -215,7 +230,8 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                                 priorityTask = PriorityTask.MEDIUM,
                                 icon = painterResource(R.drawable.ic_quran),
                                 modifier = Modifier
-                                    .fillParentMaxWidth(0.95f).padding(bottom = 8.dp)
+                                    .fillParentMaxWidth(0.95f)
+                                    .padding(bottom = 8.dp)
                                     .padding(bottom = 8.dp)
                             ) {}
                             CategoryTaskCard(
@@ -223,7 +239,9 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                                 description = "Review cell structure and functions for tomorrow...",
                                 priorityTask = PriorityTask.MEDIUM,
                                 icon = painterResource(R.drawable.ic_quran),
-                                modifier = Modifier.fillParentMaxWidth(0.95f).padding(bottom = 8.dp)
+                                modifier = Modifier
+                                    .fillParentMaxWidth(0.95f)
+                                    .padding(bottom = 8.dp)
 
                             ) {}
                         }
@@ -255,7 +273,8 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                                 priorityTask = PriorityTask.MEDIUM,
                                 icon = painterResource(R.drawable.ic_quran),
                                 modifier = Modifier
-                                    .fillParentMaxWidth(0.95f).padding(bottom = 8.dp)
+                                    .fillParentMaxWidth(0.95f)
+                                    .padding(bottom = 8.dp)
                                     .padding(bottom = 8.dp)
                             ) {}
                             CategoryTaskCard(
@@ -263,7 +282,9 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                                 description = "Review cell structure and functions for tomorrow...",
                                 priorityTask = PriorityTask.MEDIUM,
                                 icon = painterResource(R.drawable.ic_quran),
-                                modifier = Modifier.fillParentMaxWidth(0.95f).padding(bottom = 8.dp)
+                                modifier = Modifier
+                                    .fillParentMaxWidth(0.95f)
+                                    .padding(bottom = 8.dp)
 
                             ) {}
                         }
@@ -354,21 +375,21 @@ fun OverviewCard(
                     .insideBorder(1.dp, Color(0x1FFFFFFF), 12.dp),
                 contentAlignment = Alignment.Center
             ) {
-//                Icon(
-//                    painter = painterResource(
-//                        when (taskState) {
-//                            TaskState.TODO -> R.drawable.ic_overview_card_todo
-//                            TaskState.IN_PROGRESS -> R.drawable.ic_overview_card_in_progress
-//                            TaskState.DONE -> R.drawable.ic_overview_card_done
-//                        }
-//                    ), contentDescription = when (taskState) {
-//                        TaskState.TODO -> "To Do Icon"
-//                        TaskState.IN_PROGRESS -> "In Progress Icon"
-//                        TaskState.DONE -> "Done Icon"
-//                    },
-//                    tint = Theme.color.textColor.onPrimary,
-//                    modifier = Modifier.size(24.dp)
-//                )
+                Icon(
+                    painter = painterResource(
+                        when (taskState) {
+                            TaskState.TODO -> R.drawable.ic_overview_card_todo
+                            TaskState.IN_PROGRESS -> R.drawable.ic_overview_card_in_progress
+                            TaskState.DONE -> R.drawable.ic_overview_card_done
+                        }
+                    ), contentDescription = when (taskState) {
+                        TaskState.TODO -> "To Do Icon"
+                        TaskState.IN_PROGRESS -> "In Progress Icon"
+                        TaskState.DONE -> "Done Icon"
+                    },
+                    tint = Theme.color.textColor.onPrimary,
+                    modifier = Modifier.size(24.dp)
+                )
             }
             Text(
                 text = count.toString(),
