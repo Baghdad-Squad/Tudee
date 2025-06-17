@@ -16,7 +16,7 @@ import com.baghdad.tudee.ui.composable.TaskPriority
 @Composable
 fun PriorityButtonPart() {
     Column(modifier = Modifier.fillMaxWidth()
-        .padding(vertical = 16.dp))
+        .padding(vertical = 16.dp,horizontal = 16.dp))
     {
         Text(
             text = "Priority",
