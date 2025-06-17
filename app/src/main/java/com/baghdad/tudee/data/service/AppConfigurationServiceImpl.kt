@@ -1,0 +1,18 @@
+package com.baghdad.tudee.data.service
+
+import com.baghdad.tudee.data.database.dao.AppConfigurationDao
+import com.baghdad.tudee.domain.service.AppConfigurationService
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+class AppConfigurationServiceImpl(
+    private val appConfigurationDao: AppConfigurationDao
+) : BaseService(), AppConfigurationService {
+    override suspend fun isDarkTheme(): Flow<Boolean> = executeWithErrorHandling {
+        appConfigurationDao.getIsDarkTheme().map { it == true }
+    }
+
+    override suspend fun setTheme(isDark: Boolean) = executeWithErrorHandling {
+        appConfigurationDao.setIsDarkTheme(isDark)
+    }
+}
