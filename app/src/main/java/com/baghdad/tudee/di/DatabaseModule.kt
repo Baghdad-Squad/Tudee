@@ -15,4 +15,5 @@ val databaseModule = module {
     }
     single { get<TudeeDatabase>().taskDao() }
     single { get<TudeeDatabase>().categoryDao() }
+    single { get<TudeeDatabase>().appConfigurationDao() }
 }
