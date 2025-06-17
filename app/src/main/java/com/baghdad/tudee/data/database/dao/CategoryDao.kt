@@ -9,7 +9,6 @@ import androidx.room.Update
 import com.baghdad.tudee.data.model.CategoryDto
 import kotlinx.coroutines.flow.Flow
 import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 
 @Dao
@@ -23,7 +22,7 @@ interface CategoryDao {
     @Update
     suspend fun updateCategory(category: CategoryDto)
 
-    @OptIn(ExperimentalUuidApi::class)
+
     @Delete
-    suspend fun deleteCategory(id: Uuid)
+    suspend fun deleteCategory(id: String)
 }

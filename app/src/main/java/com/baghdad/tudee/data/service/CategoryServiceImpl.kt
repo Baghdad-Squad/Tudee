@@ -3,6 +3,7 @@ package com.baghdad.tudee.data.service
 import com.baghdad.tudee.data.database.dao.CategoryDao
 import com.baghdad.tudee.data.mapper.toDto
 import com.baghdad.tudee.data.mapper.toEntity
+import com.baghdad.tudee.data.model.CategoryDto
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.service.CategoryService
 import kotlinx.coroutines.flow.Flow
@@ -14,11 +15,9 @@ class CategoryServiceImpl(
     private val categoryDao: CategoryDao
 ) : CategoryService, BaseService() {
     override suspend fun getCategories(): Flow<List<Category>> = executeWithErrorHandling {
-        categoryDao.getCategories().map { categories ->
-                categories.map { category ->
-                    category.toEntity()
-                }
-            }
+        categoryDao.getCategories().map {
+            it.map(CategoryDto::toEntity)
+        }
     }
 
     override suspend fun createCategory(category: Category) = executeWithErrorHandling {
@@ -31,6 +30,6 @@ class CategoryServiceImpl(
 
     @OptIn(ExperimentalUuidApi::class)
     override suspend fun deleteCategory(categoryId: Uuid) = executeWithErrorHandling {
-        categoryDao.deleteCategory(id = categoryId)
+        categoryDao.deleteCategory(id = categoryId.toString())
     }
 }
