@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -31,7 +32,7 @@ fun UploadedImageBox(
     ) {
         Image(
             painter = painterResource(id = R.drawable.books),
-            contentDescription = "",
+            contentDescription = stringResource(R.string.books),
             modifier = Modifier
                 .matchParentSize()
                 .clip(RoundedCornerShape(16.dp))
@@ -65,7 +66,7 @@ fun UploadedImageBox(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.pencil_edit_01),
-                contentDescription = "Edit Icon",
+                contentDescription = stringResource(R.string.edit_icon),
                 tint = Theme.color.secondaryColor,
                 modifier = Modifier
                     .padding(6.dp)
@@ -86,13 +87,13 @@ fun UploadPlaceholder(
     ) {
         Icon(
             painter = painterResource(id = R.drawable.image_add_02),
-            contentDescription = "icon edit",
+            contentDescription = stringResource(R.string.upload),
             tint = Theme.color.textColor.hint,
             modifier = Modifier
                 .clickable { onUploadClick() }
         )
         Text(
-            text = "Upload",
+            text = stringResource(R.string.upload),
             style = Theme.typography.label.medium,
             color = Theme.color.textColor.hint
         )

@@ -5,4 +5,14 @@
     <string name="clear_text">Clear</string>
     <string name="edit_text">Edit</string>
     <string name="select_text">Select a date</string>
+    <string name="add_new_category">Add new category</string>
+    <string name="upload">Upload</string>
+    <string name="icon_edit">icon edit</string>
+    <string name="edit_icon">Edit Icon</string>
+    <string name="books">books</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+    <string name="category_image">Category image</string>
+    <string name="edit_category">Edit category</string>
+    <string name="delete">Delete</string>
 </resources>

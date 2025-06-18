@@ -9,17 +9,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.ui.composable.button.PrimaryButton
 import com.baghdad.tudee.ui.composable.button.SecondaryButton
 
 @Composable
 fun ConfirmationButtonContainer(
-    showButton: Boolean,
+    isEnabled: Boolean,
     onAddClick: () -> Unit,
     onCancelClick: () -> Unit,
-    PrimaryButtonLable:String
+    actionLable:String,
+    isLoading:Boolean
 ) {
     Box(
         modifier = Modifier
@@ -32,16 +35,16 @@ fun ConfirmationButtonContainer(
             modifier = Modifier.padding(vertical = 12.dp)
         ) {
             PrimaryButton(
-                label = PrimaryButtonLable,
+                label = actionLable,
                 onClick = onAddClick,
-                isLoading = false,
-                isEnabled = showButton,
+                isLoading = isLoading,
+                isEnabled = isEnabled,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .fillMaxWidth()
             )
             SecondaryButton(
-                label = "Cancel",
+                label = stringResource(R.string.cancel),
                 onClick = onCancelClick,
                 isLoading = false,
                 isEnabled = true,
