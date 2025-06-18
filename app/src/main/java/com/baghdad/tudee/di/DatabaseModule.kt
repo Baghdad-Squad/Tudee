@@ -3,6 +3,7 @@ package com.baghdad.tudee.di
 import androidx.room.Room
 import com.baghdad.tudee.data.database.TudeeDatabase
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val databaseModule = module {
@@ -13,7 +14,7 @@ val databaseModule = module {
             TudeeDatabase.DATABASE_NAME
         ).build()
     }
-    single { get<TudeeDatabase>().taskDao() }
-    single { get<TudeeDatabase>().categoryDao() }
-    single { get<TudeeDatabase>().appConfigurationDao() }
+    singleOf(TudeeDatabase::appConfigurationDao)
+    singleOf(TudeeDatabase::categoryDao)
+    singleOf(TudeeDatabase::taskDao)
 }
