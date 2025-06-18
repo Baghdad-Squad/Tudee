@@ -35,8 +35,8 @@ import androidx.compose.ui.zIndex
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
+import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
-import com.baghdad.tudee.ui.composable.PriorityTask
 import com.baghdad.tudee.ui.composable.TopTudeeBar
 import com.baghdad.tudee.ui.utils.insideBorder
 import com.baghdad.tudee.ui.utils.noRippleClickable
@@ -184,7 +184,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                             CategoryTaskCard(
                                 title = "Organize Study Desk",
                                 description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = PriorityTask.MEDIUM,
+                                priorityTask = Task.Priority.MEDIUM,
                                 icon = painterResource(R.drawable.ic_quran),
                                 modifier = Modifier
                                     .fillParentMaxWidth(0.95f)
@@ -193,7 +193,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                             CategoryTaskCard(
                                 title = "Organize Study Desk",
                                 description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = PriorityTask.MEDIUM,
+                                priorityTask = Task.Priority.MEDIUM,
                                 icon = painterResource(R.drawable.ic_quran),
                                 modifier = Modifier.fillParentMaxWidth(0.95f)
                             ) {}
@@ -227,7 +227,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                             CategoryTaskCard(
                                 title = "Organize Study Desk",
                                 description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = PriorityTask.MEDIUM,
+                                priorityTask = Task.Priority.MEDIUM,
                                 icon = painterResource(R.drawable.ic_quran),
                                 modifier = Modifier
                                     .fillParentMaxWidth(0.95f)
@@ -237,7 +237,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                             CategoryTaskCard(
                                 title = "Organize Study Desk",
                                 description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = PriorityTask.MEDIUM,
+                                priorityTask = Task.Priority.MEDIUM,
                                 icon = painterResource(R.drawable.ic_quran),
                                 modifier = Modifier
                                     .fillParentMaxWidth(0.95f)
@@ -270,7 +270,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                             CategoryTaskCard(
                                 title = "Organize Study Desk",
                                 description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = PriorityTask.MEDIUM,
+                                priorityTask = Task.Priority.MEDIUM,
                                 icon = painterResource(R.drawable.ic_quran),
                                 modifier = Modifier
                                     .fillParentMaxWidth(0.95f)
@@ -280,7 +280,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                             CategoryTaskCard(
                                 title = "Organize Study Desk",
                                 description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = PriorityTask.MEDIUM,
+                                priorityTask = Task.Priority.MEDIUM,
                                 icon = painterResource(R.drawable.ic_quran),
                                 modifier = Modifier
                                     .fillParentMaxWidth(0.95f)

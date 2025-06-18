@@ -67,8 +67,6 @@ dependencies {
 
     implementation(libs.kotlinx.datetime)
 
-}
-
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
 
     // Koin core and Android
