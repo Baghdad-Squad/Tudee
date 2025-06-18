@@ -57,13 +57,25 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+<<<<<<< feature/navigation-app
     implementation(libs.kaotlinx.datetime)
 
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json )
 
+=======
+
+
+    //material 3
+    implementation (libs.material3)
+    implementation (libs.ui)
+    implementation (libs.androidx.runtime)
+
+    implementation(libs.kotlinx.datetime)
+>>>>>>> develop
 
     // Koin core and Android
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
 }
+
