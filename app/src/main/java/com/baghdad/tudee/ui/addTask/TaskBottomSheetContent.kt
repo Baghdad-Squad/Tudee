@@ -35,6 +35,7 @@ import com.baghdad.tudee.ui.composable.TudeeBottomSheet
 import com.baghdad.tudee.ui.composable.button.PrimaryButton
 import kotlinx.datetime.LocalDate
 import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 
 @OptIn(ExperimentalUuidApi::class)
@@ -43,11 +44,11 @@ fun TaskBottomSheet(
     initial: Task? = null, // here we should add TaskUiState
     state: List<Category> // here we should add CategoryUiState
 ) {
-    var titleText by remember { mutableStateOf("") }
-    var paragraphText by remember { mutableStateOf("") }
-    var dateTime by remember { mutableStateOf(LocalDate(2023, 6, 22)) }
+    var titleText by remember { mutableStateOf(initial?.title ?:"") }
+    var paragraphText by remember { mutableStateOf(initial?.description ?:"") }
+    var dateTime by remember { mutableStateOf(initial?.date?:LocalDate(2023, 6, 22)) }
     var selectedCategoryId by remember { mutableStateOf(initial?.categoryId) }
-    var selectedPriority by remember { mutableStateOf<Task.Priority?>(initial?.priority) }
+    var selectedPriority by remember { mutableStateOf(initial?.priority) }
 
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -57,9 +58,9 @@ fun TaskBottomSheet(
         ) {
             item {
                 TextFieldScreenPart(
-                    title = initial?.title ?: titleText,
+                    title =  titleText,
                     onTitleChange = { titleText = it },
-                    paragraph = initial?.description ?: paragraphText,
+                    paragraph =  paragraphText,
                     onParagraphChange = { paragraphText = it },
                     dateTime =  dateTime,
                     onDateChange = { dateTime = it }
@@ -92,7 +93,7 @@ fun TaskBottomSheet(
                     userScrollEnabled = false,
                     verticalArrangement = Arrangement.spacedBy(25.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.height(300.dp)
+                    modifier = Modifier.height(400.dp)
                 ) {
                     items(state) { category ->
                         CategoryItem(
@@ -120,6 +121,7 @@ fun TaskBottomSheet(
     }
 }
 
+@OptIn(ExperimentalUuidApi::class)
 @Composable
 fun ShowTaskSheetButton() {
     var showSheet by remember { mutableStateOf(false) }
@@ -134,7 +136,16 @@ fun ShowTaskSheetButton() {
             onDismiss = { showSheet = false }
         ) {
             TaskBottomSheet(
-                state = TODO("data be here")
+                initial = Task(
+                    id = Uuid.random(),
+                    title = "Nice chance",
+                    description = "sdfsd",
+                    date = LocalDate(2023, 6, 7),
+                    priority = Task.Priority.HIGH,
+                    categoryId = Uuid.random(),
+                    state = Task.State.TODO
+                ),
+                state = fakeCategoriesData()
             )
         }
     }
