@@ -1,7 +1,6 @@
-package com.baghdad.tudee.ui.composable
-
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -9,8 +8,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,19 +26,23 @@ import com.baghdad.tudee.domain.entity.Task
 @Composable
 fun TaskPriority(
     priorityTask: Task.Priority,
+    isClickable: Boolean,
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null
 ) {
-    val priorityProperties = when(priorityTask) {
+    val priorityProperties = when (priorityTask) {
         Task.Priority.HIGH -> PriorityProperties(
             Theme.color.status.pinkAccent,
             R.drawable.ic_flag,
             "High"
         )
+
         Task.Priority.MEDIUM -> PriorityProperties(
             Theme.color.status.yellowAccent,
             R.drawable.ic_alert,
             "Medium"
         )
+
         Task.Priority.LOW -> PriorityProperties(
             Theme.color.status.greenAccent,
             R.drawable.ic_trade_down,
@@ -43,31 +50,50 @@ fun TaskPriority(
         )
     }
 
+    val isClicked = remember { mutableStateOf(false) }
+
+    val backgroundColor =
+        if (isClicked.value) priorityProperties.color
+        else Theme.color.surfaceColor.surfaceLow
+    val contentColor =
+        if (isClicked.value) Theme.color.textColor.onPrimary
+        else Theme.color.textColor.hint
+
     Row(
         modifier = modifier
-            .background(priorityProperties.color,
-                shape = RoundedCornerShape(100)
+            .clip(shape = RoundedCornerShape(100))
+            .background(backgroundColor)
+            .then(
+                if (isClickable) {
+                    Modifier
+                        .clickable {
+                            if (onClick != null) {
+                                onClick()
+                            }
+                            isClicked.value = !isClicked.value
+                        }
+                } else Modifier
             )
             .padding(vertical = 6.dp, horizontal = 8.dp),
+
         horizontalArrangement = Arrangement.spacedBy(2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             painter = painterResource(priorityProperties.iconRes),
-            "" +
-                    "Priority of task is ${priorityTask.name}",
-            tint = Theme.color.textColor.onPrimary
+            contentDescription = "Priority of task is ${priorityTask.name}",
+            tint = contentColor
         )
         Text(
             text = priorityProperties.text,
             style = Theme.typography.label.small,
-            color = Theme.color.textColor.onPrimary
+            color = contentColor
         )
     }
 }
 
 private data class PriorityProperties(
-    val color: androidx.compose.ui.graphics.Color,
+    val color: Color,
     @DrawableRes val iconRes: Int,
     val text: String
 )
@@ -76,7 +102,10 @@ private data class PriorityProperties(
 @Preview
 private fun PriorityPreview() {
     TudeeTheme {
-        TaskPriority(priorityTask = Task.Priority.LOW)
+        TaskPriority(
+            priorityTask = Task.Priority.HIGH,
+            isClickable = false,
+            onClick = {}
+        )
     }
 }
-
