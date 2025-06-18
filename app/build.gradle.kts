@@ -59,14 +59,27 @@ dependencies {
 
 
     //material 3
-    implementation (libs.material3)
-    implementation (libs.ui)
-    implementation (libs.androidx.runtime)
+    implementation(libs.material3)
+    implementation(libs.ui)
+    implementation(libs.androidx.runtime)
 
     implementation(libs.kotlinx.datetime)
 
     // Koin core and Android
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
+
+    // Room testing
+    testImplementation(libs.androidx.room.testing)
+
+    // Google Truth
+    testImplementation(libs.truth)
+
+    // MockK
+    testImplementation(libs.mockk)
+    testImplementation(libs.mockk.android)
+
+    // Coroutines testing
+    testImplementation(libs.kotlinx.coroutines.test)
 }
 
