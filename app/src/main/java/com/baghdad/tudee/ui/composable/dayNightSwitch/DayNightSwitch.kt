@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
-
+import com.baghdad.tudee.ui.utils.noRippleClickable
 
 
 @Composable
@@ -46,7 +46,11 @@ fun DayNightSwitch(isDay: Boolean, onClick: () -> Unit , modifier: Modifier = Mo
         modifier = modifier
             .size(height = 36.dp, width = 64.dp)
             .clip(RoundedCornerShape(100.dp))
-            .border(width = 1.dp, color = Theme.color.textColor.stroke, shape = RoundedCornerShape(100.dp))
+            .border(
+                width = 1.dp,
+                color = Theme.color.textColor.stroke,
+                shape = RoundedCornerShape(100.dp)
+            )
             .background(color = animateBackgroundColor)
     ) {
         Box(
@@ -75,9 +79,7 @@ fun DayNightSwitch(isDay: Boolean, onClick: () -> Unit , modifier: Modifier = Mo
                                 .size(32.dp)
                                 .align(Alignment.CenterStart)
                                 .clip(CircleShape)
-                                .clickable(
-                                    onClick = { onClick() }
-                                )
+                                .noRippleClickable(onClick = { onClick() })
                         )
                     }
 
@@ -99,9 +101,7 @@ fun DayNightSwitch(isDay: Boolean, onClick: () -> Unit , modifier: Modifier = Mo
                             .size(32.dp)
                             .align(Alignment.CenterEnd)
                             .clip(CircleShape)
-                            .clickable(
-                                onClick = { onClick() }
-                            )
+                            .noRippleClickable(onClick = { onClick() })
                     )
                 }
             }
