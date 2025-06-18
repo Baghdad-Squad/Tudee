@@ -97,7 +97,7 @@ fun CategoryScreenContent(state: List<CategoryUiState>,
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(state) {// the width is 121 instead of 104
+                items(state) {
                     CategoryItem(
                         label = it.title,
                         icon = painterResource(id = it.imageUri.toInt()),
@@ -143,16 +143,7 @@ fun CategoryScreenContent(state: List<CategoryUiState>,
             }
         }
 
-        AnimatedVisibility(
-            visible = showAddNewCategoryDialog,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .zIndex(1f)
-            ) {
+
 //                 example of link  add new category with category screen
 //                AddNewCategoryCard(
 //                    onClickAdd = {
@@ -176,13 +167,6 @@ fun CategoryScreenContent(state: List<CategoryUiState>,
 //                        .padding(16.dp, 12.dp)
 //                        .align(Alignment.BottomCenter)
 //                )
-                AnimatedVisibility(
-                    visible = text.isNotEmpty(),
-                    enter = fadeIn(),
-                    exit = fadeOut()
 
-                ) { }
-            }
-        }
     }
 }
