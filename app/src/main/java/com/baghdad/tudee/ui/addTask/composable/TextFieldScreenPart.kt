@@ -1,4 +1,4 @@
-package com.baghdad.tudee.ui.content.composable
+package com.baghdad.tudee.ui.addTask.composable
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
