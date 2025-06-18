@@ -1,4 +1,4 @@
-package com.baghdad.tudee.data.service
+package com.baghdad.tudee.data.service.shared
 
 import android.database.sqlite.SQLiteDatabaseCorruptException
 import android.database.sqlite.SQLiteException
@@ -8,7 +8,7 @@ import com.baghdad.tudee.domain.exception.DatabaseException
 import com.baghdad.tudee.domain.exception.StorageFullException
 import com.baghdad.tudee.domain.exception.TudeeException
 
-abstract class BaseService {
+abstract class DatabaseErrorHandler {
     suspend fun<T> executeWithErrorHandling(block: suspend () -> T): T{
         return try {
             block()
