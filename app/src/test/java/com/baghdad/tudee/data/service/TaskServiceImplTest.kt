@@ -68,9 +68,7 @@ class TaskServiceImplTest {
 
         coVerify {
             taskDao.createTask(match {
-                it.title == expectedTitle &&
-                        it.priority == priorty &&
-                        it.date == date
+                it.title == expectedTitle && it.priority == priorty && it.date == date
             })
         }
     }
