@@ -18,7 +18,8 @@ import com.baghdad.tudee.ui.composable.button.SecondaryButton
 fun ConfirmationButtonContainer(
     showButton: Boolean,
     onAddClick: () -> Unit,
-    onCancelClick: () -> Unit
+    onCancelClick: () -> Unit,
+    PrimaryButtonLable:String
 ) {
     Box(
         modifier = Modifier
@@ -31,7 +32,7 @@ fun ConfirmationButtonContainer(
             modifier = Modifier.padding(vertical = 12.dp)
         ) {
             PrimaryButton(
-                label = "Add",
+                label = PrimaryButtonLable,
                 onClick = onAddClick,
                 isLoading = false,
                 isEnabled = showButton,
