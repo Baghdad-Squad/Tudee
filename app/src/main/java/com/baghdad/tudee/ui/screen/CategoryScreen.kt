@@ -1,18 +1,15 @@
 package com.baghdad.tudee.ui.screen
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -25,17 +22,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
-import com.baghdad.tudee.ui.component.AddNewCategoryCard
-import com.baghdad.tudee.ui.composable.BottomNavigation
 import com.baghdad.tudee.ui.composable.CategoryItem
-import com.baghdad.tudee.ui.composable.SnakeBar
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
+import com.baghdad.tudee.ui.composable.categoryBottomSheet.AddCategoryBottomSheet
 import com.baghdad.tudee.ui.viewModel.CategoryViewModel
 import com.baghdad.tudee.ui.viewModel.state.CategoryUiState
 import org.koin.androidx.compose.koinViewModel
@@ -53,8 +46,9 @@ fun CategoryScreen(
 
 @OptIn(ExperimentalUuidApi::class)
 @Composable
-fun CategoryScreenContent(state: List<CategoryUiState>,
-                          addCategory: (CategoryUiState) -> Unit
+fun CategoryScreenContent(
+    state: List<CategoryUiState>,
+    addCategory: (CategoryUiState) -> Unit
 ) {
     var showAddNewCategoryDialog by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("") }
@@ -114,14 +108,13 @@ fun CategoryScreenContent(state: List<CategoryUiState>,
 
         }
 
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
 
         ) {
             Column(
-                modifier = Modifier.align(Alignment.BottomCenter),
+                modifier = Modifier.align(Alignment.BottomEnd),
                 horizontalAlignment = Alignment.End
             ) {
                 FloatingActionButton(
@@ -133,40 +126,31 @@ fun CategoryScreenContent(state: List<CategoryUiState>,
                     },
                     modifier = Modifier.padding(bottom = 17.dp, end = 12.dp)
                 )
-
-                BottomNavigation( // TODO : understand what should you do here with this composable
-                    unSelectedIcon = {
-                        1
-                    },
-                    selectedIcon = 2
-                )
+                Spacer(Modifier.height(58.dp))
             }
         }
+        AddCategoryBottomSheet(
+            isVisible = showAddNewCategoryDialog,
+            onDismissRequest = { showAddNewCategoryDialog = false },
+            title = text,
+            onValueChange = { text = it },
+            showButton = !text.isBlank(),
+            imageUploaded = true,
+            onUploadClick = {},
+            onEditImageIconClick = {},
 
+            onAddButtonClick = {
+                addCategory(
+                    CategoryUiState(
+                        id = Uuid.random(),
+                        title = text,
+                        imageUri = "",
+                        taskCount = 0,
+                    )
+                )
+            },
+            onCanceleButtonClick = { showAddNewCategoryDialog = false },
 
-//                 example of link  add new category with category screen
-//                AddNewCategoryCard(
-//                    onClickAdd = {
-//                        addCategory(
-//                            CategoryUiState(
-//                                id = Uuid.random(),
-//                                title = text,
-//                                imageUri = image picker,
-//                                taskCount = 0,
-//                            )
-//                        )
-//
-//                    },
-//                    onClickCancel = { showAddNewCategoryDialog = false },
-//                    onClickUploadImage = {
-//                        // Image Picker
-//                    },
-//                    onChangeText = { text = it },
-//                    modifier = Modifier
-//                        .background(color = Theme.color.surfaceColor.surface)
-//                        .padding(16.dp, 12.dp)
-//                        .align(Alignment.BottomCenter)
-//                )
-
+            )
     }
 }
