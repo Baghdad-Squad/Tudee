@@ -1,6 +1,7 @@
 package com.baghdad.tudee.ui.composable.dayNightSwitch
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -35,12 +37,17 @@ import com.baghdad.tudee.designSystem.theme.TudeeTheme
 
 @Composable
 fun DayNightSwitch(isDay: Boolean, onClick: () -> Unit , modifier: Modifier = Modifier) {
+    val animateBackgroundColor by animateColorAsState(
+        targetValue = if (isDay) Theme.color.primaryColor.normal else Color(0xFF1A1A44),
+        animationSpec = tween(durationMillis = 300)
+    )
+
     Box(
         modifier = modifier
             .size(height = 36.dp, width = 64.dp)
             .clip(RoundedCornerShape(100.dp))
             .border(width = 1.dp, color = Theme.color.textColor.stroke, shape = RoundedCornerShape(100.dp))
-            .background(color = if (isDay) Theme.color.primaryColor.normal else Color(0xFF1A1A44))
+            .background(color = animateBackgroundColor)
     ) {
         Box(
             modifier = Modifier
