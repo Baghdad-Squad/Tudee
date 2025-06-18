@@ -1,3 +1,4 @@
+
 package com.baghdad.tudee.ui.composable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,13 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.utils.noRippleClickable
 
 @Composable
 fun CategoryTaskCard(
     title: String,
     description: String,
-    priorityTask: PriorityTask,
+    priorityTask: Task.Priority,
     icon: Painter,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
@@ -69,3 +71,4 @@ fun CategoryTaskCard(
         }
     }
 }
+
