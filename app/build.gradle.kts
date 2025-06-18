@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -57,13 +58,19 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-<<<<<<< feature/navigation-app
     implementation(libs.kaotlinx.datetime)
 
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json )
 
-=======
+
+    //Kotlinx-date-time
+    implementation(libs.kotlinx.datetime)
+
+    //Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
 
     //material 3
@@ -71,8 +78,6 @@ dependencies {
     implementation (libs.ui)
     implementation (libs.androidx.runtime)
 
-    implementation(libs.kotlinx.datetime)
->>>>>>> develop
 
     // Koin core and Android
     implementation(libs.koin.android)
