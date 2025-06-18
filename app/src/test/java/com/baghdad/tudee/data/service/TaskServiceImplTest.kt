@@ -40,6 +40,7 @@ class TaskServiceImplTest {
 
     @Test
     fun `getTasksByCategory returns mapped tasks`() = runTest {
+
         coEvery { taskDao.getTasksByCategory(categoryID) } returns flowOf(listOf(sampleDto))
 
         val result = taskService.getTasksByCategory(categoryID).first()
@@ -51,6 +52,7 @@ class TaskServiceImplTest {
 
     @Test
     fun `getTasksByDate returns mapped tasks`() = runTest {
+
         coEvery { taskDao.getTasksByDate(date) } returns flowOf(listOf(sampleDto))
 
         val result = taskService.getTasksByDate(LocalDate.parse(date)).first()
@@ -62,6 +64,7 @@ class TaskServiceImplTest {
 
     @Test
     fun `createTask calls DAO with DTO`() = runTest {
+
         coEvery { taskDao.createTask(any()) } just Runs
 
         taskService.createTask(sampleTask)
@@ -75,6 +78,7 @@ class TaskServiceImplTest {
 
     @Test
     fun `editTask calls DAO with DTO`() = runTest {
+
         coEvery { taskDao.editTask(any()) } just Runs
 
         taskService.editTask(sampleTask)
@@ -84,6 +88,7 @@ class TaskServiceImplTest {
 
     @Test
     fun `deleteTask calls DAO with taskId`() = runTest {
+
         coEvery { taskDao.deleteTask(taskID) } just Runs
 
         taskService.deleteTask(taskID)
@@ -93,6 +98,7 @@ class TaskServiceImplTest {
 
     @Test(expected = DatabaseException::class)
     fun `getTasksByCategory throws DatabaseException on SQLiteException`() = runTest {
+
         coEvery { taskDao.getTasksByCategory(categoryID) } throws SQLiteException(dbError)
 
         taskService.getTasksByCategory(categoryID).first()
