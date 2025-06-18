@@ -23,7 +23,7 @@ import androidx.compose.ui.zIndex
 fun CloudCircles(isDay: Boolean) {
     AnimatedVisibility(
         visible = isDay,
-        enter = slideIn(animationSpec = tween(500)) { IntOffset(60, 20) },
+        enter = slideIn(animationSpec = tween(500)) { IntOffset(60, 30) },
         exit = slideOut(
             animationSpec = spring(
                 stiffness = Spring.StiffnessMedium,
@@ -32,26 +32,27 @@ fun CloudCircles(isDay: Boolean) {
         ) { IntOffset(10, 30) }
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            Circle(
-                Modifier
+            RadialGradientCircle(
+                modifier = Modifier
                     .size(31.33.dp, 32.dp)
                     .offset(x = 9.5.dp, y = -1.dp)
                     .align(Alignment.TopEnd),
-                Color(0xFFF0F0F0), Color(0xFFF0F0F0)
+                colors = listOf(Color(0xFFF0F0F0), Color(0xFFF0F0F0))
+
             )
-            Circle(
-                Modifier
+            RadialGradientCircle(
+                modifier = Modifier
                     .size(16.dp)
                     .offset(-4.dp, 1.dp)
                     .align(Alignment.BottomEnd)
                     .zIndex(1f),
-                Color(0xFFFFFFFF), Color(0xFFFFFFFF)
+                colors = listOf(Color(0xFFFFFFFF), Color(0xFFFFFFFF))
             )
-            Circle(
-                Modifier
+            RadialGradientCircle(
+                modifier = Modifier
                     .size(24.dp)
                     .offset(29.dp, 20.dp),
-                Color(0xFFF0F0F0), Color(0xFFF0F0F0)
+                colors = listOf(Color(0xFFF0F0F0), Color(0xFFF0F0F0))
             )
         }
     }

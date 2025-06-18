@@ -55,17 +55,14 @@ fun MoonCircleToCloudCircle(isDay: Boolean) {
         }
 
     Box(Modifier.fillMaxSize()) {
-        Circle(
+        RadialGradientCircle(
             Modifier
                 .size(firstCircleSize.value)
                 .offset(firstCircleOffset.value.x.dp, firstCircleOffset.value.y.dp)
                 .zIndex(1f),
-            firstColor = firstColor,
-            secondColor = secondColor
-
+            colors = listOf(firstColor, secondColor)
         )
-
-        Circle(
+        RadialGradientCircle(
             Modifier
                 .size(secondCircleSize.value - 2.dp, secondCircleSize.value)
                 .offset(
@@ -73,8 +70,7 @@ fun MoonCircleToCloudCircle(isDay: Boolean) {
                     secondCircleOffset.value.y.dp
                 )
                 .zIndex(1f),
-            firstColor = thirdColor,
-            secondColor = thirdColor
+            colors = listOf(thirdColor, thirdColor)
 
         )
     }

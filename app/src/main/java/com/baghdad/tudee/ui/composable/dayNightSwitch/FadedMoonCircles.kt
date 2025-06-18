@@ -19,13 +19,13 @@ fun FadedMoonCircles(isDay: Boolean) {
         exit = fadeOut(targetAlpha = 1f)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            Circle(
+            RadialGradientCircle(
                 Modifier
                     .size(14.dp)
                     .offset(38.dp, 14.dp)
 
             )
-            Circle(
+            RadialGradientCircle(
                 Modifier
                     .size(4.dp)
                     .offset(53.dp, 22.dp)

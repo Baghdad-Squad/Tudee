@@ -39,7 +39,7 @@ fun DayNightSwitch(isDay: Boolean, onClick: () -> Unit , modifier: Modifier = Mo
         modifier = modifier
             .size(height = 36.dp, width = 64.dp)
             .clip(RoundedCornerShape(100.dp))
-            .border(width = 1.dp, color = Color(0x1F1F1F1F), shape = RoundedCornerShape(100.dp))
+            .border(width = 1.dp, color = Theme.color.textColor.stroke, shape = RoundedCornerShape(100.dp))
             .background(color = if (isDay) Theme.color.primaryColor.normal else Color(0xFF1A1A44))
     ) {
         Box(
