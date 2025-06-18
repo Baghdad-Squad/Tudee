@@ -24,5 +24,5 @@ interface CategoryDao {
 
 
     @Delete
-    suspend fun deleteCategory(id: String)
+    suspend fun deleteCategory(id: Long)
 }

@@ -17,7 +17,7 @@ import kotlin.uuid.ExperimentalUuidApi
 interface TaskDao {
 
     @Query("SELECT * FROM $TASKS_TABLE_NAME WHERE $COLUMN_CATEGORY_ID = :categoryId")
-    suspend fun getTasksByCategory(categoryId: String): Flow<List<TaskDto>>
+    suspend fun getTasksByCategory(categoryId: Long): Flow<List<TaskDto>>
 
 
     @Query("SELECT * FROM $TASKS_TABLE_NAME WHERE $COLUMN_DATE = :date")
@@ -31,5 +31,5 @@ interface TaskDao {
 
 
     @Delete
-    suspend fun deleteTask(taskId: String)
+    suspend fun deleteTask(taskId: Long)
 }

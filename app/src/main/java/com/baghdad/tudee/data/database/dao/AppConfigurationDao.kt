@@ -17,15 +17,15 @@ interface AppConfigurationDao {
     suspend fun updateIsDarkTheme(isDarkTheme: Boolean): Int
 
     @Query("SELECT $COLUMN_IS_DARK_THEME FROM $APP_CONFIGURATION_TABLE_NAME WHERE id = $DEFAULT_ID")
-    fun getIsDarkTheme(): Flow<Boolean?>
+    fun isDarkTheme(): Flow<Boolean?>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertDefault(config: AppConfigurationDto)
+    suspend fun insert(config: AppConfigurationDto)
 
     @Transaction
-    suspend fun setIsDarkTheme(isDarkTheme: Boolean) {
+    suspend fun saveTudeeTheme(isDarkTheme: Boolean) {
         updateIsDarkTheme(isDarkTheme)
             .takeIf { it == 0 }
-            ?.let { insertDefault(AppConfigurationDto(id = DEFAULT_ID, isDarkTheme = isDarkTheme)) }
+            ?.let { insert(AppConfigurationDto(id = DEFAULT_ID, isDarkTheme = isDarkTheme)) }
     }
 }
