@@ -1,6 +1,7 @@
 package com.baghdad.tudee.app
 
 import android.app.Application
+import com.baghdad.tudee.di.databaseModule
 import com.baghdad.tudee.di.serviceModule
 import com.baghdad.tudee.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
@@ -15,9 +16,9 @@ class TudeeApplication : Application() {
             androidContext(this@TudeeApplication)
             modules(
                 viewModelModule,
-                serviceModule
+                serviceModule,
+                databaseModule
             )
         }
-
     }
 }
