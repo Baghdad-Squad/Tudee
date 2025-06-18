@@ -2,46 +2,44 @@ package com.baghdad.tudee.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import com.baghdad.tudee.ui.screens.homeScreen.HomeScreen
-import com.baghdad.tudee.ui.screens.homeScreen.TaskState
+import androidx.navigation.toRoute
+import com.baghdad.tudee.domain.entity.Task
+import kotlin.reflect.typeOf
 
 @Composable
-fun NavHostApp(navController: NavHostController) {
+fun TudeeNavHost(navController: NavHostController, startDestination: Route) {
 
     NavHost(
-        startDestination = AppScreen.HomeScreen.route,
+        startDestination = startDestination,
         navController = navController
     ) {
-        composable(route = AppScreen.OnBoardingScreen.route) {
+        composable<Route.OnboardingScreen> {
             /* TODO put the onBoarding Screen Here*/
         }
 
-        composable(
-            route = AppScreen.TasksScreen.route,
-        ) {
-            /* TODO put the Tasks Screen Here*/
+        composable<Route.TasksScreen>(
+            typeMap = mapOf(
+                typeOf<Task.State>() to CustomNavType.TaskStateType,
+            )
+        ){
+            // TODO put the Tasks Screen Here With Argument
         }
 
-        composable(
-            route = AppScreen.TasksScreen.route + "/{taskState}",
-            arguments = listOf(navArgument("taskState") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val argumentValue =
-                backStackEntry.arguments?.getString("taskState") ?: TaskState.IN_PROGRESS.name
-            /* TODO put the Tasks Screen Here and send argumentValue to argument of Tasks Screen*/
-        }
 
-        composable(route = AppScreen.CategoriesScreen.route) {
+        composable<Route.CategoriesScreen> {
             /* TODO put the Categories  Screen Here*/
         }
 
-        composable(route = AppScreen.HomeScreen.route) {
-            // here put the view model and state then send them to parameter of home screen
-            HomeScreen()
+        composable<Route.HomeScreen> {
+            // TODO put the Home Screen Here
+        }
+
+        composable<Route.CategoryTasksScreen>{
+             val categoryId = it.toRoute<Route.CategoryTasksScreen>().categoryId
+            // TODO put the Category Tasks Screen Here
+
         }
     }
 }
