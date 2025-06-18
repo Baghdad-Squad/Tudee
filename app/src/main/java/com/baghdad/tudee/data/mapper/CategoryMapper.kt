@@ -6,15 +6,19 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
-fun CategoryDto.toEntity():Category = Category(
-    id = Uuid.parse(this.id),
+fun CategoryDto.toEntity(): Category = Category(
+    id = this.id,
     title = this.title,
     imageUri = this.imageUri
 )
 
 @OptIn(ExperimentalUuidApi::class)
-fun Category.toDto():CategoryDto = CategoryDto(
-    id = this.id.toString(),
+fun Category.toDto(): CategoryDto = CategoryDto(
+    id = this.id,
     imageUri = this.imageUri,
     title = this.title,
 )
+
+fun List<CategoryDto>.toEntities(): List<Category> = this.map { it.toEntity() }
+
+fun List<Category>.toDtos(): List<CategoryDto> = this.map { it.toDto() }
