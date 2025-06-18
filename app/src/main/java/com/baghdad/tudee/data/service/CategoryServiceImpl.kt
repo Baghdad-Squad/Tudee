@@ -3,18 +3,23 @@ package com.baghdad.tudee.data.service
 import com.baghdad.tudee.data.database.dao.CategoryDao
 import com.baghdad.tudee.data.mapper.toDto
 import com.baghdad.tudee.data.mapper.toEntities
-import com.baghdad.tudee.data.model.CategoryDto
 import com.baghdad.tudee.data.service.shared.DatabaseErrorHandler
+import com.baghdad.tudee.data.source.PredefinedCategorySource
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.service.CategoryService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class CategoryServiceImpl(
-    private val categoryDao: CategoryDao
+    private val categoryDao: CategoryDao,
+    private val predefinedCategorySource: PredefinedCategorySource
 ) : CategoryService, DatabaseErrorHandler() {
     override suspend fun getCategories(): Flow<List<Category>> = executeWithErrorHandling {
-        categoryDao.getCategories().map(List<CategoryDto>::toEntities)
+        categoryDao.getCategories().map { userCategories ->
+            predefinedCategorySource
+                .getPredefinedCategories()
+                .plus(userCategories.toEntities())
+        }
     }
 
     override suspend fun createCategory(category: Category) = executeWithErrorHandling {
