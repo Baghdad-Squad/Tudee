@@ -8,9 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,11 +16,7 @@ import com.baghdad.tudee.ui.composable.button.PrimaryButton
 import com.baghdad.tudee.ui.composable.button.SecondaryButton
 
 @Composable
-fun MainButtonPart (
-    titleText: String,
-    paragraphText: String,
-    dateTime: String
-){
+fun MainButtonPart (isEnable: Boolean){
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -34,16 +27,12 @@ fun MainButtonPart (
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            val showButton by remember {
-                derivedStateOf {
-                    titleText.isNotBlank() && paragraphText.isNotBlank() && dateTime.isNotBlank()
-                }
-            }
+
             PrimaryButton(
                 label = "add",
                 onClick = {},
                 isLoading = false,
-                isEnabled = showButton,
+                isEnabled = isEnable,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .fillMaxWidth()
