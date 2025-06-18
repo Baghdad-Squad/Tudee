@@ -1,7 +1,6 @@
 package com.baghdad.tudee.ui.composable
 
 
-package com.baghdad.tudee.ui.composable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
