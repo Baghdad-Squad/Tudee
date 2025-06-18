@@ -1,7 +1,5 @@
 package com.baghdad.tudee.ui.composable.delete
 
-
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -15,6 +13,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,14 +26,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.ui.composable.TudeeBottomSheet
 import com.baghdad.tudee.ui.composable.button.NegativeButton
 import com.baghdad.tudee.ui.composable.button.SecondaryButton
 
-
 @Composable
-fun deleteCategory(
+fun DeleteCategoryContent(
+    title: String = "Delete category",
+    message: String = "Are you sure to continue?",
+    deleteButtonText: String = "Delete",
+    cancelButtonText: String = "Cancel",
     onDeleteClick: () -> Unit,
-    onCancelClick: () -> Unit
+    onCancelClick: () -> Unit,
+    isLoading: Boolean = false
 ) {
     Box(
         modifier = Modifier
@@ -47,9 +54,9 @@ fun deleteCategory(
             Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Title
+
             Text(
-                text = "Delete category",
+                text = title,
                 style = Theme.typography.title.large,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -59,32 +66,27 @@ fun deleteCategory(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Subtext
             Text(
-                text = "Are you sure to continue?",
+                text = message,
                 style = Theme.typography.body.medium,
                 color = Theme.color.textColor.body,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding( start = 16.dp),
+                    .padding(start = 16.dp),
                 textAlign = TextAlign.Start
             )
-
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Robot image
             Image(
-                painter = painterResource(R.drawable.sad_robot),
-                contentDescription = "Robot",
+                painter = painterResource(R.drawable.img_sad_robort),
+                contentDescription = "Sad Robot",
                 modifier = Modifier
                     .width(107.dp)
                     .height(108.dp)
                     .align(Alignment.CenterHorizontally)
             )
-
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Button Box
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -96,8 +98,6 @@ fun deleteCategory(
                             bottomEnd = 24.dp
                         )
                     )
-
-
                     .padding(
                         start = 16.dp,
                         end = 16.dp,
@@ -109,23 +109,19 @@ fun deleteCategory(
                     Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    // Delete Button
                     NegativeButton(
-                        label = "Delete",
+                        label = deleteButtonText,
                         onClick = onDeleteClick,
-                        isLoading = false,
-                        isEnabled = true,
+                        isLoading = isLoading,
+                        isEnabled = !isLoading,
                         modifier = Modifier
                             .width(328.dp)
                             .height(56.dp)
                             .clip(RoundedCornerShape(100.dp))
                     )
-
                     Spacer(modifier = Modifier.height(12.dp))
-
-                    // Cancel Button
                     SecondaryButton(
-                        label = "Cancel",
+                        label = cancelButtonText,
                         onClick = onCancelClick,
                         modifier = Modifier
                             .width(328.dp)
@@ -137,12 +133,79 @@ fun deleteCategory(
         }
     }
 }
+@Composable
+fun DeleteCategoryBottomSheet(
+    onDeleteClick: () -> Unit,
+    onCancelClick: () -> Unit,
+    title: String = "Delete category",
+    message: String = "Are you sure to continue?",
+    deleteButtonText: String = "Delete",
+    cancelButtonText: String = "Cancel",
+    isLoading: Boolean = false
+) {
+    DeleteCategoryContent(
+        title = title,
+        message = message,
+        deleteButtonText = deleteButtonText,
+        cancelButtonText = cancelButtonText,
+        onDeleteClick = onDeleteClick,
+        onCancelClick = onCancelClick,
+        isLoading = isLoading
+    )
+}
+@Composable
+fun ShowDeleteCategorySheetButton(
+    buttonLabel: String = "Delete Category",
+    title: String = "Delete category",
+    message: String = "Are you sure to continue?",
+    deleteButtonText: String = "Delete",
+    cancelButtonText: String = "Cancel",
+    onDeleteConfirmed: () -> Unit = {},
+    onCancelConfirmed: () -> Unit = {},
+    isLoading: Boolean = false,
+    modifier: Modifier = Modifier
+) {
+    var showSheet by remember { mutableStateOf(false) }
 
+    Box(modifier = modifier.fillMaxSize()) {
+
+        NegativeButton(
+            onClick = { showSheet = true },
+            label = buttonLabel,
+            modifier = Modifier.align(Alignment.Center)
+        )
+        TudeeBottomSheet(
+            isVisible = showSheet,
+            onDismiss = { showSheet = false }
+        ) {
+            DeleteCategoryBottomSheet(
+                title = title,
+                message = message,
+                deleteButtonText = deleteButtonText,
+                cancelButtonText = cancelButtonText,
+                isLoading = isLoading,
+                onDeleteClick = {
+                    onDeleteConfirmed()
+                    showSheet = false
+                },
+                onCancelClick = {
+                    onCancelConfirmed()
+                    showSheet = false
+                }
+            )
+        }
+    }
+}
 @Preview(showBackground = true)
 @Composable
-fun deleteCategoryPreview() {
-    deleteCategory(
-        onDeleteClick = {},
-        onCancelClick = {}
+fun DeleteCategoryPreview() {
+    DeleteCategoryBottomSheet(
+        onDeleteClick = { },
+        onCancelClick = { }
     )
+}
+@Preview(showBackground = true)
+@Composable
+fun ShowDeleteCategoryPreview() {
+    ShowDeleteCategorySheetButton()
 }
