@@ -10,6 +10,8 @@ import com.baghdad.tudee.data.model.CategoryDto
 import kotlinx.coroutines.flow.Flow
 import kotlin.uuid.ExperimentalUuidApi
 import com.baghdad.tudee.data.model.CategoryDto.Companion.CATEGORIES_TABLE_NAME
+import com.baghdad.tudee.data.model.TaskDto.Companion.COLUMN_CATEGORY_ID
+import com.baghdad.tudee.data.model.TaskDto.Companion.TASKS_TABLE_NAME
 
 @Dao
 interface CategoryDao {
@@ -23,6 +25,6 @@ interface CategoryDao {
     suspend fun updateCategory(category: CategoryDto)
 
 
-    @Delete
+    @Query("DELETE FROM $CATEGORIES_TABLE_NAME WHERE id = :id")
     suspend fun deleteCategory(id: Long)
 }

@@ -13,7 +13,8 @@ import kotlinx.datetime.LocalDate
 
 class TaskServiceImpl(
     private val taskDao: TaskDao
-) : TaskService, DatabaseErrorHandler() {
+): TaskService, DatabaseErrorHandler() {
+
     override suspend fun getTasksByCategory(categoryId: Long): Flow<List<Task>> =
         executeWithErrorHandling {
             taskDao.getTasksByCategory(categoryId).map(List<TaskDto>::toEntities)

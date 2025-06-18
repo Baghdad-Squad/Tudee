@@ -51,6 +51,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.junit.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -91,4 +94,6 @@ dependencies {
     // Coroutines testing
     testImplementation(libs.kotlinx.coroutines.test)
 }
-
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}

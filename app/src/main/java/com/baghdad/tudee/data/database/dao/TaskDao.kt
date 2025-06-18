@@ -13,15 +13,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlin.uuid.ExperimentalUuidApi
 
 @Dao
-@OptIn(ExperimentalUuidApi::class)
 interface TaskDao {
 
     @Query("SELECT * FROM $TASKS_TABLE_NAME WHERE $COLUMN_CATEGORY_ID = :categoryId")
-    suspend fun getTasksByCategory(categoryId: Long): Flow<List<TaskDto>>
+     fun getTasksByCategory(categoryId: Long): Flow<List<TaskDto>>
 
 
     @Query("SELECT * FROM $TASKS_TABLE_NAME WHERE $COLUMN_DATE = :date")
-    suspend fun getTasksByDate(date: String): Flow<List<TaskDto>>
+     fun getTasksByDate(date: String): Flow<List<TaskDto>>
 
     @Insert
     suspend fun createTask(task: TaskDto)
@@ -30,6 +29,7 @@ interface TaskDao {
     suspend fun editTask(task: TaskDto)
 
 
-    @Delete
+    @Query("DELETE FROM $TASKS_TABLE_NAME WHERE $COLUMN_CATEGORY_ID = :taskId")
     suspend fun deleteTask(taskId: Long)
+
 }
