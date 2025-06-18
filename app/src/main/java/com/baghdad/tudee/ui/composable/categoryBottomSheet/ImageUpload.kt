@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
@@ -24,13 +25,17 @@ import com.baghdad.tudee.ui.utils.dashedBorder
 
 @Composable
 fun UploadedImageBox(
-    onEditClick: () -> Unit
+    onEditClick: () -> Unit,
+    image : Painter?
 ) {
     Box(
-        modifier = Modifier.size(112.dp)
+        modifier = Modifier
+            .size(112.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .clickable { onEditClick() }
     ) {
         Image(
-            painter = painterResource(id = R.drawable.books),
+            painter = image!!,
             contentDescription = "",
             modifier = Modifier
                 .matchParentSize()
@@ -58,9 +63,7 @@ fun UploadedImageBox(
                 .background(
                     color = Theme.color.surfaceColor.surfaceHigh,
                     shape = RoundedCornerShape(12.dp)
-                )
-                .clickable { onEditClick() }
-            ,
+                ),
             contentAlignment = Alignment.Center
         ) {
             Icon(

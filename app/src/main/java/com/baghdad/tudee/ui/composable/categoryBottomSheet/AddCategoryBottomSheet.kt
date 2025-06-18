@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
@@ -31,7 +32,8 @@ fun AddCategoryBottomSheet(
     onUploadClick: () -> Unit,
     onEditImageIconClick: () -> Unit,
     onAddButtonClick: () -> Unit,
-    onCanceleButtonClick: () -> Unit,
+    onCancelButtonClick: () -> Unit,
+    image : Painter? = null,
 ) {
     TudeeBottomSheet(
         isVisible = isVisible,
@@ -45,7 +47,8 @@ fun AddCategoryBottomSheet(
             onUploadClick = onUploadClick,
             onEditImageIconClick = onEditImageIconClick,
             onAddButtonClick = onAddButtonClick,
-            onCanceleButtonClick = onCanceleButtonClick
+            onCanceleButtonClick = onCancelButtonClick,
+            image = image,
         )
     }
 
@@ -61,6 +64,7 @@ fun AddCategoryBottomSheetContent(
     onEditImageIconClick: () -> Unit,
     onAddButtonClick: () -> Unit,
     onCanceleButtonClick: () -> Unit,
+    image : Painter?,
 ) {
     Column(
         modifier = Modifier
@@ -100,7 +104,7 @@ fun AddCategoryBottomSheetContent(
                 contentAlignment = Alignment.Center
             ) {
                 if (imageUploaded) {
-                    UploadedImageBox(onEditClick = onEditImageIconClick)
+                    UploadedImageBox(onEditClick = onEditImageIconClick , image)
                 } else {
                     UploadPlaceholder(onUploadClick = onUploadClick)
                 }

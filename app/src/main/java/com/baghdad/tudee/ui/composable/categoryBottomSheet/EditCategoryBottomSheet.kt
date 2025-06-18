@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
@@ -33,6 +34,7 @@ fun EditCategoryBottomSheet(
     onAddButtonClick: () -> Unit,
     onCanceleButtonClick: () -> Unit,
     onDeleteClick: () -> Unit,
+    image:Painter
 ) {
     TudeeBottomSheet(
         isVisible = isVisible,
@@ -44,7 +46,8 @@ fun EditCategoryBottomSheet(
             onEditImageIconClick = onEditImageIconClick,
             onAddButtonClick = onAddButtonClick,
             onCanceleButtonClick = onCanceleButtonClick,
-            onDeleteClick = onDeleteClick
+            onDeleteClick = onDeleteClick,
+            image = image
         )
     }
 
@@ -58,6 +61,7 @@ fun EditCategoryBottomSheetContent(
     onEditImageIconClick: () -> Unit,
     onAddButtonClick: () -> Unit,
     onCanceleButtonClick: () -> Unit,
+    image:Painter
 ) {
     Column(
         modifier = Modifier
@@ -109,7 +113,7 @@ fun EditCategoryBottomSheetContent(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                UploadedImageBox(onEditClick = onEditImageIconClick)
+                UploadedImageBox(onEditClick = onEditImageIconClick , image)
             }
             Spacer(modifier = Modifier.height(24.dp))
 
