@@ -8,10 +8,10 @@ import kotlin.uuid.ExperimentalUuidApi
 fun CategoryDto.toEntity(): Category {
     val image = when (imageType) {
         CategoryDto.IMAGE_TYPE_BYTE_ARRAY -> {
-            Category.Image.ByteArray(imageBytes!!)
+            Category.Image.ByteArray(imageBytes ?: byteArrayOf())
         }
 
-        else -> throw IllegalArgumentException("Image type not supported: $imageType")
+        else -> throw IllegalStateException("Image type not supported: $imageType")
     }
 
     return Category(
@@ -21,7 +21,7 @@ fun CategoryDto.toEntity(): Category {
     )
 }
 
-@OptIn(ExperimentalUuidApi::class)
+
 fun Category.toDto(): CategoryDto {
     return when (image) {
         is Category.Image.Predefined -> CategoryDto(
@@ -34,6 +34,7 @@ fun Category.toDto(): CategoryDto {
             id = this.id,
             title = this.title,
             imageType = CategoryDto.IMAGE_TYPE_BYTE_ARRAY,
+            imageBytes = this.image.data
         )
     }
 }
