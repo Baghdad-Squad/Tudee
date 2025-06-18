@@ -2,6 +2,7 @@ package com.baghdad.tudee.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
@@ -21,8 +22,9 @@ fun TudeeNavHost(navController: NavHostController, startDestination: Route) {
 
         composable<Route.TasksScreen>(
             typeMap = mapOf(
-                typeOf<Task.State>() to CustomNavType.TaskStateType,
+                typeOf<Task.State>() to NavType.EnumType(Task.State::class.java),
             )
+
         ){
             // TODO put the Tasks Screen Here With Argument
         }
