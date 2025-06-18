@@ -18,18 +18,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.baghdad.tudee.designSystem.theme.Theme
-import com.baghdad.tudee.ui.navigation.AppScreen
+import com.baghdad.tudee.ui.navigation.BottomNavigationRoute
+import com.baghdad.tudee.ui.navigation.Route
 import com.baghdad.tudee.ui.utils.noRippleClickable
 
 
 @Composable
 fun BottomNavigation(
     navController: NavController,
-    screens: List<AppScreen>,
     modifier: Modifier = Modifier,
 ) {
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
-    if(currentRoute?.startsWith(AppScreen.OnBoardingScreen.route) == false)
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route?.substringBefore("?")
+    if(currentRoute?.startsWith(Route.OnboardingScreen::class.qualifiedName.toString()) == false)
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -37,13 +37,15 @@ fun BottomNavigation(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        screens.forEach{item ->
-            (if (currentRoute == item.route) item.selectedIcon
-            else item.unSelectedIcon)?.let {
+        BottomNavigationRoute.entries.forEach{item ->
+            (if (currentRoute == item.route::class.qualifiedName)
+                item.selectedIcon
+            else
+                item.unSelectedIcon)?.let {
                 painterResource(it)
             }?.let {
                 NavItem(
-                    isSelected = currentRoute == item.route,
+                    isSelected = currentRoute == item.route::class.qualifiedName,
                     onClick = {
                         navController.navigate(item.route)
                     },
