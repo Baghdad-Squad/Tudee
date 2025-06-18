@@ -31,9 +31,10 @@ fun NightStars(isDay: Boolean) {
     val stars = remember {
         listOf(
             Star(DpSize(2.08.dp, 2.7.dp), Offset(5.94f, 14.06f)),
-            Star(DpSize(2.08.dp, 2.7.dp), Offset(17.37f, 5.06f)),
-            Star(DpSize(2.79.dp, 3.83.dp), Offset(8.69f, 7.87f)),
-            Star(DpSize(2.37.dp, 3.16.dp), Offset(28.8f, 15.19f)),
+            Star(DpSize(3.08.dp, 3.7.dp), Offset(17.37f, 5.06f)),
+            Star(DpSize(3.79.dp, 4.83.dp), Offset(8.69f, 7.87f)),
+            Star(DpSize(2.37.dp, 3.16.dp), Offset(20.57f, 15.19f)),
+            Star(DpSize(3.37.dp, 4.16.dp), Offset(28.8f, 5.06f)),
             Star(DpSize(1.91.dp, 2.44.dp), Offset(14.17f, 22.5f)),
             Star(DpSize(1.91.dp, 2.44.dp), Offset(8.23f, 28.39f)),
             Star(DpSize(1.91.dp, 2.69.dp), Offset(23.77f, 30.37f)),
@@ -53,7 +54,7 @@ fun NightStars(isDay: Boolean) {
                     modifier = Modifier
                         .size(star.size)
                         .offset(star.offset.x.dp, star.offset.y.dp),
-                    tint = Color.Unspecified
+                    tint = Color(0xFFF1F1F1)
                 )
             }
         }
