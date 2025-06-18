@@ -31,29 +31,6 @@ import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.TaskPriority
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
 import com.baghdad.tudee.ui.composable.button.PrimaryButton
-
-@Composable
-fun TaskDetailsDemo() {
-    var showSheet by remember { mutableStateOf(false) }
-
-    Box(modifier = Modifier.fillMaxSize()) {
-        PrimaryButton(
-            onClick = { showSheet = true },
-            label = "Show Task Details",
-            modifier = Modifier.align(Alignment.Center)
-        )
-
-        TaskDetails(
-            isVisible = showSheet,
-            onDismissRequest = { showSheet = false },
-            icon = painterResource(id = R.drawable.ic_book_open),
-            priorityTask = Task.Priority.MEDIUM,
-            taskState = Task.State.TODO
-        )
-    }
-}
-
-
 @Composable
 fun TaskDetails(
     isVisible: Boolean,
@@ -160,6 +137,4 @@ fun TaskDetailsContent(
 @Preview(showBackground = true)
 @Composable
 fun TaskDetailsPreview() {
-
-    TaskDetailsDemo()
 }
