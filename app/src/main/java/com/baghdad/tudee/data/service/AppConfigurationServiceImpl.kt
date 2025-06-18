@@ -9,10 +9,10 @@ class AppConfigurationServiceImpl(
     private val appConfigurationDao: AppConfigurationDao
 ) : BaseService(), AppConfigurationService {
     override suspend fun isDarkTheme(): Flow<Boolean> = executeWithErrorHandling {
-        appConfigurationDao.getIsDarkTheme().map { it == true }
+        appConfigurationDao.isDarkTheme().map { it == true }
     }
 
     override suspend fun setTheme(isDark: Boolean) = executeWithErrorHandling {
-        appConfigurationDao.setIsDarkTheme(isDark)
+        appConfigurationDao.saveTudeeTheme(isDark)
     }
 }

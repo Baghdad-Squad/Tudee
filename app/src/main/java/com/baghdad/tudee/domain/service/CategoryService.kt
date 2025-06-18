@@ -5,10 +5,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-@OptIn(ExperimentalUuidApi::class)
 interface CategoryService {
     suspend fun getCategories(): Flow<List<Category>>
     suspend fun createCategory(category: Category)
     suspend fun editCategory(category: Category)
-    suspend fun deleteCategory(categoryId: Uuid)
+    suspend fun deleteCategory(categoryId: Long)
 }
