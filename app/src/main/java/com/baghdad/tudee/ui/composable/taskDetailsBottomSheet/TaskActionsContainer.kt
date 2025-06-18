@@ -21,12 +21,12 @@ import com.baghdad.tudee.designSystem.theme.Theme
 
 @Composable
 fun TaskActionsContainer(
-    buttonText:String
-){
+    buttonText: String
+) {
     Row(
-        modifier = Modifier.fillMaxWidth()
-            .height(56.dp)
-        ,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(
             4.dp
@@ -39,8 +39,7 @@ fun TaskActionsContainer(
                     color = Theme.color.textColor.stroke,
                     shape = RoundedCornerShape(100)
                 )
-                .clip(RoundedCornerShape(100))
-            , contentAlignment = Alignment.Center
+                .clip(RoundedCornerShape(100)), contentAlignment = Alignment.Center
 
         ) {
             Icon(
