@@ -1,4 +1,4 @@
-package com.baghdad.tudee.ui.composable.bottomSheets
+package com.baghdad.tudee.ui.composable.taskDetailsBottomSheet
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
