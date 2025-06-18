@@ -7,10 +7,9 @@ data class HomeScreenUIState(
     val todoTasks: List<Task> = emptyList(),
     val doneTasks: List<Task> = emptyList(),
     val errorMessage: String? = null,
-    val showAddTaskDialog: Boolean = false,
+    val showAddBottomSheet: Boolean = false,
     val showAddCategoryDialog: Boolean = false,
-    val isSnakeBarShown: Boolean = false,
+    val showSnackBar: Boolean = false,
     val isLoading: Boolean = false,
-    val isEmptyTasks: Boolean = false
 
 )
