@@ -7,9 +7,9 @@ import com.baghdad.tudee.data.model.CategoryDto.Companion.CATEGORIES_TABLE_NAME
 
 @Entity(tableName = CATEGORIES_TABLE_NAME)
 data class CategoryDto(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = COLUMN_ID)
-    val id: String,
+    val id: Long,
     @ColumnInfo(name = COLUMN_TITLE)
     val title: String,
     @ColumnInfo(name = COLUMN_IMAGE_URI)

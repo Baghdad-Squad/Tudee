@@ -7,9 +7,9 @@ import com.baghdad.tudee.data.model.TaskDto.Companion.TASKS_TABLE_NAME
 
 @Entity(tableName = TASKS_TABLE_NAME)
 data class TaskDto(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = COLUMN_ID)
-    val id: String,
+    val id: Long,
     @ColumnInfo(name = COLUMN_TITLE)
     val title: String,
     @ColumnInfo(name = COLUMN_DESCRIPTION)
@@ -19,7 +19,7 @@ data class TaskDto(
     @ColumnInfo(name = COLUMN_PRIORITY)
     val priority: String,
     @ColumnInfo(name = COLUMN_CATEGORY_ID)
-    val categoryId: String,
+    val categoryId: Long,
     @ColumnInfo(name = COLUMN_STATE)
     val state: String
 ) {
