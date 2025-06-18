@@ -207,8 +207,8 @@ fun ShowDeleteTaskSheetButton(
 @Composable
 fun DeleteTaskPreview() {
     DeleteTaskBottomSheet(
-        onDeleteClick = { },
-        onCancelClick = { }
+        onDeleteClick = {  },
+        onCancelClick = {  }
     )
 }
 

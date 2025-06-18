@@ -200,8 +200,8 @@ fun ShowDeleteCategorySheetButton(
 @Composable
 fun DeleteCategoryPreview() {
     DeleteCategoryBottomSheet(
-        onDeleteClick = { },
-        onCancelClick = { }
+        onDeleteClick = {  },
+        onCancelClick = {  }
     )
 }
 @Preview(showBackground = true)
