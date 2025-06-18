@@ -8,6 +8,7 @@ import androidx.room.Update
 import com.baghdad.tudee.data.model.TaskDto
 import com.baghdad.tudee.data.model.TaskDto.Companion.COLUMN_CATEGORY_ID
 import com.baghdad.tudee.data.model.TaskDto.Companion.COLUMN_DATE
+import com.baghdad.tudee.data.model.TaskDto.Companion.COLUMN_ID
 import com.baghdad.tudee.data.model.TaskDto.Companion.TASKS_TABLE_NAME
 import kotlinx.coroutines.flow.Flow
 import kotlin.uuid.ExperimentalUuidApi
@@ -17,11 +18,11 @@ import kotlin.uuid.ExperimentalUuidApi
 interface TaskDao {
 
     @Query("SELECT * FROM $TASKS_TABLE_NAME WHERE $COLUMN_CATEGORY_ID = :categoryId")
-    suspend fun getTasksByCategory(categoryId: Long): Flow<List<TaskDto>>
+    fun getTasksByCategory(categoryId: Long): Flow<List<TaskDto>>
 
 
     @Query("SELECT * FROM $TASKS_TABLE_NAME WHERE $COLUMN_DATE = :date")
-    suspend fun getTasksByDate(date: String): Flow<List<TaskDto>>
+    fun getTasksByDate(date: String): Flow<List<TaskDto>>
 
     @Insert
     suspend fun createTask(task: TaskDto)
@@ -30,6 +31,6 @@ interface TaskDao {
     suspend fun editTask(task: TaskDto)
 
 
-    @Delete
-    suspend fun deleteTask(taskId: Long)
+    @Query("DELETE FROM $TASKS_TABLE_NAME WHERE $COLUMN_ID = :id")
+    suspend fun deleteTask(id: Long)
 }
