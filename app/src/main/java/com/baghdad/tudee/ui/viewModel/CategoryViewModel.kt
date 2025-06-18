@@ -65,7 +65,7 @@ class CategoryViewModel(
     }
 
     @OptIn(ExperimentalUuidApi::class)
-    fun createCategory(category: CategoryUiState) {
+    fun addCategory(category: CategoryUiState) {
         viewModelScope.launch(Dispatchers.IO) {
             categoryService.createCategory(category.toEntity())
         }

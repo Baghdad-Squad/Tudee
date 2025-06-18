@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -24,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -32,29 +34,42 @@ import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.ui.component.AddNewCategoryCard
 import com.baghdad.tudee.ui.composable.BottomNavigation
 import com.baghdad.tudee.ui.composable.CategoryItem
+import com.baghdad.tudee.ui.composable.SnakeBar
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.viewModel.CategoryViewModel
 import com.baghdad.tudee.ui.viewModel.state.CategoryUiState
 import org.koin.androidx.compose.koinViewModel
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 @Composable
 fun CategoryScreen(
     viewModel: CategoryViewModel = koinViewModel()
 ) {
     val state by viewModel.statusValue.collectAsState()
-    CategoryScreenContent(state = state)
+    val addCategory: (CategoryUiState) -> Unit = { viewModel.addCategory(it) }
+    CategoryScreenContent(state = state, addCategory)
 }
 
+@OptIn(ExperimentalUuidApi::class)
 @Composable
-fun CategoryScreenContent(state: List<CategoryUiState>) {
+fun CategoryScreenContent(state: List<CategoryUiState>,
+                          addCategory: (CategoryUiState) -> Unit
+) {
     var showAddNewCategoryDialog by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("") }
-    Box(Modifier
-        .fillMaxSize()
-        .background(Theme.color.surfaceColor.surface)) {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(Theme.color.surfaceColor.surface)
+    ) {
         Column() {
             // status bar
-            Box(modifier = Modifier.height(40.dp).background(Theme.color.surfaceColor.surfaceHigh))
+            Box(
+                modifier = Modifier
+                    .height(40.dp)
+                    .background(Theme.color.surfaceColor.surfaceHigh)
+            )
             // screen bar
             Box(
                 modifier = Modifier
@@ -71,7 +86,6 @@ fun CategoryScreenContent(state: List<CategoryUiState>) {
                     color = Theme.color.textColor.title
                 )
             }
-
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(104.dp),
                 contentPadding = PaddingValues(
@@ -80,19 +94,19 @@ fun CategoryScreenContent(state: List<CategoryUiState>) {
                     top = 12.dp,
                     bottom = (56 + 12).dp
                 ),
-                verticalArrangement = Arrangement.spacedBy(25.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                    items(state) {
-                        CategoryItem(
-                            label = it.title,
-                            icon = painterResource(id = it.imageUri.toInt()),
-                            onClick = {
+                items(state) {// the width is 121 instead of 104
+                    CategoryItem(
+                        label = it.title,
+                        icon = painterResource(id = it.imageUri.toInt()),
+                        onClick = {
 
-                            },
-                            isSelected = false,
-                            count = it.taskCount
-                        )
+                        },
+                        isSelected = false,
+                        count = it.taskCount,
+                    )
 
                 }
 
@@ -139,16 +153,35 @@ fun CategoryScreenContent(state: List<CategoryUiState>) {
                     .fillMaxSize()
                     .zIndex(1f)
             ) {
-                AddNewCategoryCard(
-                    onClickAdd = {},
-                    onClickCancel = { showAddNewCategoryDialog = false },
-                    onClickUpload = {},
-                    onChangeText = { text = it },
-                    modifier = Modifier
-                        .background(color = Theme.color.surfaceColor.surface)
-                        .padding(16.dp, 12.dp)
-                        .align(Alignment.BottomCenter)
-                )
+//                 example of link  add new category with category screen
+//                AddNewCategoryCard(
+//                    onClickAdd = {
+//                        addCategory(
+//                            CategoryUiState(
+//                                id = Uuid.random(),
+//                                title = text,
+//                                imageUri = image picker,
+//                                taskCount = 0,
+//                            )
+//                        )
+//
+//                    },
+//                    onClickCancel = { showAddNewCategoryDialog = false },
+//                    onClickUploadImage = {
+//                        // Image Picker
+//                    },
+//                    onChangeText = { text = it },
+//                    modifier = Modifier
+//                        .background(color = Theme.color.surfaceColor.surface)
+//                        .padding(16.dp, 12.dp)
+//                        .align(Alignment.BottomCenter)
+//                )
+                AnimatedVisibility(
+                    visible = text.isNotEmpty(),
+                    enter = fadeIn(),
+                    exit = fadeOut()
+
+                ) { }
             }
         }
     }
