@@ -103,7 +103,6 @@ fun TasksEmptyScreen(modifier: Modifier = Modifier) {
         ) {
             Box(
                 modifier = Modifier
-//                    .offset(y = -(42).dp)
                     .padding(end = 20.dp)
                     .align(Alignment.CenterEnd)
             ) {
