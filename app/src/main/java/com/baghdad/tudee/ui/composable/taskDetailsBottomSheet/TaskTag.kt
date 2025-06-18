@@ -15,8 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Task
 
@@ -28,19 +30,19 @@ fun TaskState(
     val StateProperties = when (taskState) {
         Task.State.TODO -> StateProperties(
             Theme.color.status.yellowVariant,
-            "To-Do",
+            stringResource(R.string.to_do),
             Theme.color.status.yellowAccent
         )
 
         Task.State.IN_PROGRESS -> StateProperties(
             Theme.color.status.purpleVariant,
-            "in progress",
+            stringResource(R.string.in_progress),
             Theme.color.status.purpleAccent
         )
 
         Task.State.DONE -> StateProperties(
             Theme.color.status.greenVariant,
-            "Done",
+            stringResource(R.string.done),
             Theme.color.status.greenAccent
         )
     }
@@ -60,10 +62,8 @@ fun TaskState(
                 .background(
                     color = StateProperties.textColor,
                     shape = CircleShape
-                )
+                ).padding(end = 4.dp)
         )
-        Spacer(modifier = Modifier.width(4.dp))
-
         Text(
             text = StateProperties.text,
             style = Theme.typography.label.small,
