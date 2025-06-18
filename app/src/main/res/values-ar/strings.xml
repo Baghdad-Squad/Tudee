@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <!-- App Info -->
+    <string name="app_name">تودي</string>
+    <string name="character_name">تودي</string>
+    <string name="app_tagline">مساعدك اللطيف لكل مهمة</string>
+
+    <!-- General Actions -->
+    <string name="continue_button">متابعة</string>
+    <string name="next_button">التالي</string>
+    <string name="cancel">إلغاء</string>
+    <string name="delete">حذف</string>
+    <string name="save">حفظ</string>
+    <string name="edit">تعديل</string>
+    <string name="add">إضافة</string>
+    <string name="ok">موافق</string>
+    <string name="clear">مسح</string>
+    <string name="upload">رفع</string>
+    <string name="back_button">رجوع</string>
+
+    <!-- Onboarding/Welcome Messages -->
+    <string name="overwhelmed_with_tasks">مرهق من المهام؟</string>
+    <string name="bring_order_to_chaos">لنجلب بعض النظام للفوضى. تودي هنا لمساعدتك على الترتيب والتخطيط والتنفس بسهولة.</string>
+    <string name="procrastinating_again">أوه لا! تماطل مرة أخرى</string>
+    <string name="not_mad_disappointed">تودي ليس غاضباً... فقط محبط قليلاً، لنعود للمسار الصحيح معاً.</string>
+    <string name="complete_task_celebrate">لننجز المهمة ونحتفل معاً.</string>
+    <string name="progress_is_progress">التقدم هو تقدم. سيحتفل تودي معك بكل فوز، كبيراً كان أم صغيراً.</string>
+
+    <!-- Dashboard -->
+    <string name="overview">نظرة عامة</string>
+    <string name="nothing_on_list">لا شيء في قائمتك...</string>
+    <string name="fill_day_awesome">املأ يومك بشيء رائع.</string>
+    <string name="no_tasks_today">لا مهام لليوم!</string>
+    <string name="no_tasks_here">لا مهام هنا!</string>
+    <string name="tap_plus_add_task">اضغط على زر + لإضافة مهمتك الأولى.</string>
+    <string name="no_tasks_available">لا توجد مهام متاحة</string>
+
+    <!-- Motivational Messages -->
+    <string name="stay_working">استمر في العمل! 😄</string>
+    <string name="completed_tasks_keep_going">لقد أكملت 3 من أصل 10 مهام، استمر!</string>
+    <string name="tadaa">تادا! 🥳</string>
+    <string name="doing_amazing">أنت تقوم بعمل رائع!!! تودي فخور بك.</string>
+    <string name="zero_progress">لا تقدم على الإطلاق؟! 😡</string>
+    <string name="just_scrolling">أنت فقط تتصفح، لا تعمل، تودي يراقب. عد للعمل!!!</string>
+
+    <!-- Task Status -->
+    <string name="done">منجز</string>
+    <string name="in_progress">قيد التنفيذ</string>
+    <string name="to_do">للقيام</string>
+
+    <!-- Priority Levels -->
+    <string name="high">عالية</string>
+    <string name="medium">متوسطة</string>
+    <string name="low">منخفضة</string>
+
+    <!-- Task Management -->
+    <string name="tasks">المهام</string>
+    <string name="task_details">تفاصيل المهمة</string>
+    <string name="add_new_task">إضافة مهمة جديدة</string>
+    <string name="edit_task">تعديل المهمة</string>
+    <string name="delete_task">حذف المهمة</string>
+    <string name="task_title">عنوان المهمة</string>
+    <string name="description">الوصف</string>
+    <string name="priority">الأولوية</string>
+    <string name="category">الفئة</string>
+    <string name="move_to_done">نقل إلى منجز</string>
+    <string name="move_to_in_progress">نقل إلى قيد التنفيذ</string>
+    <string name="select_date">اختر التاريخ</string>
+    <string name="date_format">dd-MM-yyyy</string>
+
+    <!-- Sample Tasks -->
+    <string name="organize_study_desk">ترتيب مكتب الدراسة</string>
+    <string name="review_cell_structure">مراجعة تركيب الخلية ووظائفها للغد</string>
+    <string name="solve_exercises_textbook">حل جميع التمارين من صفحة 45 إلى 50 في الكتاب المدرسي</string>
+
+    <!-- Categories -->
+    <string name="categories">الفئات</string>
+    <string name="delete_category">حذف الفئة</string>
+    <string name="edit_category">تعديل الفئة</string>
+    <string name="add_new_category">إضافة فئة جديدة</string>
+    <string name="add_category">إضافة فئة</string>
+    <string name="category_image">صورة الفئة</string>
+    <string name="category_title">عنوان الفئة</string>
+
+    <!-- Category Names -->
+    <string name="education">التعليم</string>
+    <string name="shopping">التسوق</string>
+    <string name="medical">الطبية</string>
+    <string name="gym">النادي الرياضي</string>
+    <string name="entertainment">الترفيه</string>
+    <string name="cooking">الطبخ</string>
+    <string name="family_and_friend">العائلة والأصدقاء</string>
+    <string name="traveling">السفر</string>
+    <string name="agriculture">الزراعة</string>
+    <string name="coding">البرمجة</string>
+    <string name="adoration">العبادة</string>
+    <string name="fixing_bugs">إصلاح الأخطاء</string>
+    <string name="cleaning">التنظيف</string>
+    <string name="work">العمل</string>
+    <string name="budgeting">الميزانية</string>
+    <string name="self_care">العناية بالذات</string>
+    <string name="event">الحدث</string>
+    <string name="reading_novels">قراءة الروايات</string>
+
+    <!-- Months (Full Names) -->
+    <string name="january">يناير</string>
+    <string name="february">فبراير</string>
+    <string name="march">مارس</string>
+    <string name="april">أبريل</string>
+    <string name="may">مايو</string>
+    <string name="june">يونيو</string>
+    <string name="july">يوليو</string>
+    <string name="august">أغسطس</string>
+    <string name="september">سبتمبر</string>
+    <string name="october">أكتوبر</string>
+    <string name="november">نوفمبر</string>
+    <string name="december">ديسمبر</string>
+
+    <!-- Months (Short Names) -->
+    <string name="jan">ين</string>
+    <string name="feb">فبر</string>
+    <string name="mar">مار</string>
+    <string name="apr">أبر</string>
+    <string name="may_short">ماي</string>
+    <string name="jun">يون</string>
+    <string name="jul">يول</string>
+    <string name="aug">أغس</string>
+    <string name="sep">سبت</string>
+    <string name="oct">أكت</string>
+    <string name="nov">نوف</string>
+    <string name="dec">ديس</string>
+
+    <!-- Days of Week (Full Names) -->
+    <string name="sunday">الأحد</string>
+    <string name="monday">الاثنين</string>
+    <string name="tuesday">الثلاثاء</string>
+    <string name="wednesday">الأربعاء</string>
+    <string name="thursday">الخميس</string>
+    <string name="friday">الجمعة</string>
+    <string name="saturday">السبت</string>
+
+    <!-- Days of Week (Short Names) -->
+    <string name="sun">أحد</string>
+    <string name="mon">اث</string>
+    <string name="tue">ثلث</string>
+    <string name="wed">أر</string>
+    <string name="thu">خ</string>
+    <string name="fri">ج</string>
+    <string name="sat">س</string>
+
+    <!-- Days of Week (Single Letter) -->
+    <string name="sunday_short">ح</string>
+    <string name="monday_short">ن</string>
+    <string name="tuesday_short">ث</string>
+    <string name="wednesday_short">ر</string>
+    <string name="thursday_short">خ</string>
+    <string name="friday_short">ج</string>
+    <string name="saturday_short">س</string>
+
+    <!-- Confirmation Messages -->
+    <string name="are_you_sure_continue">هل أنت متأكد من المتابعة؟</string>
+    <string name="delete_category_confirmation">هل أنت متأكد من حذف هذه الفئة؟ سيتم حذف جميع المهام في هذه الفئة أيضاً.</string>
+    <string name="delete_task_confirmation">هل أنت متأكد من حذف هذه المهمة؟</string>
+
+    <!-- Success Messages -->
+    <string name="task_completed">تم إنجاز المهمة</string>
+    <string name="task_updated">تم تحديث المهمة</string>
+    <string name="add_task_successfully">تمت إضافة المهمة بنجاح</string>
+    <string name="edited_task_successfully">تم تعديل المهمة بنجاح</string>
+    <string name="deleted_task_successfully">تم حذف المهمة بنجاح</string>
+    <string name="category_added_successfully">تمت إضافة الفئة بنجاح</string>
+    <string name="category_updated_successfully">تم تحديث الفئة بنجاح</string>
+    <string name="category_deleted_successfully">تم حذف الفئة بنجاح</string>
+
+    <!-- Error Messages -->
+    <string name="error_loading_categories">خطأ في تحميل الفئات</string>
+    <string name="error_loading_tasks">خطأ في تحميل المهام</string>
+    <string name="network_error">خطأ في الشبكة. يرجى المحاولة مرة أخرى.</string>
+    <string name="category_name_required">اسم الفئة مطلوب</string>
+
+    <!-- Navigation -->
+    <string name="home">الرئيسية</string>
+    <string name="profile">الملف الشخصي</string>
+    <string name="settings">الإعدادات</string>
+
+    <!-- Accessibility -->
+    <string name="category_icon">رمز الفئة</string>
+    <string name="priority_badge">شارة الأولوية</string>
+    <string name="task_date">تاريخ المهمة</string>
+    <string name="robot_illustration">رسم توضيحي للروبوت</string>
+    <string name="books_icon">رمز الكتب</string>
+    <string name="category_placeholder_image">صورة العنصر النائب للفئة</string>
+    <string name="upload_image_icon">رمز رفع الصورة</string>
+    <string name="edit_icon">رمز التعديل</string>
+    <string name="ar_badge">شارة الواقع المعزز</string>
+
+    <!-- Plurals for task counts -->
+    <plurals name="task_count">
+        <item quantity="zero">لا توجد مهام</item>
+        <item quantity="one">%d مهمة</item>
+        <item quantity="two">%d مهمتان</item>
+        <item quantity="few">%d مهام</item>
+        <item quantity="many">%d مهمة</item>
+        <item quantity="other">%d مهمة</item>
+    </plurals>
+
+    <!-- Date Format Templates -->
+    <string name="today_format">اليوم، %s</string>
+    <string name="month_year_format">%s %d</string>
+    <string name="date_month_format">%s، %s %d</string>
+</resources>
