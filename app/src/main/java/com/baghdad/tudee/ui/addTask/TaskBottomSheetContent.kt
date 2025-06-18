@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,11 +28,12 @@ import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.addTask.composable.MainButtonPart
-import com.baghdad.tudee.ui.addTask.composable.PriorityButtonPart
+import com.baghdad.tudee.ui.addTask.composable.PriorityChipPart
 import com.baghdad.tudee.ui.addTask.composable.TextFieldScreenPart
 import com.baghdad.tudee.ui.composable.CategoryItem
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
 import com.baghdad.tudee.ui.composable.button.PrimaryButton
+import kotlinx.datetime.LocalDate
 import kotlin.uuid.ExperimentalUuidApi
 
 
@@ -43,8 +45,10 @@ fun TaskBottomSheet(
 ) {
     var titleText by remember { mutableStateOf("") }
     var paragraphText by remember { mutableStateOf("") }
-    var dateTime by remember { mutableStateOf("") }
+    var dateTime by remember { mutableStateOf(LocalDate(2023, 6, 22)) }
     var selectedCategoryId by remember { mutableStateOf(initial?.categoryId) }
+    var selectedPriority by remember { mutableStateOf<Task.Priority?>(initial?.priority) }
+
 
     Column(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
@@ -57,11 +61,14 @@ fun TaskBottomSheet(
                     onTitleChange = { titleText = it },
                     paragraph = initial?.description ?: paragraphText,
                     onParagraphChange = { paragraphText = it },
-                    dateTime = (initial?.date ?: dateTime).toString(),
-                    onDateTimeChange = { dateTime = it }
+                    dateTime =  dateTime,
+                    onDateChange = { dateTime = it }
                 )
 
-                PriorityButtonPart()
+                PriorityChipPart(
+                    selectedPriority = selectedPriority,
+                    onPrioritySelected = { selectedPriority = it }
+                )
             }
 
             item {
@@ -104,13 +111,17 @@ fun TaskBottomSheet(
                 }
             }
         }
-
-        MainButtonPart(titleText, paragraphText, dateTime)
+        val showButton by remember {
+            derivedStateOf {
+                titleText.isNotBlank() && paragraphText.isNotBlank()
+            }
+        }
+        MainButtonPart(showButton)
     }
 }
 
 @Composable
-fun AddTaskSheetButton() {
+fun ShowTaskSheetButton() {
     var showSheet by remember { mutableStateOf(false) }
     Box(modifier = Modifier.fillMaxSize()) {
         PrimaryButton(
@@ -133,5 +144,5 @@ fun AddTaskSheetButton() {
 @Preview(showBackground = true)
 @Composable
 fun MyPreview(){
-    AddTaskSheetButton()
+    ShowTaskSheetButton()
 }
