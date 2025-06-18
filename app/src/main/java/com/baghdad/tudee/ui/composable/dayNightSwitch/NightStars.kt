@@ -8,12 +8,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
@@ -43,12 +47,13 @@ fun NightStars(isDay: Boolean) {
     ) {
         Box(Modifier.fillMaxWidth()) {
             stars.forEach { star ->
-                Image(
-                    painter = painterResource(id = R.drawable.vector),
-                    contentDescription = null,
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.vector),
+                    contentDescription = "Star",
                     modifier = Modifier
                         .size(star.size)
-                        .offset(star.offset.x.dp, star.offset.y.dp)
+                        .offset(star.offset.x.dp, star.offset.y.dp),
+                    tint = Color.Unspecified
                 )
             }
         }
