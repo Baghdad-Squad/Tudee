@@ -1,32 +1,38 @@
 package com.baghdad.tudee.data.service
 
+import com.baghdad.tudee.data.database.dao.TaskDao
+import com.baghdad.tudee.data.mapper.toDto
+import com.baghdad.tudee.data.mapper.toEntities
+import com.baghdad.tudee.data.model.TaskDto
+import com.baghdad.tudee.data.service.shared.DatabaseErrorHandler
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.domain.service.TaskService
 import kotlinx.coroutines.flow.Flow
-import java.time.LocalDate
-import java.util.UUID
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import kotlinx.coroutines.flow.map
+import kotlinx.datetime.LocalDate
 
-class TaskServiceImpl(): TaskService {
-    @OptIn(ExperimentalUuidApi::class)
-    override suspend fun getTasksByCategory(categoryId: Uuid): Flow<List<Task>> {
-        TODO("Not yet implemented")
+class TaskServiceImpl(
+    private val taskDao: TaskDao
+) : TaskService, DatabaseErrorHandler() {
+    override suspend fun getTasksByCategory(categoryId: Long): Flow<List<Task>> =
+        executeWithErrorHandling {
+            taskDao.getTasksByCategory(categoryId).map(List<TaskDto>::toEntities)
+        }
+
+    override suspend fun getTasksByDate(date: LocalDate): Flow<List<Task>> =
+        executeWithErrorHandling {
+            taskDao.getTasksByDate(date.toString()).map(List<TaskDto>::toEntities)
+        }
+
+    override suspend fun createTask(task: Task) = executeWithErrorHandling {
+        taskDao.createTask(task.toDto())
     }
 
-    override suspend fun getTasksByDate(date: LocalDate): Flow<List<Task>> {
-        TODO("Not yet implemented")
+    override suspend fun editTask(task: Task) = executeWithErrorHandling {
+        taskDao.editTask(task.toDto())
     }
 
-    override suspend fun createTask(task: Task) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun editTask(task: Task) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun deleteTask(taskId: UUID) {
-        TODO("Not yet implemented")
+    override suspend fun deleteTask(taskId: Long) = executeWithErrorHandling {
+        taskDao.deleteTask(taskId)
     }
 }
