@@ -14,10 +14,8 @@ class DatabaseErrorHandlerTest {
 
     @Test
     fun `should throw DatabaseCorruptException when database is corrup`() = runTest {
-        //given
         val expectedMessage = "Unknown error"
 
-        //when
         val result = runCatching {
             handler.executeWithErrorHandling<Int> {
                 throw DatabaseCorruptException(expectedMessage)
@@ -25,7 +23,6 @@ class DatabaseErrorHandlerTest {
         }
         val exception = result.exceptionOrNull()
 
-        //then
         if (exception != null) {
             assertEquals(expectedMessage, exception.message)
         }
@@ -34,10 +31,8 @@ class DatabaseErrorHandlerTest {
 
     @Test
     fun `should throw DatabaseException when unknown error occurs`() = runTest {
-        //given
         val expectedMessage = "Unknown error"
 
-        //when
         val result = runCatching {
             handler.executeWithErrorHandling<Int> {
                 throw DatabaseException(expectedMessage)
@@ -45,7 +40,6 @@ class DatabaseErrorHandlerTest {
         }
         val exception = result.exceptionOrNull()
 
-        //then
         if (exception != null) {
             assertEquals(expectedMessage, exception.message)
         }
@@ -53,10 +47,8 @@ class DatabaseErrorHandlerTest {
 
     @Test
     fun `should throw StorageFullException when the storage is full`() = runTest {
-        //given
         val expectedMessage = "Unknown error"
 
-        //when
         val result = runCatching {
             handler.executeWithErrorHandling<Int> {
                 throw StorageFullException(expectedMessage)
@@ -64,7 +56,6 @@ class DatabaseErrorHandlerTest {
         }
         val exception = result.exceptionOrNull()
 
-        //then
         if (exception != null) {
             assertEquals(expectedMessage, exception.message)
         }
@@ -72,10 +63,8 @@ class DatabaseErrorHandlerTest {
 
     @Test
     fun `should throw TudeeException with unknown error`() = runTest {
-        //given
         val expectedMessage = "Unknown error"
 
-        //when
         val result = runCatching {
             handler.executeWithErrorHandling<Int> {
                 throw TudeeException(expectedMessage)
@@ -83,7 +72,6 @@ class DatabaseErrorHandlerTest {
         }
         val exception = result.exceptionOrNull() as? TudeeException
 
-        //then
         if (exception != null) {
             assertEquals(expectedMessage, exception.message)
         }
