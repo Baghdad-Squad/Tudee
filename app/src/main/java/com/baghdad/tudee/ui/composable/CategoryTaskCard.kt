@@ -38,6 +38,7 @@ fun CategoryTaskCard(
         modifier = modifier
             .fillMaxWidth()
             .background(Theme.color.surfaceColor.surfaceHigh, shape = RoundedCornerShape(16.dp))
+            .padding(horizontal = 12.dp, vertical = 12.dp)
             .padding( 12.dp)
             .noRippleClickable {
                 onClick()
@@ -45,8 +46,7 @@ fun CategoryTaskCard(
     ) {
         Row(
             Modifier
-                .fillMaxWidth()
-            ,
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
