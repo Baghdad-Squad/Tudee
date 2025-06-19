@@ -14,20 +14,21 @@ data class CategoryDto(
     val title: String,
     @ColumnInfo(name = COLUMN_IMAGE_TYPE)
     val imageType: String,
+    @ColumnInfo(name = COLUMN_IMAGE_DATA)
+    val imageData: String = "",
     @ColumnInfo(name = COLUMN_IMAGE_BYTES, typeAffinity = ColumnInfo.BLOB)
-    val imageBytes: ByteArray? = null
+    val imageBytes: ByteArray = byteArrayOf()
 ) {
     companion object {
         const val CATEGORIES_TABLE_NAME = "categories"
         const val COLUMN_ID = "id"
         const val COLUMN_TITLE = "title"
         const val COLUMN_IMAGE_TYPE = "image_type"
+        const val COLUMN_IMAGE_DATA = "image_data"
         const val COLUMN_IMAGE_BYTES = "image_bytes"
 
         const val IMAGE_TYPE_PREDEFINED = "PREDEFINED"
         const val IMAGE_TYPE_BYTE_ARRAY = "BYTE_ARRAY"
-        const val IMAGE_TYPE_FILE_PATH = "FILE_PATH"
-
     }
 
     override fun equals(other: Any?): Boolean {
