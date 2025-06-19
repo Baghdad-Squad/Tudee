@@ -38,6 +38,7 @@ fun TudeeTextField(
     onValueChange: (String) -> Unit,
     hint: String,
     modifier: Modifier = Modifier,
+    readOnly: Boolean = false,
     leadingIcon: Painter? = null,
     height: Int = 56,
     maxLines: Int = 1,
@@ -107,6 +108,7 @@ fun TudeeTextField(
                             isFocused = focusState.isFocused
                         },
                     maxLines = maxLines,
+                    readOnly = readOnly,
                     textStyle = Theme.typography.body.medium.copy(animatedContentColor)
                 )
             }
