@@ -156,7 +156,7 @@ fun CategoryScreenContent(
         )
 
         SnakeBar(
-            message = "Successfully",
+            message = "Edited category successfully.",
             isSuccess = true,
             isVisible = isAdded.value
         )
