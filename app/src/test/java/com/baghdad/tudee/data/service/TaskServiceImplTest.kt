@@ -16,6 +16,7 @@ import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.taskExpecte
 import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.taskID
 import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.taskindex
 import com.baghdad.tudee.domain.entity.Task
+import com.baghdad.tudee.domain.exception.DatabaseCorruptException
 import com.baghdad.tudee.domain.exception.DatabaseException
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -27,6 +28,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
 
@@ -59,7 +61,7 @@ class TaskServiceImplTest {
 
         val result = taskService.getTasksByCategory(categoryID1).first()
 
-        assertEquals(emptyList<TaskDao>(), result)
+        assertEquals(emptyList<Task>(), result)
     }
 
     @Test
