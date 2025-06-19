@@ -2,10 +2,23 @@ package com.baghdad.tudee.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.baghdad.tudee.data.model.CategoryDto.Companion.COLUMN_ID
+import com.baghdad.tudee.data.model.TaskDto.Companion.COLUMN_CATEGORY_ID
 import com.baghdad.tudee.data.model.TaskDto.Companion.TASKS_TABLE_NAME
 
-@Entity(tableName = TASKS_TABLE_NAME)
+@Entity(
+    tableName = TASKS_TABLE_NAME,
+    foreignKeys = [
+        ForeignKey(
+            entity = CategoryDto::class,
+            parentColumns = [COLUMN_ID],
+            childColumns = [COLUMN_CATEGORY_ID],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class TaskDto(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = COLUMN_ID)
