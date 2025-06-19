@@ -22,13 +22,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,17 +35,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.baghdad.tudee.R
-import com.baghdad.tudee.data.fakeData.fakeCategoriesData
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.domain.entity.Task
-import com.baghdad.tudee.ui.addTask.TaskBottomSheet
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
+import com.baghdad.tudee.ui.composable.SnakeBar
 import com.baghdad.tudee.ui.composable.TopTudeeBar
-import com.baghdad.tudee.ui.composable.TudeeBottomSheet
-import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.utils.insideBorder
 import com.baghdad.tudee.ui.utils.noRippleClickable
+import com.baghdad.tudee.viewModel.homescreenViewModel.HomeScreenViewModel
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
@@ -58,279 +54,275 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
 @Composable
 fun HomeScreenContent(modifier: Modifier = Modifier) {
-    var showSheet by remember { mutableStateOf(false) }
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                painter = painterResource(R.drawable.ic_black_note),
-                onClick = {
-                    showSheet = true
-                },
-                modifier = Modifier.padding(16.dp)
-            )
-            if (showSheet) {
-                TudeeBottomSheet(
-                    isVisible = showSheet,
-                    onDismiss = { showSheet = false }
-                ) {
-                    TaskBottomSheet(
-                        state = fakeCategoriesData()
-                    )
-                }
-            }
-        }
+    val viewModel: HomeScreenViewModel = koinViewModel()
+    val state by viewModel.state.collectAsState()
+    Box(modifier = modifier.fillMaxSize()) {
 
-    ) { it
-    Column(modifier
-        .fillMaxSize()
-        .background(Theme.color.primaryColor.normal)
-        .padding( WindowInsets.statusBars.asPaddingValues()))
-    {
-        TopTudeeBar(
-            title = "Tudee",
-            description = "Your personal task manager",
-            isDay = true,
-            onChangeTheme = { /* TODO */ }
-        )
-        LazyColumn(
-            Modifier
+        Column(
+            modifier
                 .fillMaxSize()
-                .background(Theme.color.surfaceColor.surface)
+                .background(Theme.color.primaryColor.normal)
+                .padding(WindowInsets.statusBars.asPaddingValues())
         ) {
-            item {
+            TopTudeeBar(
+                title = "Tudee",
+                description = "Your personal task manager",
+                isDay = true,
+                onChangeTheme = {
+                    viewModel.onClickSwitchTheme()
+                }
+            )
+            LazyColumn(
+                Modifier
+                    .fillMaxSize()
+                    .background(Theme.color.surfaceColor.surface)
+            ) {
+                item {
 
-                Box(
-                    modifier = Modifier
-                        .zIndex(-1f)
-                        .fillMaxWidth()
-                        .height(45.dp)
-                        .background(Theme.color.primaryColor.normal)
-                )
-                Column(
-                    modifier = Modifier
-                        .fillParentMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .offset(y = -45.dp)
-                        .background(
-                            Color.White,
-                            shape = RoundedCornerShape(16.dp)
-                        )
-                ) {
-                    TextDateIcon(
-                        text = "today, 22 Jun 2025",
-                        icon = painterResource(R.drawable.ic_date)
+                    Box(
+                        modifier = Modifier
+                            .zIndex(-1f)
+                            .fillMaxWidth()
+                            .height(45.dp)
+                            .background(Theme.color.primaryColor.normal)
                     )
-
-                    Row(
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 12.dp, end = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                            .fillParentMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .offset(y = -45.dp)
+                            .background(
+                                Color.White,
+                                shape = RoundedCornerShape(16.dp)
+                            )
                     ) {
-                        Column(modifier = Modifier.fillMaxWidth(0.6f)) {
-                            TextMoodIcon(
-                                text = "Stay working!",
-                                icon = painterResource(R.drawable.ic_okay_feedback)
-                            )
-                            Text(
-                                text = "You've completed 3 out of 10 tasks Keep going!",
-                                style = Theme.typography.body.small,
-                                color = Theme.color.textColor.body,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
-                        }
-                        Box(contentAlignment = Alignment.Center) {
-
-                            Box(
-                                modifier = Modifier
-                                    .size(64.dp)
-                                    .background(
-                                        Theme.color.primaryColor.normal.copy(0.4f),
-                                        shape = RoundedCornerShape(100)
-                                    )
-                            )
-
-                            Image(
-                                painter = painterResource(
-                                    R.drawable.happy_robot
-                                ),
-                                contentDescription = "happy robot",
-                            )
-                        }
-
-                    }
-
-                    Text(
-                        text = "Overview",
-                        style = Theme.typography.title.large,
-                        color = Theme.color.textColor.title,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 12.dp, bottom = 8.dp)
-                    )
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        OverviewCard(
-                            count = 2,
-                            background = Theme.color.status.greenAccent,
-                            taskState = TaskState.DONE,
-                            modifier = Modifier.weight(1f)
+                        TextDateIcon(
+                            text = "today, 22 Jun 2025",
+                            icon = painterResource(R.drawable.ic_date)
                         )
-                        OverviewCard(
-                            count = 16,
-                            background = Theme.color.status.yellowAccent,
-                            taskState = TaskState.IN_PROGRESS,
-                            modifier = Modifier.weight(1f)
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 12.dp, end = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ) {
+                            Column(modifier = Modifier.fillMaxWidth(0.6f)) {
+                                TextMoodIcon(
+                                    text = "Stay working!",
+                                    icon = painterResource(R.drawable.ic_okay_feedback)
+                                )
+                                Text(
+                                    text = "You've completed 3 out of 10 tasks Keep going!",
+                                    style = Theme.typography.body.small,
+                                    color = Theme.color.textColor.body,
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
+                            }
+                            Box(contentAlignment = Alignment.Center) {
+
+                                Box(
+                                    modifier = Modifier
+                                        .size(64.dp)
+                                        .background(
+                                            Theme.color.primaryColor.normal.copy(0.4f),
+                                            shape = RoundedCornerShape(100)
+                                        )
+                                )
+
+                                Image(
+                                    painter = painterResource(
+                                        R.drawable.happy_robot
+                                    ),
+                                    contentDescription = "happy robot",
+                                )
+                            }
+
+                        }
+
+                        Text(
+                            text = "Overview",
+                            style = Theme.typography.title.large,
+                            color = Theme.color.textColor.title,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 12.dp, bottom = 8.dp)
                         )
-                        OverviewCard(
-                            count = 1,
-                            background = Theme.color.status.purpleAccent,
-                            taskState = TaskState.TODO,
-                            modifier = Modifier.weight(1f)
-                        )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            OverviewCard(
+                                count = 2,
+                                background = Theme.color.status.greenAccent,
+                                taskState = TaskState.DONE,
+                                modifier = Modifier.weight(1f)
+                            )
+                            OverviewCard(
+                                count = 16,
+                                background = Theme.color.status.yellowAccent,
+                                taskState = TaskState.IN_PROGRESS,
+                                modifier = Modifier.weight(1f)
+                            )
+                            OverviewCard(
+                                count = 1,
+                                background = Theme.color.status.purpleAccent,
+                                taskState = TaskState.TODO,
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+
                     }
-
                 }
-            }
+                if (state.inProgressTasks.isNotEmpty())
+                    item {
+                        TextHeadTaskSection(
+                            name = "In progress ",
+                            numberOfItem = 12,
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                        ) {
 
-            item {
-                TextHeadTaskSection(
-                    name = "In progress ",
-                    numberOfItem = 12,
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-                ) {
+                        }
 
-                }
+                        LazyRow(
+                            contentPadding = PaddingValues(horizontal = 16.dp),
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            items(5) {
+                                Column(modifier = Modifier.fillMaxWidth()) {
 
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(5) {
-                        Column(modifier = Modifier.fillMaxWidth()) {
+                                    CategoryTaskCard(
+                                        title = "Organize Study Desk",
+                                        description = "Review cell structure and functions for tomorrow...",
+                                        priorityTask = Task.Priority.MEDIUM,
+                                        icon = painterResource(R.drawable.ic_quran),
+                                        modifier = Modifier
+                                            .fillParentMaxWidth(0.95f)
+                                            .padding(bottom = 8.dp)
+                                    ) {}
+                                    CategoryTaskCard(
+                                        title = "Organize Study Desk",
+                                        description = "Review cell structure and functions for tomorrow...",
+                                        priorityTask = Task.Priority.MEDIUM,
+                                        icon = painterResource(R.drawable.ic_quran),
+                                        modifier = Modifier.fillParentMaxWidth(0.95f)
+                                    ) {}
+                                }
+                            }
 
-                            CategoryTaskCard(
-                                title = "Organize Study Desk",
-                                description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = Task.Priority.MEDIUM,
-                                icon = painterResource(R.drawable.ic_quran),
-                                modifier = Modifier
-                                    .fillParentMaxWidth(0.95f)
-                                    .padding(bottom = 8.dp)
-                            ) {}
-                            CategoryTaskCard(
-                                title = "Organize Study Desk",
-                                description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = Task.Priority.MEDIUM,
-                                icon = painterResource(R.drawable.ic_quran),
-                                modifier = Modifier.fillParentMaxWidth(0.95f)
-                            ) {}
+                        }
+                    }
+                if (state.todoTasks.isNotEmpty())
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        TextHeadTaskSection(
+                            name = "To Do ",
+                            numberOfItem = 12,
+                            modifier = Modifier
+                                .fillParentMaxWidth(0.95f)
+                                .padding(bottom = 8.dp)
+                                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                        ) {
+
+                        }
+
+                        LazyRow(
+                            contentPadding = PaddingValues(horizontal = 16.dp),
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            items(5) {
+                                Column() {
+
+                                    CategoryTaskCard(
+                                        title = "Organize Study Desk",
+                                        description = "Review cell structure and functions for tomorrow...",
+                                        priorityTask = Task.Priority.MEDIUM,
+                                        icon = painterResource(R.drawable.ic_quran),
+                                        modifier = Modifier
+                                            .fillParentMaxWidth(0.95f)
+                                            .padding(bottom = 8.dp)
+                                            .padding(bottom = 8.dp)
+                                    ) {}
+                                    CategoryTaskCard(
+                                        title = "Organize Study Desk",
+                                        description = "Review cell structure and functions for tomorrow...",
+                                        priorityTask = Task.Priority.MEDIUM,
+                                        icon = painterResource(R.drawable.ic_quran),
+                                        modifier = Modifier
+                                            .fillParentMaxWidth(0.95f)
+                                            .padding(bottom = 8.dp)
+
+                                    ) {}
+                                }
+                            }
+                        }
+                    }
+                if (state.doneTasks.isNotEmpty())
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        TextHeadTaskSection(
+                            name = "Done ",
+                            numberOfItem = 12,
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                        ) {
+
+                        }
+
+                        LazyRow(
+                            contentPadding = PaddingValues(horizontal = 16.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 32.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            items(5) {
+                                Column() {
+
+                                    CategoryTaskCard(
+                                        title = "Organize Study Desk",
+                                        description = "Review cell structure and functions for tomorrow...",
+                                        priorityTask = Task.Priority.MEDIUM,
+                                        icon = painterResource(R.drawable.ic_quran),
+                                        modifier = Modifier
+                                            .fillParentMaxWidth(0.95f)
+                                            .padding(bottom = 8.dp)
+                                            .padding(bottom = 8.dp)
+                                    ) {}
+                                    CategoryTaskCard(
+                                        title = "Organize Study Desk",
+                                        description = "Review cell structure and functions for tomorrow...",
+                                        priorityTask = Task.Priority.MEDIUM,
+                                        icon = painterResource(R.drawable.ic_quran),
+                                        modifier = Modifier
+                                            .fillParentMaxWidth(0.95f)
+                                            .padding(bottom = 8.dp)
+
+                                    ) {}
+                                }
+                            }
+
                         }
                     }
 
-                }
             }
-
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                TextHeadTaskSection(
-                    name = "To Do ",
-                    numberOfItem = 12,
-                    modifier = Modifier
-                        .fillParentMaxWidth(0.95f)
-                        .padding(bottom = 8.dp)
-                        .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-                ) {
-
-                }
-
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(5) {
-                        Column() {
-
-                            CategoryTaskCard(
-                                title = "Organize Study Desk",
-                                description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = Task.Priority.MEDIUM,
-                                icon = painterResource(R.drawable.ic_quran),
-                                modifier = Modifier
-                                    .fillParentMaxWidth(0.95f)
-                                    .padding(bottom = 8.dp)
-                                    .padding(bottom = 8.dp)
-                            ) {}
-                            CategoryTaskCard(
-                                title = "Organize Study Desk",
-                                description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = Task.Priority.MEDIUM,
-                                icon = painterResource(R.drawable.ic_quran),
-                                modifier = Modifier
-                                    .fillParentMaxWidth(0.95f)
-                                    .padding(bottom = 8.dp)
-
-                            ) {}
-                        }
-                    }
-                }
-            }
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                TextHeadTaskSection(
-                    name = "Done ",
-                    numberOfItem = 12,
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-                ) {
-
-                }
-
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 32.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(5) {
-                        Column() {
-
-                            CategoryTaskCard(
-                                title = "Organize Study Desk",
-                                description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = Task.Priority.MEDIUM,
-                                icon = painterResource(R.drawable.ic_quran),
-                                modifier = Modifier
-                                    .fillParentMaxWidth(0.95f)
-                                    .padding(bottom = 8.dp)
-                                    .padding(bottom = 8.dp)
-                            ) {}
-                            CategoryTaskCard(
-                                title = "Organize Study Desk",
-                                description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = Task.Priority.MEDIUM,
-                                icon = painterResource(R.drawable.ic_quran),
-                                modifier = Modifier
-                                    .fillParentMaxWidth(0.95f)
-                                    .padding(bottom = 8.dp)
-
-                            ) {}
-                        }
-                    }
-
-                }
-            }
-
         }
-    }
-    }
+        SnakeBar(
+            Modifier
+                .padding(horizontal = 16.dp)
+                .align(Alignment.TopCenter)
+                .padding(top = 120.dp),
+            message = state.showSnackBar.message,
+            isSuccess = !state.showSnackBar.isError,
+            isVisible = state.showSnackBar.isVisible
+        )
 
+    }
 }
 
 @Composable
