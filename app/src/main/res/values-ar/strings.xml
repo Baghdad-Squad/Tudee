@@ -37,11 +37,11 @@
     <string name="no_tasks_available">لا توجد مهام متاحة</string>
 
     <!-- Motivational Messages -->
-    <string name="stay_working">استمر في العمل! 😄</string>
+    <string name="stay_working">استمر في العمل! </string>
     <string name="completed_tasks_keep_going">لقد أكملت 3 من أصل 10 مهام، استمر!</string>
-    <string name="tadaa">تادا! 🥳</string>
+    <string name="tadaa">تادا! </string>
     <string name="doing_amazing">أنت تقوم بعمل رائع!!! تودي فخور بك.</string>
-    <string name="zero_progress">لا تقدم على الإطلاق؟! 😡</string>
+    <string name="zero_progress">لا تقدم على الإطلاق؟! </string>
     <string name="just_scrolling">أنت فقط تتصفح، لا تعمل، تودي يراقب. عد للعمل!!!</string>
 
     <!-- Task Status -->
@@ -72,7 +72,7 @@
     <!-- Sample Tasks -->
     <string name="organize_study_desk">ترتيب مكتب الدراسة</string>
     <string name="review_cell_structure">مراجعة تركيب الخلية ووظائفها للغد</string>
-    <string name="solve_exercises_textbook">حل جميع التمارين من صفحة 45 إلى 50 في الكتاب المدرسي</string>
+    <string name="solve_exercises_textbook">حل الكتاب المدرسي</string>
 
     <!-- Categories -->
     <string name="categories">الفئات</string>
@@ -117,19 +117,6 @@
     <string name="november">نوفمبر</string>
     <string name="december">ديسمبر</string>
 
-    <!-- Months (Short Names) -->
-    <string name="jan">ين</string>
-    <string name="feb">فبر</string>
-    <string name="mar">مار</string>
-    <string name="apr">أبر</string>
-    <string name="may_short">ماي</string>
-    <string name="jun">يون</string>
-    <string name="jul">يول</string>
-    <string name="aug">أغس</string>
-    <string name="sep">سبت</string>
-    <string name="oct">أكت</string>
-    <string name="nov">نوف</string>
-    <string name="dec">ديس</string>
 
     <!-- Days of Week (Full Names) -->
     <string name="sunday">الأحد</string>
@@ -140,23 +127,6 @@
     <string name="friday">الجمعة</string>
     <string name="saturday">السبت</string>
 
-    <!-- Days of Week (Short Names) -->
-    <string name="sun">أحد</string>
-    <string name="mon">اث</string>
-    <string name="tue">ثلث</string>
-    <string name="wed">أر</string>
-    <string name="thu">خ</string>
-    <string name="fri">ج</string>
-    <string name="sat">س</string>
-
-    <!-- Days of Week (Single Letter) -->
-    <string name="sunday_short">ح</string>
-    <string name="monday_short">ن</string>
-    <string name="tuesday_short">ث</string>
-    <string name="wednesday_short">ر</string>
-    <string name="thursday_short">خ</string>
-    <string name="friday_short">ج</string>
-    <string name="saturday_short">س</string>
 
     <!-- Confirmation Messages -->
     <string name="are_you_sure_continue">هل أنت متأكد من المتابعة؟</string>
