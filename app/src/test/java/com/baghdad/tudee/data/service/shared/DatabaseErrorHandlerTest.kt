@@ -10,7 +10,7 @@ import org.junit.Test
 
 class DatabaseErrorHandlerTest {
 
-    val handler = object : DatabaseErrorHandler() {}
+    private val handler = object : DatabaseErrorHandler() {}
 
     @Test
     fun `should throw DatabaseCorruptException when database is corrup`() = runTest {
