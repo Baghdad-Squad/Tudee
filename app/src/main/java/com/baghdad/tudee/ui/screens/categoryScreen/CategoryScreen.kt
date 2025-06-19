@@ -114,7 +114,7 @@ fun CategoryScreenContent(
             onCategoryTitleChanged = { text = it },
 
             isAddButtonEnabled = text.isNotBlank() && result.value != null,
-            isCategoryImageUploaded = !result.value.toString().isBlank(),
+            isCategoryImageUploaded = result.value != null,
 
             onUploadIconClicked = {
                 launcher.launch(

@@ -85,22 +85,29 @@ fun UploadedImageBox(
 fun UploadPlaceholder(
     onUploadClick: () -> Unit
 ) {
-    Column(
-        modifier = Modifier.padding(32.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(
+        modifier = Modifier
+            .size(112.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .clickable { onUploadClick() }
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.image_add_02),
-            contentDescription = "icon edit",
-            tint = Theme.color.textColor.hint,
-            modifier = Modifier
-                .clickable { onUploadClick() }
-        )
-        Text(
-            text = "Upload",
-            style = Theme.typography.label.medium,
-            color = Theme.color.textColor.hint
-        )
+        Column(
+            modifier = Modifier.padding(32.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.image_add_02),
+                contentDescription = "icon edit",
+                tint = Theme.color.textColor.hint,
+                modifier = Modifier
+
+            )
+            Text(
+                text = "Upload",
+                style = Theme.typography.label.medium,
+                color = Theme.color.textColor.hint
+            )
+        }
     }
 }
