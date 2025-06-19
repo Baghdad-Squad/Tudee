@@ -1,5 +1,8 @@
 package com.baghdad.tudee.domain.entity
 
+import androidx.annotation.DrawableRes
+import com.baghdad.tudee.R
+
 data class Category(
     val id: Long,
     val title: String,
@@ -23,25 +26,25 @@ data class Category(
 
         data class Predefined(val type: PredefinedType) : Image()
     }
-
-    enum class PredefinedType {
-        EDUCATION,
-        SHOPPING,
-        MEDICAL,
-        GYM,
-        ENTERTAINMENT,
-        COOKING,
-        FAMILY_AND_FRIEND,
-        TRAVELING,
-        AGRICULTURE,
-        CODING,
-        ADORATION,
-        FIXING_BUGS,
-        CLEANING,
-        WORK,
-        BUDGETING,
-        SELF_CARE,
-        EVENT;
+    // TODO : Change the paths of the images
+    enum class PredefinedType(@DrawableRes val path: Int) {
+        EDUCATION(R.drawable.ic_baseball_bat),
+        SHOPPING(R.drawable.ic_baseball_bat),
+        MEDICAL(R.drawable.ic_baseball_bat),
+        GYM(R.drawable.ic_baseball_bat),
+        ENTERTAINMENT(R.drawable.ic_baseball_bat),
+        COOKING(R.drawable.ic_baseball_bat),
+        FAMILY_AND_FRIEND(R.drawable.ic_baseball_bat),
+        TRAVELING(R.drawable.ic_baseball_bat),
+        AGRICULTURE(R.drawable.ic_baseball_bat),
+        CODING(R.drawable.ic_baseball_bat),
+        ADORATION(R.drawable.ic_baseball_bat),
+        FIXING_BUGS(R.drawable.ic_baseball_bat),
+        CLEANING(R.drawable.ic_baseball_bat),
+        WORK(R.drawable.ic_baseball_bat),
+        BUDGETING(R.drawable.ic_baseball_bat),
+        SELF_CARE(R.drawable.ic_baseball_bat),
+        EVENT(R.drawable.ic_baseball_bat);
 
         val formattedName: String
             get(): String {
