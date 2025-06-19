@@ -36,11 +36,11 @@
     <string name="no_tasks_available">No tasks available</string>
 
     <!-- Motivational Messages -->
-    <string name="stay_working">Stay working! 😄</string>
+    <string name="stay_working">Stay working! </string>
     <string name="completed_tasks_keep_going">You\'ve completed 3 out of 10 tasks Keep going!</string>
-    <string name="tadaa">Tadaa! 🥳</string>
+    <string name="tadaa">Tadaa!</string>
     <string name="doing_amazing">You\'re doing amazing!!! Tudee is proud of you.</string>
-    <string name="zero_progress">Zero progress?! 😡</string>
+    <string name="zero_progress">Zero progress?!</string>
     <string name="just_scrolling">You just scrolling, not working, Tudee is watching. back to work!!!</string>
 
     <!-- Task Status -->
@@ -116,19 +116,7 @@
     <string name="november">November</string>
     <string name="december">December</string>
 
-    <!-- Months (Short Names) -->
-    <string name="jan">Jan</string>
-    <string name="feb">Feb</string>
-    <string name="mar">Mar</string>
-    <string name="apr">Apr</string>
-    <string name="may_short">May</string>
-    <string name="jun">Jun</string>
-    <string name="jul">Jul</string>
-    <string name="aug">Aug</string>
-    <string name="sep">Sep</string>
-    <string name="oct">Oct</string>
-    <string name="nov">Nov</string>
-    <string name="dec">Dec</string>
+
 
     <!-- Days of Week (Full Names) -->
     <string name="sunday">Sunday</string>
@@ -139,23 +127,6 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
 
-    <!-- Days of Week (Short Names) -->
-    <string name="sun">Sun</string>
-    <string name="mon">Mon</string>
-    <string name="tue">Tue</string>
-    <string name="wed">Wed</string>
-    <string name="thu">Thu</string>
-    <string name="fri">Fri</string>
-    <string name="sat">Sat</string>
-
-    <!-- Days of Week (Single Letter) -->
-    <string name="sunday_short">S</string>
-    <string name="monday_short">M</string>
-    <string name="tuesday_short">T</string>
-    <string name="wednesday_short">W</string>
-    <string name="thursday_short">T</string>
-    <string name="friday_short">F</string>
-    <string name="saturday_short">S</string>
 
     <!-- Confirmation Messages -->
     <string name="are_you_sure_continue">Are you sure to continue?</string>
