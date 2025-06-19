@@ -38,7 +38,7 @@ fun UploadedImageBox(
     ) {
         Image(
             painter = image ?: painterResource(id = R.drawable.image_add_02),
-            contentDescription = "Uploaded image",
+            contentDescription = stringResource(R.string.uploaded_image),
             modifier = Modifier
                 .matchParentSize()
                 .clip(RoundedCornerShape(16.dp)),
@@ -98,7 +98,7 @@ fun UploadPlaceholder(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.image_add_02),
-                contentDescription = "icon edit",
+                contentDescription = stringResource(R.string.edit_icon),
                 tint = Theme.color.textColor.hint,
                 modifier = Modifier
 

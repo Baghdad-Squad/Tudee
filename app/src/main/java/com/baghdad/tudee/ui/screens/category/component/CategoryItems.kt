@@ -23,7 +23,7 @@ fun CategoryItems(state : List<CategoryUiState>, onCategoryClick : (Long) -> Uni
             start = 16.dp,
             end = 16.dp,
             top = 12.dp,
-            bottom = (56 + 12).dp
+            bottom = (68).dp
         ),
         verticalArrangement = Arrangement.spacedBy(24.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)

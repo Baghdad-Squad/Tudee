@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -62,13 +61,13 @@ fun AddCategoryBottomSheet(
                     )
                     TudeeTextField(
                         value = title,
-                        hint = "Category title",
+                        hint = stringResource(R.string.category_title),
                         onValueChange = onCategoryTitleChanged,
                         leadingIcon = painterResource(id = R.drawable.ic_menu_circle),
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
                     Text(
-                        text = "Category image",
+                        text = stringResource(R.string.category_image),
                         style = Theme.typography.title.large,
                         color = Theme.color.textColor.title
                     )
