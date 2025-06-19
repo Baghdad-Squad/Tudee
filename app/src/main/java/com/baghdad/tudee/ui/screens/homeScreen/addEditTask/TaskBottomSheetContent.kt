@@ -25,7 +25,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.baghdad.tudee.R
-import com.baghdad.tudee.data.fakeData.fakeCategoriesData
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
@@ -35,6 +34,7 @@ import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.TextFieldS
 import com.baghdad.tudee.ui.composable.CategoryItem
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
 import com.baghdad.tudee.ui.composable.button.PrimaryButton
+import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.fakeCategoriesData
 import kotlinx.datetime.LocalDate
 import kotlin.uuid.ExperimentalUuidApi
 

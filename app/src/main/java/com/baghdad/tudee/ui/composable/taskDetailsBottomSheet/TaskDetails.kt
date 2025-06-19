@@ -1,5 +1,6 @@
 package com.baghdad.tudee.ui.composable.taskDetailsBottomSheet
 
+import TaskPriority
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Task
-import com.baghdad.tudee.ui.composable.TaskPriority
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
 import com.baghdad.tudee.ui.composable.VerticalSeparatorLine
 
@@ -103,7 +103,7 @@ fun TaskDetailsContent(
         VerticalSeparatorLine()
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             TaskState(taskState = taskState)
-            TaskPriority(priorityTask = taskPriority)
+            TaskPriority(priorityTask = taskPriority, isClickable = false)
         }
 
 
