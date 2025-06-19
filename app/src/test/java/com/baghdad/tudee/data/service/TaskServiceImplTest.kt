@@ -32,11 +32,12 @@ import org.junit.Test
 
 class TaskServiceImplTest {
 
-    private val taskDao: TaskDao = mockk(relaxed = true)
+    private lateinit var  taskDao: TaskDao
     private lateinit var taskService: TaskServiceImpl
 
     @Before
     fun setUp() {
+        taskDao =  mockk(relaxed = true)
         taskService = TaskServiceImpl(taskDao)
     }
 
