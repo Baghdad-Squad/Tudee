@@ -5,6 +5,8 @@
     <string name="clear_text">Clear</string>
     <string name="edit_text">Edit</string>
     <string name="select_text">Select a date</string>
+    <string name="arrow_left">arrow left</string>
+    <string name="calendar_favorite">calendar favorite</string>
     <string name="add_new_category">Add new category</string>
     <string name="upload">Upload</string>
     <string name="icon_edit">icon edit</string>

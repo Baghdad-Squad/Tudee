@@ -39,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.shared.Selectable
 
 @Composable
@@ -68,8 +69,10 @@ fun Tabs(
 
 data class TabItem(
     val title: String,
-    val badgeCount: Int? = null
+    val badgeCount: Int = 0,
+    val status: Task.State
 )
+
 
 @Composable
 private fun Tab(

@@ -79,5 +79,8 @@ dependencies {
     // Koin core and Android
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
+
+    //coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
 }
 
