@@ -78,7 +78,7 @@ fun DeleteCategoryContent(
             Spacer(modifier = Modifier.height(12.dp))
 
             Image(
-                painter = painterResource(R.drawable.img_sad_robort),
+                painter = painterResource(R.drawable.img_sad_robot),
                 contentDescription = "Sad Robot",
                 modifier = Modifier
                     .width(107.dp)
