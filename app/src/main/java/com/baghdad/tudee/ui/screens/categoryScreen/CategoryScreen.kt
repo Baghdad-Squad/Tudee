@@ -30,7 +30,6 @@ import com.baghdad.tudee.ui.composable.SnakeBar
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.categoryBottomSheet.AddCategoryBottomSheet
 import com.baghdad.tudee.ui.utils.image.uriToByteArray
-import com.baghdad.tudee.ui.screens.categoryScreen.CategoryViewModel
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 import kotlin.uuid.ExperimentalUuidApi
@@ -108,7 +107,11 @@ fun CategoryScreenContent(
         }
         AddCategoryBottomSheet(
             isVisible = showAddNewCategoryDialog,
-            onDismiss = { showAddNewCategoryDialog = false },
+            onDismiss = {
+                showAddNewCategoryDialog = false
+                result.value = null
+                text = ""
+            },
 
             title = text,
             onCategoryTitleChanged = { text = it },
