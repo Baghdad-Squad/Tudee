@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
 }
 
@@ -57,6 +58,9 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.navigation.compose)
+    implementation(libs.kotlinx.serialization.json )
+
 
     //Kotlinx-date-time
     implementation(libs.kotlinx.datetime)
@@ -72,9 +76,7 @@ dependencies {
     implementation (libs.ui)
     implementation (libs.androidx.runtime)
 
-    implementation(libs.kotlinx.datetime)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
 
     // Koin core and Android
     implementation(libs.koin.android)
@@ -82,5 +84,11 @@ dependencies {
 
     //coil
     implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.kotlinx.coroutines.core)
+
+    implementation(libs.jetbrains.kotlinx.coroutines.android)
+    implementation(libs.coil.compose)
 }
 
