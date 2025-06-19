@@ -13,15 +13,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.uuid.ExperimentalUuidApi
 
 class CategoryViewModel(
     private val categoryService: CategoryService,
     private val taskService: TaskService
 ) : ViewModel() {
 
-
-    @OptIn(ExperimentalUuidApi::class)
     private val _statusValue = MutableStateFlow(
         listOf<CategoryUiState>()
     )
@@ -31,7 +28,6 @@ class CategoryViewModel(
         getCategories()
     }
 
-    @OptIn(ExperimentalUuidApi::class)
     fun getCategories() {
         viewModelScope.launch(Dispatchers.IO) {
             categoryService.getCategories().collect { categories ->
@@ -46,27 +42,13 @@ class CategoryViewModel(
         }
     }
 
-    @OptIn(ExperimentalUuidApi::class)
-    fun deleteCategory(categoryId: Long) {
-        viewModelScope.launch(Dispatchers.IO) {
-            categoryService.deleteCategory(categoryId)
-        }
-    }
-
-    @OptIn(ExperimentalUuidApi::class)
     fun addCategory(category: CategoryUiState) {
         viewModelScope.launch(Dispatchers.IO) {
             categoryService.createCategory(category.toEntity())
         }
     }
 
-    fun editCategory(category: CategoryUiState) {
-        viewModelScope.launch(Dispatchers.IO) {
-            categoryService.editCategory(category.toEntity())
-        }
-    }
 
-    @OptIn(ExperimentalUuidApi::class)
     private suspend fun getTaskCount(id: Long): Int {
         return taskService.getTasksByCategory(id)
             .map { it.count() }

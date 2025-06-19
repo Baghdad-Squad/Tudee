@@ -9,7 +9,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 
 @Composable
@@ -23,7 +25,7 @@ fun CategoryScreenBar() {
 
     ) {
         Text(
-            text = "Categories",
+            text = stringResource(R.string.categories),
             modifier = Modifier.align(Alignment.CenterStart),
             style = Theme.typography.title.large,
             color = Theme.color.textColor.title

@@ -4,7 +4,7 @@ import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.ui.screens.category.CategoryUiState
 import kotlin.uuid.ExperimentalUuidApi
 
-@OptIn(ExperimentalUuidApi::class)
+
 fun CategoryUiState.toEntity(): Category {
     return Category(
         id = id,
@@ -21,7 +21,6 @@ fun CategoryUiState.toEntity(): Category {
 }
 
 
-@OptIn(ExperimentalUuidApi::class)
 fun Category.toUiState(): CategoryUiState {
     return CategoryUiState(
         id = id,

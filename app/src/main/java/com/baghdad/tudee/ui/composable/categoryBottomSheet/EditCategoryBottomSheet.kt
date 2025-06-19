@@ -97,7 +97,7 @@ fun EditCategoryBottomSheet(
                 isEnabled = true,
                 onAddClick = onAddButtonClick,
                 onCancelClick = onCancelButtonClick,
-                actionLabel = "Save",
+                actionLabel = stringResource(R.string.save),
                 isLoading = isLoading
             )
 

@@ -34,4 +34,11 @@
     <string name="category_image">Category image</string>
     <string name="edit_category">Edit category</string>
     <string name="delete">Delete</string>
+    <string name="added_category_successfully">Added category successfully.</string>
+    <string name="text_field_hint_of_add_category_bottom_sheet">Category title</string>
+    <string name="image_box_title_in_add_category_botton_sheet">Category image</string>
+    <string name="category_title">Category title</string>
+    <string name="save">Save</string>
+    <string name="uploaded_image">Uploaded image</string>
+    <string name="categories">Categories</string>
 </resources>
