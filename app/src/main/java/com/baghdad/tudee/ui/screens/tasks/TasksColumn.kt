@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.baghdad.tudee.R
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
+import com.baghdad.tudee.ui.composable.SwipeToDeleteCard
 
 @Composable
 fun TasksColumn(
@@ -33,12 +34,13 @@ fun TasksColumn(
             val category = uiState.categories.find { it.id == task.categoryId }
             val painter =  painterResource( R.drawable.ic_baseball_bat) /*Add when statements TODO()*/
 
-            CategoryTaskCard(
+            SwipeToDeleteCard(
                 title = task.title,
                 description = task.description,
                 priorityTask = task.priority,
                 icon = painter,
-                onClick = {/*TODO()*/ },
+                onClick = {},
+                onDelete = {},
             )
         }
     }
