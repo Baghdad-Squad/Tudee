@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,7 +49,9 @@ fun CategoryTasksScreen(
         state = state,
         onTabSelected = viewModel::onTabSelected,
         filteredTasks = state.doneTasks,
-        category = category
+        isPredefinedCategory = state.isPredefinedCategory,
+        onPencilEditClicked = {},
+        onArrowBackClicked ={}
     )
 }
 
@@ -56,7 +60,9 @@ private fun CategoryTasksScreenContent(
     state: CategoryTasksScreenUiState,
     onTabSelected: (Task.State) -> Unit,
     filteredTasks: List<Task>,
-    category: Category
+    isPredefinedCategory: Boolean,
+    onArrowBackClicked:()->Unit,
+    onPencilEditClicked:()->Unit
 ) {
 
     Column(modifier = Modifier.padding(top = 28.dp)) {
@@ -67,29 +73,15 @@ private fun CategoryTasksScreenContent(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .border(
-                        width = 1.dp,
-                        shape = CircleShape,
-                        color = Theme.color.textColor.stroke
-                    )
-                    .clickable { /*onBackArrowClicked()*/ }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.arrow_left_01),
-                    contentDescription = stringResource(R.string.arrow_left),
-                    tint = Theme.color.textColor.body,
-                    modifier = Modifier
-                        .padding(10.dp)
-                )
-            }
+            IconInBox(icon = R.drawable.arrow_left_01, onIconClick = {onArrowBackClicked()})
             Text(
-                text = category.title,
+                text = state.categoryName,
                 style = Theme.typography.title.large,
                 color = Theme.color.textColor.title
             )
+            if (isPredefinedCategory) {
+                IconInBox(icon = R.drawable.pencil_edit_01, onIconClick = {onPencilEditClicked()})
+            }
         }
 
         val tabs = listOf(
@@ -123,7 +115,7 @@ private fun CategoryTasksScreenContent(
                     title = task.title,
                     description = task.description,
                     priorityTask = task.priority,
-                    icon = getCategoryIconPainter(state.categoryImage),
+                    icon = getCategoryIconPainter(categoryImage = state.categoryImage),
                     onClick = { println("Clicked task: ${task.title}") },
                     date = task.date.toString(),
                     showDate = true
@@ -132,12 +124,51 @@ private fun CategoryTasksScreenContent(
         }
     }
 }
+
+@Composable
+fun IconInBox(modifier: Modifier = Modifier,
+              icon: Int, onIconClick: () -> Unit,
+              tint :Color = Theme.color.textColor.body
+              ) {
+    Box(
+        modifier = modifier
+            .size(40.dp)
+            .border(
+                width = 1.dp,
+                shape = CircleShape,
+                color = Theme.color.textColor.stroke
+            )
+            .clickable { onIconClick }
+    ) {
+        Icon(
+            painter = painterResource(id = icon),
+            contentDescription = stringResource(R.string.arrow_left),
+            tint = tint,
+            modifier = Modifier
+                .padding(10.dp)
+        )
+    }
+
+}
+
 @Preview(showBackground = true)
 @Composable
 fun CategoryTasksScreenPreview() {
-//    CategoryTasksScreen(
-//        CategoryName = "Coding",
-//        onBackArrowClicked = {},
-//        taskDate = "12-03-2025",
-//    )
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        IconInBox(icon = R.drawable.arrow_left_01, onIconClick = {})
+        Text(
+            text = "state.categoryName",
+            style = Theme.typography.title.large,
+            color = Theme.color.textColor.title
+        )
+        Spacer(modifier = Modifier.weight(1f))
+            IconInBox(icon = R.drawable.pencil_edit_02, onIconClick = {})
+
+    }
 }

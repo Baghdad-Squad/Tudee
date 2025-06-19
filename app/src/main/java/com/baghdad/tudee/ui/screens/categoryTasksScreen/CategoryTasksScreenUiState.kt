@@ -11,5 +11,6 @@ data class CategoryTasksScreenUiState(
     val errorMessage: String? = null,
     val isLoading: Boolean = false,
     val categoryName: String = "",
-    val categoryImage: Category.Image = Category.Image.Predefined(Category.PredefinedType.EDUCATION)
+    val categoryImage: Category.Image = Category.Image.Predefined(Category.PredefinedType.EDUCATION),
+    val isPredefinedCategory: Boolean = true
 )

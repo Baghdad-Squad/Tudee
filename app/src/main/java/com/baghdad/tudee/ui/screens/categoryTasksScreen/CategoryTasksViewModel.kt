@@ -12,33 +12,41 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CategoryTasksViewModel(
-   val taskService: TaskService
-):ViewModel() {
+    val taskService: TaskService,
+    val categoryService: CategoryService,
+    val categoryId: Long
+) : ViewModel() {
     private val _state = MutableStateFlow(CategoryTasksScreenUiState())
     val state = _state.asStateFlow()
 
     init {
+        getCategoryById()
     }
+
     fun onTabSelected(tab: Task.State) {
         _state.update {
             it.copy(selectedTab = tab)
         }
     }
 
-//fun getCategoryById(){
-//    { category->
-//        _state.update {
-//            it.copy(
-//                categoryName = category.title,
-//                categoryImage = getCategoryIconPainter(category)
-//            )
-//        }
-//    }
-//}
-
-      fun getTasksByCategoryId(categoryId: Long){
+    fun getCategoryById() {
         viewModelScope.launch {
-            taskService.getTasksByCategory(categoryId).collect{tasks->
+            val category = categoryService.getCategoryById(categoryId)
+                _state.update {
+                    it.copy(
+                        categoryName = category.title,
+                        categoryImage = category.image,
+                        isPredefinedCategory = category.isPredefinedCategory
+                    )
+                }
+        }
+
+
+    }
+
+    fun getTasksByCategoryId(categoryId: Long) {
+        viewModelScope.launch {
+            taskService.getTasksByCategory(categoryId).collect { tasks ->
                 _state.update {
                     it.copy(
                         todoTasks = tasks.filter { task -> task.state == Task.State.TODO },

@@ -18,11 +18,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             setContent {
                 TudeeTheme {
-                    CategoryTasksScreen(
-                        CategoryName = "Coding",
-                        onBackArrowClicked = {},
-                        taskDate = "12-03-2025"
-                    )
+//                    CategoryTasksScreen(
+//                        CategoryName = "Coding",
+//                        onBackArrowClicked = {},
+//                        taskDate = "12-03-2025"
+//                    )
                 }
             }
             }
