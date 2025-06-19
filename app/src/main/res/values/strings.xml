@@ -18,4 +18,20 @@
     <string name="no_tasks_overlay_image">no tasks overlay image</string>
     <string name="progress_indicator">progress indicator</string>
     <string name="no_tasks_robot">no tasks robot</string>
+    <string name="taskDescription">Solve all exercises from page 45 to 50 in the \ntextbook, Solve all exercises from page 45 to 50 in \nthe textbook.</string>
+    <string name="taskTitleExample">Organize Study Desk</string>
+    <string name="task_details">Task details</string>
+    <string name="label">label</string>
+    <string name="move_to_in_progress">Move to in progress</string>
+    <string name="move_to_done">Move to done</string>
+    <string name="add_new_category">Add new category</string>
+    <string name="upload">Upload</string>
+    <string name="icon_edit">icon edit</string>
+    <string name="edit_icon">Edit Icon</string>
+    <string name="books">books</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+    <string name="category_image">Category image</string>
+    <string name="edit_category">Edit category</string>
+    <string name="delete">Delete</string>
 </resources>
