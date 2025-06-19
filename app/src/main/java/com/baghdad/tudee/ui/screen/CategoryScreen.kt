@@ -41,6 +41,7 @@ import com.baghdad.tudee.ui.utils.image.byteArrayToPainter
 import com.baghdad.tudee.ui.utils.image.uriToByteArray
 import com.baghdad.tudee.ui.viewModel.CategoryViewModel
 import com.baghdad.tudee.ui.viewModel.state.CategoryUiState
+import com.baghdad.tudee.ui.viewModel.state.UiImage
 import org.koin.androidx.compose.koinViewModel
 import kotlin.uuid.ExperimentalUuidApi
 
@@ -110,7 +111,14 @@ fun CategoryScreenContent(
                 items(state) {
                     CategoryItem(
                         label = it.title,
-                        icon = byteArrayToPainter(it.image)
+                        icon = when (it.image) {
+                            is com.baghdad.tudee.ui.viewModel.state.UiImage.ByteArrayImage -> byteArrayToPainter(
+                                it.image.data
+                            )
+                            is com.baghdad.tudee.ui.viewModel.state.UiImage.PredefinedImage -> painterResource(
+                                id = it.image.path
+                            )
+                        }
                             ?: painterResource(R.drawable.image_add_02),
                         onClick = {
 
@@ -175,7 +183,7 @@ fun CategoryScreenContent(
                         addCategory(
                             CategoryUiState(
                                 title = text,
-                                image = imageBytes,
+                                image = UiImage.ByteArrayImage(imageBytes),
                                 taskCount = 0
                             )
                         )
