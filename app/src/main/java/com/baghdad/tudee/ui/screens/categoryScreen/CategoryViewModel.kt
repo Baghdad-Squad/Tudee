@@ -1,12 +1,11 @@
-package com.baghdad.tudee.ui.viewModel
+package com.baghdad.tudee.ui.screens.categoryScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baghdad.tudee.domain.service.CategoryService
 import com.baghdad.tudee.domain.service.TaskService
-import com.baghdad.tudee.ui.viewModel.mapper.toEntity
-import com.baghdad.tudee.ui.viewModel.mapper.toUiState
-import com.baghdad.tudee.ui.viewModel.state.CategoryUiState
+import com.baghdad.tudee.ui.screens.categoryScreen.mapper.toEntity
+import com.baghdad.tudee.ui.screens.categoryScreen.mapper.toUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,8 +14,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
-
 
 class CategoryViewModel(
     private val categoryService: CategoryService,
@@ -39,10 +36,7 @@ class CategoryViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             categoryService.getCategories().collect { categories ->
                 categories.map {
-                    it.toUiState().copy(taskCount = 0
-
-                    )
-//                        .copy(taskCount = getTaskCount(it.id))
+                    it.toUiState().copy(taskCount = getTaskCount(it.id))
                 }.let { state ->
                     _statusValue.update {
                         state

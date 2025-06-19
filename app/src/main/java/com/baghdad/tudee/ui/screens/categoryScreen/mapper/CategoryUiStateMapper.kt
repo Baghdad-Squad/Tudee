@@ -1,8 +1,8 @@
-package com.baghdad.tudee.ui.viewModel.mapper
+package com.baghdad.tudee.ui.screens.categoryScreen.mapper
 
 import com.baghdad.tudee.domain.entity.Category
-import com.baghdad.tudee.ui.viewModel.state.CategoryUiState
-import com.baghdad.tudee.ui.viewModel.state.UiImage
+import com.baghdad.tudee.ui.screens.categoryScreen.CategoryUiState
+import com.baghdad.tudee.ui.screens.categoryScreen.UiImage
 import kotlin.uuid.ExperimentalUuidApi
 
 @OptIn(ExperimentalUuidApi::class)

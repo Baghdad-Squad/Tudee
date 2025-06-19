@@ -1,23 +1,15 @@
-package com.baghdad.tudee.ui.screen
+package com.baghdad.tudee.ui.screens.categoryScreen
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -34,15 +26,11 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
-import com.baghdad.tudee.ui.composable.CategoryItem
 import com.baghdad.tudee.ui.composable.SnakeBar
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.categoryBottomSheet.AddCategoryBottomSheet
-import com.baghdad.tudee.ui.utils.image.byteArrayToPainter
 import com.baghdad.tudee.ui.utils.image.uriToByteArray
-import com.baghdad.tudee.ui.viewModel.CategoryViewModel
-import com.baghdad.tudee.ui.viewModel.state.CategoryUiState
-import com.baghdad.tudee.ui.viewModel.state.UiImage
+import com.baghdad.tudee.ui.screens.categoryScreen.CategoryViewModel
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 import kotlin.uuid.ExperimentalUuidApi
@@ -73,6 +61,7 @@ fun CategoryScreenContent(
     val painter: Painter = rememberAsyncImagePainter(model = result.value)
     val context = LocalContext.current
     val isAdded = remember { mutableStateOf(false) }
+
     LaunchedEffect(isAdded.value) {
         if (isAdded.value) {
             delay(3000)
@@ -88,57 +77,11 @@ fun CategoryScreenContent(
             .systemBarsPadding()
     ) {
         Column() {
-            // screen bar
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(64.dp)
-                    .background(Theme.color.surfaceColor.surfaceHigh)
-                    .padding(16.dp, 20.dp)
-
-            ) {
-                Text(
-                    text = "Categories",
-                    modifier = Modifier.align(Alignment.CenterStart),
-                    style = Theme.typography.title.large,
-                    color = Theme.color.textColor.title
-                )
-            }
-
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(104.dp),
-                contentPadding = PaddingValues(
-                    start = 16.dp,
-                    end = 16.dp,
-                    top = 12.dp,
-                    bottom = (56 + 12).dp
-                ),
-                verticalArrangement = Arrangement.spacedBy(24.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(state) {
-                    CategoryItem(
-                        label = it.title,
-                        icon = when (it.image) {
-                            is UiImage.ByteArrayImage -> byteArrayToPainter(
-                                it.image.data
-                            )
-
-                            is UiImage.PredefinedImage -> painterResource(
-                                id = it.image.path
-                            )
-                        }
-                            ?: painterResource(R.drawable.image_add_02),
-                        onClick = {
-                            onCategoryClick(it.id)
-                        },
-                        isSelected = false,
-                        count = it.taskCount,
-                    )
-
-                }
-
-            }
+            CategoryScreenBar()
+            CategoryItems(
+                state = state,
+                onCategoryClick = onCategoryClick
+            )
 
         }
 
@@ -222,3 +165,4 @@ fun CategoryScreenContent(
 
 
 }
+
