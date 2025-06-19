@@ -14,4 +14,8 @@
     <string name="left_arrow">Left arrow</string>
     <string name="arrow_down">arrow down</string>
     <string name="right_arrow">Right arrow</string>
+    <string name="image_container">image container</string>
+    <string name="no_tasks_overlay_image">no tasks overlay image</string>
+    <string name="progress_indicator">progress indicator</string>
+    <string name="no_tasks_robot">no tasks robot</string>
 </resources>

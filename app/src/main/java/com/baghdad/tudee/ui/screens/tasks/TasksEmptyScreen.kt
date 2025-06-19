@@ -91,25 +91,25 @@ private fun TasksEmptyScreenIllustration(modifier: Modifier = Modifier) {
     ) {
         Image(
             painter = painterResource(id = R.drawable.no_tasks_image_container),
-            contentDescription = null,
+            contentDescription = stringResource(R.string.image_container),
             modifier = Modifier.size(168.dp)
         )
         Image(
             painter = painterResource(id = R.drawable.no_tasks_overlay),
-            contentDescription = null,
+            contentDescription = stringResource(R.string.no_tasks_overlay_image),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .size(152.dp)
         )
         Image(
             painter = painterResource(id = R.drawable.progress_indicator),
-            contentDescription = null,
+            contentDescription = stringResource(R.string.progress_indicator),
             modifier = Modifier.align(Alignment.CenterStart)
 
         )
         Image(
             painter = painterResource(id = R.drawable.no_tasks_tudee),
-            contentDescription = null,
+            contentDescription = stringResource(R.string.no_tasks_robot),
             modifier = Modifier.align(Alignment.BottomEnd)
         )
     }

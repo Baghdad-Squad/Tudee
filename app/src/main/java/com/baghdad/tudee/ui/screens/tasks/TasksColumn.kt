@@ -23,7 +23,7 @@ fun TasksColumn(
             .padding(horizontal = 16.dp)
             .padding(bottom = 40.dp),
         contentPadding = PaddingValues(vertical = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(
             uiState.tasksDisplayed

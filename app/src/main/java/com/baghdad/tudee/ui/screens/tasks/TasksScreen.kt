@@ -47,14 +47,13 @@ fun TasksScreen(
                 HorizontalDayChipsSetup(
                     tasksInteractionHandler = tasksInteractionHandler,
                     uiState = uiState,
-                    modifier = Modifier.padding(bottom = 8.dp, start = 16.dp, end = 16.dp),
+                    modifier = Modifier.padding(bottom = 8.dp),
                 )
 
 
                 StatusTabs(
                     uiState = uiState,
-                    tasksInteractionHandler = tasksInteractionHandler,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    tasksInteractionHandler = tasksInteractionHandler
                 )
 
                 if(uiState.tasksDisplayed.isNotEmpty()) {

@@ -1,5 +1,10 @@
 package com.baghdad.tudee.ui.screens.tasks
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.with
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,8 +26,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.ui.utils.noRippleClickable
 
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun TasksHeader(
     month: String,
@@ -42,30 +49,38 @@ fun TasksHeader(
         NavigationIcon(
             icon = painterResource(id = R.drawable.ic_left_arrow),
             contentDescription = stringResource(R.string.left_arrow),
-            modifier = Modifier.clickable { onPreviousArrowClicked() }
+            modifier = Modifier.noRippleClickable { onPreviousArrowClicked() }
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Text(
-                text = "$month $year",
-                style = Theme.typography.label.medium,
-                color = Theme.color.textColor.body,
-            )
+            AnimatedContent(
+                targetState = "$month, $year",
+                transitionSpec = {
+                    fadeIn() with fadeOut()
+                }
+            ) { animatedText ->
+                Text(
+                    text = animatedText,
+                    style = Theme.typography.label.medium,
+                    color = Theme.color.textColor.body,
+                )
+            }
+
             Icon(
                 painter = painterResource(id = R.drawable.ic_right_arrow),
                 contentDescription = stringResource(R.string.arrow_down),
                 tint = Theme.color.textColor.body,
                 modifier = Modifier
                     .rotate(90f)
-                    .clickable { onDownArrowClicked() }
+                    .noRippleClickable { onDownArrowClicked() }
             )
         }
         NavigationIcon(
             icon = painterResource(id = R.drawable.ic_right_arrow),
             contentDescription = stringResource(R.string.right_arrow),
-            modifier = Modifier.clickable { onNextArrowClicked() }
+            modifier = Modifier.noRippleClickable { onNextArrowClicked() }
         )
     }
 }
