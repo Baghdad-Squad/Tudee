@@ -47,18 +47,20 @@ import kotlin.uuid.ExperimentalUuidApi
 
 @Composable
 fun CategoryScreen(
-    viewModel: CategoryViewModel = koinViewModel()
+    viewModel: CategoryViewModel = koinViewModel(),
+    navigateToCategoryTask: (Long) -> Unit
 ) {
     val state by viewModel.statusValue.collectAsState()
     val addCategory: (CategoryUiState) -> Unit = { viewModel.addCategory(it) }
-    CategoryScreenContent(state = state, addCategory)
+    CategoryScreenContent(state = state, addCategory, navigateToCategoryTask)
 }
 
 @OptIn(ExperimentalUuidApi::class)
 @Composable
 fun CategoryScreenContent(
     state: List<CategoryUiState>,
-    addCategory: (CategoryUiState) -> Unit
+    addCategory: (CategoryUiState) -> Unit,
+    onCategoryClick: (Long) -> Unit
 ) {
     var showAddNewCategoryDialog by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("") }
@@ -112,16 +114,16 @@ fun CategoryScreenContent(
                     CategoryItem(
                         label = it.title,
                         icon = when (it.image) {
-                            is com.baghdad.tudee.ui.viewModel.state.UiImage.ByteArrayImage -> byteArrayToPainter(
+                            is UiImage.ByteArrayImage -> byteArrayToPainter(
                                 it.image.data
                             )
-                            is com.baghdad.tudee.ui.viewModel.state.UiImage.PredefinedImage -> painterResource(
+                            is UiImage.PredefinedImage -> painterResource(
                                 id = it.image.path
                             )
                         }
                             ?: painterResource(R.drawable.image_add_02),
                         onClick = {
-
+                            onCategoryClick(it.id)
                         },
                         isSelected = false,
                         count = it.taskCount,
@@ -149,9 +151,9 @@ fun CategoryScreenContent(
                     onClick = {
                         showAddNewCategoryDialog = true
                     },
-                    modifier = Modifier.padding(bottom = 17.dp, end = 12.dp)
+                    modifier = Modifier.padding(bottom = 58.dp , end = 16.dp)
+
                 )
-                Spacer(Modifier.height(58.dp)) // TODO : this should be removed
             }
         }
         AddCategoryBottomSheet(

@@ -12,7 +12,7 @@ fun CategoryUiState.toEntity(): Category {
         title = title,
         image =when (image) {
             is UiImage.ByteArrayImage -> Category.Image.ByteArray(image.data)
-            is UiImage.PredefinedImage -> Category.Image.Predefined(Category.PredefinedType.entries[image.path])
+            is UiImage.PredefinedImage -> Category.Image.Predefined(Category.PredefinedType.valueOf(image.path.toString()))
         }
     )
 }
@@ -25,7 +25,7 @@ fun Category.toUiState(): CategoryUiState {
         title = title,
         image = when (image) {
             is Category.Image.ByteArray -> UiImage.ByteArrayImage(image.data)
-            is Category.Image.Predefined -> UiImage.PredefinedImage(image.type.path)
+            is Category.Image.Predefined -> UiImage.PredefinedImage(image.type.toDrawable())
         }
     )
 }
