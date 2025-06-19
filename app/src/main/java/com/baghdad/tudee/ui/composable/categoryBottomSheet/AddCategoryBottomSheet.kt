@@ -1,5 +1,6 @@
 package com.baghdad.tudee.ui.composable.categoryBottomSheet
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -24,104 +26,86 @@ import com.baghdad.tudee.ui.utils.dashedBorder
 @Composable
 fun AddCategoryBottomSheet(
     isVisible: Boolean,
-    onDismissRequest: () -> Unit,
+    isLoading: Boolean,
+    onDismiss: () -> Unit,
     title: String,
-    onValueChange: (String) -> Unit,
-    showButton: Boolean,
-    imageUploaded: Boolean,
-    onUploadClick: () -> Unit,
+    onCategoryTitleChanged: (String) -> Unit,
+    isAddButtonEnabled: Boolean,
+    isCategoryImageUploaded: Boolean,
+    onUploadIconClicked: () -> Unit,
     onEditImageIconClick: () -> Unit,
     onAddButtonClick: () -> Unit,
     onCancelButtonClick: () -> Unit,
     image : Painter? = null,
-) {
+    ) {
     TudeeBottomSheet(
         isVisible = isVisible,
-        onDismiss = onDismissRequest,
-    ) {
-        AddCategoryBottomSheetContent(
-            title = title,
-            onValueChange = onValueChange,
-            showButton = showButton,
-            imageUploaded = imageUploaded,
-            onUploadClick = onUploadClick,
-            onEditImageIconClick = onEditImageIconClick,
-            onAddButtonClick = onAddButtonClick,
-            onCanceleButtonClick = onCancelButtonClick,
-            image = image,
-        )
-    }
-
-}
-
-@Composable
-fun AddCategoryBottomSheetContent(
-    title: String,
-    onValueChange: (String) -> Unit,
-    showButton: Boolean,
-    imageUploaded: Boolean,
-    onUploadClick: () -> Unit,
-    onEditImageIconClick: () -> Unit,
-    onAddButtonClick: () -> Unit,
-    onCanceleButtonClick: () -> Unit,
-    image : Painter?,
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
+        onDismiss = onDismiss,
     ) {
         Column(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .background(color = Theme.color.surfaceColor.surface)
+                .fillMaxWidth()
         ) {
-            Text(
-                text = "Add new category",
-                style = Theme.typography.title.large,
-                color = Theme.color.textColor.title
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            TudeeTextField(
-                value = title,
-                hint = "Category title",
-                onValueChange = onValueChange,
-                leadingIcon = painterResource(id = R.drawable.ic_menu_circle)
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = "Category image",
-                style = Theme.typography.title.large,
-                color = Theme.color.textColor.title
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Box(
+            Column(
                 modifier = Modifier
-                    .dashedBorder(
-                        width = 1.dp,
-                        color = Theme.color.textColor.stroke,
-                        shape = RoundedCornerShape(16.dp)
-                    ),
-                contentAlignment = Alignment.Center
+                    .padding(horizontal = 16.dp)
+                    .background(color = Theme.color.surfaceColor.surface)
             ) {
-                if (imageUploaded) {
-                    UploadedImageBox(onEditClick = onEditImageIconClick , image)
-                } else {
-                    UploadPlaceholder(onUploadClick = onUploadClick)
+                Text(
+                    text = stringResource(R.string.add_new_category),
+                    style = Theme.typography.title.large,
+                    color = Theme.color.textColor.title,
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+                TudeeTextField(
+                    value = title,
+                    hint = "Category title",
+                    onValueChange = onCategoryTitleChanged,
+                    leadingIcon = painterResource(id = R.drawable.ic_menu_circle),
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+                Text(
+                    text = "Category image",
+                    style = Theme.typography.title.large,
+                    color = Theme.color.textColor.title
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Box(
+                    modifier = Modifier
+                        .padding(bottom = 24.dp)
+                        .dashedBorder(
+                            width = 1.dp,
+                            color = Theme.color.textColor.stroke,
+                            shape = RoundedCornerShape(16.dp)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    AnimatedContent(
+                        targetState = isCategoryImageUploaded,
+                        label = "UploadStateAnimation"
+                    ) { isUploaded ->
+                        if (isUploaded) {
+                            UploadedImageBox(onEditClick = onEditImageIconClick , image)
+                        } else {
+                            UploadPlaceholder(onUploadClick = onUploadIconClicked)
+                        }
+                    }
+
                 }
             }
-            Spacer(modifier = Modifier.height(24.dp))
+            ConfirmationButtonContainer(
+                isEnabled = isAddButtonEnabled,
+                onAddClick = onAddButtonClick,
+                onCancelClick = onCancelButtonClick,
+                actionLabel = stringResource(R.string.add),
+                isLoading = isLoading
+            )
 
         }
-        ConfirmationButtonContainer(
-            showButton = showButton,
-            onAddClick = onAddButtonClick,
-            onCancelClick = onCanceleButtonClick,
-            PrimaryButtonLable = "Add"
-        )
-
     }
 
 }
+
 
 
 

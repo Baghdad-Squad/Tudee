@@ -1,8 +1,5 @@
 package com.baghdad.tudee.domain.entity
 
-import androidx.annotation.DrawableRes
-import com.baghdad.tudee.R
-
 data class Category(
     val id: Long,
     val title: String,
@@ -26,6 +23,7 @@ data class Category(
 
         data class Predefined(val type: PredefinedType) : Image()
     }
+
     enum class PredefinedType {
         EDUCATION,
         SHOPPING,

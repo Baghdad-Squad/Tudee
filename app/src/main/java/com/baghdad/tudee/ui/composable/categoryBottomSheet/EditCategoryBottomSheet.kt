@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -16,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -27,103 +27,81 @@ import com.baghdad.tudee.ui.utils.dashedBorder
 @Composable
 fun EditCategoryBottomSheet(
     isVisible: Boolean,
-    onDismissRequest: () -> Unit,
+    onDismiss: () -> Unit,
     title: String,
-    onValueChange: (String) -> Unit,
+    onCategoryTitleChanged: (String) -> Unit,
     onEditImageIconClick: () -> Unit,
     onAddButtonClick: () -> Unit,
-    onCanceleButtonClick: () -> Unit,
+    onCancelButtonClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    image:Painter
+    image:Painter,
+    isLoading: Boolean
 ) {
     TudeeBottomSheet(
         isVisible = isVisible,
-        onDismiss = onDismissRequest,
-    ) {
-        EditCategoryBottomSheetContent(
-            title = title,
-            onValueChange = onValueChange,
-            onEditImageIconClick = onEditImageIconClick,
-            onAddButtonClick = onAddButtonClick,
-            onCanceleButtonClick = onCanceleButtonClick,
-            onDeleteClick = onDeleteClick,
-            image = image
-        )
-    }
-
-}
-
-@Composable
-fun EditCategoryBottomSheetContent(
-    title: String,
-    onValueChange: (String) -> Unit,
-    onDeleteClick: () -> Unit,
-    onEditImageIconClick: () -> Unit,
-    onAddButtonClick: () -> Unit,
-    onCanceleButtonClick: () -> Unit,
-    image:Painter
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
+        onDismiss = onDismiss,
     ) {
         Column(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .background(color = Theme.color.surfaceColor.surface)
+                .fillMaxWidth()
         ) {
-            Row {
-                Text(
-                    text = "Edit category",
-                    style = Theme.typography.title.large,
-                    color = Theme.color.textColor.title
-                )
-                Spacer(modifier = Modifier.weight(1f))
-
-                Text(
-                    modifier = Modifier.clickable {
-                        onDeleteClick()
-                    },
-                    text = "Delete",
-                    style = Theme.typography.title.large,
-                    color = Theme.color.status.error
-                )
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-            TudeeTextField(
-                value = title,
-                hint = "Category title",
-                onValueChange = onValueChange,
-                leadingIcon = painterResource(id = R.drawable.ic_menu_circle)
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = "Category image",
-                style = Theme.typography.title.large,
-                color = Theme.color.textColor.title
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Box(
+            Column(
                 modifier = Modifier
-                    .dashedBorder(
-                        width = 1.dp,
-                        color = Theme.color.textColor.stroke,
-                        shape = RoundedCornerShape(16.dp)
-                    ),
-                contentAlignment = Alignment.Center
+                    .padding(horizontal = 16.dp)
+                    .background(color = Theme.color.surfaceColor.surface)
             ) {
-                UploadedImageBox(onEditClick = onEditImageIconClick , image)
+                Row(modifier = Modifier.padding(bottom = 12.dp)) {
+                    Text(
+                        text = stringResource(R.string.edit_category),
+                        style = Theme.typography.title.large,
+                        color = Theme.color.textColor.title
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    Text(
+                        modifier = Modifier.clickable {
+                            onDeleteClick()
+                        },
+                        text = stringResource(R.string.delete),
+                        style = Theme.typography.title.large,
+                        color = Theme.color.status.error
+                    )
+                }
+                TudeeTextField(
+                    value = title,
+                    hint = "Category title",
+                    onValueChange = onCategoryTitleChanged,
+                    leadingIcon = painterResource(id = R.drawable.ic_menu_circle),
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+                Text(
+                    text = stringResource(R.string.category_image),
+                    style = Theme.typography.title.large,
+                    color = Theme.color.textColor.title,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                Box(
+                    modifier = Modifier
+                        .dashedBorder(
+                            width = 1.dp,
+                            color = Theme.color.textColor.stroke,
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                        .padding(bottom = 24.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    UploadedImageBox(onEditClick = onEditImageIconClick , image)
+                }
             }
-            Spacer(modifier = Modifier.height(24.dp))
+            ConfirmationButtonContainer(
+                isEnabled = true,
+                onAddClick = onAddButtonClick,
+                onCancelClick = onCancelButtonClick,
+                actionLabel = "Save",
+                isLoading = isLoading
+            )
 
         }
-        ConfirmationButtonContainer(
-            showButton = true,
-            onAddClick = onAddButtonClick,
-            onCancelClick = onCanceleButtonClick,
-            PrimaryButtonLable = "Save"
-        )
-
     }
 }
+

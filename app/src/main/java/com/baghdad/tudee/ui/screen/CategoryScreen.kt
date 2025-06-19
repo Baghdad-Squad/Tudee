@@ -9,17 +9,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +35,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.ui.composable.CategoryItem
+import com.baghdad.tudee.ui.composable.SnakeBar
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.categoryBottomSheet.AddCategoryBottomSheet
 import com.baghdad.tudee.ui.utils.image.byteArrayToPainter
@@ -42,6 +43,7 @@ import com.baghdad.tudee.ui.utils.image.uriToByteArray
 import com.baghdad.tudee.ui.viewModel.CategoryViewModel
 import com.baghdad.tudee.ui.viewModel.state.CategoryUiState
 import com.baghdad.tudee.ui.viewModel.state.UiImage
+import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 import kotlin.uuid.ExperimentalUuidApi
 
@@ -70,19 +72,22 @@ fun CategoryScreenContent(
     }
     val painter: Painter = rememberAsyncImagePainter(model = result.value)
     val context = LocalContext.current
+    val isAdded = remember { mutableStateOf(false) }
+    LaunchedEffect(isAdded.value) {
+        if (isAdded.value) {
+            delay(3000)
+            isAdded.value = false
+        }
+    }
+
 
     Box(
         Modifier
             .fillMaxSize()
             .background(Theme.color.surfaceColor.surface)
+            .systemBarsPadding()
     ) {
         Column() {
-            // status bar
-            Box(
-                modifier = Modifier
-                    .height(40.dp)
-                    .background(Theme.color.surfaceColor.surfaceHigh)
-            )
             // screen bar
             Box(
                 modifier = Modifier
@@ -99,6 +104,7 @@ fun CategoryScreenContent(
                     color = Theme.color.textColor.title
                 )
             }
+
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(104.dp),
                 contentPadding = PaddingValues(
@@ -117,6 +123,7 @@ fun CategoryScreenContent(
                             is UiImage.ByteArrayImage -> byteArrayToPainter(
                                 it.image.data
                             )
+
                             is UiImage.PredefinedImage -> painterResource(
                                 id = it.image.path
                             )
@@ -151,22 +158,22 @@ fun CategoryScreenContent(
                     onClick = {
                         showAddNewCategoryDialog = true
                     },
-                    modifier = Modifier.padding(bottom = 58.dp , end = 16.dp)
+                    modifier = Modifier.padding(bottom = 58.dp, end = 16.dp)
 
                 )
             }
         }
         AddCategoryBottomSheet(
             isVisible = showAddNewCategoryDialog,
-            onDismissRequest = { showAddNewCategoryDialog = false },
+            onDismiss = { showAddNewCategoryDialog = false },
 
             title = text,
-            onValueChange = { text = it },
+            onCategoryTitleChanged = { text = it },
 
-            showButton = text.isNotBlank() && result.value != null,
-            imageUploaded = !result.value.toString().isBlank(),
+            isAddButtonEnabled = text.isNotBlank() && result.value != null,
+            isCategoryImageUploaded = !result.value.toString().isBlank(),
 
-            onUploadClick = {
+            onUploadIconClicked = {
                 launcher.launch(
                     PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                 )
@@ -186,11 +193,14 @@ fun CategoryScreenContent(
                             CategoryUiState(
                                 title = text,
                                 image = UiImage.ByteArrayImage(imageBytes),
-                                taskCount = 0
                             )
                         )
                     }
                 }
+                showAddNewCategoryDialog = false
+                result.value = null
+                isAdded.value = true
+
             },
 
             onCancelButtonClick = {
@@ -198,8 +208,17 @@ fun CategoryScreenContent(
                 result.value = null
             },
 
-            image = painter
+            image = painter,
+            isLoading = false
+        )
+
+        SnakeBar(
+            message = "Successfully",
+            isSuccess = true,
+            isVisible = isAdded.value
         )
 
     }
+
+
 }

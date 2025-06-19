@@ -11,5 +11,5 @@ data class CategoryUiState(
     val id: Long = 0,
     val title: String,
     val image: UiImage,
-    val taskCount: Int? = null
+    val taskCount: Int = 0
 )

@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -70,7 +71,7 @@ fun UploadedImageBox(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.pencil_edit_01),
-                contentDescription = "Edit Icon",
+                contentDescription = stringResource(R.string.edit_icon),
                 tint = Theme.color.secondaryColor,
                 modifier = Modifier
                     .padding(6.dp)

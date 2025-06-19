@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -60,7 +61,8 @@ fun CategoryItem(
                     contentDescription = label,
                     modifier = Modifier
                         .size(32.dp)
-                        .align(Alignment.Center)
+                        .align(Alignment.Center),
+                    contentScale = ContentScale.Crop
                 )
             }
 
@@ -82,7 +84,8 @@ fun CategoryItem(
                             modifier = Modifier
                                 .size(20.dp)
                                 .align(Alignment.TopEnd)
-                                .offset(x = (-2).dp, y = 2.dp)
+                                .offset(x = (-2).dp, y = 2.dp),
+
                         )
                     }
 
