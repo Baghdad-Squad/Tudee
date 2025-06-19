@@ -46,7 +46,7 @@ fun CategoryTaskCard(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(Modifier.size(56.dp), contentAlignment = Alignment.Center) {
+            Box(Modifier.size(32.dp), contentAlignment = Alignment.Center) {
                 Image(
                     painter = icon,
                     contentDescription = "Category Icon",
@@ -57,7 +57,7 @@ fun CategoryTaskCard(
             )
         }
 
-        Column(modifier = Modifier.padding(top = 2.dp)) {
+        Column(modifier = Modifier.padding(top = 12.dp)) {
             Text(
                 text = title,
                 style = Theme.typography.label.large,
