@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.TestCoverage
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -20,6 +22,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -28,6 +34,11 @@ android {
             )
         }
     }
+
+    testCoverage {
+        jacocoVersion = "0.8.8"
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -51,9 +62,6 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
-    testImplementation(libs.junit.junit)
-    testImplementation(libs.junit.junit)
-    testImplementation(libs.junit.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -77,6 +85,8 @@ dependencies {
 
     implementation(libs.kotlinx.datetime)
 
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
+
     // Koin core and Android
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
@@ -86,6 +96,7 @@ dependencies {
 
     // Google Truth
     testImplementation(libs.truth)
+    androidTestImplementation(libs.truth)
 
     // MockK
     testImplementation(libs.mockk)
@@ -93,6 +104,7 @@ dependencies {
 
     // Coroutines testing
     testImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 }
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
