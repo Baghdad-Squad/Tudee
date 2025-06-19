@@ -1,6 +1,5 @@
-package com.baghdad.tudee.ui.addTask.composable
+package com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable
 
-import android.app.TaskInfo
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
