@@ -1,6 +1,6 @@
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,6 +22,7 @@ import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.domain.entity.Task
+import com.baghdad.tudee.ui.utils.noRippleClickable
 
 
 @Composable
@@ -52,12 +54,16 @@ fun TaskPriority(
 
     val isClicked = remember { mutableStateOf(false) }
 
-    val backgroundColor =
-        if (isClicked.value) priorityProperties.color
+    val backgroundColor by animateColorAsState(
+        targetValue = if (isClicked.value) priorityProperties.color
         else Theme.color.surfaceColor.surfaceLow
-    val contentColor =
+    )
+
+    val contentColor by animateColorAsState(
         if (isClicked.value) Theme.color.textColor.onPrimary
         else Theme.color.textColor.hint
+    )
+
 
     Row(
         modifier = modifier
@@ -66,7 +72,7 @@ fun TaskPriority(
             .then(
                 if (isClickable) {
                     Modifier
-                        .clickable {
+                        .noRippleClickable {
                             if (onClick != null) {
                                 onClick()
                             }
@@ -104,7 +110,7 @@ private fun PriorityPreview() {
     TudeeTheme {
         TaskPriority(
             priorityTask = Task.Priority.HIGH,
-            isClickable = false,
+            isClickable = true,
             onClick = {}
         )
     }
