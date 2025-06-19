@@ -74,11 +74,6 @@ fun TasksScreen(
                     .offset(y = -(72).dp, x = -(12).dp)
             )
         }
-        BottomNavigation(
-            selectedIcon = 1,
-            unSelectedIcon = {},
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
     }
 }
 

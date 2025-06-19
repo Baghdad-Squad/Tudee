@@ -58,8 +58,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.kaotlinx.datetime)
-
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json )
 
@@ -79,30 +77,15 @@ dependencies {
     implementation (libs.androidx.runtime)
 
 
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
 
     // Koin core and Android
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
     implementation(libs.kotlinx.datetime)
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.kotlinx.coroutines.core)
 
-// Android-specific coroutine support (for Dispatchers.Main, etc.)
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
-//
-// Core Koin
-    implementation("io.insert-koin:koin-core:3.5.3")
-
-// Koin Android features
-    implementation("io.insert-koin:koin-android:3.5.3")
-
-// Koin for Jetpack Compose
-    implementation("io.insert-koin:koin-androidx-compose:3.5.3")
-
-
+    implementation(libs.jetbrains.kotlinx.coroutines.android)
     implementation(libs.coil.compose)
-
-
 }
 

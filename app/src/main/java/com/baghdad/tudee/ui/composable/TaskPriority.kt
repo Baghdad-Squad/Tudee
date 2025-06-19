@@ -28,7 +28,7 @@ import com.baghdad.tudee.ui.utils.noRippleClickable
 @Composable
 fun TaskPriority(
     priorityTask: Task.Priority,
-    isClickable: Boolean,
+    isClickable: Boolean = false,
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null
 ) {
