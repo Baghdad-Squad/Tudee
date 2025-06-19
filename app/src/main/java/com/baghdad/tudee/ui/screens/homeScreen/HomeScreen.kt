@@ -54,6 +54,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
         TopTudeeBar(
             title = "Tudee",
             description = "Your personal task manager",
+            isDay = true,
             onChangeTheme = { /* TODO */ }
         )
 
