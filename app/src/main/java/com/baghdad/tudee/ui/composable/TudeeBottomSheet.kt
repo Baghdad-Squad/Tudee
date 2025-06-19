@@ -1,6 +1,9 @@
 package com.baghdad.tudee.ui.composable
 
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.displayCutoutPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,7 +41,7 @@ fun TudeeBottomSheet(
             shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
             containerColor = Theme.color.surfaceColor.surface,
             scrimColor = Color(0x99000000),
-            modifier = Modifier.systemBarsPadding()
+            modifier = Modifier.statusBarsPadding()
         ) {
             content()
         }

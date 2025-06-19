@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.ui.composable.SnakeBar
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.categoryBottomSheet.AddCategoryBottomSheet
@@ -138,7 +139,7 @@ fun CategoryScreenContent(
                         addCategory(
                             CategoryUiState(
                                 title = text,
-                                image = UiImage.ByteArrayImage(imageBytes),
+                                image = Category.Image.ByteArray(imageBytes),
                             )
                         )
                     }

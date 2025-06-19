@@ -9,7 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
+import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.ui.composable.CategoryItem
+import com.baghdad.tudee.ui.screens.categoryScreen.mapper.toDrawable
 import com.baghdad.tudee.ui.utils.image.byteArrayToPainter
 
 @Composable
@@ -29,12 +31,12 @@ fun CategoryItems(state : List<CategoryUiState>, onCategoryClick : (Long) -> Uni
             CategoryItem(
                 label = it.title,
                 icon = when (it.image) {
-                    is UiImage.ByteArrayImage -> byteArrayToPainter(
+                    is Category.Image.ByteArray -> byteArrayToPainter(
                         it.image.data
                     )
 
-                    is UiImage.PredefinedImage -> painterResource(
-                        id = it.image.path
+                    is Category.Image.Predefined -> painterResource(
+                        id = it.image.type.toDrawable()
                     )
                 }
                     ?: painterResource(R.drawable.image_add_02),
