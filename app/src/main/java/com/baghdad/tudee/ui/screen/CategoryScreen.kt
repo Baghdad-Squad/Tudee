@@ -1,5 +1,9 @@
 package com.baghdad.tudee.ui.screen
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,18 +27,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.ui.composable.CategoryItem
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.categoryBottomSheet.AddCategoryBottomSheet
+import com.baghdad.tudee.ui.utils.image.byteArrayToPainter
+import com.baghdad.tudee.ui.utils.image.uriToByteArray
 import com.baghdad.tudee.ui.viewModel.CategoryViewModel
 import com.baghdad.tudee.ui.viewModel.state.CategoryUiState
 import org.koin.androidx.compose.koinViewModel
 import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 @Composable
 fun CategoryScreen(
@@ -52,6 +61,13 @@ fun CategoryScreenContent(
 ) {
     var showAddNewCategoryDialog by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("") }
+    val result = remember { mutableStateOf<Uri?>(null) }
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
+        result.value = it
+    }
+    val painter: Painter = rememberAsyncImagePainter(model = result.value)
+    val context = LocalContext.current
+
     Box(
         Modifier
             .fillMaxSize()
@@ -94,7 +110,8 @@ fun CategoryScreenContent(
                 items(state) {
                     CategoryItem(
                         label = it.title,
-                        icon = painterResource(id = it.imageUri.toInt()),
+                        icon = byteArrayToPainter(it.image)
+                            ?: painterResource(R.drawable.image_add_02),
                         onClick = {
 
                         },
@@ -126,31 +143,53 @@ fun CategoryScreenContent(
                     },
                     modifier = Modifier.padding(bottom = 17.dp, end = 12.dp)
                 )
-                Spacer(Modifier.height(58.dp))
+                Spacer(Modifier.height(58.dp)) // TODO : this should be removed
             }
         }
         AddCategoryBottomSheet(
             isVisible = showAddNewCategoryDialog,
             onDismissRequest = { showAddNewCategoryDialog = false },
+
             title = text,
             onValueChange = { text = it },
-            showButton = !text.isBlank(),
-            imageUploaded = true,
-            onUploadClick = {},
-            onEditImageIconClick = {},
 
-            onAddButtonClick = {
-                addCategory(
-                    CategoryUiState(
-                        id = Uuid.random(),
-                        title = text,
-                        imageUri = "",
-                        taskCount = 0,
-                    )
+            showButton = text.isNotBlank() && result.value != null,
+            imageUploaded = !result.value.toString().isBlank(),
+
+            onUploadClick = {
+                launcher.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                 )
             },
-            onCanceleButtonClick = { showAddNewCategoryDialog = false },
 
-            )
+            onEditImageIconClick = {
+                launcher.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                )
+            },
+
+            onAddButtonClick = {
+                result.value?.let { uri ->
+                    val imageBytes = uriToByteArray(context, uri)
+                    if (imageBytes != null) {
+                        addCategory(
+                            CategoryUiState(
+                                title = text,
+                                image = imageBytes,
+                                taskCount = 0
+                            )
+                        )
+                    }
+                }
+            },
+
+            onCancelButtonClick = {
+                showAddNewCategoryDialog = false
+                result.value = null
+            },
+
+            image = painter
+        )
+
     }
 }
