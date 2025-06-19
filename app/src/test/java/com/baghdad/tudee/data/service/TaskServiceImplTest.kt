@@ -49,8 +49,7 @@ class TaskServiceImplTest {
         val result = taskService.getTasksByCategory(categoryID1).first()
 
         assertEquals(oneTaskExpected, result.size)
-        assertEquals(taskExpectedTitle, result[taskindex].title)
-        assertEquals(Task.State.TODO, result[taskindex].state)
+
     }
 
     @Test

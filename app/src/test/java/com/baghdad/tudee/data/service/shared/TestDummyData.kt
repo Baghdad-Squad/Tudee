@@ -79,19 +79,19 @@ class TestDummyData() {
         val sampleDto = CategoryDto(
             id = categoryID,
             title = expectedTitle,
-            imageUri = expectedImageUri
+            imageType = expectedImageUri
         )
 
         val sampleCategory = Category(
             id = categoryID,
             title = expectedTitle,
-            imageUri = expectedImageUri
+            image = Category.Image.ByteArray(expectedImageUri.toByteArray())
         )
 
         val invalidCategoryData = Category(
             id = -1L,
             title = "",
-            imageUri = ""
+            image = Category.Image.Empty
         )
 
         val emptyCategoryList: List<CategoryDto> = emptyList()

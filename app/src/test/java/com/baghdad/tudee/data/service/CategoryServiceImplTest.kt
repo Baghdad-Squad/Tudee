@@ -15,6 +15,8 @@ import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.nonExistent
 import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.oneCategoryExpected
 import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.sampleCategory
 import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.sampleDto
+import com.baghdad.tudee.data.source.PredefinedCategorySource
+import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.exception.DatabaseException
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -29,13 +31,15 @@ import org.junit.Before
 import org.junit.Test
 
 class CategoryServiceImplTest {
-
-    private val categoryDao: CategoryDao = mockk(relaxed = true)
+    private lateinit var   predefinedCategorySource: PredefinedCategorySource
+    private  lateinit var  categoryDao: CategoryDao
     private lateinit var categoryService: CategoryServiceImpl
 
     @Before
     fun setUp() {
-        categoryService = CategoryServiceImpl(categoryDao)
+        predefinedCategorySource = mockk<PredefinedCategorySource>(relaxed =  true)
+        categoryDao = mockk(relaxed = true)
+        categoryService = CategoryServiceImpl(categoryDao, predefinedCategorySource)
     }
 
     @Test
@@ -46,7 +50,7 @@ class CategoryServiceImplTest {
 
         assertEquals(oneCategoryExpected, result.size)
         assertEquals(expectedTitle, result[index].title)
-        assertEquals(expectedImageUri, result[index].imageUri)
+        assertEquals(expectedImageUri, result[index].image)
     }
 
     @Test
@@ -73,7 +77,7 @@ class CategoryServiceImplTest {
 
         assertEquals(sampleDto.id, result[index].id)
         assertEquals(sampleDto.title, result[index].title)
-        assertEquals(sampleDto.imageUri, result[index].imageUri)
+        assertEquals(sampleDto.imageType, result[index].image)
     }
 
     @Test
@@ -148,7 +152,7 @@ class CategoryServiceImplTest {
             categoryDao.updateCategory(match {
                 it.id == sampleCategory.id &&
                         it.title == sampleCategory.title &&
-                        it.imageUri == sampleCategory.imageUri
+                        it.imageBytes contentEquals  (sampleCategory.image as Category.Image.ByteArray).data
             })
         }
     }

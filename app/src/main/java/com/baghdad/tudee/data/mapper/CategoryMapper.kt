@@ -36,6 +36,8 @@ fun Category.toDto(): CategoryDto {
             imageType = CategoryDto.IMAGE_TYPE_BYTE_ARRAY,
             imageBytes = this.image.data
         )
+
+        Category.Image.Empty -> TODO()
     }
 }
 
