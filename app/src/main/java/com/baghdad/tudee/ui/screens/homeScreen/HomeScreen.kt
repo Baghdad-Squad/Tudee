@@ -67,7 +67,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
             TopTudeeBar(
                 title = "Tudee",
                 description = "Your personal task manager",
-                isDay = true,
+                isDay = state.isDark,
                 onChangeTheme = {
                     viewModel.onClickSwitchTheme()
                 }
@@ -108,20 +108,42 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
+
                             Column(modifier = Modifier.fillMaxWidth(0.6f)) {
+
                                 TextMoodIcon(
-                                    text = "Stay working!",
-                                    icon = painterResource(R.drawable.ic_okay_feedback)
+                                    text = when (state.sliderState) {
+                                        SliderState.STAY_WORKING -> "Stay working!"
+                                        SliderState.TADOO -> "Tadaa"
+                                        SliderState.ZERO_PROGRESS -> "Zero progress?!"
+                                        SliderState.NOTHING_IN_YOUR_LIST -> "Nothing on your list…"
+
+                                    }
+                                    ,
+                                    icon = painterResource(
+                                        id =  when (state.sliderState) {
+                                            SliderState.STAY_WORKING -> R.drawable.ic_okay_feedback
+                                            SliderState.TADOO -> R.drawable.ic_good_feedback
+                                            SliderState.ZERO_PROGRESS -> R.drawable.ic_bad_feedback
+                                            SliderState.NOTHING_IN_YOUR_LIST -> R.drawable.ic_poor_feedback
+
+                                        }
+                                    )
                                 )
                                 Text(
-                                    text = "You've completed 3 out of 10 tasks Keep going!",
+                                    text = when (state.sliderState) {
+                                        SliderState.STAY_WORKING -> "You've completed 3 out of 10 tasks Keep going!"
+                                        SliderState.TADOO -> "You’re doing amazing!!! Tudee is proud of you."
+                                        SliderState.ZERO_PROGRESS -> "You just scrolling, not working. Tudee is watching. back to work!!!"
+                                        SliderState.NOTHING_IN_YOUR_LIST -> "Fill your day with something awesome."
+
+                                    },
                                     style = Theme.typography.body.small,
                                     color = Theme.color.textColor.body,
                                     modifier = Modifier.padding(top = 4.dp)
                                 )
                             }
                             Box(contentAlignment = Alignment.Center) {
-
                                 Box(
                                     modifier = Modifier
                                         .size(64.dp)
@@ -133,9 +155,20 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
 
                                 Image(
                                     painter = painterResource(
-                                        R.drawable.happy_robot
+                                        when (state.sliderState) {
+                                            SliderState.STAY_WORKING -> R.drawable.happy_robot
+                                            SliderState.TADOO -> R.drawable.image_cute_robot
+                                            SliderState.ZERO_PROGRESS -> R.drawable.image_angry
+                                            SliderState.NOTHING_IN_YOUR_LIST -> R.drawable.happy_robot
+
+                                        }
                                     ),
-                                    contentDescription = "happy robot",
+                                    contentDescription = when(state.sliderState){
+                                        SliderState.STAY_WORKING -> "Happy Robot"
+                                        SliderState.TADOO -> "Cute Robot"
+                                        SliderState.ZERO_PROGRESS -> "Angry Robot"
+                                        SliderState.NOTHING_IN_YOUR_LIST -> "Happy Robot"
+                                    },
                                 )
                             }
 
