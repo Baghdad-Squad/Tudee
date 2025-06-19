@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-<style name="Theme.TudeeSplashScreen" parent="Theme.SplashScreen">
-    <item name="windowSplashScreenBackground">@color/backgroundColor</item>
-    <item name="windowSplashScreenAnimatedIcon">@drawable/logo_1</item>
-    <item name="android:windowSplashScreenAnimationDuration" tools:ignore="NewApi">300</item>
-    <item name="postSplashScreenTheme">@style/Theme.Tudee</item>
 
-    </style>
     <style name="Theme.Tudee" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>
