@@ -3,7 +3,9 @@ package com.baghdad.tudee.ui.screens.categoryTasksScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baghdad.tudee.domain.entity.Task
+import com.baghdad.tudee.domain.service.CategoryService
 import com.baghdad.tudee.domain.service.TaskService
+import com.baghdad.tudee.ui.utils.getCategoryIconPainter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -16,7 +18,6 @@ class CategoryTasksViewModel(
     val state = _state.asStateFlow()
 
     init {
-      //  getTasksByCategoryId()
     }
     fun onTabSelected(tab: Task.State) {
         _state.update {
@@ -24,8 +25,18 @@ class CategoryTasksViewModel(
         }
     }
 
+//fun getCategoryById(){
+//    { category->
+//        _state.update {
+//            it.copy(
+//                categoryName = category.title,
+//                categoryImage = getCategoryIconPainter(category)
+//            )
+//        }
+//    }
+//}
 
-    private suspend fun getTasksByCategoryId(categoryId: Long){
+      fun getTasksByCategoryId(categoryId: Long){
         viewModelScope.launch {
             taskService.getTasksByCategory(categoryId).collect{tasks->
                 _state.update {

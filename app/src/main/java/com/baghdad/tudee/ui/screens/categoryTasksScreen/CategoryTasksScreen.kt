@@ -32,16 +32,21 @@ import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.composable.TabItem
 import com.baghdad.tudee.ui.composable.Tabs
 import com.baghdad.tudee.ui.shared.Selectable
+import com.baghdad.tudee.ui.utils.getCategoryIconPainter
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun CategoryTasksScreen(viewModel: CategoryTasksViewModel = koinViewModel(),
-                        category: Category) {
+fun CategoryTasksScreen(
+    viewModel: CategoryTasksViewModel = koinViewModel(),
+    category: Category
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val categoryId = category.id
+    viewModel.getTasksByCategoryId(categoryId)
     CategoryTasksScreenContent(
         state = state,
         onTabSelected = viewModel::onTabSelected,
-        filteredTasks = viewModel::,
+        filteredTasks = state.doneTasks,
         category = category
     )
 }
@@ -114,12 +119,11 @@ private fun CategoryTasksScreenContent(
                 .padding(horizontal = 16.dp)
         ) {
             items(filteredTasks) { task ->
-                val icon = painterResource()
                 CategoryTaskCard(
                     title = task.title,
                     description = task.description,
                     priorityTask = task.priority,
-                    icon = category.image,
+                    icon = getCategoryIconPainter(state.categoryImage),
                     onClick = { println("Clicked task: ${task.title}") },
                     date = task.date.toString(),
                     showDate = true
@@ -128,22 +132,6 @@ private fun CategoryTasksScreenContent(
         }
     }
 }
-
-val sampleTabs = listOf(
-    Selectable(
-        TabItem(title = "In progress", badgeCount = 4, status = Task.State.IN_PROGRESS),
-        isSelected = true
-    ),
-    Selectable(
-        TabItem(title = "To Do", badgeCount = 4, status = Task.State.TODO),
-        isSelected = false
-    ),
-    Selectable(
-        TabItem(title = "Done", badgeCount = 4, status = Task.State.DONE),
-        isSelected = false
-    )
-)
-
 @Preview(showBackground = true)
 @Composable
 fun CategoryTasksScreenPreview() {
