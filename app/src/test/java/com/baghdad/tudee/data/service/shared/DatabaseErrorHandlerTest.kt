@@ -10,10 +10,11 @@ import org.junit.Test
 
 class DatabaseErrorHandlerTest {
 
+    val handler = object : DatabaseErrorHandler() {}
+
     @Test
     fun `should throw DatabaseCorruptException when database is corrup`() = runTest {
         //given
-        val handler = object : DatabaseErrorHandler() {}
         val expectedMessage = "Unknown error"
 
         //when
@@ -34,7 +35,6 @@ class DatabaseErrorHandlerTest {
     @Test
     fun `should throw DatabaseException when unknown error occurs`() = runTest {
         //given
-        val handler = object : DatabaseErrorHandler() {}
         val expectedMessage = "Unknown error"
 
         //when
@@ -54,7 +54,6 @@ class DatabaseErrorHandlerTest {
     @Test
     fun `should throw StorageFullException when the storage is full`() = runTest {
         //given
-        val handler = object : DatabaseErrorHandler() {}
         val expectedMessage = "Unknown error"
 
         //when
@@ -74,7 +73,6 @@ class DatabaseErrorHandlerTest {
     @Test
     fun `should throw TudeeException with unknown error`() = runTest {
         //given
-        val handler = object : DatabaseErrorHandler() {}
         val expectedMessage = "Unknown error"
 
         //when
