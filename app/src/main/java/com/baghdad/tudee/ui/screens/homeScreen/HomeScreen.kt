@@ -54,9 +54,9 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
         TopTudeeBar(
             title = "Tudee",
             description = "Your personal task manager",
+            isDay = true,
             onChangeTheme = { /* TODO */ }
         )
-
         LazyColumn(
             Modifier
                 .fillMaxSize()
@@ -137,7 +137,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 12.dp, end = 12.dp),
+                            .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
@@ -246,7 +246,6 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                             ) {}
                         }
                     }
-
                 }
             }
             item {
@@ -261,7 +260,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
 
                 LazyRow(
                     contentPadding = PaddingValues(horizontal = 16.dp),
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 32.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(5) {

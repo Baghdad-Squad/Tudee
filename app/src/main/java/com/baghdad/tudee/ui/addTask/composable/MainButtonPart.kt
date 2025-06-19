@@ -1,5 +1,6 @@
 package com.baghdad.tudee.ui.addTask.composable
 
+import android.app.TaskInfo
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,7 +17,7 @@ import com.baghdad.tudee.ui.composable.button.PrimaryButton
 import com.baghdad.tudee.ui.composable.button.SecondaryButton
 
 @Composable
-fun MainButtonPart (isEnable: Boolean){
+fun MainButtonPart (isEnable: Boolean, initial: String? = null ){
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -27,9 +28,10 @@ fun MainButtonPart (isEnable: Boolean){
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-
+            var value = "Add"
+            if (initial != null) value = "Save" else value = "Add"
             PrimaryButton(
-                label = "add",
+                label = value,
                 onClick = {},
                 isLoading = false,
                 isEnabled = isEnable,
