@@ -68,9 +68,9 @@ dependencies {
 
 
     //material 3
-    implementation (libs.material3)
-    implementation (libs.ui)
-    implementation (libs.androidx.runtime)
+    implementation(libs.material3)
+    implementation(libs.ui)
+    implementation(libs.androidx.runtime)
 
     implementation(libs.kotlinx.datetime)
 
