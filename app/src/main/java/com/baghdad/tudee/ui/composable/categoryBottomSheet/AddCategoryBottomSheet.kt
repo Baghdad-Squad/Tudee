@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,68 +44,69 @@ fun AddCategoryBottomSheet(
         isVisible = isVisible,
         onDismiss = onDismiss,
     ) {
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .background(color = Theme.color.surfaceColor.surface)
-            ) {
-                Text(
-                    text = stringResource(R.string.add_new_category),
-                    style = Theme.typography.title.large,
-                    color = Theme.color.textColor.title,
-                    modifier = Modifier.padding(bottom = 12.dp)
-                )
-                TudeeTextField(
-                    value = title,
-                    hint = "Category title",
-                    onValueChange = onCategoryTitleChanged,
-                    leadingIcon = painterResource(id = R.drawable.ic_menu_circle),
-                    modifier = Modifier.padding(bottom = 12.dp)
-                )
-                Text(
-                    text = "Category image",
-                    style = Theme.typography.title.large,
-                    color = Theme.color.textColor.title
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Box(
+            item() {
+                Column(
                     modifier = Modifier
-                        .padding(bottom = 24.dp)
-                        .dashedBorder(
-                            width = 1.dp,
-                            color = Theme.color.textColor.stroke,
-                            shape = RoundedCornerShape(16.dp)
-                        ),
-                    contentAlignment = Alignment.Center
+                        .padding(horizontal = 16.dp)
+                        .background(color = Theme.color.surfaceColor.surface)
                 ) {
-                    AnimatedContent(
-                        targetState = isCategoryImageUploaded,
-                        label = "UploadStateAnimation"
-                    ) { isUploaded ->
-                        if (isUploaded) {
-                            UploadedImageBox(onEditClick = onEditImageIconClick , image)
-                        } else {
-                            UploadPlaceholder(onUploadClick = onUploadIconClicked)
+                    Text(
+                        text = stringResource(R.string.add_new_category),
+                        style = Theme.typography.title.large,
+                        color = Theme.color.textColor.title,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+                    TudeeTextField(
+                        value = title,
+                        hint = "Category title",
+                        onValueChange = onCategoryTitleChanged,
+                        leadingIcon = painterResource(id = R.drawable.ic_menu_circle),
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+                    Text(
+                        text = "Category image",
+                        style = Theme.typography.title.large,
+                        color = Theme.color.textColor.title
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Box(
+                        modifier = Modifier
+                            .padding(bottom = 24.dp)
+                            .dashedBorder(
+                                width = 1.dp,
+                                color = Theme.color.textColor.stroke,
+                                shape = RoundedCornerShape(16.dp)
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        AnimatedContent(
+                            targetState = isCategoryImageUploaded,
+                            label = "UploadStateAnimation"
+                        ) { isUploaded ->
+                            if (isUploaded) {
+                                UploadedImageBox(onEditClick = onEditImageIconClick, image)
+                            } else {
+                                UploadPlaceholder(onUploadClick = onUploadIconClicked)
+                            }
                         }
+
                     }
-
                 }
-            }
-            ConfirmationButtonContainer(
-                isEnabled = isAddButtonEnabled,
-                onAddClick = onAddButtonClick,
-                onCancelClick = onCancelButtonClick,
-                actionLabel = stringResource(R.string.add),
-                isLoading = isLoading
-            )
+                ConfirmationButtonContainer(
+                    isEnabled = isAddButtonEnabled,
+                    onAddClick = onAddButtonClick,
+                    onCancelClick = onCancelButtonClick,
+                    actionLabel = stringResource(R.string.add),
+                    isLoading = isLoading
+                )
 
+            }
         }
     }
-
 }
 
 

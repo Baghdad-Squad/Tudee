@@ -38,7 +38,7 @@ fun UploadedImageBox(
     ) {
         Image(
             painter = image ?: painterResource(id = R.drawable.image_add_02),
-            contentDescription = "",
+            contentDescription = "Uploaded image",
             modifier = Modifier
                 .matchParentSize()
                 .clip(RoundedCornerShape(16.dp)),
