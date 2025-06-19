@@ -10,17 +10,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DatabaseInitializerCallback(
-    private val categoryDao: CategoryDao
+    private val categoryDaoProvider: () -> CategoryDao
 ) : RoomDatabase.Callback() {
 
     override fun onCreate(db: SupportSQLiteDatabase) {
         super.onCreate(db)
         CoroutineScope(Dispatchers.IO).launch {
-            initializePredefinedCategories()
+            initializePredefinedCategories(categoryDaoProvider())
         }
     }
 
-    private suspend fun initializePredefinedCategories() {
+    private suspend fun initializePredefinedCategories(categoryDao: CategoryDao) {
         Category.PredefinedType.entries
             .mapIndexed { index, type ->
                 Category(
