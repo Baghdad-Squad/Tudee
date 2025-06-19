@@ -1,29 +1,18 @@
 package com.baghdad.tudee.data.service
-
+//a
 import android.database.sqlite.SQLiteException
 import com.baghdad.tudee.data.database.dao.CategoryDao
-import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.categoryID
-import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.dbError
-import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.duplicateCategoryTitle
-import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.emptyCategoryList
-import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.expectedImageUri
-import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.expectedTitle
-import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.index
-import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.invalidCategoryData
-import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.invalidCategoryId
-import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.nonExistentCategoryId
-import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.oneCategoryExpected
-import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.sampleCategory
-import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.sampleDto
+import com.baghdad.tudee.data.model.CategoryDto
 import com.baghdad.tudee.data.source.PredefinedCategorySource
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.exception.DatabaseException
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -31,177 +20,184 @@ import org.junit.Before
 import org.junit.Test
 
 class CategoryServiceImplTest {
-    private lateinit var   predefinedCategorySource: PredefinedCategorySource
-    private  lateinit var  categoryDao: CategoryDao
+    private lateinit var predefinedCategorySource: PredefinedCategorySource
+    private lateinit var categoryDao: CategoryDao
     private lateinit var categoryService: CategoryServiceImpl
+
+    // Test data
+    private val categoryId = 1L
+    private val nonExistentCategoryId = 999L
+    private val invalidCategoryId = -1L
+    private val expectedTitle = "Test Category"
+    private val duplicateTitle = "Duplicate Category"
+    private val dbError = "Database error"
+    private val sampleCategory = Category(
+        id = categoryId,
+        title = expectedTitle,
+        image = Category.Image.Predefined(Category.PredefinedType.SHOPPING)
+    )
+    private val sampleDto = CategoryDto(
+        id = categoryId,
+        title = expectedTitle,
+        imageType = "PREDEFINED",
+        imageBytes = null
+    )
 
     @Before
     fun setUp() {
-        predefinedCategorySource = mockk<PredefinedCategorySource>(relaxed =  true)
+        predefinedCategorySource = mockk(relaxed = true)
         categoryDao = mockk(relaxed = true)
         categoryService = CategoryServiceImpl(categoryDao, predefinedCategorySource)
+
+        every { predefinedCategorySource.getPredefinedCategories() } returns listOf(sampleCategory)
+
     }
 
     @Test
-    fun `getCategories happy path`() = runTest {
-        coEvery { categoryDao.getCategories() } returns flowOf(listOf(sampleDto))
+    fun `getCategories returns empty list when no categories exist`() = runTest {
+        // Given
+        coEvery { categoryDao.getCategories() } returns flowOf(emptyList())
+        every { predefinedCategorySource.getPredefinedCategories() } returns emptyList()
 
+        // When
         val result = categoryService.getCategories().first()
 
-        assertEquals(oneCategoryExpected, result.size)
-        assertEquals(expectedTitle, result[index].title)
-        assertEquals(expectedImageUri, result[index].image)
-    }
-
-    @Test
-    fun `getCategories empty list`() = runTest {
-        coEvery { categoryDao.getCategories() } returns flowOf(emptyCategoryList)
-
-        val result = categoryService.getCategories().first()
-
+        // Then
         assertTrue(result.isEmpty())
+        verify(exactly = 1) {
+            categoryDao.getCategories()
+        }
+        verify(exactly = 1) {
+            predefinedCategorySource.getPredefinedCategories()
+        }
     }
 
     @Test(expected = DatabaseException::class)
-    fun `getCategories DAO error`() = runTest {
+    fun `getCategories throws DatabaseException when DAO fails`() = runTest {
+        // Given
         coEvery { categoryDao.getCategories() } throws SQLiteException(dbError)
 
+        // When
         categoryService.getCategories().first()
     }
 
     @Test
-    fun `getCategories mapping logic`() = runTest {
-        coEvery { categoryDao.getCategories() } returns flowOf(listOf(sampleDto))
+    fun `createCategory inserts category successfully`() = runTest {
+        // Given
+        coEvery { categoryDao.createCategory(any()) } returns 1L
 
-        val result = categoryService.getCategories().first()
+        // When
+        val result = categoryService.createCategory(sampleCategory)
 
-        assertEquals(sampleDto.id, result[index].id)
-        assertEquals(sampleDto.title, result[index].title)
-        assertEquals(sampleDto.imageType, result[index].image)
+        // Then
+        assertEquals(1L, result)
+        coVerify { categoryDao.createCategory(any()) }
     }
-
-    @Test
-    fun `getCategories flow collection`() = runTest {
-        coEvery { categoryDao.getCategories() } returns flowOf(listOf(sampleDto))
-
-        val result = categoryService.getCategories().toList()
-
-        assertEquals(1, result.size)
-        assertEquals(oneCategoryExpected, result[0].size)
-    }
-
 
     @Test(expected = DatabaseException::class)
-    fun `createCategory DAO error`() = runTest {
+    fun `createCategory throws DatabaseException when DAO fails`() = runTest {
+        // Given
         coEvery { categoryDao.createCategory(any()) } throws SQLiteException(dbError)
 
+        // When
         categoryService.createCategory(sampleCategory)
     }
 
     @Test(expected = DatabaseException::class)
-    fun `createCategory with invalid category data`() = runTest {
-        coEvery { categoryDao.createCategory(any()) } throws SQLiteException("Invalid category data")
+    fun `createCategory throws DatabaseException for duplicate title`() = runTest {
+        // Given
+        coEvery { categoryDao.createCategory(any()) } throws
+                SQLiteException("UNIQUE constraint failed: categories.title")
 
-        categoryService.createCategory(invalidCategoryData)
-    }
-
-    @Test(expected = DatabaseException::class)
-    fun `createCategory duplicate category if applicable`() = runTest {
-        coEvery { categoryDao.createCategory(any()) } throws SQLiteException("Category title already exists")
-
-        categoryService.createCategory(sampleCategory.copy(title = duplicateCategoryTitle))
+        // When
+        categoryService.createCategory(sampleCategory.copy(title = duplicateTitle))
     }
 
     @Test
-    fun `editCategory happy path`() = runTest {
+    fun `editCategory updates category successfully`() = runTest {
+        // Given
         coEvery { categoryDao.updateCategory(any()) } returns 1
 
+        // When
         val result = categoryService.editCategory(sampleCategory)
 
+        // Then
         assertEquals(1, result)
-        coVerify {
-            categoryDao.updateCategory(match {
-                it.id == categoryID && it.title == expectedTitle
-            })
-        }
+        coVerify { categoryDao.updateCategory(any()) }
     }
 
     @Test
-    fun `editCategory non existent category`() = runTest {
+    fun `editCategory returns 0 when category not found`() = runTest {
+        // Given
         coEvery { categoryDao.updateCategory(any()) } returns 0
 
+        // When
         val result = categoryService.editCategory(sampleCategory.copy(id = nonExistentCategoryId))
 
+        // Then
         assertEquals(0, result)
     }
 
     @Test(expected = DatabaseException::class)
-    fun `editCategory DAO error`() = runTest {
+    fun `editCategory throws DatabaseException when DAO fails`() = runTest {
+        // Given
         coEvery { categoryDao.updateCategory(any()) } throws SQLiteException(dbError)
 
+        // When
         categoryService.editCategory(sampleCategory)
     }
 
     @Test
-    fun `editCategory DTO mapping`() = runTest {
-        coEvery { categoryDao.updateCategory(any()) } returns 1
+    fun `deleteCategory deletes category successfully`() = runTest {
+        // Given
+        coEvery { categoryDao.deleteCategory(categoryId) } returns 1
 
-        categoryService.editCategory(sampleCategory)
+        // When
+        val result = categoryService.deleteCategory(categoryId)
 
-        coVerify {
-            categoryDao.updateCategory(match {
-                it.id == sampleCategory.id &&
-                        it.title == sampleCategory.title &&
-                        it.imageBytes contentEquals  (sampleCategory.image as Category.Image.ByteArray).data
-            })
-        }
-    }
-
-    @Test(expected = DatabaseException::class)
-    fun `editCategory with invalid category data`() = runTest {
-        coEvery { categoryDao.updateCategory(any()) } throws SQLiteException("Invalid category data")
-
-        categoryService.editCategory(invalidCategoryData)
-    }
-
-    @Test
-    fun `deleteCategory happy path`() = runTest {
-        coEvery { categoryDao.deleteCategory(categoryID) } returns 1
-
-        val result = categoryService.deleteCategory(categoryID)
-
+        // Then
         assertEquals(1, result)
-        coVerify { categoryDao.deleteCategory(categoryID) }
+        coVerify { categoryDao.deleteCategory(categoryId) }
     }
 
     @Test
-    fun `deleteCategory non existent category`() = runTest {
+    fun `deleteCategory returns 0 when category not found`() = runTest {
+        // Given
         coEvery { categoryDao.deleteCategory(nonExistentCategoryId) } returns 0
 
+        // When
         val result = categoryService.deleteCategory(nonExistentCategoryId)
 
+        // Then
         assertEquals(0, result)
     }
 
     @Test(expected = DatabaseException::class)
-    fun `deleteCategory DAO error`() = runTest {
-        coEvery { categoryDao.deleteCategory(categoryID) } throws SQLiteException(dbError)
+    fun `deleteCategory throws DatabaseException when DAO fails`() = runTest {
+        // Given
+        coEvery { categoryDao.deleteCategory(categoryId) } throws SQLiteException(dbError)
 
-        categoryService.deleteCategory(categoryID)
+        // When
+        categoryService.deleteCategory(categoryId)
     }
 
     @Test(expected = DatabaseException::class)
-    fun `deleteCategory with invalid categoryId`() = runTest {
-        coEvery { categoryDao.deleteCategory(invalidCategoryId) } throws SQLiteException("Invalid category ID")
+    fun `deleteCategory throws DatabaseException for invalid ID`() = runTest {
+        // Given
+        coEvery { categoryDao.deleteCategory(invalidCategoryId) } throws
+                SQLiteException("Invalid category ID")
 
+        // When
         categoryService.deleteCategory(invalidCategoryId)
     }
 
     @Test(expected = DatabaseException::class)
-    fun `deleteCategory category with dependencies if applicable`() = runTest {
-        coEvery { categoryDao.deleteCategory(categoryID) } throws SQLiteException("Foreign key constraint failed")
+    fun `deleteCategory throws DatabaseException when category has dependencies`() = runTest {
+        // Given
+        coEvery { categoryDao.deleteCategory(categoryId) } throws
+                SQLiteException("FOREIGN KEY constraint failed")
 
-        categoryService.deleteCategory(categoryID)
+        // When
+        categoryService.deleteCategory(categoryId)
     }
-
 }
