@@ -4,13 +4,13 @@ import kotlinx.datetime.LocalDate
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-data class Task @OptIn(ExperimentalUuidApi::class) constructor(
-    val id: Uuid,
+data class Task(
+    val id: Long,
     val title: String,
     val description: String,
     val date: LocalDate,
     val priority: Priority,
-    val categoryId: Uuid,
+    val categoryId: Long,
     val state: State
 ){
     enum class State {
