@@ -8,7 +8,13 @@ import kotlin.uuid.ExperimentalUuidApi
 fun CategoryDto.toEntity(): Category {
     val image = when (imageType) {
         CategoryDto.IMAGE_TYPE_BYTE_ARRAY -> {
-            Category.Image.ByteArray(imageBytes ?: byteArrayOf())
+            Category.Image.ByteArray(imageBytes)
+        }
+
+        CategoryDto.IMAGE_TYPE_PREDEFINED -> {
+            Category.Image.Predefined(
+                Category.PredefinedType.valueOf(imageData)
+            )
         }
 
         else -> throw IllegalStateException("Image type not supported: $imageType")
@@ -28,6 +34,7 @@ fun Category.toDto(): CategoryDto {
             id = this.id,
             title = this.title,
             imageType = CategoryDto.IMAGE_TYPE_PREDEFINED,
+            imageData = this.image.type.name
         )
 
         is Category.Image.ByteArray -> CategoryDto(
