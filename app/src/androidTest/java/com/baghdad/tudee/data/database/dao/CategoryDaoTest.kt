@@ -39,7 +39,7 @@ class CategoryDaoTest {
         id: Long = 0L,
         title: String = "Test",
         imageType: String = CategoryDto.Companion.IMAGE_TYPE_PREDEFINED,
-        imageBytes: ByteArray? = "test".toByteArray()
+        imageBytes: ByteArray = "test".toByteArray()
     ) = CategoryDto(
         id = id,
         title = title,
@@ -170,14 +170,8 @@ class CategoryDaoTest {
             imageType = CategoryDto.Companion.IMAGE_TYPE_BYTE_ARRAY,
             imageBytes = "byte array".toByteArray()
         )
-        val filePath = createTestCategory(
-            title = "FilePath",
-            imageType = CategoryDto.Companion.IMAGE_TYPE_FILE_PATH,
-            imageBytes = null
-        )
-
         // When
-        listOf(predefined, byteArray, filePath).forEach {
+        listOf(predefined, byteArray).forEach {
             categoryDao.createCategory(it)
         }
 
@@ -186,7 +180,6 @@ class CategoryDaoTest {
         Assert.assertEquals(3, categories.size)
         Assert.assertEquals(CategoryDto.Companion.IMAGE_TYPE_PREDEFINED, categories[0].imageType)
         Assert.assertEquals(CategoryDto.Companion.IMAGE_TYPE_BYTE_ARRAY, categories[1].imageType)
-        Assert.assertEquals(CategoryDto.Companion.IMAGE_TYPE_FILE_PATH, categories[2].imageType)
     }
 
     @Test

@@ -3,7 +3,6 @@ package com.baghdad.tudee.data.service
 import android.database.sqlite.SQLiteException
 import com.baghdad.tudee.data.database.dao.CategoryDao
 import com.baghdad.tudee.data.model.CategoryDto
-import com.baghdad.tudee.data.source.PredefinedCategorySource
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.exception.DatabaseException
 import io.mockk.coEvery
@@ -20,7 +19,6 @@ import org.junit.Before
 import org.junit.Test
 
 class CategoryServiceImplTest {
-    private lateinit var predefinedCategorySource: PredefinedCategorySource
     private lateinit var categoryDao: CategoryDao
     private lateinit var categoryService: CategoryServiceImpl
 
@@ -40,16 +38,13 @@ class CategoryServiceImplTest {
         id = categoryId,
         title = expectedTitle,
         imageType = "PREDEFINED",
-        imageBytes = null
+        imageBytes = byteArrayOf()
     )
 
     @Before
     fun setUp() {
-        predefinedCategorySource = mockk(relaxed = true)
         categoryDao = mockk(relaxed = true)
-        categoryService = CategoryServiceImpl(categoryDao, predefinedCategorySource)
-
-        every { predefinedCategorySource.getPredefinedCategories() } returns listOf(sampleCategory)
+        categoryService = CategoryServiceImpl(categoryDao)
 
     }
 
@@ -57,7 +52,6 @@ class CategoryServiceImplTest {
     fun `getCategories returns empty list when no categories exist`() = runTest {
         // Given
         coEvery { categoryDao.getCategories() } returns flowOf(emptyList())
-        every { predefinedCategorySource.getPredefinedCategories() } returns emptyList()
 
         // When
         val result = categoryService.getCategories().first()
@@ -66,9 +60,6 @@ class CategoryServiceImplTest {
         assertTrue(result.isEmpty())
         verify(exactly = 1) {
             categoryDao.getCategories()
-        }
-        verify(exactly = 1) {
-            predefinedCategorySource.getPredefinedCategories()
         }
     }
 

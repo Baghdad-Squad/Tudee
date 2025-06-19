@@ -98,8 +98,6 @@ dependencies {
 
     implementation(libs.jetbrains.kotlinx.coroutines.android)
     implementation(libs.coil.compose)
-}
-
     // Room testing
     testImplementation(libs.androidx.room.testing)
 
@@ -115,6 +113,7 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.kotlinx.coroutines.test)
 }
+
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
 }
