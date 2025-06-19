@@ -8,7 +8,7 @@ import kotlinx.datetime.Month
 data class TasksUiState(
 
     val tasksOnSpecificDate : List<Task> = emptyList(),
-    val selectedTab: Task.State = Task.State.TODO,
+    val selectedTab: Task.State = Task.State.IN_PROGRESS,
     val selectedDate: LocalDate? = null,
     val monthDates: List<LocalDate> = emptyList(),
     val tasksDisplayed : List<Task> = emptyList(),

@@ -7,8 +7,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.baghdad.tudee.R
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
 
 @Composable
@@ -29,7 +31,7 @@ fun TasksColumn(
             uiState.tasksDisplayed
         ) { task ->
             val category = uiState.categories.find { it.id == task.categoryId }
-            val painter = rememberAsyncImagePainter(model = category?.imageUri?.toIntOrNull())
+            val painter =  painterResource( R.drawable.ic_baseball_bat) /*Add when statements TODO()*/
 
             CategoryTaskCard(
                 title = task.title,
