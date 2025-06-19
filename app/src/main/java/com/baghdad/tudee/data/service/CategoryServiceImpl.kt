@@ -11,7 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class CategoryServiceImpl(
-    private val categoryDao: CategoryDao
+    private val categoryDao: CategoryDao,
+
 ) : CategoryService, DatabaseErrorHandler() {
     override suspend fun getCategories(): Flow<List<Category>> = executeWithErrorHandling {
         categoryDao.getCategories().map(List<CategoryDto>::toEntities)
