@@ -7,8 +7,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
 
 @Composable
@@ -19,19 +19,23 @@ fun TasksColumn(
 
 
     LazyColumn(
-        modifier = modifier.padding(horizontal = 16.dp)
+        modifier = modifier
+            .padding(horizontal = 16.dp)
             .padding(bottom = 40.dp),
         contentPadding = PaddingValues(vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(
-            uiState.tasks
+            uiState.tasksDisplayed
         ) { task ->
+            val category = uiState.categories.find { it.id == task.categoryId }
+            val painter = rememberAsyncImagePainter(model = category?.imageUri?.toIntOrNull())
+
             CategoryTaskCard(
                 title = task.title,
                 description = task.description,
                 priorityTask = task.priority,
-                icon = painterResource(task.icon),
+                icon = painter,
                 onClick = {/*TODO()*/ },
             )
         }

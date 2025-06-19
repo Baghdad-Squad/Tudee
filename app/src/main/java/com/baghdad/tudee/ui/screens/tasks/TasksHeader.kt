@@ -1,6 +1,7 @@
 package com.baghdad.tudee.ui.screens.tasks
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -23,8 +25,13 @@ import com.baghdad.tudee.designSystem.theme.Theme
 
 @Composable
 fun TasksHeader(
-    monthAndYear: String,
-    modifier: Modifier = Modifier) {
+    month: String,
+    year: String,
+    onDownArrowClicked: () -> Unit,
+    onNextArrowClicked: () -> Unit,
+    onPreviousArrowClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -34,34 +41,42 @@ fun TasksHeader(
     ) {
         NavigationIcon(
             icon = painterResource(id = R.drawable.ic_left_arrow),
+            contentDescription = stringResource(R.string.left_arrow),
+            modifier = Modifier.clickable { onPreviousArrowClicked() }
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                text = monthAndYear,
+                text = "$month $year",
                 style = Theme.typography.label.medium,
                 color = Theme.color.textColor.body,
             )
             Icon(
                 painter = painterResource(id = R.drawable.ic_right_arrow),
-                contentDescription = "arrow down",
+                contentDescription = stringResource(R.string.arrow_down),
                 tint = Theme.color.textColor.body,
-                modifier = Modifier.rotate(90f)
+                modifier = Modifier
+                    .rotate(90f)
+                    .clickable { onDownArrowClicked() }
             )
         }
         NavigationIcon(
             icon = painterResource(id = R.drawable.ic_right_arrow),
+            contentDescription = stringResource(R.string.right_arrow),
+            modifier = Modifier.clickable { onNextArrowClicked() }
         )
     }
 }
 
 @Composable
 fun NavigationIcon(
-    icon:Painter,
-    modifier: Modifier = Modifier) {
-    Box (
+    icon: Painter,
+    contentDescription: String,
+    modifier: Modifier = Modifier
+) {
+    Box(
         modifier = modifier
             .clip(CircleShape)
             .border(
@@ -69,10 +84,10 @@ fun NavigationIcon(
                 color = Theme.color.textColor.stroke,
                 shape = CircleShape
             )
-    ){
+    ) {
         Icon(
             painter = icon,
-            contentDescription = "navigation icon",
+            contentDescription = contentDescription,
             tint = Theme.color.textColor.body,
             modifier = Modifier.padding(8.dp)
         )

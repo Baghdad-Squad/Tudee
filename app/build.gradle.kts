@@ -78,18 +78,24 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
     implementation(libs.kotlinx.datetime)
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 
 // Android-specific coroutine support (for Dispatchers.Main, etc.)
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-//    implementation("io.insert-koin:koin-core:3.5.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 //
-//// Koin Android (for Android-specific features like ViewModel injection)
-//    implementation("io.insert-koin:koin-android:3.5.3")
-//
-//// Koin ViewModel (integrates with Jetpack ViewModel)
-//    implementation("io.insert-koin:koin-androidx-viewmodel:3.5.3")
+// Core Koin
+    implementation("io.insert-koin:koin-core:3.5.3")
+
+// Koin Android features
+    implementation("io.insert-koin:koin-android:3.5.3")
+
+// Koin for Jetpack Compose
+    implementation("io.insert-koin:koin-androidx-compose:3.5.3")
+
+
+    implementation(libs.coil.compose)
+
 
 }
 
