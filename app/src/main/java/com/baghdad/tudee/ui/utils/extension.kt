@@ -10,6 +10,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.baghdad.tudee.ui.screens.homeScreen.HomeScreenUIState
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
@@ -25,7 +26,7 @@ fun Modifier.insideBorder(
     width: Dp,
     color: androidx.compose.ui.graphics.Color,
     cornerRadius: Dp = 0.dp
-) = this.then(
+) = this.
     drawWithContent {
         drawContent()
         val strokeWidth = width.toPx()
@@ -39,7 +40,13 @@ fun Modifier.insideBorder(
             topLeft = Offset(strokeWidth/2, strokeWidth/2)
         )
     }
-)
+
+
+
+fun HomeScreenUIState.isEmptyTasks(): Boolean {
+    return inProgressTasks.isEmpty() && todoTasks.isEmpty() && doneTasks.isEmpty()
+}
+
 
 fun Modifier.radialGradientBackground(colors: List<Color>) = this.background(
     brush = Brush.radialGradient(
