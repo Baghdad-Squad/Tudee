@@ -1,12 +1,9 @@
 package com.baghdad.tudee.ui.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.baghdad.tudee.R
 import com.baghdad.tudee.domain.service.CategoryService
 import com.baghdad.tudee.domain.service.TaskService
-import com.baghdad.tudee.data.fakeData.fakeCategoriesData
 import com.baghdad.tudee.ui.viewModel.mapper.toEntity
 import com.baghdad.tudee.ui.viewModel.mapper.toUiState
 import com.baghdad.tudee.ui.viewModel.state.CategoryUiState
@@ -29,24 +26,22 @@ class CategoryViewModel(
 
     @OptIn(ExperimentalUuidApi::class)
     private val _statusValue = MutableStateFlow(
-        listOf(
-            CategoryUiState(
-                id = Uuid.random(),
-                title = "Fake",
-                imageUri = "${R.drawable.ic_baseball_bat}"
-            ))
+        listOf<CategoryUiState>()
     )
     val statusValue = _statusValue.asStateFlow()
 
-    init{
+    init {
         getCategories()
     }
+
     @OptIn(ExperimentalUuidApi::class)
     fun getCategories() {
         viewModelScope.launch(Dispatchers.IO) {
             categoryService.getCategories().collect { categories ->
                 categories.map {
-                    it.toUiState().copy(taskCount = 1)
+                    it.toUiState().copy(taskCount = 0
+
+                    )
 //                        .copy(taskCount = getTaskCount(it.id))
                 }.let { state ->
                     _statusValue.update {
@@ -58,9 +53,9 @@ class CategoryViewModel(
     }
 
     @OptIn(ExperimentalUuidApi::class)
-    fun deleteCategory(categoryId: String) {
+    fun deleteCategory(categoryId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            categoryService.deleteCategory(Uuid.parse(categoryId))
+            categoryService.deleteCategory(categoryId)
         }
     }
 
@@ -78,7 +73,7 @@ class CategoryViewModel(
     }
 
     @OptIn(ExperimentalUuidApi::class)
-    private suspend fun getTaskCount(id: Uuid): Int {
+    private suspend fun getTaskCount(id: Long): Int {
         return taskService.getTasksByCategory(id)
             .map { it.count() }
             .first()

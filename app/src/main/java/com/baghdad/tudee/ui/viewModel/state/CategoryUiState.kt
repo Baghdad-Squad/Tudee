@@ -1,10 +1,15 @@
 package com.baghdad.tudee.ui.viewModel.state
 
-import kotlin.uuid.ExperimentalUuidApi
+import androidx.annotation.DrawableRes
 
-data class CategoryUiState @OptIn(ExperimentalUuidApi::class) constructor(
-    val id: Long? = null,
+sealed class UiImage {
+    data class ByteArrayImage(val data: ByteArray) : UiImage()
+    data class PredefinedImage(@DrawableRes val path: Int) : UiImage()
+}
+
+data class CategoryUiState(
+    val id: Long = 0,
     val title: String,
-    val image: ByteArray,
+    val image: UiImage,
     val taskCount: Int? = null
 )
