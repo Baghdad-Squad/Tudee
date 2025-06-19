@@ -149,6 +149,7 @@ fun CategoryScreenContent(
             onCancelButtonClick = {
                 showAddNewCategoryDialog = false
                 result.value = null
+                text = ""
             },
 
             image = painter,
