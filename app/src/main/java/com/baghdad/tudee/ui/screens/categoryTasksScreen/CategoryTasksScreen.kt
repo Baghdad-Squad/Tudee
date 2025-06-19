@@ -51,7 +51,7 @@ fun CategoryTasksScreen(
         filteredTasks = state.doneTasks,
         isPredefinedCategory = state.isPredefinedCategory,
         onPencilEditClicked = {},
-        onArrowBackClicked ={}
+        onArrowBackClicked = {}
     )
 }
 
@@ -61,11 +61,11 @@ private fun CategoryTasksScreenContent(
     onTabSelected: (Task.State) -> Unit,
     filteredTasks: List<Task>,
     isPredefinedCategory: Boolean,
-    onArrowBackClicked:()->Unit,
-    onPencilEditClicked:()->Unit
+    onArrowBackClicked: () -> Unit,
+    onPencilEditClicked: () -> Unit
 ) {
 
-    Column(modifier = Modifier.padding(top = 28.dp)) {
+    Column(modifier = Modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -73,14 +73,15 @@ private fun CategoryTasksScreenContent(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            IconInBox(icon = R.drawable.arrow_left_01, onIconClick = {onArrowBackClicked()})
+            IconInBox(icon = R.drawable.arrow_left_01, onIconClick = {})
             Text(
-                text = state.categoryName,
+                text = "state.categoryName",
                 style = Theme.typography.title.large,
                 color = Theme.color.textColor.title
             )
             if (isPredefinedCategory) {
-                IconInBox(icon = R.drawable.pencil_edit_01, onIconClick = {onPencilEditClicked()})
+                Spacer(modifier = Modifier.weight(1f))
+                IconInBox(icon = R.drawable.pencil_edit_02, onIconClick = {})
             }
         }
 
@@ -126,10 +127,11 @@ private fun CategoryTasksScreenContent(
 }
 
 @Composable
-fun IconInBox(modifier: Modifier = Modifier,
-              icon: Int, onIconClick: () -> Unit,
-              tint :Color = Theme.color.textColor.body
-              ) {
+fun IconInBox(
+    modifier: Modifier = Modifier,
+    icon: Int, onIconClick: () -> Unit,
+    tint: Color = Theme.color.textColor.body
+) {
     Box(
         modifier = modifier
             .size(40.dp)
@@ -154,6 +156,7 @@ fun IconInBox(modifier: Modifier = Modifier,
 @Preview(showBackground = true)
 @Composable
 fun CategoryTasksScreenPreview() {
+    val isShoweev: Boolean = true
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -167,8 +170,11 @@ fun CategoryTasksScreenPreview() {
             style = Theme.typography.title.large,
             color = Theme.color.textColor.title
         )
-        Spacer(modifier = Modifier.weight(1f))
+        if (isShoweev) {
+            Spacer(modifier = Modifier.weight(1f))
             IconInBox(icon = R.drawable.pencil_edit_02, onIconClick = {})
+        }
+
 
     }
 }
