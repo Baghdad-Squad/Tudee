@@ -2,17 +2,19 @@ package com.baghdad.tudee.data.service
 
 import android.database.sqlite.SQLiteException
 import com.baghdad.tudee.data.database.dao.TaskDao
-import com.baghdad.tudee.data.service.SampleTaskData.categoryID1
-import com.baghdad.tudee.data.service.SampleTaskData.date
-import com.baghdad.tudee.data.service.SampleTaskData.dbErrorTask
-import com.baghdad.tudee.data.service.SampleTaskData.expectedDescription
-import com.baghdad.tudee.data.service.SampleTaskData.taskExpectedTitle
-import com.baghdad.tudee.data.service.SampleTaskData.taskindex
-import com.baghdad.tudee.data.service.SampleTaskData.oneTaskExpected
-import com.baghdad.tudee.data.service.SampleTaskData.priorty
-import com.baghdad.tudee.data.service.SampleTaskData.sampleTaskDto
-import com.baghdad.tudee.data.service.SampleTaskData.sampleTask
-import com.baghdad.tudee.data.service.SampleTaskData.taskID
+import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.categoryID1
+import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.date
+import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.dbErrorTask
+import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.expectedDescription
+import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.expectedTasks
+import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.listOfTasks
+import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.oneTaskExpected
+import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.priorty
+import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.sampleTask
+import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.sampleTaskDto
+import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.taskExpectedTitle
+import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.taskID
+import com.baghdad.tudee.data.service.shared.TestDummyData.Companion.taskindex
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.domain.exception.DatabaseException
 import io.mockk.Runs
@@ -48,6 +50,26 @@ class TaskServiceImplTest {
         assertEquals(oneTaskExpected, result.size)
         assertEquals(taskExpectedTitle, result[taskindex].title)
         assertEquals(Task.State.TODO, result[taskindex].state)
+    }
+
+    @Test
+    fun `getTasksByCategoryId return empty list of tasks `() = runTest {
+
+        coEvery { taskDao.getTasksByCategory(categoryID1) } returns flowOf(emptyList())
+
+        val result = taskService.getTasksByCategory(categoryID1).first()
+
+        assertEquals(emptyList<TaskDao>(), result)
+    }
+
+    @Test
+    fun `getTasksByCategoryId return list of tasks `() = runTest {
+
+        coEvery { taskDao.getTasksByCategory(categoryID1) } returns flowOf(listOfTasks)
+
+        val result = taskService.getTasksByCategory(categoryID1).first()
+
+        assertEquals(expectedTasks, result)
     }
 
     @Test
