@@ -1,5 +1,6 @@
 
 package com.baghdad.tudee.ui.composable
+import TaskPriority
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,8 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.utils.noRippleClickable
 
@@ -33,6 +38,7 @@ fun CategoryTaskCard(
         modifier = modifier
             .fillMaxWidth()
             .background(Theme.color.surfaceColor.surfaceHigh, shape = RoundedCornerShape(16.dp))
+            .padding(horizontal = 12.dp, vertical = 12.dp)
             .padding( 12.dp)
             .noRippleClickable {
                 onClick()
@@ -40,12 +46,11 @@ fun CategoryTaskCard(
     ) {
         Row(
             Modifier
-                .fillMaxWidth()
-            ,
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(Modifier.size(56.dp), contentAlignment = Alignment.Center) {
+            Box(Modifier.size(32.dp), contentAlignment = Alignment.Center) {
                 Image(
                     painter = icon,
                     contentDescription = "Category Icon",
@@ -53,10 +58,11 @@ fun CategoryTaskCard(
             }
             TaskPriority(
                 priorityTask = priorityTask,
+                isClickable = false
             )
         }
 
-        Column(modifier = Modifier.padding(top = 2.dp)) {
+        Column(modifier = Modifier.padding(top = 12.dp)) {
             Text(
                 text = title,
                 style = Theme.typography.label.large,
@@ -69,6 +75,19 @@ fun CategoryTaskCard(
                 modifier = Modifier.padding(top = 2.dp)
             )
         }
+    }
+}
+@Composable
+@Preview
+private fun CategoryTaskCard() {
+    TudeeTheme {
+        CategoryTaskCard(
+            title = "title",
+            description = "no thing to add just try",
+            priorityTask = Task.Priority.LOW,
+            icon = painterResource(R.drawable.ic_baseball_bat),
+            onClick = {}
+        )
     }
 }
 
