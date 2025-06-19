@@ -57,8 +57,7 @@ fun TaskBottomSheet(
             columns = GridCells.Adaptive(104.dp),
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 16.dp),
-            contentPadding = PaddingValues(
+,            contentPadding = PaddingValues(
                 top = 16.dp,
                 bottom = 16.dp
             ),
@@ -66,7 +65,7 @@ fun TaskBottomSheet(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             userScrollEnabled = true
         ) {
-            item {
+            item(span = { GridItemSpan(maxLineSpan) }) {
                 TextFieldScreenPart(
                     title = titleText,
                     onTitleChange = { titleText = it },
@@ -77,17 +76,18 @@ fun TaskBottomSheet(
                 )
             }
 
-            item {
+            item(span = { GridItemSpan(maxLineSpan) }) {
                 PriorityChipPart(
                     selectedPriority = selectedPriority,
                     onPrioritySelected = { selectedPriority = it }
                 )
             }
 
-            item {
+            item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
                     text = "Category",
-                    style = Theme.typography.title.medium
+                    style = Theme.typography.title.medium,
+                    modifier = Modifier.padding(start = 16.dp)
                 )
             }
 
