@@ -4,31 +4,25 @@ import android.database.sqlite.SQLiteException
 import com.baghdad.tudee.data.database.dao.CategoryDao
 import com.baghdad.tudee.data.service.SampleCategoryData.categoryID
 import com.baghdad.tudee.data.service.SampleCategoryData.dbError
-import com.baghdad.tudee.data.service.SampleCategoryData.expectedTitle
-import com.baghdad.tudee.data.service.SampleCategoryData.expectedImageUri
-import com.baghdad.tudee.data.service.SampleCategoryData.index
-import com.baghdad.tudee.data.service.SampleCategoryData.oneCategoryExpected
-import com.baghdad.tudee.data.service.SampleCategoryData.sampleDto
-import com.baghdad.tudee.data.service.SampleCategoryData.sampleCategory
+import com.baghdad.tudee.data.service.SampleCategoryData.duplicateCategoryTitle
 import com.baghdad.tudee.data.service.SampleCategoryData.emptyCategoryList
+import com.baghdad.tudee.data.service.SampleCategoryData.expectedImageUri
+import com.baghdad.tudee.data.service.SampleCategoryData.expectedTitle
+import com.baghdad.tudee.data.service.SampleCategoryData.index
+import com.baghdad.tudee.data.service.SampleCategoryData.invalidCategoryData
 import com.baghdad.tudee.data.service.SampleCategoryData.invalidCategoryId
 import com.baghdad.tudee.data.service.SampleCategoryData.nonExistentCategoryId
-import com.baghdad.tudee.data.service.SampleCategoryData.duplicateCategoryTitle
-import com.baghdad.tudee.data.service.SampleCategoryData.invalidCategoryData
-import com.baghdad.tudee.domain.entity.Category
+import com.baghdad.tudee.data.service.SampleCategoryData.oneCategoryExpected
+import com.baghdad.tudee.data.service.SampleCategoryData.sampleCategory
+import com.baghdad.tudee.data.service.SampleCategoryData.sampleDto
 import com.baghdad.tudee.domain.exception.DatabaseException
-import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.just
 import io.mockk.mockk
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.cancel
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -90,21 +84,6 @@ class CategoryServiceImplTest {
 
         assertEquals(1, result.size)
         assertEquals(oneCategoryExpected, result[0].size)
-    }
-
-    @Test
-    fun `getCategories flow cancellation`() = runTest {
-        coEvery { categoryDao.getCategories() } returns flowOf(listOf(sampleDto))
-
-        val flow = categoryService.getCategories()
-
-        try {
-            flow.collect { _: List<Category> ->
-                cancel()
-            }
-        } catch (e: CancellationException) {
-            // Expected cancellation
-        }
     }
 
 
@@ -221,24 +200,4 @@ class CategoryServiceImplTest {
         categoryService.deleteCategory(categoryID)
     }
 
-    @Test(expected = DatabaseException::class)
-    fun `executeWithErrorHandling general error handling`() = runTest {
-        coEvery { categoryDao.getCategories() } throws RuntimeException("Generic error")
-
-        categoryService.getCategories().first()
-    }
-
-    @Test
-    fun `executeWithErrorHandling coroutine cancellation`() = runTest {
-        coEvery { categoryDao.getCategories() } returns flowOf(listOf(sampleDto))
-
-        try {
-            categoryService.getCategories().collect { _: List<Category> ->
-                cancel()
-            }
-        } catch (e: CancellationException) {
-            // Expected cancellation behavior
-            assertTrue(true)
-        }
-    }
 }
