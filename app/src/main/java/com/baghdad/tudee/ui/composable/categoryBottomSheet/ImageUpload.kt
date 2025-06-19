@@ -104,7 +104,7 @@ fun UploadPlaceholder(
 
             )
             Text(
-                text = "Upload",
+                text = stringResource(R.string.upload),
                 style = Theme.typography.label.medium,
                 color = Theme.color.textColor.hint
             )
