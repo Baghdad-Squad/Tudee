@@ -2,15 +2,15 @@ package com.baghdad.tudee.data.service
 
 import android.database.sqlite.SQLiteException
 import com.baghdad.tudee.data.database.dao.TaskDao
-import com.baghdad.tudee.data.service.SampleTaskData.categoryID
+import com.baghdad.tudee.data.service.SampleTaskData.categoryID1
 import com.baghdad.tudee.data.service.SampleTaskData.date
-import com.baghdad.tudee.data.service.SampleTaskData.dbError
+import com.baghdad.tudee.data.service.SampleTaskData.dbErrorTask
 import com.baghdad.tudee.data.service.SampleTaskData.expectedDescription
-import com.baghdad.tudee.data.service.SampleTaskData.expectedTitle
-import com.baghdad.tudee.data.service.SampleTaskData.index
+import com.baghdad.tudee.data.service.SampleTaskData.taskExpectedTitle
+import com.baghdad.tudee.data.service.SampleTaskData.taskindex
 import com.baghdad.tudee.data.service.SampleTaskData.oneTaskExpected
 import com.baghdad.tudee.data.service.SampleTaskData.priorty
-import com.baghdad.tudee.data.service.SampleTaskData.sampleDto
+import com.baghdad.tudee.data.service.SampleTaskData.sampleTaskDto
 import com.baghdad.tudee.data.service.SampleTaskData.sampleTask
 import com.baghdad.tudee.data.service.SampleTaskData.taskID
 import com.baghdad.tudee.domain.entity.Task
@@ -41,25 +41,25 @@ class TaskServiceImplTest {
     @Test
     fun `getTasksByCategory returns mapped tasks`() = runTest {
 
-        coEvery { taskDao.getTasksByCategory(categoryID) } returns flowOf(listOf(sampleDto))
+        coEvery { taskDao.getTasksByCategory(categoryID1) } returns flowOf(listOf(sampleTaskDto))
 
-        val result = taskService.getTasksByCategory(categoryID).first()
+        val result = taskService.getTasksByCategory(categoryID1).first()
 
         assertEquals(oneTaskExpected, result.size)
-        assertEquals(expectedTitle, result[index].title)
-        assertEquals(Task.State.TODO, result[index].state)
+        assertEquals(taskExpectedTitle, result[taskindex].title)
+        assertEquals(Task.State.TODO, result[taskindex].state)
     }
 
     @Test
     fun `getTasksByDate returns mapped tasks`() = runTest {
 
-        coEvery { taskDao.getTasksByDate(date) } returns flowOf(listOf(sampleDto))
+        coEvery { taskDao.getTasksByDate(date) } returns flowOf(listOf(sampleTaskDto))
 
         val result = taskService.getTasksByDate(LocalDate.parse(date)).first()
 
         assertEquals(oneTaskExpected, result.size)
-        assertEquals(expectedDescription, result[index].description)
-        assertEquals(Task.Priority.LOW, result[index].priority)
+        assertEquals(expectedDescription, result[taskindex].description)
+        assertEquals(Task.Priority.LOW, result[taskindex].priority)
     }
 
     @Test
@@ -71,7 +71,7 @@ class TaskServiceImplTest {
 
         coVerify {
             taskDao.createTask(match {
-                it.title == expectedTitle && it.priority == priorty && it.date == date
+                it.title == taskExpectedTitle && it.priority == priorty && it.date == date
             })
         }
     }
@@ -83,7 +83,7 @@ class TaskServiceImplTest {
 
         taskService.editTask(sampleTask)
 
-        coVerify { taskDao.editTask(match { it.id == taskID && it.title == expectedTitle }) }
+        coVerify { taskDao.editTask(match { it.id == taskID && it.title == taskExpectedTitle }) }
     }
 
     @Test
@@ -99,9 +99,9 @@ class TaskServiceImplTest {
     @Test(expected = DatabaseException::class)
     fun `getTasksByCategory throws DatabaseException on SQLiteException`() = runTest {
 
-        coEvery { taskDao.getTasksByCategory(categoryID) } throws SQLiteException(dbError)
+        coEvery { taskDao.getTasksByCategory(categoryID1) } throws SQLiteException(dbErrorTask)
 
-        taskService.getTasksByCategory(categoryID).first()
+        taskService.getTasksByCategory(categoryID1).first()
     }
 
 }
