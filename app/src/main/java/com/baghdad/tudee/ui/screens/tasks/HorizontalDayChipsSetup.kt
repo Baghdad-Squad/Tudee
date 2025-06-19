@@ -91,7 +91,6 @@ fun HorizontalDayChipsRow(
 
         LazyRow(
             modifier = Modifier.weight(1f),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(horizontal = 16.dp),
             state = LazyListState(firstVisibleItemIndex = if(dates.indexOf(selectedDate) < 2) 0 else dates.indexOf(selectedDate)-2)
         ) {
