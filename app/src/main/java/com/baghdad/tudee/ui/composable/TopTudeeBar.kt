@@ -2,7 +2,6 @@ package com.baghdad.tudee.ui.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,7 +22,6 @@ import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.ui.composable.dayNightSwitch.DayNightSwitch
 import com.baghdad.tudee.ui.utils.insideBorder
-import com.baghdad.tudee.ui.utils.noRippleClickable
 
 @Composable
 fun TopTudeeBar(

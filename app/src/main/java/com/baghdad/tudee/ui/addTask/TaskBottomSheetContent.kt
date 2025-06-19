@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
@@ -52,20 +53,31 @@ fun TaskBottomSheet(
 
 
     Column(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(
-            modifier = Modifier.weight(1f),
-            contentPadding = PaddingValues(vertical = 16.dp)
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(104.dp),
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 16.dp),
+            contentPadding = PaddingValues(
+                top = 16.dp,
+                bottom = 16.dp
+            ),
+            verticalArrangement = Arrangement.spacedBy(25.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            userScrollEnabled = true
         ) {
             item {
                 TextFieldScreenPart(
-                    title =  titleText,
+                    title = titleText,
                     onTitleChange = { titleText = it },
-                    paragraph =  paragraphText,
+                    paragraph = paragraphText,
                     onParagraphChange = { paragraphText = it },
-                    dateTime =  dateTime,
+                    dateTime = dateTime,
                     onDateChange = { dateTime = it }
                 )
+            }
 
+            item {
                 PriorityChipPart(
                     selectedPriority = selectedPriority,
                     onPrioritySelected = { selectedPriority = it }
@@ -73,51 +85,30 @@ fun TaskBottomSheet(
             }
 
             item {
-                Column(
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                ) {
-                    Text(
-                        text = "Category",
-                        style = Theme.typography.title.medium
-                    )
-                }
+                Text(
+                    text = "Category",
+                    style = Theme.typography.title.medium
+                )
+            }
 
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(104.dp),
-                    contentPadding = PaddingValues(
-                        start = 16.dp,
-                        end = 16.dp,
-                        top = 12.dp,
-                        bottom = 12.dp
-                    ),
-                    userScrollEnabled = false,
-                    verticalArrangement = Arrangement.spacedBy(25.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.height(400.dp)
-                ) {
-                    items(state) { category ->
-                        CategoryItem(
-                            label = category.title,
-                            icon = painterResource(id = category.imageUri.toInt()),
-                            onClick = {
-                                selectedCategoryId = if (selectedCategoryId == category.id) {
-                                    null
-                                } else {
-                                    category.id
-                                }
-                            },
-                            isSelected = selectedCategoryId == category.id
-                        )
-                    }
-                }
+            items(state) { category ->
+                CategoryItem(
+                    label = category.title,
+                    icon = painterResource(id = category.imageUri.toInt()),
+                    onClick = {
+                        selectedCategoryId = if (selectedCategoryId == category.id) null else category.id
+                    },
+                    isSelected = selectedCategoryId == category.id
+                )
             }
         }
+
         val showButton by remember {
             derivedStateOf {
                 titleText.isNotBlank() && paragraphText.isNotBlank()
             }
         }
-        MainButtonPart(showButton)
+        MainButtonPart(showButton , initial?.title)
     }
 }
 
@@ -137,12 +128,12 @@ fun ShowTaskSheetButton() {
         ) {
             TaskBottomSheet(
                 initial = Task(
-                    id = Uuid.random(),
+                    id = 1,
                     title = "Nice chance",
                     description = "sdfsd",
                     date = LocalDate(2023, 6, 7),
                     priority = Task.Priority.HIGH,
-                    categoryId = Uuid.random(),
+                    categoryId = 1,
                     state = Task.State.TODO
                 ),
                 state = fakeCategoriesData()
@@ -150,7 +141,7 @@ fun ShowTaskSheetButton() {
         }
     }
 }
-
+// on dismiss and on saved should be called
 
 @Preview(showBackground = true)
 @Composable
