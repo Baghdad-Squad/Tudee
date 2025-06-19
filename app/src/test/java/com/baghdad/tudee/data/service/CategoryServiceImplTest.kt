@@ -1,5 +1,5 @@
 package com.baghdad.tudee.data.service
-//a
+
 import android.database.sqlite.SQLiteException
 import com.baghdad.tudee.data.database.dao.CategoryDao
 import com.baghdad.tudee.data.model.CategoryDto
@@ -22,7 +22,6 @@ class CategoryServiceImplTest {
     private lateinit var categoryDao: CategoryDao
     private lateinit var categoryService: CategoryServiceImpl
 
-    // Test data
     private val categoryId = 1L
     private val nonExistentCategoryId = 999L
     private val invalidCategoryId = -1L
