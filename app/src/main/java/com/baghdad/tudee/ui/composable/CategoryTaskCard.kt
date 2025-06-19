@@ -1,6 +1,6 @@
+
 package com.baghdad.tudee.ui.composable
-
-
+import TaskPriority
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,8 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.utils.noRippleClickable
 
@@ -54,6 +58,7 @@ fun CategoryTaskCard(
             }
             TaskPriority(
                 priorityTask = priorityTask,
+                isClickable = false
             )
         }
 
@@ -72,5 +77,17 @@ fun CategoryTaskCard(
         }
     }
 }
-
+@Composable
+@Preview
+private fun CategoryTaskCard() {
+    TudeeTheme {
+        CategoryTaskCard(
+            title = "title",
+            description = "no thing to add just try",
+            priorityTask = Task.Priority.LOW,
+            icon = painterResource(R.drawable.ic_baseball_bat),
+            onClick = {}
+        )
+    }
+}
 
