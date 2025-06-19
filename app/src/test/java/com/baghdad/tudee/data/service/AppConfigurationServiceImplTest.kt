@@ -3,7 +3,11 @@ package com.baghdad.tudee.data.service
 import com.baghdad.tudee.data.database.dao.AppConfigurationDao
 import com.baghdad.tudee.domain.exception.TudeeException
 import com.baghdad.tudee.domain.service.AppConfigurationService
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.first
@@ -48,5 +52,18 @@ class AppConfigurationServiceImplTest {
 
         //then
         assertTrue(result.exceptionOrNull() is TudeeException)
+    }
+
+    @Test
+    fun `setTheme calls saveTudeeTheme with correct value on success`() = runTest {
+        //given
+        val isDark = true
+        coEvery { mockDao.saveTudeeTheme(isDark) } just Runs
+
+        //when
+        service.setTheme(isDark)
+
+        //then
+        coVerify { mockDao.saveTudeeTheme(isDark) }
     }
 }
