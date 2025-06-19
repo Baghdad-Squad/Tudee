@@ -1,4 +1,4 @@
-package com.baghdad.tudee.ui.component
+package com.baghdad.tudee.ui.screens.SplashScreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.ui.screens.OnboardingScreen.OnboardingBackground
 
 @Composable
 fun SplashScreen(
@@ -24,7 +25,7 @@ fun SplashScreen(
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(R.drawable.logo_2),
+                painter = painterResource(R.drawable.logo),
                 contentDescription = "Tudee Logo",
                 modifier = Modifier
                     .width(122.dp)

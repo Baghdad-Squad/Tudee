@@ -1,4 +1,4 @@
-package com.baghdad.tudee.ui.component
+package com.baghdad.tudee.ui.screens.OnboardingScreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -16,11 +16,11 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.baghdad.tudee.R
@@ -39,27 +39,24 @@ fun OnboardingScreen(
         3
     }
     val scope = rememberCoroutineScope()
-    val titleList = remember {
-        listOf(
-            "Overwhelmed with tasks?",
-            "Uh-oh! Procrastinating again",
-            "Let’s complete task and celebrate together."
-        )
-    }
-    val descriptionList = remember {
-        listOf(
-            "Let’s bring some order to the chaos. Tudee is here to help you sort, plan, and breathe easier.",
-            "Tudee not mad… just a little disappointed, Let’s get back on track together.",
-            "Progress is progress. Tudee will celebrate you on for every win, big or small."
-        )
-    }
-    val robotImage = remember {
-        listOf(
-            R.drawable.img_welcome_robot,
-            R.drawable.img_angry_robot,
-            R.drawable.img_smile_robot
-        )
-    }
+    val titleList = listOf(
+        stringResource(id = R.string.title_0),
+        stringResource(id = R.string.title_1),
+        stringResource(id = R.string.title_2)
+    )
+
+    val descriptionList = listOf(
+        stringResource(id = R.string.desc_0),
+        stringResource(id = R.string.desc_1),
+        stringResource(id = R.string.desc_2)
+    )
+
+    val robotImage = listOf(
+        R.drawable.img_welcome_robot,
+        R.drawable.img_angry_robot,
+        R.drawable.img_smile_robot
+    )
+
 
     OnboardingBackground {
         Box(
