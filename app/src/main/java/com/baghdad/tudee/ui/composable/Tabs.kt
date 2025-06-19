@@ -116,7 +116,7 @@ private fun Tab(
             )
             selectableTab.value.badgeCount?.let { count ->
                 AnimatedVisibility(
-                    visible = selectableTab.isSelected && count > 0,
+                    visible = selectableTab.isSelected && count >= 0,
                     enter = badgeEnterAnimation,
                     exit = badgeExitAnimation
                 ) {
