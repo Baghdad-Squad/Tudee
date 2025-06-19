@@ -30,40 +30,31 @@ class AppConfigurationServiceImplTest {
 
     @Test
     fun `isDarkTheme returns correct value`() = runTest {
-        //given
         every { mockDao.isDarkTheme() } returns flowOf(true)
 
-        //when
         val result = service.isDarkTheme().first()
 
-        //then
         assertTrue(result)
     }
 
     @Test
     fun `isDarkTheme handles exception correctly`() = runTest {
-        //given
         every { mockDao.isDarkTheme() } throws RuntimeException("Unknown error")
 
-        //when
         val result = runCatching {
             service.isDarkTheme().toList()
         }
 
-        //then
         assertTrue(result.exceptionOrNull() is TudeeException)
     }
 
     @Test
     fun `setTheme calls saveTudeeTheme with correct value on success`() = runTest {
-        //given
         val isDark = true
         coEvery { mockDao.saveTudeeTheme(isDark) } just Runs
 
-        //when
         service.setTheme(isDark)
 
-        //then
         coVerify { mockDao.saveTudeeTheme(isDark) }
     }
 }
