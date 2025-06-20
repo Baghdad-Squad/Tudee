@@ -1,5 +1,6 @@
 package com.baghdad.tudee.di
 
+import org.koin.androidx.viewmodel.dsl.viewModelOf
 import com.baghdad.tudee.ui.main.MainViewModel
 import com.baghdad.tudee.ui.screens.tasks.TasksViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
@@ -11,5 +12,7 @@ val viewModelModule = module {
     viewModel {  CategoryTasksViewModel(get(),get(),get()) }
     viewModelOf(::TasksViewModel)
     viewModelOf(::MainViewModel)
+    viewModelOf(::TasksViewModel)
+
 
 }
