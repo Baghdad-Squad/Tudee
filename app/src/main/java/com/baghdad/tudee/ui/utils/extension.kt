@@ -7,12 +7,16 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.ui.screens.homeScreen.HomeScreenUIState
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier =
     this.clickable(
@@ -24,7 +28,7 @@ fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier =
 
 fun Modifier.insideBorder(
     width: Dp,
-    color: androidx.compose.ui.graphics.Color,
+    color: Color,
     cornerRadius: Dp = 0.dp
 ) = this.
     drawWithContent {
@@ -53,3 +57,6 @@ fun Modifier.radialGradientBackground(colors: List<Color>) = this.background(
         colors
     )
 )
+
+
+fun LocalDate.Companion.now() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date

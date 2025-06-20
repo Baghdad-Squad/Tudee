@@ -2,7 +2,6 @@ package com.baghdad.tudee.ui.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,13 +20,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.ui.composable.dayNightSwitch.DayNightSwitch
 import com.baghdad.tudee.ui.utils.insideBorder
-import com.baghdad.tudee.ui.utils.noRippleClickable
 
 @Composable
 fun TopTudeeBar(
     title: String,
     description: String,
+    isDay: Boolean,
     modifier: Modifier = Modifier,
     onChangeTheme: () -> Unit,
 ) {
@@ -42,20 +42,10 @@ fun TopTudeeBar(
     ) {
         LogoAndTitle(title = title, description = description)
         // replace with theme switch icon
-        Box(
-            modifier = Modifier
-                .size(36.dp)
-                .border(
-                    width = 1.dp,
-                    color = Theme.color.textColor.onPrimaryStroke,
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .padding(6.dp)
-                .insideBorder(1.dp, Theme.color.textColor.onPrimaryStroke, cornerRadius = 8.dp)
-                .background(Theme.color.primaryColor.variant, shape = RoundedCornerShape(8.dp))
-                .noRippleClickable(onClick = onChangeTheme)
+        DayNightSwitch(
+            isDay = isDay,
         ){
-
+            onChangeTheme()
         }
 
 
@@ -109,6 +99,7 @@ fun TopTudeeBarPreview() {
     TopTudeeBar(
         title = "Tudee",
         description = "Your personal assistant",
+        isDay = false,
         onChangeTheme = {}
     )
 }

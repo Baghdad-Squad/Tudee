@@ -8,11 +8,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +33,6 @@ fun TaskDetails(
     icon: Painter,
     taskPriority: Task.Priority,
     taskState: Task.State,
-
     ) {
     TudeeBottomSheet(
         isVisible = isVisible,
@@ -103,7 +100,7 @@ fun TaskDetailsContent(
         VerticalSeparatorLine()
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             TaskState(taskState = taskState)
-            TaskPriority(priorityTask = taskPriority)
+            TaskPriority(priorityTask = taskPriority, isClickable = false)
         }
 
 
@@ -115,7 +112,9 @@ fun TaskDetailsContent(
                 else -> ""
             }
 
-            TaskActionsContainer(buttonText = buttonText)
+            TaskActionsContainer(buttonText = buttonText){
+
+            }
         }
     }
 }

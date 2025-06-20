@@ -36,7 +36,11 @@ import com.baghdad.tudee.ui.utils.noRippleClickable
 
 
 @Composable
-fun DayNightSwitch(isDay: Boolean, onClick: () -> Unit , modifier: Modifier = Modifier) {
+fun DayNightSwitch(
+    isDay: Boolean,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
     val animateBackgroundColor by animateColorAsState(
         targetValue = if (isDay) Theme.color.primaryColor.normal else Color(0xFF1A1A44),
         animationSpec = tween(durationMillis = 300)
