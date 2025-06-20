@@ -8,9 +8,9 @@ data class CategoryTasksScreenUiState(
     val todoTasks: List<Task> = emptyList(),
     val doneTasks: List<Task> = emptyList(),
     val selectedTab: Task.State = Task.State.TODO,
-    val errorMessage: String? = null,
-    val isLoading: Boolean = false,
     val categoryName: String = "",
     val categoryImage: Category.Image = Category.Image.Predefined(Category.PredefinedType.EDUCATION),
-    val isPredefinedCategory: Boolean = true
+    val isPredefinedCategory: Boolean = true,
+    val errorMessage: String? = null,
+    val isLoading: Boolean = false,
 )

@@ -9,10 +9,11 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    viewModel {  CategoryTasksViewModel(get(),get(),get()) }
     viewModelOf(::TasksViewModel)
     viewModelOf(::MainViewModel)
     viewModelOf(::TasksViewModel)
 
-
+    viewModel { (categoryId: Long) ->
+        CategoryTasksViewModel(categoryId, get(), get())
+    }
 }

@@ -1,6 +1,7 @@
 package com.baghdad.tudee.ui.composable
 
 
+import TaskPriority
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -117,13 +118,13 @@ fun CategoryTaskCard(
 @Preview
 private fun CategoryTaskCard() {
     TudeeTheme {
-        CategoryTaskCard(
-            title = "title",
-            description = "no thing to add just try",
-            priorityTask = Task.Priority.LOW,
-            icon = painterResource(R.drawable.ic_baseball_bat),
-            onClick = {}
-        )
+//        CategoryTaskCard(
+//            title = "title",
+//            description = "no thing to add just try",
+//            priorityTask = Task.Priority.LOW,
+//            icon = painterResource(R.drawable.ic_baseball_bat),
+//            onClick = {}
+//        )
     }
 }
 

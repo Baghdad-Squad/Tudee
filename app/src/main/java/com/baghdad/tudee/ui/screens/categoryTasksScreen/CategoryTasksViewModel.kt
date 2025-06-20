@@ -12,15 +12,16 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CategoryTasksViewModel(
+    private val categoryId: Long,
     val taskService: TaskService,
     val categoryService: CategoryService,
-    val categoryId: Long
 ) : ViewModel() {
     private val _state = MutableStateFlow(CategoryTasksScreenUiState())
     val state = _state.asStateFlow()
 
     init {
         getCategoryById()
+        getTasksByCategoryId(categoryId)
     }
 
     fun onTabSelected(tab: Task.State) {
@@ -60,4 +61,20 @@ class CategoryTasksViewModel(
         }
     }
 
+    fun onCategoryTitleChanged(newTitle: String) {
+        _state.update { it.copy(categoryName = newTitle) }
+    }
+
+    fun onDeleteCategory() {
+        viewModelScope.launch {
+            categoryService.deleteCategory(categoryId)
+        }
+    }
+
+//    fun onSaveCategoryChanges() {
+//        viewModelScope.launch {
+//            categoryService.editCategory(
+//            )
+//        }
+//    }
 }
