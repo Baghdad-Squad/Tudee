@@ -16,6 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -25,17 +27,22 @@ import com.baghdad.tudee.ui.utils.dashedBorder
 
 @Composable
 fun UploadedImageBox(
-    onEditClick: () -> Unit
+    onEditClick: () -> Unit,
+    image : Painter?
 ) {
     Box(
-        modifier = Modifier.size(112.dp)
+        modifier = Modifier
+            .size(112.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .clickable { onEditClick() }
     ) {
         Image(
-            painter = painterResource(id = R.drawable.books),
-            contentDescription = stringResource(R.string.books),
+            painter = image ?: painterResource(id = R.drawable.image_add_02),
+            contentDescription = stringResource(R.string.uploaded_image),
             modifier = Modifier
                 .matchParentSize()
-                .clip(RoundedCornerShape(16.dp))
+                .clip(RoundedCornerShape(16.dp)),
+            contentScale = ContentScale.Crop
         )
 
         Box(
@@ -59,9 +66,7 @@ fun UploadedImageBox(
                 .background(
                     color = Theme.color.surfaceColor.surfaceHigh,
                     shape = RoundedCornerShape(12.dp)
-                )
-                .clickable { onEditClick() }
-            ,
+                ),
             contentAlignment = Alignment.Center
         ) {
             Icon(
@@ -80,22 +85,29 @@ fun UploadedImageBox(
 fun UploadPlaceholder(
     onUploadClick: () -> Unit
 ) {
-    Column(
-        modifier = Modifier.padding(32.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(
+        modifier = Modifier
+            .size(112.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .clickable { onUploadClick() }
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.img_add),
-            contentDescription = stringResource(R.string.upload),
-            tint = Theme.color.textColor.hint,
-            modifier = Modifier
-                .clickable { onUploadClick() }
-        )
-        Text(
-            text = stringResource(R.string.upload),
-            style = Theme.typography.label.medium,
-            color = Theme.color.textColor.hint
-        )
+        Column(
+            modifier = Modifier.padding(32.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.image_add_02),
+                contentDescription = stringResource(R.string.edit_icon),
+                tint = Theme.color.textColor.hint,
+                modifier = Modifier
+
+            )
+            Text(
+                text = stringResource(R.string.upload),
+                style = Theme.typography.label.medium,
+                color = Theme.color.textColor.hint
+            )
+        }
     }
 }

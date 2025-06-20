@@ -1,4 +1,4 @@
-package com.baghdad.tudee.ui.screens.tasks
+package com.baghdad.tudee.ui.screens.tasks.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
