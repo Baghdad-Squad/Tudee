@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">تودي</string>
+    <string name="cancel_text">إلغاء</string>
+    <string name="ok_text">حسنًا</string>
+    <string name="clear_text">مسح</string>
+    <string name="edit_text">تعديل</string>
+    <string name="select_text">اختر تاريخًا</string>
+    <string name="arrow_left">السهم لليسار</string>
+    <string name="calendar_favorite">التقويم المفضل</string>
+    <string name="tasks">المهام</string>
+    <string name="empty_tasks_desc">اضغط على الزر + لإضافة أول مهمة لك</string>
+    <string name="no_tasks_yet">ليس لديك مهام بعد</string>
+    <string name="done">مكتملة</string>
+    <string name="to_do">للقيام</string>
+    <string name="in_progress">قيد التنفيذ</string>
+    <string name="left_arrow">السهم لليسار</string>
+    <string name="arrow_down">السهم لأسفل</string>
+    <string name="right_arrow">السهم لليمين</string>
+    <string name="image_container">حاوية الصورة</string>
+    <string name="no_tasks_overlay_image">الصورة عند عدم وجود مهام</string>
+    <string name="progress_indicator">مؤشر التقدم</string>
+    <string name="no_tasks_robot">روبوت عند عدم وجود مهام</string>
+    <string name="taskDescription">قم بحل جميع التمارين من الصفحة 45 إلى 50 من كتاب الدراسة</string>
+    <string name="taskTitleExample">ترتيب مكتب الدراسة</string>
+    <string name="task_details">تفاصيل المهمة</string>
+    <string name="label">التسمية</string>
+    <string name="move_to_in_progress">نقل إلى قيد التنفيذ</string>
+    <string name="move_to_done">نقل إلى مكتملة</string>
+    <string name="add_new_category">إضافة فئة جديدة</string>
+    <string name="upload">رفع</string>
+    <string name="icon_edit">أيقونة تعديل</string>
+    <string name="edit_icon">تعديل الأيقونة</string>
+    <string name="books">كتب</string>
+    <string name="cancel">إلغاء</string>
+    <string name="add">إضافة</string>
+    <string name="category_image">صورة الفئة</string>
+    <string name="edit_category">تعديل الفئة</string>
+    <string name="delete">حذف</string>
+    <string name="title_0">هل تشعر بأن لديك الكثير من المهام؟</string>
+    <string name="title_1">أوبس! هل تؤجل المهام مرة أخرى؟</string>
+    <string name="title_2">دعنا ننجز المهام ونحتفل معًا!</string>
+    <string name="desc_0">دعنا نساعدك على ترتيب وتنظيم المهام وتنظيم يومك بشكل أفضل مع تودي</string>
+    <string name="desc_1">ليس غضبًا، بل خيبة أمل صغيرة… لنعد سويًا للطريق الصحيح</string>
+    <string name="desc_2">كل تقدم مهم، تودي هنا للاحتفال بكل انتصار، كبيرًا أو صغيرًا</string>
+    <string name="added_category_successfully">تمت إضافة الفئة بنجاح</string>
+    <string name="text_field_hint_of_add_category_bottom_sheet">اسم الفئة</string>
+    <string name="image_box_title_in_add_category_botton_sheet">صورة الفئة</string>
+    <string name="category_title">اسم الفئة</string>
+    <string name="save">حفظ</string>
+    <string name="uploaded_image">الصورة التي تم رفعها</string>
+    <string name="categories">الفئات</string>
+    <string name="delete_task">"حذف المهمة"</string>
+    <string name="continue_text">"هل أنت متأكد من المتابعة؟"</string>
+    <string name="delete_text">"حذف"</string>
+    <string name="sad_robot">روبوت حزين</string>
+    <string name="delete_category">حذف الفئة</string>
+    <string name="ggg">ggg</string>
+    <string name="today">اليوم، %1$s</string>
+    <string name="you_ve_completed_3_out_of_10_tasks_keep_going">لقد أكملت 3 من أصل 10 مهام، استمر!</string>
+    <string name="you_re_doing_amazing_tudee_is_proud_of_you">أنت رائع! تودي فخورة بك</string>
+    <string name="you_just_scrolling_not_working_tudee_is_watching_back_to_work">أنت تتصفح فقط دون عمل، تودي تراقب. عد للعمل!</string>
+    <string name="fill_your_day_with_something_awesome">املأ يومك بشيء رائع</string>
+    <string name="overview">نظرة عامة</string>
+
+
+</resources>
