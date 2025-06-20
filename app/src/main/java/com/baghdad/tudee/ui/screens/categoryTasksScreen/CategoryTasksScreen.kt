@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -79,17 +78,10 @@ private fun CategoryTasksScreenContent(
     onSaveButtonClick: () -> Unit,
 ) {
     val pagerState = rememberPagerState(initialPage = state.selectedTab.ordinal) { 3 }
-    var showEditCategoryDialog by remember { mutableStateOf(false)}
-    var showDeleteCategoryDialog by remember { mutableStateOf(false)}
+    var showEditCategoryDialog by remember { mutableStateOf(false) }
     val result = remember { mutableStateOf<Uri?>(null) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
         result.value = it
-    }
-    LaunchedEffect(pagerState.currentPage) {
-        val selectedState = Task.State.entries[pagerState.currentPage]
-        if (state.selectedTab != selectedState) {
-            onTabSelected(selectedState)
-        }
     }
 
     LaunchedEffect(state.selectedTab) {
@@ -111,7 +103,8 @@ private fun CategoryTasksScreenContent(
             isSelected = state.selectedTab == Task.State.DONE
         )
     )
-    Column(modifier = Modifier.background(color = Theme.color.surfaceColor.surface)) {
+
+    Column(modifier = Modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -186,13 +179,11 @@ private fun CategoryTasksScreenContent(
                 onDeleteClick = {
                     onDeleteClick()
                     showEditCategoryDialog = false
-                    showDeleteCategoryDialog = true
                 },
                 isLoading = state.isLoading,
                 onCancelButtonClick = { showEditCategoryDialog = false },
-                image = getCategoryIconPainter(categoryImage = state.categoryImage)
+                image = painterResource(R.drawable.ic_bug)
             )
-
 
 
         }

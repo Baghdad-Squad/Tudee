@@ -73,7 +73,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                painter = painterResource(R.drawable.ic_black_note),
+                painter = painterResource(R.drawable.ic_add),
                 onClick = {
                     viewModel.togileEditTaskDialog()
                 },
@@ -158,7 +158,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                             .padding(horizontal = 16.dp)
                             .offset(y = -45.dp)
                             .background(
-                                color = Theme.color.surfaceColor.surfaceHigh,
+                                Color.White,
                                 shape = RoundedCornerShape(16.dp)
                             )
                     ) {
@@ -197,10 +197,10 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                                     )
                                     Text(
                                         text = when (state.sliderState) {
-                                            SliderState.STAY_WORKING -> "You've completed 3 out of 10 tasks Keep going!"
-                                            SliderState.TADOO -> "You’re doing amazing!!! Tudee is proud of you."
-                                            SliderState.ZERO_PROGRESS -> "You just scrolling, not working. Tudee is watching. back to work!!!"
-                                            SliderState.NOTHING_IN_YOUR_LIST -> "Fill your day with something awesome."
+                                            SliderState.STAY_WORKING -> stringResource(R.string.you_ve_completed_3_out_of_10_tasks_keep_going)
+                                            SliderState.TADOO -> stringResource(R.string.you_re_doing_amazing_tudee_is_proud_of_you)
+                                            SliderState.ZERO_PROGRESS -> stringResource(R.string.you_just_scrolling_not_working_tudee_is_watching_back_to_work)
+                                            SliderState.NOTHING_IN_YOUR_LIST -> stringResource(R.string.fill_your_day_with_something_awesome)
 
                                         },
                                         style = Theme.typography.body.small,
@@ -240,7 +240,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                         }
 
                         Text(
-                            text = "Overview",
+                            text = stringResource(R.string.overview),
                             style = Theme.typography.title.large,
                             color = Theme.color.textColor.title,
                             modifier = Modifier
@@ -279,7 +279,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                 if (state.inProgressTasks.isNotEmpty())
                     item {
                         TextHeadTaskSection(
-                            name = "In progress ",
+                            name = stringResource(R.string.in_progress),
                             numberOfItem = 12,
                             modifier = Modifier.padding(
                                 start = 16.dp,
@@ -335,7 +335,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                     item {
                         Spacer(modifier = Modifier.height(16.dp))
                         TextHeadTaskSection(
-                            name = "To Do ",
+                            name = stringResource(R.string.to_do),
                             numberOfItem = 12,
                             modifier = Modifier
                                 .fillParentMaxWidth(0.95f)
@@ -388,7 +388,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                     item {
                         Spacer(modifier = Modifier.height(16.dp))
                         TextHeadTaskSection(
-                            name = "Done ",
+                            name = stringResource(R.string.done),
                             numberOfItem = 12,
                             modifier = Modifier.padding(
                                 start = 16.dp,
@@ -468,8 +468,7 @@ private fun TextDateIcon(
         Icon(
             painter = icon,
             contentDescription = "date icon",
-            modifier = Modifier.padding(end = 8.dp),
-            tint = Theme.color.textColor.body
+            modifier = Modifier.padding(end = 8.dp)
         )
         Text(
             text = text,

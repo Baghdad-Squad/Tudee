@@ -113,7 +113,6 @@ fun TasksScreenContent(
 
         if (showDeleteSheet && taskToDelete != null) {
             ShowDeleteTaskSheet(
-                isVisible = true,
                 onDeleteConfirmed = onConfirmDelete,
                 onCancelConfirmed = onCancelDelete,
                 isLoading = false
