@@ -133,7 +133,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                 TopTudeeBar(
                     title = "Tudee",
                     description = "Your personal task manager",
-                    isDay = state.isDark,
+                    isDay = state.isDark.not(),
                     onChangeTheme = {
                         viewModel.onClickSwitchTheme()
                     }
