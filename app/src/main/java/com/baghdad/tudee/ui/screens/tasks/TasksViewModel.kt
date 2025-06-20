@@ -1,10 +1,7 @@
 package com.baghdad.tudee.ui.screens.tasks
 
-import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.baghdad.tudee.R
-import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.domain.service.CategoryService
 import com.baghdad.tudee.domain.service.TaskService
@@ -21,9 +18,15 @@ import kotlinx.datetime.toLocalDateTime
 class TasksViewModel(
     private val taskService: TaskService,
     private val categoryService: CategoryService
-) : ViewModel(), TasksInteractionHandler {
+) : ViewModel(), TasksInteractionListener {
     private val _uiState = MutableStateFlow(TasksUiState())
     val uiState = _uiState.asStateFlow()
+
+    private val _taskToDelete = MutableStateFlow<Task?>(null)
+    val taskToDelete = _taskToDelete.asStateFlow()
+
+    private val _showDeleteSheet = MutableStateFlow(false)
+    val showDeleteSheet = _showDeleteSheet.asStateFlow()
 
     init {
         getCurrentTasks()
@@ -115,6 +118,24 @@ class TasksViewModel(
         }
 
         loadTasksForDate(newDate)
+    }
+
+    fun onTaskSwipeToDelete(task: Task) {
+        _taskToDelete.value = task
+        _showDeleteSheet.value = true
+    }
+
+    fun confirmDelete() {
+        _taskToDelete.value?.let { task ->
+            onDeleteTask(task)
+        }
+        _taskToDelete.value = null
+        _showDeleteSheet.value = false
+    }
+
+    fun cancelDelete() {
+        _taskToDelete.value = null
+        _showDeleteSheet.value = false
     }
 
     private fun loadTasksForDate(selectedDate: LocalDate) {

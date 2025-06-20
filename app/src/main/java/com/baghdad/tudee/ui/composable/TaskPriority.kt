@@ -16,11 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
-import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.utils.noRippleClickable
 
@@ -28,8 +26,8 @@ import com.baghdad.tudee.ui.utils.noRippleClickable
 @Composable
 fun TaskPriority(
     priorityTask: Task.Priority,
-    isClickable: Boolean,
     modifier: Modifier = Modifier,
+    isClickable: Boolean = false,
     onClick: (() -> Unit)? = null
 ) {
     val priorityProperties = when (priorityTask) {
@@ -52,7 +50,8 @@ fun TaskPriority(
         )
     }
 
-    val isClicked = remember { mutableStateOf(false) }
+
+    val isClicked = remember { mutableStateOf(!isClickable) }
 
     val backgroundColor by animateColorAsState(
         targetValue = if (isClicked.value) priorityProperties.color
@@ -104,14 +103,3 @@ private data class PriorityProperties(
     val text: String
 )
 
-@Composable
-@Preview
-private fun PriorityPreview() {
-    TudeeTheme {
-        TaskPriority(
-            priorityTask = Task.Priority.HIGH,
-            isClickable = true,
-            onClick = {}
-        )
-    }
-}
