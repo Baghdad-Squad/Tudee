@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 
@@ -27,21 +29,40 @@ fun TasksEmptyScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .offset(y = -(68).dp)
+//            .offset(y = -(68).dp)
             .padding(start = 12.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
+        Row(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            TasksEmptyScreenIllustration(
-                modifier = Modifier.align(Alignment.CenterEnd)
-            )
-            TasksEmptyScreenTextBox(
-                modifier = Modifier.align(Alignment.CenterStart),
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .zIndex(999f)
+                ) {
+                    TasksEmptyScreenTextBox(
+                        modifier = Modifier
+                            .offset(y = -(40).dp, x = (24).dp)
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .zIndex(-1f)
+                ) {
+
+                    TasksEmptyScreenIllustration()
+                }
+            }
         }
     }
 
@@ -51,7 +72,7 @@ fun TasksEmptyScreen(modifier: Modifier = Modifier) {
 fun TasksEmptyScreenTextBox(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
-            .offset(y = (-40).dp)
+//            .offset(y = (-40).dp)
             .clip(
                 RoundedCornerShape(
                     topStart = 16.dp,
