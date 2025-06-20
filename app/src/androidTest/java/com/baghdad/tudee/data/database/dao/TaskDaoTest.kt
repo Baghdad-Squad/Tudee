@@ -34,7 +34,6 @@ class TaskDaoTest {
 
     }
 
-
     @Test
     fun insertTask_and_getTaskByCategory_correct() = runTest {
        val categoryId =  categoryDao.createCategory(sampleCategoryDto)
