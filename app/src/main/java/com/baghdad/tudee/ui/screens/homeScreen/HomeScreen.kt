@@ -133,7 +133,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                 TopTudeeBar(
                     title = "Tudee",
                     description = "Your personal task manager",
-                    isDay = state.isDark,
+                    isDay = state.isDark.not(),
                     onChangeTheme = {
                         viewModel.onClickSwitchTheme()
                     }
@@ -158,7 +158,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                             .padding(horizontal = 16.dp)
                             .offset(y = -45.dp)
                             .background(
-                                Color.White,
+                                Theme.color.surfaceColor.surface,
                                 shape = RoundedCornerShape(16.dp)
                             )
                     ) {
