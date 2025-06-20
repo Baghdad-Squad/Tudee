@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -51,9 +52,12 @@ import com.baghdad.tudee.ui.composable.TudeeBottomSheet
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetails
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomSheet
+import com.baghdad.tudee.ui.utils.formatDate
 import com.baghdad.tudee.ui.utils.insideBorder
 import com.baghdad.tudee.ui.utils.noRippleClickable
+import com.baghdad.tudee.ui.utils.now
 import com.baghdad.tudee.viewModel.homescreenViewModel.HomeScreenViewModel
+import kotlinx.datetime.LocalDate
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -162,7 +166,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                             )
                     ) {
                         TextDateIcon(
-                            text = "today, 22 Jun 2025",
+                            text = stringResource(R.string.today, LocalDate.now().formatDate()),
                             icon = painterResource(R.drawable.ic_date)
                         )
 
@@ -254,19 +258,19 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             OverviewCard(
-                                count = 2,
+                                count = state.doneTasks.size,
                                 background = Theme.color.status.greenAccent,
                                 taskState = TaskState.DONE,
                                 modifier = Modifier.weight(1f)
                             )
                             OverviewCard(
-                                count = 16,
+                                count = state.inProgressTasks.size,
                                 background = Theme.color.status.yellowAccent,
                                 taskState = TaskState.IN_PROGRESS,
                                 modifier = Modifier.weight(1f)
                             )
                             OverviewCard(
-                                count = 1,
+                                count = state.todoTasks.size,
                                 background = Theme.color.status.purpleAccent,
                                 taskState = TaskState.TODO,
                                 modifier = Modifier.weight(1f)

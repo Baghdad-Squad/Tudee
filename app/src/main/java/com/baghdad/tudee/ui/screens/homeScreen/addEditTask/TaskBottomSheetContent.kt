@@ -42,7 +42,6 @@ fun AddEditTaskBottomSheet(
     state: List<Category>,
     viewModel: HomeScreenViewModel = koinViewModel(),
     onDismiss: () -> Unit = {  },
-
 ) {
 
     var titleText by remember { mutableStateOf(initial?.title ?:"") }
@@ -111,7 +110,7 @@ fun AddEditTaskBottomSheet(
         MainButtonPart(showButton , initial?.title, onSave = {
             viewModel.onClickAddNewTask(
                 Task(
-                    id = initial?.id ?: Random(1000).nextLong(),
+                    id = 0L,
                     title = titleText,
                     description = paragraphText,
                     date = dateTime,

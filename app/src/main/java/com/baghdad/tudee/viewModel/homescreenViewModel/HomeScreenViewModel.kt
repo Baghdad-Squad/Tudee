@@ -1,5 +1,6 @@
 package com.baghdad.tudee.viewModel.homescreenViewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baghdad.tudee.domain.entity.Task
@@ -119,7 +120,7 @@ class HomeScreenViewModel(
         viewModelScope.launch {
             val taskUiState = _state.value.editTaskState
             try {
-                taskService.createTask(taskUiState.toTask())
+                taskService.editTask(taskUiState.toTask())
             } catch (e: Exception) {
                 handleError(e)
             }
@@ -277,10 +278,12 @@ class HomeScreenViewModel(
     private fun getTasks() {
         viewModelScope.launch {
             try {
-                taskService.getTasksByDate(LocalDate.now()).collect { it ->
+                val dateNow = LocalDate.now()
+                taskService.getTasksByDate(dateNow).collect { it ->
                     val tasksToday = it.groupBy {
                         it.state
                     }
+                    Log.d("HomeScreenViewModel", "Tasks grouped by state: $tasksToday fro date: $dateNow")
                     _state.update {
                         it.copy(
                             inProgressTasks = tasksToday[Task.State.IN_PROGRESS] ?: emptyList(),
