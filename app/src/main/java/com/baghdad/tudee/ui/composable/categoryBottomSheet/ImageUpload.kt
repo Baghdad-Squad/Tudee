@@ -86,7 +86,7 @@ fun UploadPlaceholder(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.image_add_02),
+            painter = painterResource(id = R.drawable.img_add),
             contentDescription = stringResource(R.string.upload),
             tint = Theme.color.textColor.hint,
             modifier = Modifier
