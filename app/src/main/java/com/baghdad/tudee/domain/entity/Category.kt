@@ -5,6 +5,10 @@ data class Category(
     val title: String,
     val image: Image
 ) {
+    val isPredefinedCategory: Boolean
+        get() = this.image is Image.Predefined
+
+
     sealed class Image {
         data class ByteArray(val data: kotlin.ByteArray) : Image() {
             override fun equals(other: Any?): Boolean {

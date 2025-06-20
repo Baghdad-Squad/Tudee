@@ -91,6 +91,9 @@ dependencies {
     // Koin core and Android
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
+
+    //coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
     implementation(libs.kotlinx.datetime)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.kotlinx.coroutines.core)

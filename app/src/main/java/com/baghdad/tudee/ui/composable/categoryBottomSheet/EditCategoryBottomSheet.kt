@@ -31,7 +31,7 @@ fun EditCategoryBottomSheet(
     title: String,
     onCategoryTitleChanged: (String) -> Unit,
     onEditImageIconClick: () -> Unit,
-    onAddButtonClick: () -> Unit,
+    onSaveButtonClick: () -> Unit,
     onCancelButtonClick: () -> Unit,
     onDeleteClick: () -> Unit,
     image:Painter,
@@ -95,7 +95,7 @@ fun EditCategoryBottomSheet(
             }
             ConfirmationButtonContainer(
                 isEnabled = true,
-                onAddClick = onAddButtonClick,
+                onAddClick = onSaveButtonClick,
                 onCancelClick = onCancelButtonClick,
                 actionLabel = stringResource(R.string.save),
                 isLoading = isLoading

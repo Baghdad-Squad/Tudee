@@ -10,15 +10,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
-import com.baghdad.tudee.ui.composable.SwipeToDeleteCard
+import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.screens.tasks.TasksUiState
 
 @Composable
 fun TasksList(
     uiState: TasksUiState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onTaskDelete: (Task) -> Unit
 ) {
-
 
     LazyColumn(
         modifier = modifier
@@ -28,7 +28,8 @@ fun TasksList(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(
-            uiState.tasksDisplayed
+            uiState.tasksDisplayed,
+            key = { it.id }
         ) { task ->
             val category = uiState.categories.find { it.id == task.categoryId }
             val painter = painterResource(R.drawable.ic_baseball_bat) /*Add when statements TODO()*/
@@ -38,9 +39,10 @@ fun TasksList(
                 description = task.description,
                 priorityTask = task.priority,
                 icon = painter,
-                onDelete = {/*TODO()*/},
+                onDelete = {  onTaskDelete(task) },
                 onClick = {/*TODO()*/ },
             )
         }
+
     }
 }

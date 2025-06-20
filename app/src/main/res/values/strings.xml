@@ -5,6 +5,8 @@
     <string name="clear_text">Clear</string>
     <string name="edit_text">Edit</string>
     <string name="select_text">Select a date</string>
+    <string name="arrow_left">arrow left</string>
+    <string name="calendar_favorite">calendar favorite</string>
     <string name="tasks">Tasks</string>
     <string name="empty_tasks_desc">Tap the + button to add your \n first one.</string>
     <string name="no_tasks_yet">No tasks yet</string>
@@ -47,4 +49,11 @@
     <string name="save">Save</string>
     <string name="uploaded_image">Uploaded image</string>
     <string name="categories">Categories</string>
+    <string name="delete_task">"Delete task"</string>
+    <string name="continue_text">"Are you sure to continue?"</string>
+    <string name="delete_text">"Delete"</string>
+    <string name="sad_robot">Sad Robot</string>
+    <string name="delete_category">Delete category</string>
+    <string name="ggg">ggg</string>
+
 </resources>
