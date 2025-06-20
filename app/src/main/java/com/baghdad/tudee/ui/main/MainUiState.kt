@@ -1,5 +1,6 @@
 package com.baghdad.tudee.ui.main
 
 data class MainUiState(
-    val isDarkTheme: Boolean = false,
+    val isFirstLaunch: Boolean? = null,
+    val isDarkTheme: Boolean? = null,
 )
