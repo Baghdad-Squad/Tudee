@@ -1,9 +1,8 @@
-package com.baghdad.tudee.ui.composable.delete
+package com.baghdad.tudee.ui.composable.delete_item
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,16 +23,14 @@ fun DeleteItemBottomSheetHeader(
     title: String,
     message: String
 ) {
-    Column(
-        Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
-    ) {
 
+    Column {
         Text(
             text = title,
             style = Theme.typography.title.large,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp),
+                .padding(start = 16.dp, top = 12.dp),
             textAlign = TextAlign.Start
         )
 
@@ -54,10 +51,9 @@ fun DeleteItemBottomSheetHeader(
             painter = painterResource(R.drawable.img_sad_robot),
             contentDescription = stringResource(R.string.sad_robot),
             modifier = Modifier
-                .width(107.dp)
                 .height(108.dp)
                 .align(Alignment.CenterHorizontally)
         )
-
     }
+
 }

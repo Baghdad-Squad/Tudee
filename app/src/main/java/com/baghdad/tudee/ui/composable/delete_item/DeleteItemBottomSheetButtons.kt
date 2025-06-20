@@ -1,11 +1,10 @@
-package com.baghdad.tudee.ui.composable.delete
+package com.baghdad.tudee.ui.composable.delete_item
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,7 +24,7 @@ fun DeleteItemBottomSheetButtons(
 
 ) {
     Column(
-        Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
+      horizontalAlignment = Alignment.CenterHorizontally
     ) {
         NegativeButton(
             label = deleteButtonText,
