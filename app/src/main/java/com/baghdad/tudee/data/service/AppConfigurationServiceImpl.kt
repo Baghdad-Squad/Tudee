@@ -16,4 +16,14 @@ class AppConfigurationServiceImpl(
     override suspend fun setTheme(isDark: Boolean) = executeWithErrorHandling {
         appConfigurationDao.saveTudeeTheme(isDark)
     }
+
+    override suspend fun isFirstLaunch() = executeWithErrorHandling {
+        appConfigurationDao
+            .isFirstLaunch()
+            ?.let { it == true }
+            ?: run {
+                appConfigurationDao.setIsFirstLaunch()
+                true
+            }
+    }
 }

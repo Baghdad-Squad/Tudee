@@ -11,10 +11,13 @@ data class AppConfigurationDto(
     @ColumnInfo(name = COLUMN_ID)
     val id: Int = DEFAULT_ID,
     @ColumnInfo(name = COLUMN_IS_DARK_THEME)
-    val isDarkTheme: Boolean = false
+    val isDarkTheme: Boolean = false,
+    @ColumnInfo(name = COLUMN_IS_FIRST_LAUNCH)
+    val isFirstLaunch: Boolean = true
 ) {
     companion object {
         const val APP_CONFIGURATION_TABLE_NAME = "app_configuration"
+        const val COLUMN_IS_FIRST_LAUNCH = "is_first_launch"
         const val COLUMN_IS_DARK_THEME = "is_dark_theme"
         const val COLUMN_ID = "id"
         const val DEFAULT_ID = 1

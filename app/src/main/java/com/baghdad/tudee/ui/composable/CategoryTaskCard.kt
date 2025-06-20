@@ -39,8 +39,8 @@ fun CategoryTaskCard(
     priorityTask: Task.Priority,
     icon: Painter,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-    showDate: Boolean = false
+    showDate: Boolean = false,
+    onClick: () -> Unit
 ) {
     Column(
         modifier = modifier

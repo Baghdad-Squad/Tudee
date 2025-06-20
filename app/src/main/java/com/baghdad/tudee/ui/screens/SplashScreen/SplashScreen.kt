@@ -25,7 +25,7 @@ fun SplashScreen(
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(R.drawable.logo),
+                painter = painterResource(R.drawable.ic_logo),
                 contentDescription = "Tudee Logo",
                 modifier = Modifier
                     .width(122.dp)
