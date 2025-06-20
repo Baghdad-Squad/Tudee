@@ -1,7 +1,6 @@
-package com.baghdad.tudee.ui.screens.tasks
+package com.baghdad.tudee.ui.screens.tasks.components
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,11 +10,13 @@ import com.baghdad.tudee.R
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.TabItem
 import com.baghdad.tudee.ui.composable.Tabs
+import com.baghdad.tudee.ui.screens.tasks.TasksInteractionListener
+import com.baghdad.tudee.ui.screens.tasks.TasksUiState
 import com.baghdad.tudee.ui.shared.Selectable
 
 @Composable
 fun StatusTabs(
-    tasksInteractionHandler: TasksInteractionHandler,
+    tasksInteractionListener: TasksInteractionListener,
     uiState: TasksUiState,
     modifier: Modifier = Modifier
 ) {
@@ -50,7 +51,7 @@ fun StatusTabs(
                 )
             ),
             onTabSelected = {
-                tasksInteractionHandler.onTabSelected(it.title.toTaskStatus(context = context))
+                tasksInteractionListener.onTabSelected(it.title.toTaskStatus(context = context))
             },
         )
     }

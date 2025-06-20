@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.TestCoverage
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -72,6 +70,7 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json )
 
+    implementation(libs.coil.compose)
 
     //Kotlinx-date-time
     implementation(libs.kotlinx.datetime)
@@ -98,6 +97,26 @@ dependencies {
 
     implementation(libs.jetbrains.kotlinx.coroutines.android)
     implementation(libs.coil.compose)
+    implementation(libs.kotlinx.datetime)
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+
+// Android-specific coroutine support (for Dispatchers.Main, etc.)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
+//
+// Core Koin
+    implementation("io.insert-koin:koin-core:3.5.3")
+
+// Koin Android features
+    implementation("io.insert-koin:koin-android:3.5.3")
+
+// Koin for Jetpack Compose
+    implementation("io.insert-koin:koin-androidx-compose:3.5.3")
+
+
+    implementation(libs.coil.compose)
+
+
     // Room testing
     testImplementation(libs.androidx.room.testing)
 
