@@ -1,5 +1,11 @@
 package com.baghdad.tudee.ui.composable
 
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,6 +16,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,30 +38,54 @@ fun BottomNavigation(
     navController: NavController,
     modifier: Modifier = Modifier,
 ) {
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route?.substringBefore("?")
-    if(currentRoute?.startsWith(Route.OnboardingScreen::class.qualifiedName.toString()) == false)
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(Theme.color.surfaceColor.surfaceHigh)
-            .padding(vertical = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly
+    val currentRoute = navController.currentBackStackEntryAsState()
+        .value?.destination?.route
+        ?.substringBefore("/")
+        ?.substringBefore("?")
+    val isVisible by remember {
+        derivedStateOf {
+            listOf(Route.OnboardingScreen, Route.CategoryTasksScreen(0L))
+                .map { it::class.qualifiedName.toString() }
+                .none {
+                    currentRoute == it
+                }
+        }
+    }
+
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = slideInVertically(
+            initialOffsetY = { fullHeight -> fullHeight },
+            animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+        ),
+        exit = slideOutVertically(
+            targetOffsetY = { fullHeight -> fullHeight },
+            animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+        )
     ) {
-        BottomNavigationRoute.entries.forEach{item ->
-            (if (currentRoute == item.route::class.qualifiedName)
-                item.selectedIcon
-            else
-                item.unSelectedIcon)?.let {
-                painterResource(it)
-            }?.let {
-                NavItem(
-                    isSelected = currentRoute == item.route::class.qualifiedName,
-                    onClick = {
-                        navController.navigate(item.route)
-                    },
-                    icon = it
-                )
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .background(Theme.color.surfaceColor.surfaceHigh)
+                .padding(vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            BottomNavigationRoute.entries.forEach { item ->
+                (if (currentRoute == item.route::class.qualifiedName)
+                    item.selectedIcon
+                else
+                    item.unSelectedIcon)?.let {
+                    painterResource(it)
+                }?.let {
+                    NavItem(
+                        isSelected = currentRoute == item.route::class.qualifiedName,
+                        onClick = {
+                            navController.navigate(item.route)
+                        },
+                        icon = it
+                    )
+                }
             }
         }
     }
