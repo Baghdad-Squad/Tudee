@@ -17,7 +17,7 @@ import com.baghdad.tudee.ui.composable.button.PrimaryButton
 import com.baghdad.tudee.ui.composable.button.SecondaryButton
 
 @Composable
-fun MainButtonPart (isEnable: Boolean, initial: String? = null ){
+fun MainButtonPart (isEnable: Boolean, initial: String? = null, onSave: ()-> Unit , onDismiss: ()-> Unit){
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -32,7 +32,7 @@ fun MainButtonPart (isEnable: Boolean, initial: String? = null ){
             if (initial != null) value = "Save" else value = "Add"
             PrimaryButton(
                 label = value,
-                onClick = {},
+                onClick = {onSave()},
                 isLoading = false,
                 isEnabled = isEnable,
                 modifier = Modifier
@@ -41,7 +41,9 @@ fun MainButtonPart (isEnable: Boolean, initial: String? = null ){
             )
             SecondaryButton(
                 label = "Cancel",
-                onClick = {},
+                onClick = {
+                    onDismiss()
+                },
                 isLoading = false,
                 isEnabled = true,
                 modifier = Modifier

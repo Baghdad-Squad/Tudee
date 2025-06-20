@@ -1,7 +1,6 @@
 package com.baghdad.tudee.ui.screens.homeScreen.addEditTask
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,11 +16,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.baghdad.tudee.R
@@ -32,19 +29,22 @@ import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.MainButton
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.PriorityChipPart
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.TextFieldScreenPart
 import com.baghdad.tudee.ui.composable.CategoryItem
-import com.baghdad.tudee.ui.composable.TudeeBottomSheet
-import com.baghdad.tudee.ui.composable.button.PrimaryButton
-import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.fakeCategoriesData
+import com.baghdad.tudee.ui.screens.homeScreen.HomeScreenUIState
+import com.baghdad.tudee.viewModel.homescreenViewModel.HomeScreenViewModel
 import kotlinx.datetime.LocalDate
-import kotlin.uuid.ExperimentalUuidApi
+import org.koin.androidx.compose.koinViewModel
+import kotlin.random.Random
 
 
-@OptIn(ExperimentalUuidApi::class)
 @Composable
 fun AddEditTaskBottomSheet(
-    initial: Task? = null, // here we should add TaskUiState
-    state: List<Category> // here we should add CategoryUiState
+    initial: Task? = null,
+    state: List<Category>,
+    viewModel: HomeScreenViewModel = koinViewModel(),
+    onDismiss: () -> Unit = {  },
+
 ) {
+
     var titleText by remember { mutableStateOf(initial?.title ?:"") }
     var paragraphText by remember { mutableStateOf(initial?.description ?:"") }
     var dateTime by remember { mutableStateOf(initial?.date?:LocalDate(2027, 6, 22)) }
@@ -56,8 +56,8 @@ fun AddEditTaskBottomSheet(
         LazyVerticalGrid(
             columns = GridCells.Adaptive(104.dp),
             modifier = Modifier
-                .weight(1f)
-            ,            contentPadding = PaddingValues(
+                .weight(1f),
+            contentPadding = PaddingValues(
                 top = 16.dp,
                 bottom = 16.dp
             ),
@@ -108,36 +108,23 @@ fun AddEditTaskBottomSheet(
                 titleText.isNotBlank() && paragraphText.isNotBlank()
             }
         }
-        MainButtonPart(showButton , initial?.title)
-    }
-}
-
-@OptIn(ExperimentalUuidApi::class)
-@Composable
-fun ShowTaskSheetButton() {
-    var showSheet by remember { mutableStateOf(false) }
-    Box(modifier = Modifier.fillMaxSize()) {
-        PrimaryButton(
-            onClick = { showSheet = true },
-            label = "open",
-            modifier = Modifier.align(Alignment.Center)
-        )
-        TudeeBottomSheet(
-            isVisible = showSheet,
-            onDismiss = { showSheet = false }
-        ) {
-            AddEditTaskBottomSheet(
-                state = fakeCategoriesData()
+        MainButtonPart(showButton , initial?.title, onSave = {
+            viewModel.onClickAddNewTask(
+                Task(
+                    id = initial?.id ?: Random(1000).nextLong(),
+                    title = titleText,
+                    description = paragraphText,
+                    date = dateTime,
+                    priority = selectedPriority ?: Task.Priority.LOW,
+                    categoryId = selectedCategoryId ?: -1L,
+                    state = Task.State.TODO
+                )
             )
-        }
+            onDismiss()
+        }, onDismiss = {
+            onDismiss()
+        })
     }
-}
-// on dismiss and on saved should be called
-
-@Preview(showBackground = true)
-@Composable
-fun MyPreview(){
-    ShowTaskSheetButton()
 }
 
 @Composable
