@@ -52,7 +52,8 @@ fun TaskPriority(
         )
     }
 
-    val isClicked = remember { mutableStateOf(false) }
+
+    val isClicked = remember { mutableStateOf(!isClickable) }
 
     val backgroundColor by animateColorAsState(
         targetValue = if (isClicked.value) priorityProperties.color
@@ -110,7 +111,7 @@ private fun PriorityPreview() {
     TudeeTheme {
         TaskPriority(
             priorityTask = Task.Priority.HIGH,
-            isClickable = true,
+            isClickable = false,
             onClick = {}
         )
     }
