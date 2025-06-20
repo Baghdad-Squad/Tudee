@@ -1,7 +1,6 @@
 package com.baghdad.tudee.app
 
 import android.app.Application
-import com.baghdad.tudee.di.dataSourceModule
 import com.baghdad.tudee.di.databaseModule
 import com.baghdad.tudee.di.serviceModule
 import com.baghdad.tudee.di.viewModelModule
@@ -18,7 +17,6 @@ class TudeeApplication : Application() {
             modules(
                 viewModelModule,
                 serviceModule,
-                dataSourceModule,
                 databaseModule
             )
         }
