@@ -86,7 +86,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                 ) {
                     AddEditTaskBottomSheet(
                         state = state.editTaskState.categories,
-                        viewModel = viewModel,
+                        addEditTaskInteractionListener = viewModel,
                         onDismiss = { viewModel.togileEditTaskDialog() }
                     )
                 }
@@ -99,12 +99,9 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                     }
                 ) {
                     AddEditTaskBottomSheet(
-                        initial = null,
-                        state = state.addTaskState.categories,
-                        viewModel = viewModel,
-                        onDismiss = {
-                            viewModel.toggleAddNewTaskDialog()
-                        }
+                        state = state.editTaskState.categories,
+                        addEditTaskInteractionListener = viewModel,
+                        onDismiss = { viewModel.toggleAddNewTaskDialog() }
                     )
                 }
             } else if (state.showTaskDetails) {
@@ -122,31 +119,31 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                     )
                 }
             }
-}
+        }
 
-) {
-    it
-    Box(modifier = modifier.fillMaxSize()) {
-        Column(
-            modifier
-                .fillMaxSize()
-                .background(Theme.color.primaryColor.normal)
-                .padding(WindowInsets.statusBars.asPaddingValues())
-        ) {
-            TopTudeeBar(
-                title = "Tudee",
-                description = "Your personal task manager",
-                isDay = state.isDark,
-                onChangeTheme = {
-                    viewModel.onClickSwitchTheme()
-                }
-            )
-            LazyColumn(
-                Modifier
+    ) {
+        it
+        Box(modifier = modifier.fillMaxSize()) {
+            Column(
+                modifier
                     .fillMaxSize()
-                    .background(Theme.color.surfaceColor.surface)
+                    .background(Theme.color.primaryColor.normal)
+                    .padding(WindowInsets.statusBars.asPaddingValues())
             ) {
-                item {
+                TopTudeeBar(
+                    title = "Tudee",
+                    description = "Your personal task manager",
+                    isDay = state.isDark,
+                    onChangeTheme = {
+                        viewModel.onClickSwitchTheme()
+                    }
+                )
+                LazyColumn(
+                    Modifier
+                        .fillMaxSize()
+                        .background(Theme.color.surfaceColor.surface)
+                ) {
+                    item {
 
                     Box(
                         modifier = Modifier
@@ -170,56 +167,56 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                             icon = painterResource(R.drawable.ic_date)
                         )
 
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 12.dp, end = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 12.dp, end = 4.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                            ) {
 
-                            Column(modifier = Modifier.fillMaxWidth(0.6f)) {
+                                Column(modifier = Modifier.fillMaxWidth(0.6f)) {
 
-                                TextMoodIcon(
-                                    text = when (state.sliderState) {
-                                        SliderState.STAY_WORKING -> "Stay working!"
-                                        SliderState.TADOO -> "Tadaa"
-                                        SliderState.ZERO_PROGRESS -> "Zero progress?!"
-                                        SliderState.NOTHING_IN_YOUR_LIST -> "Nothing on your list…"
+                                    TextMoodIcon(
+                                        text = when (state.sliderState) {
+                                            SliderState.STAY_WORKING -> "Stay working!"
+                                            SliderState.TADOO -> "Tadaa"
+                                            SliderState.ZERO_PROGRESS -> "Zero progress?!"
+                                            SliderState.NOTHING_IN_YOUR_LIST -> "Nothing on your list…"
 
-                                    },
-                                    icon = painterResource(
-                                        id = when (state.sliderState) {
-                                            SliderState.STAY_WORKING -> R.drawable.ic_okay_feedback
-                                            SliderState.TADOO -> R.drawable.ic_good_feedback
-                                            SliderState.ZERO_PROGRESS -> R.drawable.ic_bad_feedback
-                                            SliderState.NOTHING_IN_YOUR_LIST -> R.drawable.ic_poor_feedback
+                                        },
+                                        icon = painterResource(
+                                            id = when (state.sliderState) {
+                                                SliderState.STAY_WORKING -> R.drawable.ic_okay_feedback
+                                                SliderState.TADOO -> R.drawable.ic_good_feedback
+                                                SliderState.ZERO_PROGRESS -> R.drawable.ic_bad_feedback
+                                                SliderState.NOTHING_IN_YOUR_LIST -> R.drawable.ic_poor_feedback
 
-                                        }
-                                    )
-                                )
-                                Text(
-                                    text = when (state.sliderState) {
-                                        SliderState.STAY_WORKING -> "You've completed 3 out of 10 tasks Keep going!"
-                                        SliderState.TADOO -> "You’re doing amazing!!! Tudee is proud of you."
-                                        SliderState.ZERO_PROGRESS -> "You just scrolling, not working. Tudee is watching. back to work!!!"
-                                        SliderState.NOTHING_IN_YOUR_LIST -> "Fill your day with something awesome."
-
-                                    },
-                                    style = Theme.typography.body.small,
-                                    color = Theme.color.textColor.body,
-                                    modifier = Modifier.padding(top = 4.dp)
-                                )
-                            }
-                            Box(contentAlignment = Alignment.Center) {
-                                Box(
-                                    modifier = Modifier
-                                        .size(64.dp)
-                                        .background(
-                                            Theme.color.primaryColor.normal.copy(0.4f),
-                                            shape = RoundedCornerShape(100)
+                                            }
                                         )
-                                )
+                                    )
+                                    Text(
+                                        text = when (state.sliderState) {
+                                            SliderState.STAY_WORKING -> "You've completed 3 out of 10 tasks Keep going!"
+                                            SliderState.TADOO -> "You’re doing amazing!!! Tudee is proud of you."
+                                            SliderState.ZERO_PROGRESS -> "You just scrolling, not working. Tudee is watching. back to work!!!"
+                                            SliderState.NOTHING_IN_YOUR_LIST -> "Fill your day with something awesome."
+
+                                        },
+                                        style = Theme.typography.body.small,
+                                        color = Theme.color.textColor.body,
+                                        modifier = Modifier.padding(top = 4.dp)
+                                    )
+                                }
+                                Box(contentAlignment = Alignment.Center) {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(64.dp)
+                                            .background(
+                                                Theme.color.primaryColor.normal.copy(0.4f),
+                                                shape = RoundedCornerShape(100)
+                                            )
+                                    )
 
                                 Image(
                                     painter = painterResource(

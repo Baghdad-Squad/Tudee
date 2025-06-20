@@ -19,8 +19,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Task
+import com.baghdad.tudee.ui.composable.TudeeBottomSheet
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.delete_item.ShowDeleteTaskSheet
+import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomSheet
 import com.baghdad.tudee.ui.screens.tasks.components.HorizontalDayChipsSetup
 import com.baghdad.tudee.ui.screens.tasks.components.StatusTabs
 import com.baghdad.tudee.ui.screens.tasks.components.TasksEmptyScreen
@@ -47,13 +49,15 @@ fun TasksScreen(
         showDeleteSheet = showDeleteSheet,
         onTaskDelete = viewModel::onTaskSwipeToDelete,
         onCancelDelete = viewModel::cancelDelete,
-        onConfirmDelete = viewModel::confirmDelete
+        onConfirmDelete = viewModel::confirmDelete,
+        viewModel = viewModel
     )
 }
 
 
 @Composable
 fun TasksScreenContent(
+    viewModel: TasksViewModel,
     uiState: TasksUiState,
     tasksInteractionListener: TasksInteractionListener,
     taskToDelete: Task?,
@@ -98,7 +102,9 @@ fun TasksScreenContent(
         }
 
         FloatingActionButton(
-            onClick = { /*TODO*/ },
+            onClick = {
+                tasksInteractionListener.toggleAddNewTaskDialog()
+            },
             painter = painterResource(id = R.drawable.ic_add),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
@@ -112,6 +118,22 @@ fun TasksScreenContent(
                 isLoading = false
             )
         }
+        if (uiState.showAddNewTask) {
+            TudeeBottomSheet(
+                isVisible = uiState.showAddNewTask,
+                onDismiss = { tasksInteractionListener.toggleAddNewTaskDialog() }
+            ) {
+                AddEditTaskBottomSheet(
+                    initial = null,
+                    state = uiState.categories,
+                    addEditTaskInteractionListener = viewModel,
+                    onDismiss = {
+                        tasksInteractionListener.toggleAddNewTaskDialog()
+                    }
+                )
+            }
+        }
+
     }
 }
 

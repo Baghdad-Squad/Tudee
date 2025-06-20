@@ -13,6 +13,7 @@ import com.baghdad.tudee.domain.service.TaskService
 import com.baghdad.tudee.ui.screens.homeScreen.HomeScreenUIState
 import com.baghdad.tudee.ui.screens.homeScreen.SliderState
 import com.baghdad.tudee.ui.screens.homeScreen.TaskUIState
+import com.baghdad.tudee.ui.screens.tasks.AddEditTaskInteractionListener
 import com.baghdad.tudee.ui.utils.now
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +26,7 @@ class HomeScreenViewModel(
     private val appConfigurationService: AppConfigurationService,
     private val taskService: TaskService,
     private val categoryService: CategoryService,
-) : HomeScreenInteraction, ViewModel() {
+) : HomeScreenInteraction, ViewModel(), AddEditTaskInteractionListener {
     private val _state = MutableStateFlow(HomeScreenUIState())
     val state = _state.asStateFlow()
 

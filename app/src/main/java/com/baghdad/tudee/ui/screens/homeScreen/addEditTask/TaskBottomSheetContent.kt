@@ -30,6 +30,7 @@ import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.PriorityCh
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.TextFieldScreenPart
 import com.baghdad.tudee.ui.composable.CategoryItem
 import com.baghdad.tudee.ui.screens.homeScreen.HomeScreenUIState
+import com.baghdad.tudee.ui.screens.tasks.AddEditTaskInteractionListener
 import com.baghdad.tudee.viewModel.homescreenViewModel.HomeScreenViewModel
 import kotlinx.datetime.LocalDate
 import org.koin.androidx.compose.koinViewModel
@@ -40,7 +41,7 @@ import kotlin.random.Random
 fun AddEditTaskBottomSheet(
     initial: Task? = null,
     state: List<Category>,
-    viewModel: HomeScreenViewModel = koinViewModel(),
+    addEditTaskInteractionListener: AddEditTaskInteractionListener,
     onDismiss: () -> Unit = {  },
 ) {
 
@@ -108,7 +109,7 @@ fun AddEditTaskBottomSheet(
             }
         }
         MainButtonPart(showButton , initial?.title, onSave = {
-            viewModel.onClickAddNewTask(
+            addEditTaskInteractionListener.onClickAddNewTask(
                 Task(
                     id = 0L,
                     title = titleText,
