@@ -15,6 +15,7 @@ import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.screens.OnboardingScreen.OnboardingScreen
 import com.baghdad.tudee.ui.screens.category.CategoryScreen
 import com.baghdad.tudee.ui.screens.categoryTasksScreen.CategoryTasksScreen
+import com.baghdad.tudee.ui.screens.homeScreen.HomeScreen
 import com.baghdad.tudee.ui.screens.tasks.TasksScreen
 import kotlin.reflect.typeOf
 
@@ -64,13 +65,7 @@ fun TudeeNavHost(
         }
 
         composable<Route.HomeScreen> {
-            // TODO put the Home Screen Here
-            Box (
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ){
-                Text(text = "Home Screen")
-            }
+            HomeScreen()
         }
 
         composable<Route.CategoryTasksScreen>{

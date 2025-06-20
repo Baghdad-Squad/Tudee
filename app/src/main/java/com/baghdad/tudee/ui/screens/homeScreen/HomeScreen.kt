@@ -91,7 +91,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                     isVisible = state.showAddNewTask,
                     onDismiss = {
                         viewModel
-                            .togileTaskDetailsDialog()
+                            .toggleAddNewTaskDialog()
                     }
                 ) {
                     AddEditTaskBottomSheet(
@@ -99,7 +99,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                         state = state.addTaskState.categories,
                         viewModel = viewModel,
                         onDismiss = {
-                            viewModel.togileAddNewTaskDialog()
+                            viewModel.toggleAddNewTaskDialog()
                         }
                     )
                 }
@@ -107,11 +107,11 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
 
                 TudeeBottomSheet(
                     isVisible = state.showTaskDetails,
-                    onDismiss = { viewModel.togileTaskDetailsDialog() }
+                    onDismiss = { viewModel.toggleTaskDetailsDialog() }
                 ) {
                     TaskDetails(
                         isVisible = state.showTaskDetails,
-                        onDismiss = { viewModel.togileTaskDetailsDialog() },
+                        onDismiss = { viewModel.toggleTaskDetailsDialog() },
                         icon = painterResource(id = R.drawable.ic_quran),
                         taskPriority = Task.Priority.LOW,
                         taskState = Task.State.IN_PROGRESS,
