@@ -468,8 +468,7 @@ private fun TextDateIcon(
         Icon(
             painter = icon,
             contentDescription = "date icon",
-            modifier = Modifier.padding(end = 8.dp),
-            tint = Theme.color.textColor.body
+            modifier = Modifier.padding(end = 8.dp)
         )
         Text(
             text = text,
