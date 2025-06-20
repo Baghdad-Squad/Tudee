@@ -47,4 +47,9 @@
     <string name="save">Save</string>
     <string name="uploaded_image">Uploaded image</string>
     <string name="categories">Categories</string>
+    <string name="delete_task">"Delete task"</string>
+    <string name="continue_text">"Are you sure to continue?"</string>
+    <string name="delete_text">"Delete"</string>
+    <string name="sad_robot">Sad Robot</string>
+
 </resources>

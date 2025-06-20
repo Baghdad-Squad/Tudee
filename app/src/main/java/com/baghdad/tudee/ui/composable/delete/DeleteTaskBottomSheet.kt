@@ -1,17 +1,13 @@
 package com.baghdad.tudee.ui.composable.delete
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,23 +15,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
 import com.baghdad.tudee.ui.composable.button.NegativeButton
-import com.baghdad.tudee.ui.composable.button.SecondaryButton
 
 @Composable
-fun DeleteTaskContent(
-    title: String = "Delete task",
-    message: String = "Are you sure to continue?",
-    deleteButtonText: String = "Delete",
-    cancelButtonText: String = "Cancel",
+fun DeleteItemContent(
+    title: String ,
+    message: String ,
+    deleteButtonText: String ,
+    cancelButtonText: String ,
     onDeleteClick: () -> Unit,
     onCancelClick: () -> Unit,
     isLoading: Boolean = false
@@ -43,115 +36,45 @@ fun DeleteTaskContent(
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(top = 24.dp)
             .height(378.dp)
             .background(
                 color = Theme.color.surfaceColor.surfaceLow,
                 shape = RoundedCornerShape(24.dp)
             )
-            .padding(top = 24.dp)
+
     ) {
-        Column(
-            Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        DeleteItemBottomSheetHeader(title, message)
 
-            Text(
-                text = title,
-                style = Theme.typography.title.large,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp),
-                textAlign = TextAlign.Start
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                text = message,
-                style = Theme.typography.body.medium,
-                color = Theme.color.textColor.body,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp),
-                textAlign = TextAlign.Start
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Image(
-                painter = painterResource(R.drawable.img_sad_robot),
-                contentDescription = "Sad Robot",
-                modifier = Modifier
-                    .width(107.dp)
-                    .height(108.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Button section
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(148.dp)
-                    .background(
-                        color = Theme.color.surfaceColor.surfaceHigh,
-                        shape = RoundedCornerShape(
-                            bottomStart = 24.dp,
-                            bottomEnd = 24.dp
-                        )
-                    )
-                    .padding(
-                        start = 16.dp,
-                        end = 16.dp,
-                        top = 12.dp,
-                        bottom = 12.dp
-                    )
+                    .padding(top = 24.dp)
+                    .background(color = Theme.color.surfaceColor.surfaceHigh)
+                    .padding( vertical = 12.dp, horizontal = 16.dp)
             ) {
-                Column(
-                    Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    NegativeButton(
-                        label = deleteButtonText,
-                        onClick = onDeleteClick,
-                        isLoading = isLoading,
-                        isEnabled = !isLoading,
-                        modifier = Modifier
-                            .width(328.dp)
-                            .height(56.dp)
-                            .clip(RoundedCornerShape(100.dp))
-                    )
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    SecondaryButton(
-                        label = cancelButtonText,
-                        onClick = onCancelClick,
-                        modifier = Modifier
-                            .width(328.dp)
-                            .height(56.dp)
-                            .clip(RoundedCornerShape(100.dp))
-                    )
-                }
+                DeleteItemBottomSheetButtons(
+                    deleteButtonText,
+                    cancelButtonText,
+                    onDeleteClick,
+                    onCancelClick,
+                    isLoading
+                )
             }
         }
     }
-}
 
 @Composable
 fun DeleteTaskBottomSheet(
     onDeleteClick: () -> Unit,
     onCancelClick: () -> Unit,
-    title: String = "Delete task",
-    message: String = "Are you sure to continue?",
-    deleteButtonText: String = "Delete",
-    cancelButtonText: String = "Cancel",
     isLoading: Boolean = false
 ) {
-    DeleteTaskContent(
-        title = title,
-        message = message,
-        deleteButtonText = deleteButtonText,
-        cancelButtonText = cancelButtonText,
+    DeleteItemContent(
+        title = stringResource(id = R.string.delete_task),
+        message = stringResource(R.string.continue_text),
+        deleteButtonText = stringResource(R.string.delete),
+        cancelButtonText = stringResource(R.string.cancel),
         onDeleteClick = onDeleteClick,
         onCancelClick = onCancelClick,
         isLoading = isLoading
@@ -160,11 +83,6 @@ fun DeleteTaskBottomSheet(
 
 @Composable
 fun ShowDeleteTaskSheetButton(
-    buttonLabel: String = "Delete Task",
-    title: String = "Delete task",
-    message: String = "Are you sure to continue?",
-    deleteButtonText: String = "Delete",
-    cancelButtonText: String = "Cancel",
     onDeleteConfirmed: () -> Unit = {},
     onCancelConfirmed: () -> Unit = {},
     isLoading: Boolean = false,
@@ -176,7 +94,7 @@ fun ShowDeleteTaskSheetButton(
         
         NegativeButton(
             onClick = { showSheet = true },
-            label = buttonLabel,
+            label = stringResource(id =  R.string.delete_task),
             modifier = Modifier.align(Alignment.Center)
         )
 
@@ -185,10 +103,6 @@ fun ShowDeleteTaskSheetButton(
             onDismiss = { showSheet = false }
         ) {
             DeleteTaskBottomSheet(
-                title = title,
-                message = message,
-                deleteButtonText = deleteButtonText,
-                cancelButtonText = cancelButtonText,
                 isLoading = isLoading,
                 onDeleteClick = {
                     onDeleteConfirmed()
