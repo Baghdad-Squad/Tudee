@@ -47,7 +47,8 @@ fun TudeeCard(
                 text = title,
                 style = Theme.typography.title.medium.copy(
                     color = Theme.color.textColor.title,
-                ),
+                    textAlign = TextAlign.Center,
+                    ),
                 modifier = Modifier.align(Alignment.TopCenter)
             )
 

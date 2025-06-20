@@ -1,4 +1,4 @@
-package com.baghdad.tudee.ui.screens.tasks
+package com.baghdad.tudee.ui.screens.tasks.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,12 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
 import com.baghdad.tudee.R
-import com.baghdad.tudee.ui.composable.CategoryTaskCard
+import com.baghdad.tudee.ui.composable.SwipeToDeleteCard
+import com.baghdad.tudee.ui.screens.tasks.TasksUiState
 
 @Composable
-fun TasksColumn(
+fun TasksList(
     uiState: TasksUiState,
     modifier: Modifier = Modifier
 ) {
@@ -31,13 +31,14 @@ fun TasksColumn(
             uiState.tasksDisplayed
         ) { task ->
             val category = uiState.categories.find { it.id == task.categoryId }
-            val painter =  painterResource( R.drawable.ic_baseball_bat) /*Add when statements TODO()*/
+            val painter = painterResource(R.drawable.ic_baseball_bat) /*Add when statements TODO()*/
 
-            CategoryTaskCard(
+            SwipeToDeleteCard(
                 title = task.title,
                 description = task.description,
                 priorityTask = task.priority,
                 icon = painter,
+                onDelete = {/*TODO()*/},
                 onClick = {/*TODO()*/ },
             )
         }

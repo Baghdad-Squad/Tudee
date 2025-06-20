@@ -1,10 +1,7 @@
 package com.baghdad.tudee.ui.screens.tasks
 
-import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.baghdad.tudee.R
-import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.domain.service.CategoryService
 import com.baghdad.tudee.domain.service.TaskService
@@ -21,9 +18,11 @@ import kotlinx.datetime.toLocalDateTime
 class TasksViewModel(
     private val taskService: TaskService,
     private val categoryService: CategoryService
-) : ViewModel(), TasksInteractionHandler {
+) : ViewModel(), TasksInteractionListener {
     private val _uiState = MutableStateFlow(TasksUiState())
     val uiState = _uiState.asStateFlow()
+
+
 
     init {
         getCurrentTasks()

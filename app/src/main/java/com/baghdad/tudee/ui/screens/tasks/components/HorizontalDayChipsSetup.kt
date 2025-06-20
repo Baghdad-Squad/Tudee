@@ -1,19 +1,12 @@
-package com.baghdad.tudee.ui.screens.tasks
+package com.baghdad.tudee.ui.screens.tasks.components
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.SizeTransform
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.with
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,22 +14,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.ui.composable.DayChip
 import com.baghdad.tudee.ui.composable.dateYearDialog.DateDialog
-import kotlinx.coroutines.launch
+import com.baghdad.tudee.ui.screens.tasks.TasksInteractionListener
+import com.baghdad.tudee.ui.screens.tasks.TasksUiState
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
@@ -47,7 +38,7 @@ import kotlinx.datetime.toLocalDateTime
 @Composable
 fun HorizontalDayChipsSetup(
     uiState: TasksUiState,
-    tasksInteractionHandler: TasksInteractionHandler,
+    tasksInteractionListener: TasksInteractionListener,
     modifier: Modifier = Modifier
 ) {
 
@@ -61,8 +52,8 @@ fun HorizontalDayChipsSetup(
     TasksHeader(
         month = uiState.currentMonth.toString().take(3),
         year = uiState.currentYear.toString(),
-        onNextArrowClicked = { tasksInteractionHandler.onNextMonthArrowClick() },
-        onPreviousArrowClicked = { tasksInteractionHandler.onPreviousMonthArrowClick() },
+        onNextArrowClicked = { tasksInteractionListener.onNextMonthArrowClick() },
+        onPreviousArrowClicked = { tasksInteractionListener.onPreviousMonthArrowClick() },
         onDownArrowClicked = { showDatePicker = true },
         modifier = modifier.padding(horizontal = 12.dp)
     )
@@ -80,7 +71,7 @@ fun HorizontalDayChipsSetup(
         HorizontalDayChipsRow(
             dates = it,
             selectedDate = selectedDate,
-            tasksInteractionHandler = tasksInteractionHandler,
+            tasksInteractionListener = tasksInteractionListener,
             modifier = modifier
         )
     }
@@ -95,11 +86,11 @@ fun HorizontalDayChipsSetup(
             onDateSelected = { millis ->
                 showDatePicker = false
                 millis?.let {
-                    val date = kotlinx.datetime.Instant
+                    val date = Instant
                         .fromEpochMilliseconds(it)
                         .toLocalDateTime(TimeZone.currentSystemDefault())
                         .date
-                    tasksInteractionHandler.onDatePickedFromDateDialog(date)
+                    tasksInteractionListener.onDatePickedFromDateDialog(date)
                 }
             }
         )
@@ -108,7 +99,7 @@ fun HorizontalDayChipsSetup(
 
 @Composable
 fun HorizontalDayChipsRow(
-    tasksInteractionHandler: TasksInteractionHandler,
+    tasksInteractionListener: TasksInteractionListener,
     dates: List<LocalDate>,
     selectedDate: LocalDate?,
     modifier: Modifier = Modifier
@@ -131,7 +122,7 @@ fun HorizontalDayChipsRow(
                     dayName = date.dayOfWeek.name.take(3),
                     isSelected = isSelected,
                     onSelected = {
-                        tasksInteractionHandler.onDateSelectedFromHorizontalRow(date)
+                        tasksInteractionListener.onDateSelectedFromHorizontalRow(date)
                     }
                 )
             }

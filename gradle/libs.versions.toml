@@ -1,9 +1,9 @@
 [versions]
 agp = "8.7.3"
+coilCompose = "2.7.0"
 androidxNavigationCompose = "2.5.3"
 androidxNavigationComposeVersion = "2.7.7"
 koinAndroidxViewmodel = "3.5.3"
-coilCompose = "2.7.0"
 kotlin = "2.0.0"
 kotlinxCoroutinesAndroidVersion = "1.10.2"
 ksp = "2.0.0-1.0.22"
@@ -28,8 +28,8 @@ serialization = "1.6.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidxNavigationCompose" }
 androidx-navigation-compose-v277 = { module = "androidx.navigation:navigation-compose", version.ref = "androidxNavigationComposeVersion" }
