@@ -5,6 +5,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.baghdad.tudee.data.database.TudeeDatabase
+import com.baghdad.tudee.data.model.CategoryDto
 import com.baghdad.tudee.data.model.TaskDto
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
@@ -20,6 +21,7 @@ import org.junit.runner.RunWith
 class TaskDaoTest {
     private lateinit var database: TudeeDatabase
     private lateinit var taskDao: TaskDao
+    private lateinit var categoryDao: CategoryDao
 
     @Before
     fun setupDatabase() {
@@ -28,14 +30,19 @@ class TaskDaoTest {
             TudeeDatabase::class.java
         ).allowMainThreadQueries().build()
         taskDao = database.taskDao()
+        categoryDao = database.categoryDao()
+
     }
 
 
     @Test
     fun insertTask_and_getTaskByCategory_correct() = runTest {
-        taskDao.createTask(sampleTaskDto)
+       val categoryId =  categoryDao.createCategory(sampleCategoryDto)
 
-        val result = taskDao.getTasksByCategory(sampleTaskDto.categoryId).first()
+        val task = sampleTaskDto.copy(categoryId = categoryId)
+        taskDao.createTask(task)
+
+        val result = taskDao.getTasksByCategory(categoryId).first()
 
         assertEquals(expectedTask, result.size)
         assertEquals(sampleTaskDto.title, result[taskIndex].title)
@@ -43,7 +50,9 @@ class TaskDaoTest {
 
     @Test
     fun insertTask_and_getByDate_returnsCorrectTask() = runTest {
-        taskDao.createTask(sampleTaskDto)
+        val categoryDao = categoryDao.createCategory(sampleCategoryDto)
+        val task = sampleTaskDto.copy(categoryId = categoryDao)
+        taskDao.createTask(task)
 
         val result = taskDao.getTasksByDate(date).first()
 
@@ -53,23 +62,25 @@ class TaskDaoTest {
 
     @Test
     fun editTask_updatesTask() = runTest {
-        taskDao.createTask(sampleTaskDto)
+        val categoryId = categoryDao.createCategory(sampleCategoryDto)
+        val task = sampleTaskDto.copy(categoryId = categoryId)
+         taskDao.createTask(task)
 
-        val updatedTask = sampleTaskDto.copy(title = taskUpdate)
+        val updatedTask = task.copy(title = taskUpdate)
         taskDao.editTask(updatedTask)
 
-        val result = taskDao.getTasksByCategory(sampleTaskDto.categoryId).first()
+        val result = taskDao.getTasksByCategory(categoryId).first()
 
         assertEquals(taskUpdate, result.first().title)
     }
 
     @Test
     fun deleteTask_removesTask() = runTest {
-        taskDao.createTask(sampleTaskDto)
+        val categoryId = categoryDao.createCategory(sampleCategoryDto)
 
-        taskDao.deleteTask(taskId)
+        taskDao.deleteTask(categoryId)
 
-        val result = taskDao.getTasksByCategory(sampleTaskDto.categoryId).first()
+        val result = taskDao.getTasksByCategory(categoryId).first()
 
         assertTrue(result.isEmpty())
     }
@@ -89,19 +100,25 @@ class TaskDaoTest {
 
     companion object {
         val expectedTask = 1
-        val taskId = 1L
         val emptyCategoryId = 999L
         val date ="2025-06-17"
         val taskIndex = 0
         val taskUpdate = "Updated Title"
         val sampleTaskDto = TaskDto(
-            id = 1,
+            id = 1L,
             title = "Test Task",
             description = "desc",
             date = "2025-06-17",
             priority = "LOW",
-            categoryId = 100,
+            categoryId = 0,
             state = "TODO"
+        )
+        val sampleCategoryDto = CategoryDto(
+            id = 0,
+            title = "Work",
+            imageType = "Predefined",
+            imageData = "ic_work",
+            imageBytes = byteArrayOf()
         )
     }
 }
