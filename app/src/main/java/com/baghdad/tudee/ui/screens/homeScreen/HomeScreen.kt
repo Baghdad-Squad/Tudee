@@ -73,7 +73,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                painter = painterResource(R.drawable.ic_black_note),
+                painter = painterResource(R.drawable.ic_add),
                 onClick = {
                     viewModel.togileEditTaskDialog()
                 },
