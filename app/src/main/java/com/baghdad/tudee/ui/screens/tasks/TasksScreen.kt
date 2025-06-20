@@ -36,12 +36,12 @@ fun TasksScreen(
         viewModel.onTabSelected(initialState)
     }
 
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
     val taskToDelete by viewModel.taskToDelete.collectAsStateWithLifecycle()
     val showDeleteSheet by viewModel.showDeleteSheet.collectAsStateWithLifecycle()
 
     TasksScreenContent(
-        uiState = uiState,
+        uiState = state,
         tasksInteractionListener = viewModel,
         taskToDelete = taskToDelete,
         showDeleteSheet = showDeleteSheet,
