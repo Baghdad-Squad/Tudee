@@ -39,8 +39,8 @@ fun getCategoryIconPainter(categoryImage: Category.Image): Painter {
         is Category.Image.ByteArray -> {
             rememberAsyncImagePainter(
                 model = image.data,
-                placeholder = painterResource(R.drawable.image_add_02),
-                error = painterResource(R.drawable.image_add_02)
+                placeholder = painterResource(R.drawable.calendar_favorite_01),
+                error = painterResource(R.drawable.calendar_favorite_01)
             )
         }
     }

@@ -2,10 +2,11 @@ package com.baghdad.tudee.ui.screens.categoryTasksScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.domain.service.CategoryService
 import com.baghdad.tudee.domain.service.TaskService
-import com.baghdad.tudee.ui.utils.getCategoryIconPainter
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -31,22 +32,22 @@ class CategoryTasksViewModel(
     }
 
     fun getCategoryById() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val category = categoryService.getCategoryById(categoryId)
-                _state.update {
-                    it.copy(
-                        categoryName = category.title,
-                        categoryImage = category.image,
-                        isPredefinedCategory = category.isPredefinedCategory
-                    )
-                }
+            _state.update {
+                it.copy(
+                    categoryName = category.title,
+                    categoryImage = category.image,
+                    isPredefinedCategory = category.isPredefinedCategory
+                )
+            }
         }
 
 
     }
 
     fun getTasksByCategoryId(categoryId: Long) {
-        viewModelScope.launch {
+        viewModelScope.launch (Dispatchers.IO){
             taskService.getTasksByCategory(categoryId).collect { tasks ->
                 _state.update {
                     it.copy(
@@ -66,15 +67,21 @@ class CategoryTasksViewModel(
     }
 
     fun onDeleteCategory() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             categoryService.deleteCategory(categoryId)
         }
     }
+    fun onSaveCategoryChanges() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentState = _state.value
+            categoryService.editCategory(
+                Category(
+                    id = categoryId,
+                    title = currentState.categoryName,
+                    image = currentState.categoryImage,
+                )
+            )
+        }
+    }
 
-//    fun onSaveCategoryChanges() {
-//        viewModelScope.launch {
-//            categoryService.editCategory(
-//            )
-//        }
-//    }
 }

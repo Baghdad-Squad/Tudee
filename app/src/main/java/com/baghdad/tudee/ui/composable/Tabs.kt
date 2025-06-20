@@ -69,8 +69,8 @@ fun Tabs(
 
 data class TabItem(
     val title: String,
-    val badgeCount: Int = 0,
-    val status: Task.State
+    val badgeCount: Int?,
+    val status: Task.State = Task.State.TODO
 )
 
 

@@ -35,7 +35,7 @@ import com.baghdad.tudee.ui.utils.noRippleClickable
 fun CategoryTaskCard(
     title: String,
     description: String,
-    date: String,
+    date: String ="",
     priorityTask: Task.Priority,
     icon: Painter,
     modifier: Modifier = Modifier,
@@ -114,17 +114,3 @@ fun CategoryTaskCard(
         }
     }
 }
-@Composable
-@Preview
-private fun CategoryTaskCard() {
-    TudeeTheme {
-//        CategoryTaskCard(
-//            title = "title",
-//            description = "no thing to add just try",
-//            priorityTask = Task.Priority.LOW,
-//            icon = painterResource(R.drawable.ic_baseball_bat),
-//            onClick = {}
-//        )
-    }
-}
-

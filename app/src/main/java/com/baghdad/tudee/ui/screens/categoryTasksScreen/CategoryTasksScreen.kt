@@ -1,5 +1,10 @@
+
 package com.baghdad.tudee.ui.screens.categoryTasksScreen
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,7 +37,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Task
@@ -57,10 +61,9 @@ fun CategoryTasksScreen(
         onTabSelected = viewModel::onTabSelected,
         isPredefinedCategory = state.isPredefinedCategory,
         onArrowBackClicked = {navigateBack()},
-        onCategoryTitleChanged = {},
-        onDeleteClick = {},
-        onEditImageIconClick = {},
-        onSaveButtonClick = {}
+        onCategoryTitleChanged = { newTitle -> viewModel.onCategoryTitleChanged(newTitle) },
+        onDeleteClick = { viewModel.onDeleteCategory() },
+        onSaveButtonClick =  { viewModel.onSaveCategoryChanges() }
     )
 }
 
@@ -70,13 +73,16 @@ private fun CategoryTasksScreenContent(
     onTabSelected: (Task.State) -> Unit,
     isPredefinedCategory: Boolean,
     onArrowBackClicked: () -> Unit,
-    onCategoryTitleChanged: ()-> Unit,
+    onCategoryTitleChanged: (String) -> Unit,
     onDeleteClick: ()-> Unit,
     onSaveButtonClick: ()-> Unit,
-    onEditImageIconClick: ()-> Unit,
 ) {
     val pagerState = rememberPagerState(initialPage = state.selectedTab.ordinal) { 3 }
     var showEditCategoryDialog by remember { mutableStateOf(false)}
+    val result = remember { mutableStateOf<Uri?>(null) }
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
+        result.value = it
+    }
     LaunchedEffect(pagerState.currentPage) {
         val selectedState = Task.State.entries[pagerState.currentPage]
         if (state.selectedTab != selectedState) {
@@ -115,7 +121,7 @@ private fun CategoryTasksScreenContent(
                 style = Theme.typography.title.large,
                 color = Theme.color.textColor.title
             )
-            if (isPredefinedCategory) {
+            if (!isPredefinedCategory) {
                 Spacer(modifier = Modifier.weight(1f))
                 IconInBox(icon = R.drawable.pencil_edit_02, onIconClick = {
                     showEditCategoryDialog = true
@@ -160,8 +166,10 @@ private fun CategoryTasksScreenContent(
             isVisible = showEditCategoryDialog,
             onDismiss = { showEditCategoryDialog = false },
             title = state.categoryName,
-            onCategoryTitleChanged = { onCategoryTitleChanged()},
-            onEditImageIconClick = { onEditImageIconClick()},
+            onCategoryTitleChanged = onCategoryTitleChanged,
+            onEditImageIconClick = { launcher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )},
             onSaveButtonClick = {
                 onSaveButtonClick()
                 showEditCategoryDialog = false
@@ -172,7 +180,7 @@ private fun CategoryTasksScreenContent(
             },
             isLoading = state.isLoading,
             onCancelButtonClick = { showEditCategoryDialog = false },
-            image = TODO()
+            image = painterResource(R.drawable.ic_bug)
         )
 
 
