@@ -50,279 +50,279 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 @Composable
 fun HomeScreenContent(modifier: Modifier = Modifier) {
 
-    Column(modifier.fillMaxSize().background(Theme.color.primaryColor.normal).padding( WindowInsets.statusBars.asPaddingValues())) {
-        TopTudeeBar(
-            title = "Tudee",
-            description = "Your personal task manager",
-            onChangeTheme = { /* TODO */ }
-        )
-
-        LazyColumn(
-            Modifier
-                .fillMaxSize()
-                .background(Theme.color.surfaceColor.surface)
-        ) {
-            item {
-
-                Box(
-                    modifier = Modifier
-                        .zIndex(-1f)
-                        .fillMaxWidth()
-                        .height(45.dp)
-                        .background(Theme.color.primaryColor.normal)
-                )
-                Column(
-                    modifier = Modifier
-                        .fillParentMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .offset(y = -45.dp)
-                        .background(
-                            Color.White,
-                            shape = RoundedCornerShape(16.dp)
-                        )
-                ) {
-                    TextDateIcon(
-                        text = "today, 22 Jun 2025",
-                        icon = painterResource(R.drawable.ic_date)
-                    )
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 12.dp, end = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        Column(modifier = Modifier.fillMaxWidth(0.6f)) {
-                            TextMoodIcon(
-                                text = "Stay working!",
-                                icon = painterResource(R.drawable.ic_okay_feedback)
-                            )
-                            Text(
-                                text = "You've completed 3 out of 10 tasks Keep going!",
-                                style = Theme.typography.body.small,
-                                color = Theme.color.textColor.body,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
-                        }
-                        Box(contentAlignment = Alignment.Center) {
-
-                            Box(
-                                modifier = Modifier
-                                    .size(64.dp)
-                                    .background(
-                                        Theme.color.primaryColor.normal.copy(0.4f),
-                                        shape = RoundedCornerShape(100)
-                                    )
-                            )
-
-                            Image(
-                                painter = painterResource(
-                                    R.drawable.happy_robot
-                                ),
-                                contentDescription = "happy robot",
-                            )
-                        }
-
-                    }
-
-                    Text(
-                        text = "Overview",
-                        style = Theme.typography.title.large,
-                        color = Theme.color.textColor.title,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 12.dp, bottom = 8.dp)
-                    )
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 12.dp, end = 12.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        OverviewCard(
-                            count = 2,
-                            background = Theme.color.status.greenAccent,
-                            taskState = TaskState.DONE,
-                            modifier = Modifier.weight(1f)
-                        )
-                        OverviewCard(
-                            count = 16,
-                            background = Theme.color.status.yellowAccent,
-                            taskState = TaskState.IN_PROGRESS,
-                            modifier = Modifier.weight(1f)
-                        )
-                        OverviewCard(
-                            count = 1,
-                            background = Theme.color.status.purpleAccent,
-                            taskState = TaskState.TODO,
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-
-                }
-            }
-
-            item {
-                TextHeadTaskSection(
-                    name = "In progress ",
-                    numberOfItem = 12,
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-                ) {
-
-                }
-
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(5) {
-                        Column(modifier = Modifier.fillMaxWidth()) {
-
-                            CategoryTaskCard(
-                                title = "Organize Study Desk",
-                                description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = Task.Priority.MEDIUM,
-                                icon = painterResource(R.drawable.ic_quran),
-                                modifier = Modifier
-                                    .fillParentMaxWidth(0.95f)
-                                    .padding(bottom = 8.dp)
-                            ) {}
-                            CategoryTaskCard(
-                                title = "Organize Study Desk",
-                                description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = Task.Priority.MEDIUM,
-                                icon = painterResource(R.drawable.ic_quran),
-                                modifier = Modifier.fillParentMaxWidth(0.95f)
-                            ) {}
-                        }
-                    }
-
-                }
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                TextHeadTaskSection(
-                    name = "To Do ",
-                    numberOfItem = 12,
-                    modifier = Modifier
-                        .fillParentMaxWidth(0.95f)
-                        .padding(bottom = 8.dp)
-                        .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-                ) {
-
-                }
-
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(5) {
-                        Column() {
-
-                            CategoryTaskCard(
-                                title = "Organize Study Desk",
-                                description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = Task.Priority.MEDIUM,
-                                icon = painterResource(R.drawable.ic_quran),
-                                modifier = Modifier
-                                    .fillParentMaxWidth(0.95f)
-                                    .padding(bottom = 8.dp)
-                                    .padding(bottom = 8.dp)
-                            ) {}
-                            CategoryTaskCard(
-                                title = "Organize Study Desk",
-                                description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = Task.Priority.MEDIUM,
-                                icon = painterResource(R.drawable.ic_quran),
-                                modifier = Modifier
-                                    .fillParentMaxWidth(0.95f)
-                                    .padding(bottom = 8.dp)
-
-                            ) {}
-                        }
-                    }
-
-                }
-            }
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                TextHeadTaskSection(
-                    name = "Done ",
-                    numberOfItem = 12,
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-                ) {
-
-                }
-
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(5) {
-                        Column() {
-
-                            CategoryTaskCard(
-                                title = "Organize Study Desk",
-                                description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = Task.Priority.MEDIUM,
-                                icon = painterResource(R.drawable.ic_quran),
-                                modifier = Modifier
-                                    .fillParentMaxWidth(0.95f)
-                                    .padding(bottom = 8.dp)
-                                    .padding(bottom = 8.dp)
-                            ) {}
-                            CategoryTaskCard(
-                                title = "Organize Study Desk",
-                                description = "Review cell structure and functions for tomorrow...",
-                                priorityTask = Task.Priority.MEDIUM,
-                                icon = painterResource(R.drawable.ic_quran),
-                                modifier = Modifier
-                                    .fillParentMaxWidth(0.95f)
-                                    .padding(bottom = 8.dp)
-
-                            ) {}
-                        }
-                    }
-
-                }
-            }
-
-        }
-    }
-
-}
-
-@Composable
-private fun TextDateIcon(
-    text: String,
-    modifier: Modifier = Modifier,
-    icon: Painter,
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Icon(
-            painter = icon,
-            contentDescription = "date icon",
-            modifier = Modifier.padding(end = 8.dp)
-        )
-        Text(
-            text = text,
-            style = Theme.typography.label.medium,
-            color = Theme.color.textColor.body
-        )
-
-    }
+//    Column(modifier.fillMaxSize().background(Theme.color.primaryColor.normal).padding( WindowInsets.statusBars.asPaddingValues())) {
+//        TopTudeeBar(
+//            title = "Tudee",
+//            description = "Your personal task manager",
+//            onChangeTheme = { /* TODO */ }
+//        )
+//
+//        LazyColumn(
+//            Modifier
+//                .fillMaxSize()
+//                .background(Theme.color.surfaceColor.surface)
+//        ) {
+//            item {
+//
+//                Box(
+//                    modifier = Modifier
+//                        .zIndex(-1f)
+//                        .fillMaxWidth()
+//                        .height(45.dp)
+//                        .background(Theme.color.primaryColor.normal)
+//                )
+//                Column(
+//                    modifier = Modifier
+//                        .fillParentMaxWidth()
+//                        .padding(horizontal = 16.dp)
+//                        .offset(y = -45.dp)
+//                        .background(
+//                            Color.White,
+//                            shape = RoundedCornerShape(16.dp)
+//                        )
+//                ) {
+//                    TextDateIcon(
+//                        text = "today, 22 Jun 2025",
+//                        icon = painterResource(R.drawable.ic_date)
+//                    )
+//
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(start = 12.dp, end = 4.dp),
+//                        verticalAlignment = Alignment.CenterVertically,
+//                        horizontalArrangement = Arrangement.SpaceBetween,
+//                    ) {
+//                        Column(modifier = Modifier.fillMaxWidth(0.6f)) {
+//                            TextMoodIcon(
+//                                text = "Stay working!",
+//                                icon = painterResource(R.drawable.ic_okay_feedback)
+//                            )
+//                            Text(
+//                                text = "You've completed 3 out of 10 tasks Keep going!",
+//                                style = Theme.typography.body.small,
+//                                color = Theme.color.textColor.body,
+//                                modifier = Modifier.padding(top = 4.dp)
+//                            )
+//                        }
+//                        Box(contentAlignment = Alignment.Center) {
+//
+//                            Box(
+//                                modifier = Modifier
+//                                    .size(64.dp)
+//                                    .background(
+//                                        Theme.color.primaryColor.normal.copy(0.4f),
+//                                        shape = RoundedCornerShape(100)
+//                                    )
+//                            )
+//
+//                            Image(
+//                                painter = painterResource(
+//                                    R.drawable.happy_robot
+//                                ),
+//                                contentDescription = "happy robot",
+//                            )
+//                        }
+//
+//                    }
+//
+//                    Text(
+//                        text = "Overview",
+//                        style = Theme.typography.title.large,
+//                        color = Theme.color.textColor.title,
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(start = 12.dp, bottom = 8.dp)
+//                    )
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(start = 12.dp, end = 12.dp),
+//                        verticalAlignment = Alignment.CenterVertically,
+//                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+//                    ) {
+//                        OverviewCard(
+//                            count = 2,
+//                            background = Theme.color.status.greenAccent,
+//                            taskState = TaskState.DONE,
+//                            modifier = Modifier.weight(1f)
+//                        )
+//                        OverviewCard(
+//                            count = 16,
+//                            background = Theme.color.status.yellowAccent,
+//                            taskState = TaskState.IN_PROGRESS,
+//                            modifier = Modifier.weight(1f)
+//                        )
+//                        OverviewCard(
+//                            count = 1,
+//                            background = Theme.color.status.purpleAccent,
+//                            taskState = TaskState.TODO,
+//                            modifier = Modifier.weight(1f)
+//                        )
+//                    }
+//
+//                }
+//            }
+//
+//            item {
+//                TextHeadTaskSection(
+//                    name = "In progress ",
+//                    numberOfItem = 12,
+//                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+//                ) {
+//
+//                }
+//
+//                LazyRow(
+//                    contentPadding = PaddingValues(horizontal = 16.dp),
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+//                ) {
+//                    items(5) {
+//                        Column(modifier = Modifier.fillMaxWidth()) {
+//
+//                            CategoryTaskCard(
+//                                title = "Organize Study Desk",
+//                                description = "Review cell structure and functions for tomorrow...",
+//                                priorityTask = Task.Priority.MEDIUM,
+//                                icon = painterResource(R.drawable.ic_quran),
+//                                modifier = Modifier
+//                                    .fillParentMaxWidth(0.95f)
+//                                    .padding(bottom = 8.dp)
+//                            ) {}
+//                            CategoryTaskCard(
+//                                title = "Organize Study Desk",
+//                                description = "Review cell structure and functions for tomorrow...",
+//                                priorityTask = Task.Priority.MEDIUM,
+//                                icon = painterResource(R.drawable.ic_quran),
+//                                modifier = Modifier.fillParentMaxWidth(0.95f)
+//                            ) {}
+//                        }
+//                    }
+//
+//                }
+//            }
+//
+//            item {
+//                Spacer(modifier = Modifier.height(16.dp))
+//                TextHeadTaskSection(
+//                    name = "To Do ",
+//                    numberOfItem = 12,
+//                    modifier = Modifier
+//                        .fillParentMaxWidth(0.95f)
+//                        .padding(bottom = 8.dp)
+//                        .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+//                ) {
+//
+//                }
+//
+//                LazyRow(
+//                    contentPadding = PaddingValues(horizontal = 16.dp),
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+//                ) {
+//                    items(5) {
+//                        Column() {
+//
+//                            CategoryTaskCard(
+//                                title = "Organize Study Desk",
+//                                description = "Review cell structure and functions for tomorrow...",
+//                                priorityTask = Task.Priority.MEDIUM,
+//                                icon = painterResource(R.drawable.ic_quran),
+//                                modifier = Modifier
+//                                    .fillParentMaxWidth(0.95f)
+//                                    .padding(bottom = 8.dp)
+//                                    .padding(bottom = 8.dp)
+//                            ) {}
+//                            CategoryTaskCard(
+//                                title = "Organize Study Desk",
+//                                description = "Review cell structure and functions for tomorrow...",
+//                                priorityTask = Task.Priority.MEDIUM,
+//                                icon = painterResource(R.drawable.ic_quran),
+//                                modifier = Modifier
+//                                    .fillParentMaxWidth(0.95f)
+//                                    .padding(bottom = 8.dp)
+//
+//                            ) {}
+//                        }
+//                    }
+//
+//                }
+//            }
+//            item {
+//                Spacer(modifier = Modifier.height(16.dp))
+//                TextHeadTaskSection(
+//                    name = "Done ",
+//                    numberOfItem = 12,
+//                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+//                ) {
+//
+//                }
+//
+//                LazyRow(
+//                    contentPadding = PaddingValues(horizontal = 16.dp),
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+//                ) {
+//                    items(5) {
+//                        Column() {
+//
+//                            CategoryTaskCard(
+//                                title = "Organize Study Desk",
+//                                description = "Review cell structure and functions for tomorrow...",
+//                                priorityTask = Task.Priority.MEDIUM,
+//                                icon = painterResource(R.drawable.ic_quran),
+//                                modifier = Modifier
+//                                    .fillParentMaxWidth(0.95f)
+//                                    .padding(bottom = 8.dp)
+//                                    .padding(bottom = 8.dp)
+//                            ) {}
+//                            CategoryTaskCard(
+//                                title = "Organize Study Desk",
+//                                description = "Review cell structure and functions for tomorrow...",
+//                                priorityTask = Task.Priority.MEDIUM,
+//                                icon = painterResource(R.drawable.ic_quran),
+//                                modifier = Modifier
+//                                    .fillParentMaxWidth(0.95f)
+//                                    .padding(bottom = 8.dp)
+//
+//                            ) {}
+//                        }
+//                    }
+//
+//                }
+//            }
+//
+//        }
+//    }
+//
+//}
+//
+//@Composable
+//private fun TextDateIcon(
+//    text: String,
+//    modifier: Modifier = Modifier,
+//    icon: Painter,
+//) {
+//    Row(
+//        modifier = modifier
+//            .fillMaxWidth()
+//            .padding(top = 8.dp),
+//        verticalAlignment = Alignment.CenterVertically,
+//        horizontalArrangement = Arrangement.Center
+//    ) {
+//        Icon(
+//            painter = icon,
+//            contentDescription = "date icon",
+//            modifier = Modifier.padding(end = 8.dp)
+//        )
+//        Text(
+//            text = text,
+//            style = Theme.typography.label.medium,
+//            color = Theme.color.textColor.body
+//        )
+//
+//    }
 }
 
 
