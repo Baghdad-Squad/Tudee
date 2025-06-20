@@ -9,9 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
 import com.baghdad.tudee.R
-import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.composable.SwipeToDeleteCard
 
 @Composable
@@ -32,7 +30,7 @@ fun TasksColumn(
             uiState.tasksDisplayed
         ) { task ->
             val category = uiState.categories.find { it.id == task.categoryId }
-            val painter =  painterResource( R.drawable.ic_baseball_bat) /*Add when statements TODO()*/
+            val painter = painterResource(R.drawable.ic_baseball_bat) /*Add when statements TODO()*/
 
             SwipeToDeleteCard(
                 title = task.title,

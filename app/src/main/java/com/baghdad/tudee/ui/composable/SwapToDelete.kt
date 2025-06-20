@@ -40,7 +40,7 @@ fun SwipeToDeleteCard(
     onDelete: () -> Unit,
     onClick: () -> Unit,
 ) {
-    val maxSwipe = 120f
+    val maxSwipe = 100f
     var offsetX by remember { mutableStateOf(0f) }
 
     val animatedOffsetX by animateFloatAsState(targetValue = offsetX)
