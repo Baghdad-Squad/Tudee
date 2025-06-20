@@ -1,5 +1,6 @@
 package com.baghdad.tudee.designSystem.color
 
+
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
@@ -38,7 +39,7 @@ val darkThemeColor = TudeeColor(
                 Color(0x8005202E),
                 Color(0x0005202E),
 
-            )
+                )
         ),
     ),
     status = StatusColor(
@@ -55,3 +56,14 @@ val darkThemeColor = TudeeColor(
         errorVariant = Color(0xFFFCE8E8)
     ),
 )
+
+
+
+
+
+
+
+
+
+
+

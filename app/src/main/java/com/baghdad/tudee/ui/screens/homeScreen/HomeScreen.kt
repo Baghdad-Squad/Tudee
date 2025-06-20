@@ -158,7 +158,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                             .padding(horizontal = 16.dp)
                             .offset(y = -45.dp)
                             .background(
-                                Color.White,
+                                Theme.color.surfaceColor.surface,
                                 shape = RoundedCornerShape(16.dp)
                             )
                     ) {
@@ -468,7 +468,8 @@ private fun TextDateIcon(
         Icon(
             painter = icon,
             contentDescription = "date icon",
-            modifier = Modifier.padding(end = 8.dp)
+            modifier = Modifier.padding(end = 8.dp),
+            tint = Theme.color.textColor.body
         )
         Text(
             text = text,
