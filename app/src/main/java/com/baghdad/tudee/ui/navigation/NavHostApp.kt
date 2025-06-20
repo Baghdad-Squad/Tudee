@@ -14,6 +14,7 @@ import androidx.navigation.toRoute
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.screens.OnboardingScreen.OnboardingScreen
 import com.baghdad.tudee.ui.screens.category.CategoryScreen
+import com.baghdad.tudee.ui.screens.categoryTasksScreen.CategoryTasksScreen
 import com.baghdad.tudee.ui.screens.tasks.TasksScreen
 import kotlin.reflect.typeOf
 
@@ -74,12 +75,12 @@ fun TudeeNavHost(
 
         composable<Route.CategoryTasksScreen>{
              val categoryId = it.toRoute<Route.CategoryTasksScreen>().categoryId
-            Box (
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ){
-                Text(text = "Category Tasks Screen: id = $categoryId")
-            }
+            CategoryTasksScreen(
+                categoryId = categoryId,
+                navigateBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

@@ -40,8 +40,8 @@ fun BottomNavigation(
 ) {
     val currentRoute = navController.currentBackStackEntryAsState()
         .value?.destination?.route
-        ?.substringBefore("/")
         ?.substringBefore("?")
+
     val isVisible by remember {
         derivedStateOf {
             listOf(Route.OnboardingScreen, Route.CategoryTasksScreen(0L))
