@@ -3,6 +3,7 @@ package com.baghdad.tudee.data.service
 import com.baghdad.tudee.data.database.dao.CategoryDao
 import com.baghdad.tudee.data.mapper.toDto
 import com.baghdad.tudee.data.mapper.toEntities
+import com.baghdad.tudee.data.mapper.toEntity
 import com.baghdad.tudee.data.model.CategoryDto
 import com.baghdad.tudee.data.service.shared.DatabaseErrorHandler
 import com.baghdad.tudee.domain.entity.Category
@@ -15,6 +16,12 @@ class CategoryServiceImpl(
 ) : CategoryService, DatabaseErrorHandler() {
     override suspend fun getCategories(): Flow<List<Category>> = executeWithErrorHandling {
         categoryDao.getCategories().map(List<CategoryDto>::toEntities)
+    }
+
+    override suspend fun getCategoryById(categoryId: Long) = executeWithErrorHandling {
+        categoryDao
+            .getCategoryById(categoryId)
+            .toEntity()
     }
 
     override suspend fun createCategory(category: Category) = executeWithErrorHandling {

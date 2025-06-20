@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.baghdad.tudee.domain.entity.Task
+import com.baghdad.tudee.ui.screens.categoryTasksScreen.CategoryTasksScreen
 import kotlin.reflect.typeOf
 
 @Composable
@@ -40,8 +41,7 @@ fun TudeeNavHost(navController: NavHostController, startDestination: Route) {
 
         composable<Route.CategoryTasksScreen>{
              val categoryId = it.toRoute<Route.CategoryTasksScreen>().categoryId
-            // TODO put the Category Tasks Screen Here
-
+            CategoryTasksScreen(categoryId = categoryId, navController = navController)
         }
     }
 }

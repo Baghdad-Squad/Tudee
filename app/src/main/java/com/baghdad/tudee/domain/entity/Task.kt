@@ -1,8 +1,6 @@
 package com.baghdad.tudee.domain.entity
 
 import kotlinx.datetime.LocalDate
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 data class Task(
     val id: Long,

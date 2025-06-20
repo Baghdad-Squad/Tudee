@@ -5,6 +5,8 @@
     <string name="clear_text">Clear</string>
     <string name="edit_text">Edit</string>
     <string name="select_text">Select a date</string>
+    <string name="arrow_left">arrow left</string>
+    <string name="calendar_favorite">calendar favorite</string>
     <string name="tasks">Tasks</string>
     <string name="empty_tasks_desc">Tap the + button to add your \n first one.</string>
     <string name="no_tasks_yet">No tasks yet</string>
