@@ -15,6 +15,7 @@ interface HomeScreenInteraction {
     fun moveTaskToTodo(taskId: Long)
     fun moveTaskToInProgress(taskId: Long)
     fun showSnarkMessage(message: String, isVisible: Boolean, isError: Boolean)
+    fun getTaskDetailsById(id: Long)
 
 }
 

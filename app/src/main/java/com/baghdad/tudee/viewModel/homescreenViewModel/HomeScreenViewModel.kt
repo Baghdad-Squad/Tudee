@@ -32,6 +32,32 @@ class HomeScreenViewModel(
     init {
         getTasks()
         getCategories()
+
+    }
+
+    override fun getTaskDetailsById(id: Long) {
+        val task = _state.value.inProgressTasks.find { it.id == id }
+            ?: _state.value.todoTasks.find { it.id == id }
+            ?: _state.value.doneTasks.find { it.id == id }
+
+        if (task != null) {
+            _state.update {
+                it.copy(
+                    detailsTaskState = it.detailsTaskState.copy(
+                        id = task.id,
+                        title = task.title,
+                        description = task.description,
+                        date = task.date,
+                        priority = task.priority,
+                        categoryId = task.categoryId,
+                        state = task.state
+                    ),
+                    showTaskDetails = true,
+                    showAddNewTask = false,
+                    showEditTask = false
+                )
+            }
+        }
     }
 
     override fun onClickAddNewTask(task: Task) {
@@ -68,7 +94,7 @@ class HomeScreenViewModel(
         }
     }
 
-    fun togileAddNewTaskDialog() {
+    fun toggleAddNewTaskDialog() {
         _state.update {
             it.copy(
                 showAddNewTask = !_state.value.showAddNewTask,
@@ -78,7 +104,7 @@ class HomeScreenViewModel(
         }
     }
 
-    fun togileTaskDetailsDialog(){
+    fun toggleTaskDetailsDialog(){
         _state.update {
             it.copy(
                 showTaskDetails = !_state.value.showTaskDetails,
@@ -240,40 +266,6 @@ class HomeScreenViewModel(
                             detailsTaskState = currentState.detailsTaskState.copy(categories = categories)
                         )
                     }
-                }
-            } catch (e: Exception) {
-                handleError(e)
-            }
-        }
-
-    }
-
-    fun getTaskDetailsById(id: Long){
-        val list = listOf(
-            _state.value.inProgressTasks,
-            _state.value.todoTasks,
-            _state.value.doneTasks
-        )
-        viewModelScope.launch {
-            try {
-                val task = list.flatten().find { it.id == id }
-                task?.let {
-                    _state.update { currentState ->
-                        currentState.copy(
-                            detailsTaskState = currentState.detailsTaskState.copy(
-                                id = it.id,
-                                title = it.title,
-                                description = it.description,
-                                date = it.date,
-                                priority = it.priority,
-                                categoryId = it.categoryId,
-                                state = it.state
-                            ),
-                            showTaskDetails = true
-                        )
-                    }
-                } ?: run {
-                    _state.update { it.copy(errorMessage = "Task not found") }
                 }
             } catch (e: Exception) {
                 handleError(e)
