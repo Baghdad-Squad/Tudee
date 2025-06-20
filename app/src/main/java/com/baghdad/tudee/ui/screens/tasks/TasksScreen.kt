@@ -64,7 +64,7 @@ fun TasksScreenContent(
                 text = stringResource(R.string.tasks),
                 style = Theme.typography.title.large,
                 color = Theme.color.textColor.title,
-                modifier = Modifier.padding(bottom = 20.dp, start = 16.dp, top = 20.dp),
+                modifier = Modifier.padding(bottom = 20.dp, start = 16.dp),
             )
             HorizontalDayChipsSetup(
                 tasksInteractionListener = tasksInteractionListener,
@@ -92,7 +92,7 @@ fun TasksScreenContent(
             painter = painterResource(id = R.drawable.ic_add),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .offset(y = -(72).dp, x = -(12).dp)
+                .padding(end = 12.dp, bottom = 10.dp)
         )
     }
 
