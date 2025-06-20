@@ -26,8 +26,7 @@ class TaskDaoTest {
     @Before
     fun setupDatabase() {
         database = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(),
-            TudeeDatabase::class.java
+            ApplicationProvider.getApplicationContext(), TudeeDatabase::class.java
         ).allowMainThreadQueries().build()
         taskDao = database.taskDao()
         categoryDao = database.categoryDao()
@@ -36,7 +35,7 @@ class TaskDaoTest {
 
     @Test
     fun insertTask_and_getTaskByCategory_correct() = runTest {
-       val categoryId =  categoryDao.createCategory(sampleCategoryDto)
+        val categoryId = categoryDao.createCategory(sampleCategoryDto)
 
         val task = sampleTaskDto.copy(categoryId = categoryId)
         taskDao.createTask(task)
@@ -63,7 +62,7 @@ class TaskDaoTest {
     fun editTask_updatesTask() = runTest {
         val categoryId = categoryDao.createCategory(sampleCategoryDto)
         val task = sampleTaskDto.copy(categoryId = categoryId)
-         taskDao.createTask(task)
+        taskDao.createTask(task)
 
         val updatedTask = task.copy(title = taskUpdate)
         taskDao.editTask(updatedTask)
@@ -97,13 +96,13 @@ class TaskDaoTest {
         database.close()
     }
 
-    companion object {
-        val expectedTask = 1
-        val emptyCategoryId = 999L
-        val date ="2025-06-17"
-        val taskIndex = 0
-        val taskUpdate = "Updated Title"
-        val sampleTaskDto = TaskDto(
+    private companion object {
+        const val expectedTask = 1
+        const val emptyCategoryId = 999L
+        const val date = "2025-06-17"
+        const val taskIndex = 0
+        const val taskUpdate = "Updated Title"
+         val sampleTaskDto = TaskDto(
             id = 1L,
             title = "Test Task",
             description = "desc",
