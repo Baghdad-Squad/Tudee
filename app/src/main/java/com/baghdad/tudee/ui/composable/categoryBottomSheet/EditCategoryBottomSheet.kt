@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -31,8 +32,9 @@ fun EditCategoryBottomSheet(
     onCategoryTitleChanged: (String) -> Unit,
     onEditImageIconClick: () -> Unit,
     onAddButtonClick: () -> Unit,
-    onCanceleButtonClick: () -> Unit,
+    onCancelButtonClick: () -> Unit,
     onDeleteClick: () -> Unit,
+    image:Painter,
     isLoading: Boolean
 ) {
     TudeeBottomSheet(
@@ -88,14 +90,14 @@ fun EditCategoryBottomSheet(
                         .padding(bottom = 24.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    UploadedImageBox(onEditClick = onEditImageIconClick)
+                    UploadedImageBox(onEditClick = onEditImageIconClick , image)
                 }
             }
             ConfirmationButtonContainer(
                 isEnabled = true,
                 onAddClick = onAddButtonClick,
-                onCancelClick = onCanceleButtonClick,
-                actionLable = "Save",
+                onCancelClick = onCancelButtonClick,
+                actionLabel = stringResource(R.string.save),
                 isLoading = isLoading
             )
 

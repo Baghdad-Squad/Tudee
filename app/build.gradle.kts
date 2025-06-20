@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json )
 
+    implementation(libs.coil.compose)
 
     //Kotlinx-date-time
     implementation(libs.kotlinx.datetime)
