@@ -18,19 +18,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.ui.utils.noRippleClickable
 
 @Composable
 fun TaskActionsContainer(
-    buttonText: String
+    buttonText: String,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(56.dp),
+            .height(56.dp)
+            .noRippleClickable { onClick()},
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(
-            4.dp
-        )
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Box(
             modifier = Modifier
@@ -66,7 +67,6 @@ fun TaskActionsContainer(
                 style = Theme.typography.label.large,
                 color = Theme.color.primaryColor.normal,
                 modifier = Modifier.padding(vertical = 18.5.dp, horizontal = 54.5.dp)
-
             )
         }
 

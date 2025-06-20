@@ -22,7 +22,11 @@ class TasksViewModel(
     private val _uiState = MutableStateFlow(TasksUiState())
     val uiState = _uiState.asStateFlow()
 
+    private val _taskToDelete = MutableStateFlow<Task?>(null)
+    val taskToDelete = _taskToDelete.asStateFlow()
 
+    private val _showDeleteSheet = MutableStateFlow(false)
+    val showDeleteSheet = _showDeleteSheet.asStateFlow()
 
     init {
         getCurrentTasks()
@@ -114,6 +118,24 @@ class TasksViewModel(
         }
 
         loadTasksForDate(newDate)
+    }
+
+    fun onTaskSwipeToDelete(task: Task) {
+        _taskToDelete.value = task
+        _showDeleteSheet.value = true
+    }
+
+    fun confirmDelete() {
+        _taskToDelete.value?.let { task ->
+            onDeleteTask(task)
+        }
+        _taskToDelete.value = null
+        _showDeleteSheet.value = false
+    }
+
+    fun cancelDelete() {
+        _taskToDelete.value = null
+        _showDeleteSheet.value = false
     }
 
     private fun loadTasksForDate(selectedDate: LocalDate) {
