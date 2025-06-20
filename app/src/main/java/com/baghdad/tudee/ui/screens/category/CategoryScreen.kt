@@ -98,12 +98,12 @@ fun CategoryScreenContent(
             ) {
                 FloatingActionButton(
                     painter = painterResource(
-                        id = R.drawable.resources_add
+                        id = R.drawable.ic_add_category
                     ),
                     onClick = {
                         showAddNewCategoryDialog = true
                     },
-                    modifier = Modifier.padding(bottom = 58.dp, end = 16.dp)
+                    modifier = Modifier.padding(bottom = 16.dp, end = 12.dp)
 
                 )
             }

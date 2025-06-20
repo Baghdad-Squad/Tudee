@@ -18,15 +18,23 @@ class MainViewModel(
     val uiState = _uiState.asStateFlow()
     init {
         fetchIsDarkTheme()
+        fetchIsFirstLaunch()
+    }
+
+    private fun fetchIsFirstLaunch() {
+        viewModelScope.launch (Dispatchers.IO){
+            appConfigurationService.isFirstLaunch().let{ isFirstLaunch ->
+                _uiState.update {
+                    it.copy(isFirstLaunch = isFirstLaunch)
+                }
+            }
+        }
     }
 
     private fun fetchIsDarkTheme() {
         viewModelScope.launch (Dispatchers.IO){
             appConfigurationService.isDarkTheme().collect { isDarkTheme ->
                 _uiState.update {  it.copy(isDarkTheme = isDarkTheme) }
-
-                delay(10000)
-                _uiState.update { it.copy(isDarkTheme = !isDarkTheme) }
             }
         }
     }

@@ -4,7 +4,9 @@ coilCompose = "2.7.0"
 androidxNavigationCompose = "2.5.3"
 androidxNavigationComposeVersion = "2.7.7"
 koinAndroidxViewmodel = "3.5.3"
+koinCore = "3.5.3"
 kotlin = "2.0.0"
+kotlinxCoroutinesAndroid = "1.10.2"
 kotlinxCoroutinesAndroidVersion = "1.10.2"
 ksp = "2.0.0-1.0.22"
 coreKtx = "1.16.0"
@@ -52,6 +54,8 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesAndroidVersion" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }

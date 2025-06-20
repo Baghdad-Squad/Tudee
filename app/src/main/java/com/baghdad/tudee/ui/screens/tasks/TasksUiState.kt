@@ -14,7 +14,8 @@ data class TasksUiState(
     val tasksDisplayed : List<Task> = emptyList(),
     val categories: List<Category> = emptyList(),
     val currentMonth : Month = Month.JUNE,
-    val currentYear : Int = 2025
+    val currentYear : Int = 2025,
+    val showAddNewTask: Boolean= false
 )
 
 

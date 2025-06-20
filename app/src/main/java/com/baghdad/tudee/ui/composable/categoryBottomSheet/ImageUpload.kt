@@ -37,7 +37,7 @@ fun UploadedImageBox(
             .clickable { onEditClick() }
     ) {
         Image(
-            painter = image ?: painterResource(id = R.drawable.image_add_02),
+            painter = image ?: painterResource(id = R.drawable.ic_add_image),
             contentDescription = stringResource(R.string.uploaded_image),
             modifier = Modifier
                 .matchParentSize()
@@ -97,7 +97,7 @@ fun UploadPlaceholder(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.image_add_02),
+                painter = painterResource(id = R.drawable.ic_add_image),
                 contentDescription = stringResource(R.string.edit_icon),
                 tint = Theme.color.textColor.hint,
                 modifier = Modifier

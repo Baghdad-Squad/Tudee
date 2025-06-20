@@ -26,7 +26,7 @@ sealed interface Route {
 
     @Serializable
     data class CategoryTasksScreen(
-        val categoryId: String,
+        val categoryId: Long = 0L,
     ) : Route
 }
 

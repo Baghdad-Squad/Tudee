@@ -22,7 +22,7 @@ fun Category.PredefinedType.toDrawable(): Int {
         Category.PredefinedType.BUDGETING -> return R.drawable.ic_money_bag
         Category.PredefinedType.SELF_CARE -> return R.drawable.ic_in_love
         Category.PredefinedType.EVENT -> return R.drawable.ic_birthday_cake
-        else -> return R.drawable.resources_add
+        else -> return R.drawable.ic_add_image
     }
 
 }

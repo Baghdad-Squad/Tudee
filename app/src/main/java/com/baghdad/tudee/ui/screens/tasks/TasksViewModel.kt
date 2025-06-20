@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.domain.service.CategoryService
 import com.baghdad.tudee.domain.service.TaskService
+import com.baghdad.tudee.ui.utils.now
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -18,7 +19,7 @@ import kotlinx.datetime.toLocalDateTime
 class TasksViewModel(
     private val taskService: TaskService,
     private val categoryService: CategoryService
-) : ViewModel(), TasksInteractionListener {
+) : ViewModel(), TasksInteractionListener, AddEditTaskInteractionListener {
     private val _uiState = MutableStateFlow(TasksUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -120,6 +121,14 @@ class TasksViewModel(
         loadTasksForDate(newDate)
     }
 
+    override fun toggleAddNewTaskDialog() {
+        _uiState.update {
+            it.copy(
+                showAddNewTask = !_uiState.value.showAddNewTask
+            )
+        }
+    }
+
     fun onTaskSwipeToDelete(task: Task) {
         _taskToDelete.value = task
         _showDeleteSheet.value = true
@@ -197,5 +206,18 @@ class TasksViewModel(
 
     fun Int.isLeapYear(): Boolean {
         return (this % 4 == 0 && this % 100 != 0) || (this % 400 == 0)
+    }
+
+    override fun onClickAddNewTask(task: Task) {
+        viewModelScope.launch {
+            taskService.createTask(task)
+
+
+            loadTasksForDate(uiState.value.selectedDate?: LocalDate.now())
+
+            _uiState.update {
+                it.copy(showAddNewTask = false)
+            }
+        }
     }
 }

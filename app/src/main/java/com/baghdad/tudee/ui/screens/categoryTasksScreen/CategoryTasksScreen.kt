@@ -1,4 +1,3 @@
-
 package com.baghdad.tudee.ui.screens.categoryTasksScreen
 
 import android.net.Uri
@@ -44,6 +43,7 @@ import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.composable.TabItem
 import com.baghdad.tudee.ui.composable.Tabs
 import com.baghdad.tudee.ui.composable.categoryBottomSheet.EditCategoryBottomSheet
+import com.baghdad.tudee.ui.screens.tasks.components.TasksEmptyScreen
 import com.baghdad.tudee.ui.shared.Selectable
 import com.baghdad.tudee.ui.utils.getCategoryIconPainter
 import org.koin.androidx.compose.koinViewModel
@@ -53,17 +53,17 @@ import org.koin.core.parameter.parametersOf
 fun CategoryTasksScreen(
     categoryId: Long,
     viewModel: CategoryTasksViewModel = koinViewModel(parameters = { parametersOf(categoryId.toLong()) }),
-    navigateBack: () ->Unit
+    navigateBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     CategoryTasksScreenContent(
         state = state,
         onTabSelected = viewModel::onTabSelected,
         isPredefinedCategory = state.isPredefinedCategory,
-        onArrowBackClicked = {navigateBack()},
+        onArrowBackClicked = { navigateBack() },
         onCategoryTitleChanged = { newTitle -> viewModel.onCategoryTitleChanged(newTitle) },
         onDeleteClick = { viewModel.onDeleteCategory() },
-        onSaveButtonClick =  { viewModel.onSaveCategoryChanges() }
+        onSaveButtonClick = { viewModel.onSaveCategoryChanges() }
     )
 }
 
@@ -74,24 +74,20 @@ private fun CategoryTasksScreenContent(
     isPredefinedCategory: Boolean,
     onArrowBackClicked: () -> Unit,
     onCategoryTitleChanged: (String) -> Unit,
-    onDeleteClick: ()-> Unit,
-    onSaveButtonClick: ()-> Unit,
+    onDeleteClick: () -> Unit,
+    onSaveButtonClick: () -> Unit,
 ) {
     val pagerState = rememberPagerState(initialPage = state.selectedTab.ordinal) { 3 }
-    var showEditCategoryDialog by remember { mutableStateOf(false)}
+    var showEditCategoryDialog by remember { mutableStateOf(false) }
     val result = remember { mutableStateOf<Uri?>(null) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
         result.value = it
     }
-    LaunchedEffect(pagerState.currentPage) {
-        val selectedState = Task.State.entries[pagerState.currentPage]
-        if (state.selectedTab != selectedState) {
-            onTabSelected(selectedState)
-        }
-    }
 
     LaunchedEffect(state.selectedTab) {
-        pagerState.animateScrollToPage(state.selectedTab.ordinal)
+        if (pagerState.currentPage != state.selectedTab.ordinal) {
+            pagerState.animateScrollToPage(state.selectedTab.ordinal)
+        }
     }
     val tabs = listOf(
         Selectable(
@@ -107,6 +103,7 @@ private fun CategoryTasksScreenContent(
             isSelected = state.selectedTab == Task.State.DONE
         )
     )
+
     Column(modifier = Modifier) {
         Row(
             modifier = Modifier
@@ -115,7 +112,7 @@ private fun CategoryTasksScreenContent(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            IconInBox(icon = R.drawable.arrow_left_01, onIconClick = {onArrowBackClicked()})
+            IconInBox(icon = R.drawable.arrow_left_01, onIconClick = { onArrowBackClicked() })
             Text(
                 text = state.categoryName,
                 style = Theme.typography.title.large,
@@ -142,48 +139,54 @@ private fun CategoryTasksScreenContent(
                 Task.State.IN_PROGRESS -> state.inProgressTasks
                 Task.State.DONE -> state.doneTasks
             }
+            if (tasks.isEmpty()) {
+                TasksEmptyScreen()
+            } else {
 
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp)
-            ) {
-                items(tasks) { task ->
-                    CategoryTaskCard(
-                        title = task.title,
-                        description = task.description,
-                        priorityTask = task.priority,
-                        icon = getCategoryIconPainter(categoryImage = state.categoryImage),
-                        onClick = { println("Clicked task: ${task.title}") },
-                        date = task.date.toString(),
-                        showDate = true
-                    )
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp)
+                ) {
+                    items(tasks) { task ->
+                        CategoryTaskCard(
+                            title = task.title,
+                            description = task.description,
+                            priorityTask = task.priority,
+                            icon = getCategoryIconPainter(categoryImage = state.categoryImage),
+                            onClick = { println("Clicked task: ${task.title}") },
+                            date = task.date.toString(),
+                            showDate = true
+                        )
+                    }
                 }
             }
+            EditCategoryBottomSheet(
+                isVisible = showEditCategoryDialog,
+                onDismiss = { showEditCategoryDialog = false },
+                title = state.categoryName,
+                onCategoryTitleChanged = onCategoryTitleChanged,
+                onEditImageIconClick = {
+                    launcher.launch(
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    )
+                },
+                onSaveButtonClick = {
+                    onSaveButtonClick()
+                    showEditCategoryDialog = false
+                },
+                onDeleteClick = {
+                    onDeleteClick()
+                    showEditCategoryDialog = false
+                },
+                isLoading = state.isLoading,
+                onCancelButtonClick = { showEditCategoryDialog = false },
+                image = painterResource(R.drawable.ic_bug)
+            )
+
+
         }
-        EditCategoryBottomSheet(
-            isVisible = showEditCategoryDialog,
-            onDismiss = { showEditCategoryDialog = false },
-            title = state.categoryName,
-            onCategoryTitleChanged = onCategoryTitleChanged,
-            onEditImageIconClick = { launcher.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-            )},
-            onSaveButtonClick = {
-                onSaveButtonClick()
-                showEditCategoryDialog = false
-            },
-            onDeleteClick = {
-                onDeleteClick()
-                showEditCategoryDialog = false
-            },
-            isLoading = state.isLoading,
-            onCancelButtonClick = { showEditCategoryDialog = false },
-            image = painterResource(R.drawable.ic_bug)
-        )
-
-
     }
 }
 
