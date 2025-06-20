@@ -83,15 +83,11 @@ private fun CategoryTasksScreenContent(
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
         result.value = it
     }
-    LaunchedEffect(pagerState.currentPage) {
-        val selectedState = Task.State.entries[pagerState.currentPage]
-        if (state.selectedTab != selectedState) {
-            onTabSelected(selectedState)
-        }
-    }
 
     LaunchedEffect(state.selectedTab) {
-        pagerState.animateScrollToPage(state.selectedTab.ordinal)
+        if (pagerState.currentPage != state.selectedTab.ordinal) {
+            pagerState.animateScrollToPage(state.selectedTab.ordinal)
+        }
     }
     val tabs = listOf(
         Selectable(
