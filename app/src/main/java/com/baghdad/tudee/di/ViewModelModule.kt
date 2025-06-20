@@ -8,5 +8,6 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModelOf(::TasksViewModel)
     viewModelOf(::MainViewModel)
+    viewModelOf(::TasksViewModel)
 
 }
