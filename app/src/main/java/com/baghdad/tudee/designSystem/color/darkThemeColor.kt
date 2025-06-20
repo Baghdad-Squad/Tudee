@@ -42,10 +42,10 @@ val darkThemeColor = TudeeColor(
         ),
     ),
     status = StatusColor(
-        pinkAccent = Color(0xFFF4869A),
-        yellowAccent = Color(0xFFF2C849),
-        greenAccent = Color(0xFF76C499),
-        purpleAccent = Color(0xFF9887F5),
+        pinkAccent = Color(0xFFCC5268), //#CC5268
+        yellowAccent = Color(0xFFB28F25),//##B28F25
+        greenAccent = Color(0xFF4D8064), //#4D8064
+        purpleAccent = Color(0xFF6F63B2), // #6F63B2
         error = Color(0xFFE55C5C),
         overlay = Color(0x5202151E),
         emojiTint = Color(0xDE1F1F1F),

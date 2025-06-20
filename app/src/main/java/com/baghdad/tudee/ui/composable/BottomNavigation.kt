@@ -42,13 +42,12 @@ fun BottomNavigation(
         .value?.destination?.route
         ?.substringBefore("?")
 
-    val isVisible by remember {
-        derivedStateOf {
+    val isVisible = remember(currentRoute) {
             listOf(Route.OnboardingScreen, Route.CategoryTasksScreen(0L))
                 .map { it::class.qualifiedName.toString() }
                 .none {
                     currentRoute == it
-                }
+
         }
     }
 
