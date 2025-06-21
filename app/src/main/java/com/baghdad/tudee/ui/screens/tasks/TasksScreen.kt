@@ -4,12 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -25,8 +26,8 @@ import com.baghdad.tudee.ui.composable.delete_item.ShowDeleteTaskSheet
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomSheet
 import com.baghdad.tudee.ui.screens.tasks.components.HorizontalDayChipsSetup
 import com.baghdad.tudee.ui.screens.tasks.components.StatusTabs
-import com.baghdad.tudee.ui.screens.tasks.components.TasksEmptyScreen
-import com.baghdad.tudee.ui.screens.tasks.components.TasksList
+import com.baghdad.tudee.ui.screens.tasks.components.TasksHorizontalPager
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -66,6 +67,11 @@ fun TasksScreenContent(
     onConfirmDelete: () -> Unit,
     onCancelDelete: () -> Unit
 ) {
+    val pagerState = rememberPagerState { 3 }
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(pagerState.currentPage) {
+        tasksInteractionListener.onTabSelected(Task.State.entries[pagerState.currentPage])
+    }
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -88,17 +94,19 @@ fun TasksScreenContent(
 
             StatusTabs(
                 uiState = uiState,
-                tasksInteractionListener = tasksInteractionListener
+                onTabSelected = {
+                    scope.launch {
+                        pagerState.animateScrollToPage(it.ordinal)
+                    }
+                },
+                selectedTab = uiState.selectedTab
             )
-
-            if (uiState.tasksDisplayed.isNotEmpty()) {
-                TasksList(
-                    uiState = uiState,
-                    onTaskDelete = onTaskDelete
-                )
-            } else {
-                TasksEmptyScreen()
-            }
+            TasksHorizontalPager(
+                uiState = uiState,
+                onTaskClick = {},
+                onDeleteTask = onTaskDelete,
+                pagerState = pagerState,
+            )
         }
 
         FloatingActionButton(

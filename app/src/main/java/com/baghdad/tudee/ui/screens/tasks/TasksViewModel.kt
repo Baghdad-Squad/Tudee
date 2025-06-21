@@ -39,9 +39,6 @@ class TasksViewModel(
         _uiState.update {
             it.copy(
                 selectedTab = selectedTab,
-                tasksDisplayed = uiState.value.tasksOnSpecificDate.filter { task ->
-                    task.state == selectedTab
-                }
             )
         }
     }
@@ -150,12 +147,14 @@ class TasksViewModel(
     private fun loadTasksForDate(selectedDate: LocalDate) {
         viewModelScope.launch {
             taskService.getTasksByDate(selectedDate).collect { tasks ->
+                val groupedTasksByState = tasks.groupBy { it.state }
                 _uiState.update {
                     it.copy(
-                        tasksOnSpecificDate = tasks
+                        todoTasks = groupedTasksByState[Task.State.TODO] ?: emptyList(),
+                        inProgressTasks = groupedTasksByState[Task.State.IN_PROGRESS] ?: emptyList(),
+                        doneTasks = groupedTasksByState[Task.State.DONE] ?: emptyList()
                     )
                 }
-                onTabSelected(uiState.value.selectedTab)
             }
         }
     }

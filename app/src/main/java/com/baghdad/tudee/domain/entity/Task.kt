@@ -12,8 +12,8 @@ data class Task(
     val state: State
 ){
     enum class State {
-        TODO,
         IN_PROGRESS,
+        TODO,
         DONE
     }
 

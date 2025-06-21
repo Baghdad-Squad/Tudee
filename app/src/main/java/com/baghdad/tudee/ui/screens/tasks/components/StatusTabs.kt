@@ -16,42 +16,41 @@ import com.baghdad.tudee.ui.shared.Selectable
 
 @Composable
 fun StatusTabs(
-    tasksInteractionListener: TasksInteractionListener,
+    onTabSelected: (Task.State) -> Unit,
     uiState: TasksUiState,
+    selectedTab: Task.State,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     Row(
         modifier = modifier
     ) {
-
         Tabs(
             selectableTabs = listOf(
                 Selectable(
                     value = TabItem(
                         stringResource(R.string.in_progress),
-                        badgeCount = if (uiState.selectedTab == Task.State.IN_PROGRESS) uiState.tasksDisplayed.size else null
+                        badgeCount = if (selectedTab == Task.State.IN_PROGRESS) uiState.inProgressTasks.size else null
                     ),
-                    isSelected = uiState.selectedTab == Task.State.IN_PROGRESS
+                    isSelected = selectedTab == Task.State.IN_PROGRESS
                 ),
                 Selectable(
                     value = TabItem(
                         stringResource(R.string.to_do),
-                        badgeCount = if (uiState.selectedTab == Task.State.TODO) uiState.tasksDisplayed.size else null
+                        badgeCount = if (selectedTab == Task.State.TODO) uiState.todoTasks.size else null
                     ),
-                    isSelected = uiState.selectedTab == Task.State.TODO
+                    isSelected = selectedTab == Task.State.TODO
                 ),
-
                 Selectable(
                     value = TabItem(
                         stringResource(R.string.done),
-                        badgeCount = if (uiState.selectedTab == Task.State.DONE) uiState.tasksDisplayed.size else null
+                        badgeCount = if (selectedTab == Task.State.DONE) uiState.doneTasks.size else null
                     ),
-                    isSelected = uiState.selectedTab == Task.State.DONE
+                    isSelected = selectedTab == Task.State.DONE
                 )
             ),
             onTabSelected = {
-                tasksInteractionListener.onTabSelected(it.title.toTaskStatus(context = context))
+                onTabSelected(it.title.toTaskStatus(context = context))
             },
         )
     }
