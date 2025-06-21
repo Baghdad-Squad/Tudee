@@ -1,10 +1,8 @@
 package com.baghdad.tudee.viewModel.homescreenViewModel
 
-import org.junit.jupiter.api.Assertions.*
-
 import org.junit.jupiter.api.Test
 
- class HomeScreenViewModelTest {
+class HomeScreenViewModelTest {
 
 @Test
  fun getState() {}

@@ -21,6 +21,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -29,6 +33,11 @@ android {
             )
         }
     }
+
+    testCoverage {
+        jacocoVersion = "0.8.11"
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -95,5 +104,22 @@ dependencies {
    //Android-specific coroutine support (for Dispatchers.Main, etc.)
     implementation(libs.kotlinx.coroutines.android)
 
+    // Room testing
+    testImplementation(libs.androidx.room.testing)
+
+    // Google Truth
+    testImplementation (libs.truth)
+    androidTestImplementation(libs.truth)
+
+    // MockK
+    testImplementation(libs.mockk)
+    testImplementation(libs.mockk.android)
+
+    // Coroutines testing
+    testImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 }
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}

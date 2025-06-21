@@ -25,6 +25,7 @@ data class Category(
             }
         }
 
+
         data class Predefined(val type: PredefinedType) : Image()
     }
 
