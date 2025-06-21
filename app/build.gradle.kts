@@ -87,7 +87,6 @@ dependencies {
     implementation(libs.koin.core)
 
     //coil
-    implementation(libs.coil.compose.v240)
     implementation(libs.coil.compose)
     implementation(libs.kotlinx.datetime)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
