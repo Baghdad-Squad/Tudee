@@ -108,7 +108,7 @@ class TaskDaoTest {
             description = "desc",
             date = "2025-06-17",
             priority = "LOW",
-            categoryId = 0,
+            categoryId = 0L,
             state = "TODO"
         )
         val sampleCategoryDto = CategoryDto(

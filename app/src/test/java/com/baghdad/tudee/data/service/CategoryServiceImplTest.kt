@@ -7,7 +7,6 @@ import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.exception.DatabaseException
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.first

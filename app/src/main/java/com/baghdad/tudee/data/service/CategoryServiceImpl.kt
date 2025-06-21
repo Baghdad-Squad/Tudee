@@ -24,7 +24,7 @@ class CategoryServiceImpl(
             .toEntity()
     }
 
-    override suspend fun createCategory(category: Category) = executeWithErrorHandling {
+    override suspend fun createCategory(category: Category){executeWithErrorHandling
         categoryDao.createCategory(category.toDto())
     }
 

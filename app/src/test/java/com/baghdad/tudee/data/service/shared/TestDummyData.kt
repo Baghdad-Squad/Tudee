@@ -20,12 +20,7 @@ class TestDummyData() {
         const val categoryID: Long = 1L
         const val expectedTitle: String = "Work"
         const val expectedImageUri: String = "content://image/work.jpg"
-        const val index: Int = 0
-        const val oneCategoryExpected: Int = 1
-        const val dbError: String = "Database error"
-        const val nonExistentCategoryId: Long = 999L
-        const val invalidCategoryId: Long = -1L
-        const val duplicateCategoryTitle: String = "Duplicate Work"
+
 
         val sampleTaskDto = TaskDto(
             id = 1,

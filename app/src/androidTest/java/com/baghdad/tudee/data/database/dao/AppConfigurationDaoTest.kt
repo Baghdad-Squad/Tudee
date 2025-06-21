@@ -1,6 +1,5 @@
 package com.baghdad.tudee.data.database.dao
 
-import android.database.sqlite.SQLiteException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -9,18 +8,12 @@ import com.baghdad.tudee.data.database.TudeeDatabase
 import com.baghdad.tudee.data.model.AppConfigurationDto
 import com.baghdad.tudee.data.model.AppConfigurationDto.Companion.DEFAULT_ID
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.joinAll
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.After
-import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import kotlin.jvm.java
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
