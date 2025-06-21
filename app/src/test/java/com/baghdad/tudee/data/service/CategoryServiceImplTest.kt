@@ -120,10 +120,10 @@ class CategoryServiceImplTest {
         coEvery { categoryDao.updateCategory(any()) } returns 0
 
         // When
-        val result = categoryService.editCategory(sampleCategory.copy(id = nonExistentCategoryId))
+        categoryService.editCategory(sampleCategory.copy(id = nonExistentCategoryId))
 
         // Then
-        assertEquals(0, result)
+        coVerify { categoryDao.updateCategory(any()) }
     }
 
     @Test(expected = DatabaseException::class)
