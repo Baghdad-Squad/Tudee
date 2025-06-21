@@ -179,7 +179,15 @@ class CategoryServiceImplTest {
 
     }
 
+    @Test
+    fun `getCategoryIdBy not return any category`() = runTest {
+        coEvery { categoryDao.getCategoryById(2) } returns null
 
+        val result = categoryService.getCategoryById(2)
+
+        assertNull(result)
+
+    }
 
 
 }
