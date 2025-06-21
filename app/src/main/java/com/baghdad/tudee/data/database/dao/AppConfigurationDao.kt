@@ -16,13 +16,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface AppConfigurationDao {
     @Query("UPDATE $APP_CONFIGURATION_TABLE_NAME SET $COLUMN_IS_DARK_THEME = :isDarkTheme WHERE id = $DEFAULT_ID")
-    suspend fun updateIsDarkTheme(isDarkTheme: Boolean): Int
+    suspend fun updateTudeeTheme(isDarkTheme: Boolean): Int
 
     @Query("SELECT $COLUMN_IS_DARK_THEME FROM $APP_CONFIGURATION_TABLE_NAME WHERE id = $DEFAULT_ID")
     fun isDarkTheme(): Flow<Boolean?>
 
+
     @Query("SELECT $COLUMN_IS_FIRST_LAUNCH FROM $APP_CONFIGURATION_TABLE_NAME WHERE id = $DEFAULT_ID")
-    fun isFirstLaunch(): Boolean?
+    suspend fun isFirstLaunch(): Boolean?
 
     @Query("UPDATE $APP_CONFIGURATION_TABLE_NAME SET $COLUMN_IS_FIRST_LAUNCH = :isFirstLaunch WHERE id = $DEFAULT_ID")
     suspend fun updateIsFirstLaunch(isFirstLaunch: Boolean): Int
@@ -39,7 +40,7 @@ interface AppConfigurationDao {
 
     @Transaction
     suspend fun saveTudeeTheme(isDarkTheme: Boolean) {
-        updateIsDarkTheme(isDarkTheme)
+        updateTudeeTheme(isDarkTheme)
             .takeIf { it == 0 }
             ?.let { insert(AppConfigurationDto(id = DEFAULT_ID, isDarkTheme = isDarkTheme)) }
     }

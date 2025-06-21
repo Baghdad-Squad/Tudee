@@ -35,12 +35,14 @@ class CategoryTasksViewModel(
     fun getCategoryById() {
         viewModelScope.launch(Dispatchers.IO) {
             val category = categoryService.getCategoryById(categoryId)
-            _state.update {
-                it.copy(
-                    categoryName = category.title,
-                    categoryImage = category.image,
-                    isPredefinedCategory = category.isPredefinedCategory
-                )
+            category?.let {
+                _state.update {
+                    it.copy(
+                        categoryName = category.title,
+                        categoryImage = category.image,
+                        isPredefinedCategory = category.isPredefinedCategory
+                    )
+                }
             }
         }
     }

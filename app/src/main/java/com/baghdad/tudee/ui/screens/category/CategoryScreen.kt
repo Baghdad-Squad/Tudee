@@ -7,9 +7,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -74,7 +76,7 @@ fun CategoryScreenContent(
         Modifier
             .fillMaxSize()
             .background(Theme.color.surfaceColor.surface)
-            .systemBarsPadding()
+            .padding(WindowInsets.statusBars.asPaddingValues())
     ) {
         Column() {
             CategoryScreenBar()

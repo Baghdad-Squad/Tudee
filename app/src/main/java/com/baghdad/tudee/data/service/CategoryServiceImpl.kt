@@ -21,18 +21,24 @@ class CategoryServiceImpl(
     override suspend fun getCategoryById(categoryId: Long) = executeWithErrorHandling {
         categoryDao
             .getCategoryById(categoryId)
-            .toEntity()
+            ?.toEntity()
     }
 
-    override suspend fun createCategory(category: Category) = executeWithErrorHandling {
-        categoryDao.createCategory(category.toDto())
+    override suspend fun createCategory(category: Category) {
+        executeWithErrorHandling{
+            categoryDao.createCategory(category.toDto())
+        }
     }
 
-    override suspend fun editCategory(category: Category) = executeWithErrorHandling {
-        categoryDao.updateCategory(category.toDto())
+    override suspend fun editCategory(category: Category) {
+        executeWithErrorHandling {
+            categoryDao.updateCategory(category.toDto())
+        }
     }
 
-    override suspend fun deleteCategory(categoryId: Long) = executeWithErrorHandling {
-        categoryDao.deleteCategory(id = categoryId)
+    override suspend fun deleteCategory(categoryId: Long) {
+        executeWithErrorHandling {
+            categoryDao.deleteCategory(id = categoryId)
+        }
     }
 }
