@@ -33,7 +33,7 @@ import com.baghdad.tudee.ui.utils.noRippleClickable
 fun TasksHeader(
     month: String,
     year: String,
-    onDownArrowClicked: () -> Unit,
+    onMonthClicked: () -> Unit,
     onNextArrowClicked: () -> Unit,
     onPreviousArrowClicked: () -> Unit,
     modifier: Modifier = Modifier
@@ -52,7 +52,8 @@ fun TasksHeader(
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = Modifier.noRippleClickable { onMonthClicked() }
         ) {
             AnimatedContent(
                 targetState = "$month, $year",
@@ -73,7 +74,6 @@ fun TasksHeader(
                 tint = Theme.color.textColor.body,
                 modifier = Modifier
                     .rotate(90f)
-                    .noRippleClickable { onDownArrowClicked() }
             )
         }
         NavigationIcon(

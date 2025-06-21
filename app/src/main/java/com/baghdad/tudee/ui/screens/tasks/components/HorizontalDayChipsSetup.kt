@@ -54,7 +54,7 @@ fun HorizontalDayChipsSetup(
         year = uiState.currentYear.toString(),
         onNextArrowClicked = { tasksInteractionListener.onNextMonthArrowClick() },
         onPreviousArrowClicked = { tasksInteractionListener.onPreviousMonthArrowClick() },
-        onDownArrowClicked = { showDatePicker = true },
+        onMonthClicked = { showDatePicker = true },
         modifier = modifier.padding(horizontal = 12.dp)
     )
 
