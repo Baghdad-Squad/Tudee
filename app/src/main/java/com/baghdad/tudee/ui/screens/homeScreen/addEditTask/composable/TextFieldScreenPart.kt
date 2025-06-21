@@ -31,15 +31,14 @@ fun TextFieldScreenPart(
     onParagraphChange: (String) -> Unit,
     dateTime: LocalDate,
     onDateChange: (LocalDate) -> Unit,
-
-    ) {
+) {
     Column(Modifier.padding(horizontal = 16.dp))
     {
         var isDatePickerVisible by remember { mutableStateOf(false) }
 
         Text(
             text = "Add Task",
-            style = Theme.typography.title.large
+            style = Theme.typography.title.large.copy(Theme.color.textColor.title)
         )
 
         Spacer(modifier = Modifier.padding(12.dp))
@@ -62,7 +61,7 @@ fun TextFieldScreenPart(
 
         TudeeTextField(
             value = dateTime.formatDate(),
-            onValueChange ={},
+            onValueChange = {},
             hint = "22-6-2025",
             readOnly = true,
             leadingIcon = painterResource(id = R.drawable.calendar_add),
@@ -78,14 +77,12 @@ fun TextFieldScreenPart(
             isShowDatePicker = isDatePickerVisible,
             onDismiss = {
                 isDatePickerVisible = false
-            }
-            ,
+            },
             onDateSelected = {
                 isDatePickerVisible = false
                 onDateChange(millisToLocalDate(it!!))
             }
         )
-
 
 
     }
