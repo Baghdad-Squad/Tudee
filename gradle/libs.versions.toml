@@ -25,6 +25,7 @@ koinAndroid = "3.5.6"
 junitJupiter = "5.8.1"
 composeNavigation = "2.8.0-alpha08"
 serialization = "1.6.3"
+mockk = "1.14.2"
 kotlinxCoroutines = "1.10.2"
 
 
@@ -49,12 +50,10 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 
 # Coil
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "roomTesting" }
-androidx-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "runtime" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 
 # JunitTest
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 
@@ -62,9 +61,8 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 
 # Material3
-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+
 androidx-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "runtime" }
-ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 
 # Coroutine
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
