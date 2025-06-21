@@ -8,19 +8,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.designSystem.theme.Theme
 
 @Composable
-fun VerticalSeparatorLine(){
+fun VerticalSeparatorLine(
+    modifier: Modifier = Modifier,
+    height: Dp = 1.dp,
+    color: Color = Theme.color.textColor.stroke
+){
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .height(1.dp)
+            .height(height)
             .background(
-                color = Theme.color.textColor.stroke,
-                shape = CircleShape
+                color = color,
             )
-            .padding(bottom = 12.dp)
     )
 }

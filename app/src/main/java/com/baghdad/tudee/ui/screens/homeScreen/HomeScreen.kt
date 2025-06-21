@@ -47,8 +47,8 @@ import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.composable.SnakeBar
 import com.baghdad.tudee.ui.composable.TopTudeeBar
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
+import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
-import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetails
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomSheet
 import com.baghdad.tudee.ui.utils.formatDate
 import com.baghdad.tudee.ui.utils.insideBorder
@@ -108,19 +108,29 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                     isVisible = state.showTaskDetails,
                     onDismiss = { viewModel.toggleTaskDetailsDialog() }
                 ) {
-                    TaskDetails(
+                    TaskDetailsBottomSheet(
                         isVisible = state.showTaskDetails,
                         onDismiss = { viewModel.toggleTaskDetailsDialog() },
-                        icon = painterResource(id = R.drawable.ic_quran),
-                        taskPriority = Task.Priority.LOW,
-                        taskState = Task.State.IN_PROGRESS,
+                        task = state.taskDetailsState,
+                        onEditClick = {
+                            //TODO: show edit task bottom sheet
+                            viewModel.toggleTaskDetailsDialog()
+                        },
+                        onUpdateTaskState = { newState ->
+                            if(newState == Task.State.IN_PROGRESS){
+                                viewModel.moveTaskToInProgress(state.taskDetailsState.id)
+                            } else {
+                                viewModel.moveTaskToDone(state.taskDetailsState.id)
+                            }
+                            viewModel.toggleTaskDetailsDialog()
+                        }
                     )
                 }
             }
         }
 
-    ) {it
-
+    ) {
+        it
         Box(modifier = modifier.fillMaxSize()) {
             Column(
                 modifier
@@ -278,7 +288,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                     item {
                         TextHeadTaskSection(
                             name = stringResource(R.string.in_progress),
-                            numberOfItem = state.inProgressTasks.size,
+                            numberOfItem = 12,
                             modifier = Modifier.padding(
                                 start = 16.dp,
                                 end = 16.dp,
@@ -334,7 +344,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                         Spacer(modifier = Modifier.height(16.dp))
                         TextHeadTaskSection(
                             name = stringResource(R.string.to_do),
-                            numberOfItem = state.todoTasks.size,
+                            numberOfItem = 12,
                             modifier = Modifier
                                 .fillParentMaxWidth(0.95f)
                                 .padding(bottom = 8.dp)
@@ -387,7 +397,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                         Spacer(modifier = Modifier.height(16.dp))
                         TextHeadTaskSection(
                             name = stringResource(R.string.done),
-                            numberOfItem = state.doneTasks.size,
+                            numberOfItem = 12,
                             modifier = Modifier.padding(
                                 start = 16.dp,
                                 end = 16.dp,
@@ -416,7 +426,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                                             .fillParentMaxWidth(0.95f)
                                             .padding(bottom = 8.dp)
                                     ) {
-
+                                        viewModel.getTaskDetailsById(id = pair[0].id)
                                     }
 
                                     if (pair.size > 1) {
@@ -426,7 +436,9 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                                             priorityTask = pair[1].priority,
                                             icon = painterResource(R.drawable.ic_quran),
                                             modifier = Modifier.fillParentMaxWidth(0.95f)
-                                        ) {}
+                                        ) {
+                                            viewModel.getTaskDetailsById(id = pair[0].id)
+                                        }
                                     }
                                 }
                             }
@@ -575,9 +587,7 @@ fun OverviewCard(
                     tint = Color.Unspecified
                 )
 
-
-        }
-
+    }
 }
 
 
