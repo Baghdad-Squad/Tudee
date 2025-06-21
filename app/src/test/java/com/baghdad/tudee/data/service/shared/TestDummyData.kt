@@ -71,25 +71,6 @@ class TestDummyData() {
             state = Task.State.TODO
         )
 
-        val sampleDto = CategoryDto(
-            id = categoryID,
-            title = expectedTitle,
-            imageType = expectedImageUri
-        )
-
-        val sampleCategory = Category(
-            id = categoryID,
-            title = expectedTitle,
-            image = Category.Image.ByteArray(expectedImageUri.toByteArray())
-        )
-
-        val invalidCategoryData = Category(
-            id = -1L,
-            title = "",
-            image = Category.Image.Empty
-        )
-
-        val emptyCategoryList: List<CategoryDto> = emptyList()
     }
 }
 
