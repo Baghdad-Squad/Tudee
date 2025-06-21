@@ -25,16 +25,13 @@ import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
+import com.baghdad.tudee.ui.composable.CategoryItem
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.MainButtonPart
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.PriorityChipPart
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.TextFieldScreenPart
-import com.baghdad.tudee.ui.composable.CategoryItem
-import com.baghdad.tudee.ui.screens.homeScreen.HomeScreenUIState
 import com.baghdad.tudee.ui.screens.tasks.AddEditTaskInteractionListener
-import com.baghdad.tudee.viewModel.homescreenViewModel.HomeScreenViewModel
+import com.baghdad.tudee.ui.utils.now
 import kotlinx.datetime.LocalDate
-import org.koin.androidx.compose.koinViewModel
-import kotlin.random.Random
 
 
 @Composable
@@ -42,12 +39,12 @@ fun AddEditTaskBottomSheet(
     initial: Task? = null,
     state: List<Category>,
     addEditTaskInteractionListener: AddEditTaskInteractionListener,
-    onDismiss: () -> Unit = {  },
+    onDismiss: () -> Unit = { },
 ) {
 
-    var titleText by remember { mutableStateOf(initial?.title ?:"") }
-    var paragraphText by remember { mutableStateOf(initial?.description ?:"") }
-    var dateTime by remember { mutableStateOf(initial?.date?:LocalDate(2027, 6, 22)) }
+    var titleText by remember { mutableStateOf(initial?.title ?: "") }
+    var paragraphText by remember { mutableStateOf(initial?.description ?: "") }
+    var dateTime by remember { mutableStateOf(initial?.date ?: LocalDate.now()) }
     var selectedCategoryId by remember { mutableStateOf(initial?.categoryId) }
     var selectedPriority by remember { mutableStateOf(initial?.priority) }
 
@@ -77,7 +74,7 @@ fun AddEditTaskBottomSheet(
             }
 
             item(span = { GridItemSpan(maxLineSpan) }) {
-                PriorityChipPart (
+                PriorityChipPart(
                     selectedPriority = selectedPriority,
                     onPrioritySelected = { selectedPriority = it }
                 )
@@ -86,7 +83,7 @@ fun AddEditTaskBottomSheet(
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
                     text = "Category",
-                    style = Theme.typography.title.medium,
+                    style = Theme.typography.title.medium.copy(Theme.color.textColor.title),
                     modifier = Modifier.padding(start = 16.dp)
                 )
             }
@@ -96,7 +93,8 @@ fun AddEditTaskBottomSheet(
                     label = category.title,
                     icon = getCategoryIconPainter(category.image),
                     onClick = {
-                        selectedCategoryId = if (selectedCategoryId == category.id) null else category.id
+                        selectedCategoryId =
+                            if (selectedCategoryId == category.id) null else category.id
                     },
                     isSelected = selectedCategoryId == category.id
                 )
@@ -105,10 +103,11 @@ fun AddEditTaskBottomSheet(
 
         val showButton by remember {
             derivedStateOf {
-                titleText.isNotBlank() && paragraphText.isNotBlank()
+                titleText.isNotBlank() && paragraphText.isNotBlank() &&
+                        selectedCategoryId != null && selectedPriority != null
             }
         }
-        MainButtonPart(showButton , initial?.title, onSave = {
+        MainButtonPart(showButton, initial?.title, onSave = {
             addEditTaskInteractionListener.onClickAddNewTask(
                 Task(
                     id = 0L,
