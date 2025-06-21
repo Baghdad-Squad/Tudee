@@ -36,7 +36,6 @@ import com.baghdad.tudee.ui.screens.category.component.CategoryScreenBar
 import com.baghdad.tudee.ui.utils.image.uriToByteArray
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
-import kotlin.uuid.ExperimentalUuidApi
 
 @Composable
 fun CategoryScreen(
@@ -70,7 +69,6 @@ fun CategoryScreenContent(
             isAdded.value = false
         }
     }
-
 
     Box(
         Modifier
