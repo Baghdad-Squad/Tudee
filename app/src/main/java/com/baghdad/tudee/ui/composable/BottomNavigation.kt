@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
@@ -40,11 +41,11 @@ fun BottomNavigation(
         ?.substringBefore("?")
 
     val isVisible = remember(currentRoute) {
-            listOf(Route.OnboardingScreen, Route.CategoryTasksScreen(0L))
-                .map { it::class.qualifiedName.toString() }
-                .none {
-                    currentRoute == it
-        }
+        listOf(Route.OnboardingScreen, Route.CategoryTasksScreen(0L))
+            .map { it::class.qualifiedName.toString() }
+            .none {
+                currentRoute == it
+            }
     }
 
     AnimatedVisibility(
@@ -62,9 +63,10 @@ fun BottomNavigation(
             modifier = modifier
                 .fillMaxWidth()
                 .background(Theme.color.surfaceColor.surfaceHigh)
+                .padding(start = 32.dp, end = 32.dp)
                 .padding(vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             BottomNavigationRoute.entries.forEach { item ->
                 (if (currentRoute == item.route::class.qualifiedName)
@@ -95,10 +97,10 @@ fun NavItem(
     Box(
         modifier = Modifier
             .size(42.dp)
+            .clip(RoundedCornerShape(16.dp))
             .background(
                 if (isSelected) Theme.color.primaryColor.variant
                 else Color.Transparent,
-                shape = RoundedCornerShape(16.dp)
             )
             .noRippleClickable{
                 onClick()
