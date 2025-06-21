@@ -24,7 +24,7 @@ data class Category(
                 return data.contentHashCode()
             }
         }
-        object Empty : Image()
+
 
         data class Predefined(val type: PredefinedType) : Image()
     }

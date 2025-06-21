@@ -4,7 +4,6 @@ import com.baghdad.tudee.data.model.CategoryDto
 import com.baghdad.tudee.domain.entity.Category
 import kotlin.uuid.ExperimentalUuidApi
 
-@OptIn(ExperimentalUuidApi::class)
 fun CategoryDto.toEntity(): Category {
     val image = when (imageType) {
         CategoryDto.IMAGE_TYPE_BYTE_ARRAY -> {
@@ -44,7 +43,6 @@ fun Category.toDto(): CategoryDto {
             imageBytes = this.image.data
         )
 
-        Category.Image.Empty -> TODO()
     }
 }
 

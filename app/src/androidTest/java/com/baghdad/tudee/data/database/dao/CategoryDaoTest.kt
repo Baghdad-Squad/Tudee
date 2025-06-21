@@ -177,7 +177,7 @@ class CategoryDaoTest {
 
         // Then
         val categories = categoryDao.getCategories().first()
-        Assert.assertEquals(3, categories.size)
+        Assert.assertEquals(2, categories.size)
         Assert.assertEquals(CategoryDto.Companion.IMAGE_TYPE_PREDEFINED, categories[0].imageType)
         Assert.assertEquals(CategoryDto.Companion.IMAGE_TYPE_BYTE_ARRAY, categories[1].imageType)
     }

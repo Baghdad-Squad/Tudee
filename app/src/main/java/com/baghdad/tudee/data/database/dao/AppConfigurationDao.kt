@@ -22,10 +22,8 @@ interface AppConfigurationDao {
     fun isDarkTheme(): Flow<Boolean?>
 
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-
     @Query("SELECT $COLUMN_IS_FIRST_LAUNCH FROM $APP_CONFIGURATION_TABLE_NAME WHERE id = $DEFAULT_ID")
-    fun isFirstLaunch(): Boolean?
+    suspend fun isFirstLaunch(): Boolean?
 
     @Query("UPDATE $APP_CONFIGURATION_TABLE_NAME SET $COLUMN_IS_FIRST_LAUNCH = :isFirstLaunch WHERE id = $DEFAULT_ID")
     suspend fun updateIsFirstLaunch(isFirstLaunch: Boolean): Int
