@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -47,7 +48,6 @@ fun BottomNavigation(
                 .map { it::class.qualifiedName.toString() }
                 .none {
                     currentRoute == it
-
         }
     }
 
@@ -98,11 +98,11 @@ fun NavItem(
 ) {
     Box(
         modifier = Modifier
-            .size(56.dp)
+            .size(42.dp)
             .background(
                 if (isSelected) Theme.color.primaryColor.variant
                 else Color.Transparent,
-                shape = CircleShape
+                shape = RoundedCornerShape(16.dp)
             )
             .noRippleClickable{
                 onClick()
