@@ -192,8 +192,8 @@ class CategoryDaoTest {
 
         val result = categoryDao.getCategoryById(newCategory.id)
 
-        assertEquals(newCategory.id, result.id)
-        assertEquals(newCategory.title, result.title)
-        assertEquals(newCategory.imageType, result.imageType)
+        assertEquals(newCategory.id, result?.id)
+        assertEquals(newCategory.title, result?.title)
+        assertEquals(newCategory.imageType, result?.imageType)
     }
 }
