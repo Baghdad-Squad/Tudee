@@ -21,7 +21,7 @@ interface CategoryDao {
     fun getCategories(): Flow<List<CategoryDto>>
 
     @Query("SELECT * FROM $CATEGORIES_TABLE_NAME WHERE $COLUMN_ID = :id")
-    fun getCategoryById(id: Long): CategoryDto
+    fun getCategoryById(id: Long): CategoryDto?
 
     @Update
     suspend fun updateCategory(category: CategoryDto): Int

@@ -12,8 +12,8 @@ import io.mockk.verify
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import kotlinx.serialization.builtins.serializer
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -162,6 +162,24 @@ class CategoryServiceImplTest {
         categoryService.deleteCategory(categoryId)
     }
 
+    @Test
+    fun `getCategoryIdBy return correct category`() = runTest {
+        coEvery { categoryDao.getCategoryById(categoryId) } returns CategoryDto(
+            id = categoryId,
+            title = expectedTitle,
+            imageType = CategoryDto.Companion.IMAGE_TYPE_PREDEFINED,
+            imageBytes = byteArrayOf(),
+            imageData = Category.PredefinedType.WORK.name
 
+        )
+        val result = categoryService.getCategoryById(categoryId)
+
+        assertEquals(sampleCategory.id, result?.id)
+        assertEquals(sampleCategory.title, result?.title)
 
     }
+
+
+
+
+}

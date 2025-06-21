@@ -21,7 +21,7 @@ class CategoryServiceImpl(
     override suspend fun getCategoryById(categoryId: Long) = executeWithErrorHandling {
         categoryDao
             .getCategoryById(categoryId)
-            .toEntity()
+            ?.toEntity()
     }
 
     override suspend fun createCategory(category: Category) {
