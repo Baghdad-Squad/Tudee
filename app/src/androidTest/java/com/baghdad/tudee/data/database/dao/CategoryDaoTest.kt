@@ -34,7 +34,6 @@ class CategoryDaoTest {
         database.close()
     }
 
-    // Helper function to create test categories
     private fun createTestCategory(
         id: Long = 0L,
         title: String = "Test",
