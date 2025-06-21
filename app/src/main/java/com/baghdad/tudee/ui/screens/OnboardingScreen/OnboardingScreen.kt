@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -22,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import com.baghdad.tudee.R
 import com.baghdad.tudee.ui.composable.ProgressBar
 import com.baghdad.tudee.ui.composable.TudeeCard
@@ -62,88 +62,143 @@ fun OnboardingScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .systemBarsPadding(),
+                .systemBarsPadding()
         ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.align(Alignment.Center)
+
+            HorizontalPager(
+                state = pagerState,
             ) {
-                HorizontalPager(
-                    state = pagerState,
 
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(0.1f)
                     ) {
-                    Column {
-                        Row(
-                            horizontalArrangement = Arrangement.Start,
-                        ) {
-                            if (pagerState.currentPage < 2) {
-                                TextButton(
-                                    label = "Skip",
-                                    onClick = {
-                                        onNavigateToHome()
-                                    },
-                                    isEnabled = true,
-                                    contentPadding = PaddingValues(
-                                        vertical = 0.dp,
-                                        horizontal = 16.dp
-                                    )
-                                )
-                            } else {
-                                Spacer(modifier = Modifier.height(ButtonDefaults.defaultHeight)) // Placeholder for alignment
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(153.dp))
-
-                        Image(
-                            painter = painterResource(robotImage[pagerState.currentPage]),
-                            contentDescription = "Onboarding Image",
+                        SkipButton(
+                            pagerState = pagerState,
+                            onClick = {
+                                onNavigateToHome()
+                            },
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .height(260.dp)
+                                .align(Alignment.TopStart)
+                        )
+                    }
+
+                    OnboardingImg(
+                        imgRes = robotImage[pagerState.currentPage],
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(0.3f)
+                    )
+
+                    Box(
+                        Modifier
+                            .fillMaxWidth()
+                            .weight(0.2f)
+                            .padding(bottom = 48.dp)
+                    ) {
+                        TudeeCard(
+                            title = titleList[pagerState.currentPage],
+                            description = descriptionList[pagerState.currentPage],
+                            modifier = Modifier.align(Alignment.CenterEnd)
                         )
 
-                        Spacer(modifier = Modifier.height(32.dp))
-
-                        Box {
-                            TudeeCard(
-                                title = titleList[pagerState.currentPage],
-                                description = descriptionList[pagerState.currentPage]
-                            )
-
-                            FloatingActionButton(
-                                painter = painterResource(id = R.drawable.arrow_right_double),
-                                onClick = {
-                                    if (pagerState.currentPage < titleList.size - 1) {
-                                        scope.launch {
-                                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                                        }
-                                    } else {
-                                        onNavigateToHome()
+                        NextButton(
+                            imgRes = R.drawable.arrow_right_double,
+                            onClick = {
+                                if (pagerState.currentPage < titleList.size - 1) {
+                                    scope.launch {
+                                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
                                     }
-                                },
-                                modifier = Modifier
-                                    .align(Alignment.BottomEnd)
-                                    .padding(16.dp)
-                                    .offset(x = -(155).dp, y = 28.dp)
-                                    .zIndex(1f)
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(32.dp))
+                                } else {
+                                    onNavigateToHome()
+                                }
+                            },
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .offset(y = 10.dp)
+                        )
                     }
-                }
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(bottom = 16.dp),
-                    contentAlignment = Alignment.BottomCenter
-                ) {
-                    ProgressBar(currentScreen = pagerState.currentPage + 1)
+                    ProgressIndicator(
+                        currentScreen = pagerState.currentPage + 1,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp)
+                    )
                 }
             }
         }
     }
 }
 
+@Composable
+fun SkipButton(
+    pagerState: PagerState,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        horizontalArrangement = Arrangement.Start,
+        modifier = modifier
+    ) {
+        if (pagerState.currentPage < 2) {
+            TextButton(
+                label = "Skip",
+                onClick = onClick,
+                isEnabled = true,
+                contentPadding = PaddingValues(
+                    vertical = 0.dp,
+                    horizontal = 16.dp
+                )
+            )
+        } else {
+            Spacer(modifier = Modifier.height(ButtonDefaults.defaultHeight))
+        }
+    }
+}
+
+@Composable
+fun OnboardingImg(
+    imgRes: Int,
+
+    modifier: Modifier = Modifier
+) {
+    Image(
+        painter = painterResource(id = imgRes),
+        contentDescription = "Onboarding Image",
+        modifier = modifier
+            .fillMaxWidth()
+            .height(260.dp)
+    )
+}
+
+@Composable
+private fun NextButton(
+    imgRes: Int,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    FloatingActionButton(
+        painter = painterResource(id = imgRes),
+        onClick = onClick,
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun ProgressIndicator(
+    currentScreen: Int,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        ProgressBar(currentScreen = currentScreen)
+    }
+}
