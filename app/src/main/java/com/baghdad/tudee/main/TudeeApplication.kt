@@ -9,8 +9,15 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
 
 class TudeeApplication : Application() {
+
+    companion object {
+        lateinit var instance: TudeeApplication
+            private set
+    }
+
     override fun onCreate() {
         super.onCreate()
+        instance = this
         startKoin {
             androidLogger()
             androidContext(this@TudeeApplication)

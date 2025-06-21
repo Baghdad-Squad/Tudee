@@ -1,5 +1,6 @@
 package com.baghdad.tudee.ui.screens.categoryTasksScreen
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baghdad.tudee.domain.entity.Category
@@ -42,8 +43,6 @@ class CategoryTasksViewModel(
                 )
             }
         }
-
-
     }
 
     fun getTasksByCategoryId(categoryId: Long) {
@@ -56,9 +55,7 @@ class CategoryTasksViewModel(
                         doneTasks = tasks.filter { task -> task.state == Task.State.DONE }
                     )
                 }
-
             }
-
         }
     }
 
@@ -66,22 +63,50 @@ class CategoryTasksViewModel(
         _state.update { it.copy(categoryName = newTitle) }
     }
 
-    fun onDeleteCategory() {
-        viewModelScope.launch(Dispatchers.IO) {
-            categoryService.deleteCategory(categoryId)
-        }
-    }
-    fun onSaveCategoryChanges() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val currentState = _state.value
-            categoryService.editCategory(
-                Category(
-                    id = categoryId,
-                    title = currentState.categoryName,
-                    image = currentState.categoryImage,
+    fun onImageSelected(imageBytes: ByteArray?) {
+        imageBytes?.let { bytes ->
+            _state.update {
+                it.copy(
+                    categoryImage = Category.Image.ByteArray(bytes)
                 )
-            )
+            }
         }
     }
 
+    fun onDeleteCategory() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _state.update { it.copy(isLoading = true) }
+                categoryService.deleteCategory(categoryId)
+                // Navigate back or show success message
+            } catch (e: Exception) {
+                // Handle error
+                e.printStackTrace()
+            } finally {
+                _state.update { it.copy(isLoading = false) }
+            }
+        }
+    }
+
+    fun onSaveCategoryChanges() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _state.update { it.copy(isLoading = true) }
+                val currentState = _state.value
+                categoryService.editCategory(
+                    Category(
+                        id = categoryId,
+                        title = currentState.categoryName,
+                        image = currentState.categoryImage,
+                    )
+                )
+                // Show success message or update UI
+            } catch (e: Exception) {
+                // Handle error
+                e.printStackTrace()
+            } finally {
+                _state.update { it.copy(isLoading = false) }
+            }
+        }
+    }
 }

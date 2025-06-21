@@ -32,22 +32,28 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.rememberAsyncImagePainter
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.composable.TabItem
 import com.baghdad.tudee.ui.composable.Tabs
 import com.baghdad.tudee.ui.composable.categoryBottomSheet.EditCategoryBottomSheet
+import com.baghdad.tudee.ui.composable.delete_item.DeleteCategoryBottomSheet
+import com.baghdad.tudee.ui.composable.TudeeBottomSheet
 import com.baghdad.tudee.ui.screens.tasks.components.TasksEmptyScreen
 import com.baghdad.tudee.ui.shared.Selectable
-import com.baghdad.tudee.ui.utils.getCategoryIconPainter
+import com.baghdad.tudee.ui.utils.image.byteArrayToPainter
+import com.baghdad.tudee.ui.utils.image.uriToByteArray
+import com.baghdad.tudee.ui.screens.category.mapper.toDrawable
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -65,7 +71,8 @@ fun CategoryTasksScreen(
         onArrowBackClicked = { navigateBack() },
         onCategoryTitleChanged = { newTitle -> viewModel.onCategoryTitleChanged(newTitle) },
         onDeleteClick = { viewModel.onDeleteCategory() },
-        onSaveButtonClick = { viewModel.onSaveCategoryChanges() }
+        onSaveButtonClick = { viewModel.onSaveCategoryChanges() },
+        onImageSelected = { imageBytes -> viewModel.onImageSelected(imageBytes) }
     )
 }
 
@@ -78,21 +85,28 @@ private fun CategoryTasksScreenContent(
     onCategoryTitleChanged: (String) -> Unit,
     onDeleteClick: () -> Unit,
     onSaveButtonClick: () -> Unit,
+    onImageSelected: (ByteArray?) -> Unit,
 ) {
     val pagerState = rememberPagerState(initialPage = state.selectedTab.ordinal) { 3 }
     var showEditCategoryDialog by remember { mutableStateOf(false) }
-    val result = remember { mutableStateOf<Uri?>(null) }
+    var showDeleteCategoryDialog by remember { mutableStateOf(false) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
-        result.value = it
     }
-    var tempCategoryName by remember { mutableStateOf(state.categoryName) }
-    val painter = rememberAsyncImagePainter(model = result.value)
 
+    // Two-way sync between pager state and tab selection
     LaunchedEffect(state.selectedTab) {
         if (pagerState.currentPage != state.selectedTab.ordinal) {
             pagerState.animateScrollToPage(state.selectedTab.ordinal)
         }
     }
+
+    LaunchedEffect(pagerState.currentPage) {
+        val newTab = Task.State.entries[pagerState.currentPage]
+        if (newTab != state.selectedTab) {
+            onTabSelected(newTab)
+        }
+    }
+
     val tabs = listOf(
         Selectable(
             TabItem("In Progress", state.inProgressTasks.size, Task.State.IN_PROGRESS),
@@ -107,6 +121,17 @@ private fun CategoryTasksScreenContent(
             isSelected = state.selectedTab == Task.State.DONE
         )
     )
+
+    // Get the appropriate painter for the category image
+    val categoryImagePainter: Painter = when (state.categoryImage) {
+        is Category.Image.Predefined -> {
+            painterResource(state.categoryImage.type.toDrawable())
+        }
+        is Category.Image.ByteArray -> {
+            byteArrayToPainter(state.categoryImage.data)
+                ?: painterResource(R.drawable.ic_add_image)
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -148,7 +173,6 @@ private fun CategoryTasksScreenContent(
             if (tasks.isEmpty()) {
                 TasksEmptyScreen()
             } else {
-
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier
@@ -156,11 +180,21 @@ private fun CategoryTasksScreenContent(
                         .padding(horizontal = 16.dp)
                 ) {
                     items(tasks) { task ->
+                        val taskIconPainter = when (state.categoryImage) {
+                            is Category.Image.Predefined -> {
+                                painterResource(state.categoryImage.type.toDrawable())
+                            }
+                            is Category.Image.ByteArray -> {
+                                byteArrayToPainter(state.categoryImage.data)
+                                    ?: painterResource(R.drawable.ic_add_image)
+                            }
+                        }
+
                         CategoryTaskCard(
                             title = task.title,
                             description = task.description,
                             priorityTask = task.priority,
-                            icon = getCategoryIconPainter(categoryImage = state.categoryImage),
+                            icon = taskIconPainter,
                             onClick = { println("Clicked task: ${task.title}") },
                             date = task.date.toString(),
                             showDate = true
@@ -168,36 +202,52 @@ private fun CategoryTasksScreenContent(
                     }
                 }
             }
-            EditCategoryBottomSheet(
-                isVisible = showEditCategoryDialog,
-                onDismiss = { showEditCategoryDialog = false },
-                title = tempCategoryName,
-                onCategoryTitleChanged = { tempCategoryName = it },
-                onEditImageIconClick = {
-                    launcher.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                    )
-                },
-                onSaveButtonClick = {
-                    onCategoryTitleChanged(tempCategoryName)
-                    onSaveButtonClick()
-                    showEditCategoryDialog = false
-                },
-                onDeleteClick = {
-                    onDeleteClick()
-                    showEditCategoryDialog = false
-                },
-                onCancelButtonClick = {
-                    tempCategoryName = state.categoryName
-                    showEditCategoryDialog = false
-                },
-                isLoading = state.isLoading,
-                image = painter
-            )
+        }
+
+        // Edit Category Bottom Sheet
+        EditCategoryBottomSheet(
+            isVisible = showEditCategoryDialog,
+            onDismiss = { showEditCategoryDialog = false },
+            title = state.categoryName,
+            onCategoryTitleChanged = onCategoryTitleChanged,
+            onEditImageIconClick = {
+                launcher.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                )
+            },
+            onSaveButtonClick = {
+                onSaveButtonClick()
+                showEditCategoryDialog = false
+            },
+            onDeleteClick = {
+                showEditCategoryDialog = false
+                showDeleteCategoryDialog = true
+            },
+            isLoading = state.isLoading,
+            onCancelButtonClick = { showEditCategoryDialog = false },
+            image = categoryImagePainter
+        )
+
+        // Delete Category Confirmation Bottom Sheet
+        if (showDeleteCategoryDialog) {
+            TudeeBottomSheet(
+                isVisible = showDeleteCategoryDialog,
+                onDismiss = { showDeleteCategoryDialog = false }
+            ) {
+                DeleteCategoryBottomSheet(
+                    onDeleteClick = {
+                        onDeleteClick()
+                        showDeleteCategoryDialog = false
+                    },
+                    onCancelClick = {
+                        showDeleteCategoryDialog = false
+                    },
+                    isLoading = state.isLoading
+                )
+            }
         }
     }
 }
-
 
 @Composable
 fun IconInBox(
@@ -223,7 +273,6 @@ fun IconInBox(
                 .padding(10.dp)
         )
     }
-
 }
 
 @Preview(showBackground = true)
