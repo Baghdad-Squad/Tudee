@@ -23,7 +23,7 @@ data class HomeScreenUIState(
     val showTaskDetails: Boolean = false,
     val showSnackBar: SnackBarState = SnackBarState(),
     val isLoading: Boolean = false,
-
+    val categories: List<Category> = emptyList(),
     )
 
 
@@ -50,11 +50,12 @@ data class TaskUIState(
 
 
 data class TaskDetailsState(
-    @DrawableRes val icon: Int = R.drawable.ic_book_open,
+    val id: Long = 0L,
     val title: String = "",
     val description: String = "",
-    val taskState: TaskState = TaskState.TODO,
+    val taskState: Task.State = Task.State.TODO,
     val taskPriority: Task.Priority = Task.Priority.LOW,
+    val category: Category? = null
 )
 
 
