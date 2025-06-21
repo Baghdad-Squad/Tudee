@@ -53,7 +53,6 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.junit.jupiter)
@@ -66,7 +65,6 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
 
-    implementation(libs.coil.compose)
 
     //Kotlinx-date-time
     implementation(libs.kotlinx.datetime)
@@ -89,7 +87,8 @@ dependencies {
     implementation(libs.koin.core)
 
     //coil
-    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation(libs.coil.compose.v240)
+    implementation(libs.coil.compose)
     implementation(libs.kotlinx.datetime)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.kotlinx.coroutines.core)
@@ -97,10 +96,8 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.kotlinx.datetime)
 
-// Android-specific coroutine support (for Dispatchers.Main, etc.)
+   //Android-specific coroutine support (for Dispatchers.Main, etc.)
     implementation(libs.kotlinx.coroutines.android)
-//
-// Core Koin
 
 }
 
