@@ -92,7 +92,6 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.coil.compose)
 
    //Android-specific coroutine support (for Dispatchers.Main, etc.)
     implementation(libs.kotlinx.coroutines.android)
