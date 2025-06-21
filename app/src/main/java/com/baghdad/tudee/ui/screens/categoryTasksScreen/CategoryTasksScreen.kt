@@ -104,7 +104,9 @@ private fun CategoryTasksScreenContent(
         )
     )
 
-    Column(modifier = Modifier) {
+    Column(
+        modifier = Modifier
+            .background(Theme.color.surfaceColor.surface)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

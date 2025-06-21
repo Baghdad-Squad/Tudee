@@ -15,6 +15,7 @@ import com.baghdad.tudee.ui.screens.homeScreen.SliderState
 import com.baghdad.tudee.ui.screens.homeScreen.TaskUIState
 import com.baghdad.tudee.ui.screens.tasks.AddEditTaskInteractionListener
 import com.baghdad.tudee.ui.utils.now
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,7 +35,18 @@ class HomeScreenViewModel(
     init {
         getTasks()
         getCategories()
+        getDarkTheme()
 
+    }
+
+    private fun getDarkTheme() {
+        viewModelScope.launch (Dispatchers.IO){
+            appConfigurationService.isDarkTheme().collect {
+                _state.update { currentState ->
+                    currentState.copy(isDark = it)
+                }
+            }
+        }
     }
 
     override fun getTaskDetailsById(id: Long) {
@@ -132,8 +144,7 @@ class HomeScreenViewModel(
     override fun onClickSwitchTheme() {
         viewModelScope.launch {
             try {
-                _state.update { it.copy(isDark = !_state.value.isDark) }
-                appConfigurationService.setTheme(_state.value.isDark)
+                appConfigurationService.setTheme(_state.value.isDark.not())
             } catch (error: Exception) {
                 handleError(error)
             }
