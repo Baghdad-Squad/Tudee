@@ -3,7 +3,6 @@ package com.baghdad.tudee.ui.screens.OnboardingScreen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -35,6 +35,7 @@ import kotlinx.coroutines.launch
 fun OnboardingScreen(
     onNavigateToHome: () -> Unit
 ) {
+
     val pagerState = rememberPagerState {
         3
     }
@@ -44,13 +45,11 @@ fun OnboardingScreen(
         stringResource(id = R.string.title_1),
         stringResource(id = R.string.title_2)
     )
-
     val descriptionList = listOf(
         stringResource(id = R.string.desc_0),
         stringResource(id = R.string.desc_1),
         stringResource(id = R.string.desc_2)
     )
-
     val robotImage = listOf(
         R.drawable.img_welcome_robot,
         R.drawable.img_angry_robot,
@@ -59,47 +58,47 @@ fun OnboardingScreen(
 
 
     OnboardingBackground {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .systemBarsPadding()
+
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.fillMaxSize(),
         ) {
 
-            HorizontalPager(
-                state = pagerState,
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .systemBarsPadding(),
+                verticalArrangement = Arrangement.SpaceBetween,
             ) {
 
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
+                item {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(0.1f)
                     ) {
                         SkipButton(
                             pagerState = pagerState,
                             onClick = {
                                 onNavigateToHome()
                             },
-                            modifier = Modifier
-                                .align(Alignment.TopStart)
+                            modifier = Modifier.align(Alignment.TopStart)
                         )
                     }
+                }
 
+                item {
                     OnboardingImg(
                         imgRes = robotImage[pagerState.currentPage],
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(0.3f)
                     )
+                }
 
+                item {
                     Box(
                         Modifier
                             .fillMaxWidth()
-                            .weight(0.2f)
-                            .padding(bottom = 48.dp)
+                            .padding(bottom = 1.dp)
                     ) {
                         TudeeCard(
                             title = titleList[pagerState.currentPage],
@@ -120,10 +119,12 @@ fun OnboardingScreen(
                             },
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
-                                .offset(y = 10.dp)
+                                .offset(y = (10).dp)
                         )
                     }
+                }
 
+                item {
                     ProgressIndicator(
                         currentScreen = pagerState.currentPage + 1,
                         modifier = Modifier
@@ -135,6 +136,7 @@ fun OnboardingScreen(
         }
     }
 }
+
 
 @Composable
 fun SkipButton(
@@ -162,6 +164,7 @@ fun SkipButton(
     }
 }
 
+
 @Composable
 fun OnboardingImg(
     imgRes: Int,
@@ -177,6 +180,7 @@ fun OnboardingImg(
     )
 }
 
+
 @Composable
 private fun NextButton(
     imgRes: Int,
@@ -189,6 +193,7 @@ private fun NextButton(
         modifier = modifier
     )
 }
+
 
 @Composable
 private fun ProgressIndicator(
