@@ -44,10 +44,7 @@ import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.composable.SnakeBar
-import com.baghdad.tudee.ui.composable.SnakeBar
 import com.baghdad.tudee.ui.composable.TopTudeeBar
-import com.baghdad.tudee.ui.composable.TudeeBottomSheet
-import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetails
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetails
@@ -122,8 +119,8 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
         }
 
     ) {
-        it
-        Box(modifier = modifier.fillMaxSize()) {
+
+        Box(modifier = modifier.fillMaxSize().padding(it)) {
             Column(
                 modifier
                     .fillMaxSize()
@@ -280,7 +277,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                     item {
                         TextHeadTaskSection(
                             name = stringResource(R.string.in_progress),
-                            numberOfItem = 12,
+                            numberOfItem = state.inProgressTasks.size,
                             modifier = Modifier.padding(
                                 start = 16.dp,
                                 end = 16.dp,
@@ -336,7 +333,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                         Spacer(modifier = Modifier.height(16.dp))
                         TextHeadTaskSection(
                             name = stringResource(R.string.to_do),
-                            numberOfItem = 12,
+                            numberOfItem = state.todoTasks.size,
                             modifier = Modifier
                                 .fillParentMaxWidth(0.95f)
                                 .padding(bottom = 8.dp)
@@ -389,7 +386,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                         Spacer(modifier = Modifier.height(16.dp))
                         TextHeadTaskSection(
                             name = stringResource(R.string.done),
-                            numberOfItem = 12,
+                            numberOfItem = state.doneTasks.size,
                             modifier = Modifier.padding(
                                 start = 16.dp,
                                 end = 16.dp,
