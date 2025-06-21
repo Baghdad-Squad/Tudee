@@ -1,5 +1,6 @@
 package com.baghdad.tudee.ui.composable.taskDetailsBottomSheet
 
+import android.R.attr.onClick
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,13 +24,13 @@ import com.baghdad.tudee.ui.utils.noRippleClickable
 @Composable
 fun TaskActionsContainer(
     buttonText: String,
-    onClick: () -> Unit
+    onEditClick: () -> Unit,
+    onUpdateTaskStateClick: () -> Unit,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(56.dp)
-            .noRippleClickable { onClick()},
+            .height(56.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
@@ -40,7 +41,11 @@ fun TaskActionsContainer(
                     color = Theme.color.textColor.stroke,
                     shape = RoundedCornerShape(100)
                 )
-                .clip(RoundedCornerShape(100)), contentAlignment = Alignment.Center
+                .clip(RoundedCornerShape(100))
+                .noRippleClickable{
+                    onEditClick()
+                },
+            contentAlignment = Alignment.Center
 
         ) {
             Icon(
@@ -59,7 +64,9 @@ fun TaskActionsContainer(
                     width = 1.dp,
                     color = Theme.color.textColor.stroke,
                     shape = RoundedCornerShape(100)
-                ),
+                ).noRippleClickable{
+                    onUpdateTaskStateClick()
+                },
             contentAlignment = Alignment.Center
         ) {
             Text(
