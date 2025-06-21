@@ -71,7 +71,7 @@ fun TaskPriority(
             .then(
                 if (isClickable) {
                     Modifier.noRippleClickable {
-                        onClick?.invoke() // Simplified the onClick call
+                        onClick?.invoke()
                     }
                 } else Modifier
             )
