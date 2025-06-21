@@ -37,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.rememberAsyncImagePainter
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Task
@@ -84,6 +85,8 @@ private fun CategoryTasksScreenContent(
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
         result.value = it
     }
+    var tempCategoryName by remember { mutableStateOf(state.categoryName) }
+    val painter = rememberAsyncImagePainter(model = result.value)
 
     LaunchedEffect(state.selectedTab) {
         if (pagerState.currentPage != state.selectedTab.ordinal) {
@@ -168,14 +171,15 @@ private fun CategoryTasksScreenContent(
             EditCategoryBottomSheet(
                 isVisible = showEditCategoryDialog,
                 onDismiss = { showEditCategoryDialog = false },
-                title = state.categoryName,
-                onCategoryTitleChanged = onCategoryTitleChanged,
+                title = tempCategoryName,
+                onCategoryTitleChanged = { tempCategoryName = it },
                 onEditImageIconClick = {
                     launcher.launch(
                         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                     )
                 },
                 onSaveButtonClick = {
+                    onCategoryTitleChanged(tempCategoryName)
                     onSaveButtonClick()
                     showEditCategoryDialog = false
                 },
@@ -183,15 +187,17 @@ private fun CategoryTasksScreenContent(
                     onDeleteClick()
                     showEditCategoryDialog = false
                 },
+                onCancelButtonClick = {
+                    tempCategoryName = state.categoryName
+                    showEditCategoryDialog = false
+                },
                 isLoading = state.isLoading,
-                onCancelButtonClick = { showEditCategoryDialog = false },
-                image = painterResource(R.drawable.ic_bug)
+                image = painter
             )
-
-
         }
     }
 }
+
 
 @Composable
 fun IconInBox(
