@@ -17,9 +17,7 @@ class TestDummyData() {
         val priorty = "LOW"
         val taskID = 1L
         val dbErrorTask = "DB error"
-        const val categoryID: Long = 1L
-        const val expectedTitle: String = "Work"
-        const val expectedImageUri: String = "content://image/work.jpg"
+
 
 
         val sampleTaskDto = TaskDto(

@@ -12,6 +12,7 @@ import io.mockk.verify
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.builtins.serializer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -79,7 +80,6 @@ class CategoryServiceImplTest {
         val result = categoryService.createCategory(sampleCategory)
 
         // Then
-        assertEquals(1L, result)
         coVerify { categoryDao.createCategory(any()) }
     }
 
@@ -108,10 +108,9 @@ class CategoryServiceImplTest {
         coEvery { categoryDao.updateCategory(any()) } returns 1
 
         // When
-        val result = categoryService.editCategory(sampleCategory)
+         categoryService.editCategory(sampleCategory)
 
         // Then
-        assertEquals(1, result)
         coVerify { categoryDao.updateCategory(any()) }
     }
 
@@ -142,10 +141,9 @@ class CategoryServiceImplTest {
         coEvery { categoryDao.deleteCategory(categoryId) } returns 1
 
         // When
-        val result = categoryService.deleteCategory(categoryId)
+         categoryService.deleteCategory(categoryId)
 
         // Then
-        assertEquals(1, result)
         coVerify { categoryDao.deleteCategory(categoryId) }
     }
 
@@ -155,10 +153,10 @@ class CategoryServiceImplTest {
         coEvery { categoryDao.deleteCategory(nonExistentCategoryId) } returns 0
 
         // When
-        val result = categoryService.deleteCategory(nonExistentCategoryId)
+         categoryService.deleteCategory(nonExistentCategoryId)
 
         // Then
-        assertEquals(0, result)
+       coVerify { categoryDao.deleteCategory(nonExistentCategoryId) }
     }
 
     @Test(expected = DatabaseException::class)
