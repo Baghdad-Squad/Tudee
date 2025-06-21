@@ -32,7 +32,7 @@ fun PriorityChipPart(
     ) {
         Text(
             text = "Priority",
-            style = Theme.typography.title.medium
+            style = Theme.typography.title.medium.copy(Theme.color.textColor.title)
         )
 
         Row(
@@ -41,8 +41,9 @@ fun PriorityChipPart(
         ) {
             priorities.forEach { priority ->
                 val isSelected = selectedPriority == priority
-                key(priority to isSelected) {
+                key(priority) {
                     TaskPriority(
+                        isSelected = isSelected,
                         priorityTask = priority,
                         isClickable = true,
                         onClick = { onPrioritySelected(priority) }

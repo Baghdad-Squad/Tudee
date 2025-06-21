@@ -1,4 +1,4 @@
-package com.baghdad.tudee.app
+package com.baghdad.tudee.main
 
 import android.app.Application
 import com.baghdad.tudee.di.databaseModule

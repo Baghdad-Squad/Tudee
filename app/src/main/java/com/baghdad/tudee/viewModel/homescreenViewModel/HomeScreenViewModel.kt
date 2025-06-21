@@ -12,15 +12,18 @@ import com.baghdad.tudee.domain.service.CategoryService
 import com.baghdad.tudee.domain.service.TaskService
 import com.baghdad.tudee.ui.screens.homeScreen.HomeScreenUIState
 import com.baghdad.tudee.ui.screens.homeScreen.SliderState
+import com.baghdad.tudee.ui.screens.homeScreen.TaskDetailsState
 import com.baghdad.tudee.ui.screens.homeScreen.TaskUIState
 import com.baghdad.tudee.ui.screens.tasks.AddEditTaskInteractionListener
 import com.baghdad.tudee.ui.utils.now
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import java.nio.file.Files.find
 
 class HomeScreenViewModel(
     private val appConfigurationService: AppConfigurationService,
@@ -34,7 +37,18 @@ class HomeScreenViewModel(
     init {
         getTasks()
         getCategories()
+        getDarkTheme()
 
+    }
+
+    private fun getDarkTheme() {
+        viewModelScope.launch(Dispatchers.IO) {
+            appConfigurationService.isDarkTheme().collect {
+                _state.update { currentState ->
+                    currentState.copy(isDark = it)
+                }
+            }
+        }
     }
 
     override fun getTaskDetailsById(id: Long) {
@@ -45,14 +59,13 @@ class HomeScreenViewModel(
         if (task != null) {
             _state.update {
                 it.copy(
-                    detailsTaskState = it.detailsTaskState.copy(
+                    taskDetailsState = TaskDetailsState(
                         id = task.id,
                         title = task.title,
                         description = task.description,
-                        date = task.date,
-                        priority = task.priority,
-                        categoryId = task.categoryId,
-                        state = task.state
+                        taskState = task.state,
+                        taskPriority = task.priority,
+                        category = it.categories.firstOrNull { category -> category.id == task.categoryId }
                     ),
                     showTaskDetails = true,
                     showAddNewTask = false,
@@ -106,7 +119,7 @@ class HomeScreenViewModel(
         }
     }
 
-    fun toggleTaskDetailsDialog(){
+    fun toggleTaskDetailsDialog() {
         _state.update {
             it.copy(
                 showTaskDetails = !_state.value.showTaskDetails,
@@ -132,8 +145,7 @@ class HomeScreenViewModel(
     override fun onClickSwitchTheme() {
         viewModelScope.launch {
             try {
-                _state.update { it.copy(isDark = !_state.value.isDark) }
-                appConfigurationService.setTheme(_state.value.isDark)
+                appConfigurationService.setTheme(_state.value.isDark.not())
             } catch (error: Exception) {
                 handleError(error)
             }
@@ -192,22 +204,13 @@ class HomeScreenViewModel(
     override fun moveTaskToTodo(taskId: Long) {
         viewModelScope.launch {
             try {
-                taskService.getTasksByCategory(taskId)
-                    .collect { tasks ->
-                        tasks.find { it.id == taskId }?.let { task ->
-                            val updatedTask = task.copy(state = Task.State.TODO)
-                            taskService.editTask(updatedTask)
-                            _state.update { currentState ->
-                                currentState.copy(
-                                    inProgressTasks = _state.value.inProgressTasks - task,
-                                    doneTasks = _state.value.doneTasks - updatedTask,
-                                    todoTasks = _state.value.todoTasks + task,
-                                )
-                            }
-                        } ?: run {
-                            _state.update { it.copy(errorMessage = "Task not found") }
-                        }
-                    }
+                _state.value.inProgressTasks.find { it.id == taskId }?.let { task ->
+                    taskService.editTask(
+                        task.copy(state = Task.State.DONE)
+                    )
+                } ?: run {
+                    _state.update { it.copy(errorMessage = "Task not found") }
+                }
             } catch (e: Exception) {
                 _state.update { it.copy(errorMessage = "Failed to update task: ${e.message}") }
                 _state.value.errorMessage?.let {
@@ -220,22 +223,13 @@ class HomeScreenViewModel(
     override fun moveTaskToInProgress(taskId: Long) {
         viewModelScope.launch {
             try {
-                taskService.getTasksByCategory(taskId)
-                    .collect { tasks ->
-                        tasks.find { it.id == taskId }?.let { task ->
-                            val updatedTask = task.copy(state = Task.State.IN_PROGRESS)
-                            taskService.editTask(updatedTask)
-                            _state.update { currentState ->
-                                currentState.copy(
-                                    inProgressTasks = _state.value.inProgressTasks + task,
-                                    doneTasks = _state.value.doneTasks - updatedTask,
-                                    todoTasks = _state.value.todoTasks - task,
-                                )
-                            }
-                        } ?: run {
-                            _state.update { it.copy(errorMessage = "Task not found") }
-                        }
-                    }
+                _state.value.todoTasks.find { it.id == taskId }?.let { task ->
+                    taskService.editTask(
+                        task.copy(state = Task.State.IN_PROGRESS)
+                    )
+                } ?: run {
+                    _state.update { it.copy(errorMessage = "Task not found") }
+                }
             } catch (e: Exception) {
                 _state.update { it.copy(errorMessage = "Failed to update task: ${e.message}") }
                 _state.value.errorMessage?.let {
@@ -263,6 +257,7 @@ class HomeScreenViewModel(
                 categoryService.getCategories().collect { categories ->
                     _state.update { currentState ->
                         currentState.copy(
+                            categories = categories,
                             addTaskState = currentState.addTaskState.copy(categories = categories),
                             editTaskState = currentState.editTaskState.copy(categories = categories),
                             detailsTaskState = currentState.detailsTaskState.copy(categories = categories)
@@ -284,7 +279,10 @@ class HomeScreenViewModel(
                     val tasksToday = it.groupBy {
                         it.state
                     }
-                    Log.d("HomeScreenViewModel", "Tasks grouped by state: $tasksToday fro date: $dateNow")
+                    Log.d(
+                        "HomeScreenViewModel",
+                        "Tasks grouped by state: $tasksToday fro date: $dateNow"
+                    )
                     _state.update {
                         it.copy(
                             inProgressTasks = tasksToday[Task.State.IN_PROGRESS] ?: emptyList(),
