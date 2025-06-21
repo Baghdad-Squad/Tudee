@@ -43,7 +43,8 @@ fun TudeeDatePicker(
                 titleContentColor = Theme.color.textColor.title,
                 headlineContentColor = Theme.color.textColor.title,
                 yearContentColor = Theme.color.textColor.title,
-                navigationContentColor = Theme.color.textColor.title
+                navigationContentColor = Theme.color.textColor.title,
+                dayContentColor = Theme.color.textColor.title
             ),
             headline = {
               DatePickerHeadline(datePickerState = datePickerState)
