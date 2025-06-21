@@ -98,7 +98,7 @@ dependencies {
     implementation(libs.koin.core)
 
     //coil
-    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation(libs.coil.compose.v240)
     implementation(libs.kotlinx.datetime)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.kotlinx.coroutines.core)
@@ -115,7 +115,7 @@ dependencies {
     testImplementation(libs.androidx.room.testing)
 
     // Google Truth
-    testImplementation(libs.truth)
+    testImplementation (libs.truth)
     androidTestImplementation(libs.truth)
 
     // MockK

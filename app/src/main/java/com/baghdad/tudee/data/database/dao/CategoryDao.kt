@@ -15,7 +15,7 @@ import com.baghdad.tudee.data.model.CategoryDto.Companion.COLUMN_ID
 @Dao
 interface CategoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun createCategory(category: CategoryDto): Long
+    suspend fun createCategory(category: CategoryDto)
 
     @Query("SELECT * FROM $CATEGORIES_TABLE_NAME")
     fun getCategories(): Flow<List<CategoryDto>>
@@ -24,9 +24,9 @@ interface CategoryDao {
     fun getCategoryById(id: Long): CategoryDto
 
     @Update
-    suspend fun updateCategory(category: CategoryDto): Int
+    suspend fun updateCategory(category: CategoryDto)
 
 
     @Query("DELETE FROM $CATEGORIES_TABLE_NAME WHERE $COLUMN_ID = :id")
-    suspend fun deleteCategory(id: Long): Int
+    suspend fun deleteCategory(id: Long)
 }
