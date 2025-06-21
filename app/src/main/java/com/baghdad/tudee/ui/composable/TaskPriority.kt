@@ -27,6 +27,7 @@ import com.baghdad.tudee.ui.utils.noRippleClickable
 fun TaskPriority(
     priorityTask: Task.Priority,
     modifier: Modifier = Modifier,
+    isSelected: Boolean = true,
     isClickable: Boolean = false,
     onClick: (() -> Unit)? = null
 ) {
@@ -51,15 +52,14 @@ fun TaskPriority(
     }
 
 
-    val isClicked = remember { mutableStateOf(!isClickable) }
 
     val backgroundColor by animateColorAsState(
-        targetValue = if (isClicked.value) priorityProperties.color
+        targetValue = if (isSelected) priorityProperties.color
         else Theme.color.surfaceColor.surfaceLow
     )
 
     val contentColor by animateColorAsState(
-        if (isClicked.value) Theme.color.textColor.onPrimary
+        if (isSelected) Theme.color.textColor.onPrimary
         else Theme.color.textColor.hint
     )
 
@@ -70,13 +70,9 @@ fun TaskPriority(
             .background(backgroundColor)
             .then(
                 if (isClickable) {
-                    Modifier
-                        .noRippleClickable {
-                            if (onClick != null) {
-                                onClick()
-                            }
-                            isClicked.value = !isClicked.value
-                        }
+                    Modifier.noRippleClickable {
+                        onClick?.invoke()
+                    }
                 } else Modifier
             )
             .padding(vertical = 6.dp, horizontal = 8.dp),
@@ -102,4 +98,3 @@ private data class PriorityProperties(
     @DrawableRes val iconRes: Int,
     val text: String
 )
-
