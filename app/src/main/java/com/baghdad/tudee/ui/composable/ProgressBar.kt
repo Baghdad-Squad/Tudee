@@ -27,7 +27,7 @@ fun ProgressBar(
     val inactiveColor = Theme.color.textColor.disable
 
     Row(
-        horizontalArrangement = Arrangement.SpaceEvenly,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier
             .fillMaxWidth()
     ) {
@@ -38,6 +38,7 @@ fun ProgressBar(
             Box(
                 modifier = Modifier
                     .height(5.dp)
+                    .weight(1f)
                     .width(100.dp)
                     .clip(RoundedCornerShape(100.dp))
                     .background(color = animatedColor)

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -132,15 +133,14 @@ fun OnboardingScreen(
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 32.dp)
+                                .padding(top = 32.dp)
                                 .navigationBarsPadding()
                         ) {
                             ProgressIndicator(
                                 currentScreen = pagerState.currentPage + 1,
                                 modifier = Modifier.run {
-                                    fillMaxWidth()
+                                    fillMaxHeight()
                                         .align(Alignment.BottomCenter)
-                                        .padding(bottom = 16.dp)
                                 }
                             )
                         }
@@ -215,7 +215,7 @@ private fun ProgressIndicator(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier,
+        modifier = modifier.padding(20.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
         ProgressBar(currentScreen = currentScreen)
