@@ -68,9 +68,11 @@ fun TasksScreenContent(
     onConfirmDelete: () -> Unit,
     onCancelDelete: () -> Unit
 ) {
-    Box(modifier = Modifier.fillMaxSize()
-        .background(Theme.color.surfaceColor.surface)
-        .padding(WindowInsets.statusBars.asPaddingValues())
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Theme.color.surfaceColor.surface)
+            .padding(WindowInsets.statusBars.asPaddingValues())
     ) {
         Column(
             modifier = Modifier
@@ -120,7 +122,8 @@ fun TasksScreenContent(
             ShowDeleteTaskSheet(
                 onDeleteConfirmed = onConfirmDelete,
                 onCancelConfirmed = onCancelDelete,
-                isLoading = false
+                isLoading = false,
+                isVisible = true
             )
         }
         if (uiState.showAddNewTask) {
