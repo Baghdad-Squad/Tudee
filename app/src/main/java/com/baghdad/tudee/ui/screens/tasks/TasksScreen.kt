@@ -68,9 +68,11 @@ fun TasksScreenContent(
     onConfirmDelete: () -> Unit,
     onCancelDelete: () -> Unit
 ) {
-    Box(modifier = Modifier.fillMaxSize()
-        .background(Theme.color.surfaceColor.surface)
-        .padding(WindowInsets.statusBars.asPaddingValues())
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Theme.color.surfaceColor.surface)
+            .padding(WindowInsets.statusBars.asPaddingValues())
     ) {
         Column(
             modifier = Modifier
@@ -107,13 +109,11 @@ fun TasksScreenContent(
         }
 
         FloatingActionButton(
-            onClick = {
-                tasksInteractionListener.toggleAddNewTaskDialog()
-            },
+            onClick = { tasksInteractionListener.toggleAddNewTaskDialog() },
             painter = painterResource(id = R.drawable.ic_add),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(end = 12.dp, bottom = 10.dp)
+                .padding(end = 16.dp, bottom = 16.dp)
         )
 
         if (showDeleteSheet && taskToDelete != null) {
