@@ -114,6 +114,7 @@ class HomeScreenViewModel(
         _state.update {
             it.copy(
                 showEditTask = !_state.value.showEditTask,
+                editTaskState = TaskUIState()
             )
         }
     }
