@@ -101,6 +101,15 @@ class HomeScreenViewModel(
         }
     }
 
+    override fun editTask(task: Task) {
+        viewModelScope.launch {
+            try {
+                taskService.editTask(task)
+            } catch (e: Exception) {
+            }
+        }
+    }
+
     override fun togileEditTaskDialog() {
         _state.update {
             it.copy(
