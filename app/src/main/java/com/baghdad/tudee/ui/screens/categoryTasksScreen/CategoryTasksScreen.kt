@@ -95,12 +95,12 @@ private fun CategoryTasksScreenContent(
     }
     val tabs = listOf(
         Selectable(
-            TabItem("In Progress", state.inProgressTasks.size, Task.State.IN_PROGRESS),
-            isSelected = state.selectedTab == Task.State.IN_PROGRESS
-        ),
-        Selectable(
             TabItem("To Do", state.todoTasks.size, Task.State.TODO),
             isSelected = state.selectedTab == Task.State.TODO
+        ),
+        Selectable(
+            TabItem("In Progress", state.inProgressTasks.size, Task.State.IN_PROGRESS),
+            isSelected = state.selectedTab == Task.State.IN_PROGRESS
         ),
         Selectable(
             TabItem("Done", state.doneTasks.size, Task.State.DONE),
@@ -110,6 +110,7 @@ private fun CategoryTasksScreenContent(
 
     Column(
         modifier = Modifier
+            .padding(top=40.dp)
             .background(Theme.color.surfaceColor.surface)) {
         Row(
             modifier = Modifier
@@ -122,7 +123,8 @@ private fun CategoryTasksScreenContent(
             Text(
                 text = state.categoryName,
                 style = Theme.typography.title.large,
-                color = Theme.color.textColor.title
+                color = Theme.color.textColor.title,
+                modifier = Modifier.padding(end = 16.dp)
             )
             if (!isPredefinedCategory) {
                 Spacer(modifier = Modifier.weight(1f))
