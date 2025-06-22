@@ -367,11 +367,6 @@ class HomeScreenViewModel(
             isError = isError
         )
     }
-     fun toggleEditTaskDialog() {
-        _state.update { currentState ->
-            currentState.copy(showEditTask = !currentState.showEditTask)
-        }
-    }
     private fun hideSnackbarMessage() {
         showSnarkMessage(
             message = "",
