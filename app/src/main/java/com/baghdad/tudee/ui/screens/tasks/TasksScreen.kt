@@ -76,7 +76,7 @@ fun TasksScreenContent(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Theme.color.surfaceColor.surface)
-                .padding(vertical = 20.dp)
+                .padding(top = 20.dp)
         ) {
             Text(
                 text = stringResource(R.string.tasks),

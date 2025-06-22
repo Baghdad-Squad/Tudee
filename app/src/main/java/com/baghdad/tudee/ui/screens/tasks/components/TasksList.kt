@@ -25,8 +25,7 @@ fun TasksList(
 
     LazyColumn(
         modifier = modifier
-            .padding(horizontal = 16.dp)
-            .padding(bottom = 40.dp),
+            .padding(horizontal = 16.dp),
         contentPadding = PaddingValues(vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -39,9 +38,11 @@ fun TasksList(
                 is Category.Image.Predefined -> {
                     painterResource(category.image.type.toDrawable())
                 }
+
                 is Category.Image.ByteArray -> {
                     rememberAsyncImagePainter(category.image.data)
                 }
+
                 else -> {
                     painterResource(R.drawable.ic_baseball_bat)
                 }
@@ -51,7 +52,7 @@ fun TasksList(
                 description = task.description,
                 priorityTask = task.priority,
                 icon = painter,
-                onDelete = {  onTaskDelete(task) },
+                onDelete = { onTaskDelete(task) },
                 onClick = {/*TODO()*/ },
             )
         }
