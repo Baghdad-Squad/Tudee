@@ -129,6 +129,16 @@ class HomeScreenViewModel(
         }
     }
 
+    fun openEditTask(task: Task) {
+        _state.update { currentState ->
+            currentState.copy(
+                editTaskState = currentState.editTaskState.copy(currentTask = task),
+                showEditTask = true,
+                showAddNewTask = false,
+                showTaskDetails = false
+            )
+        }
+    }
 
     override fun onClickEditTask(task: Task) {
         viewModelScope.launch {
