@@ -288,7 +288,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                     item {
                         TextHeadTaskSection(
                             name = stringResource(R.string.in_progress),
-                            numberOfItem = 12,
+                            numberOfItem = state.todoTasks.size,
                             modifier = Modifier.padding(
                                 start = 16.dp,
                                 end = 16.dp,
@@ -344,7 +344,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                         Spacer(modifier = Modifier.height(16.dp))
                         TextHeadTaskSection(
                             name = stringResource(R.string.to_do),
-                            numberOfItem = 12,
+                            numberOfItem = state.todoTasks.size,
                             modifier = Modifier
                                 .fillParentMaxWidth(0.95f)
                                 .padding(bottom = 8.dp)
