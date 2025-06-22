@@ -108,17 +108,31 @@ fun AddEditTaskBottomSheet(
             }
         }
         MainButtonPart(showButton, initial?.title, onSave = {
-            addEditTaskInteractionListener.onClickAddNewTask(
+            if (initial == null) {
+                addEditTaskInteractionListener.onClickAddNewTask(
+                    Task(
+                        id = 0L,
+                        title = titleText,
+                        description = paragraphText,
+                        date = dateTime,
+                        priority = selectedPriority ?: Task.Priority.LOW,
+                        categoryId = selectedCategoryId ?: -1L,
+                        state = Task.State.TODO
+                    )
+                )
+            } else {
+            addEditTaskInteractionListener.editTask(
                 Task(
-                    id = 0L,
+                    id = initial.id,
                     title = titleText,
                     description = paragraphText,
                     date = dateTime,
                     priority = selectedPriority ?: Task.Priority.LOW,
                     categoryId = selectedCategoryId ?: -1L,
-                    state = Task.State.TODO
+                    state = initial.state
                 )
             )
+            }
             onDismiss()
         }, onDismiss = {
             onDismiss()
