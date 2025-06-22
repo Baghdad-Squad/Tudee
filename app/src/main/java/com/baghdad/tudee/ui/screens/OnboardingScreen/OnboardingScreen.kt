@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -63,74 +64,87 @@ fun OnboardingScreen(
             state = pagerState,
             modifier = Modifier.fillMaxSize(),
         ) {
-
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .systemBarsPadding(),
-                verticalArrangement = Arrangement.SpaceBetween,
+            Box(
+                modifier = Modifier.fillMaxSize()
             ) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .systemBarsPadding(),
+                    verticalArrangement = Arrangement.SpaceBetween,
+                ) {
 
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        SkipButton(
-                            pagerState = pagerState,
-                            onClick = {
-                                onNavigateToHome()
-                            },
-                            modifier = Modifier.align(Alignment.TopStart)
-                        )
-                    }
-                }
-
-                item {
-                    OnboardingImg(
-                        imgRes = robotImage[pagerState.currentPage],
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                }
-
-                item {
-                    Box(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 1.dp)
-                    ) {
-                        TudeeCard(
-                            title = titleList[pagerState.currentPage],
-                            description = descriptionList[pagerState.currentPage],
-                            modifier = Modifier.align(Alignment.CenterEnd)
-                        )
-
-                        NextButton(
-                            imgRes = R.drawable.arrow_right_double,
-                            onClick = {
-                                if (pagerState.currentPage < titleList.size - 1) {
-                                    scope.launch {
-                                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                                    }
-                                } else {
-                                    onNavigateToHome()
-                                }
-                            },
+                    item {
+                        Box(
                             modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .offset(y = (10).dp)
+                                .fillMaxWidth()
+                        ) {
+                            SkipButton(
+                                pagerState = pagerState,
+                                onClick = {
+                                    onNavigateToHome()
+                                },
+                                modifier = Modifier.align(Alignment.TopStart)
+                            )
+                        }
+                    }
+
+                    item {
+                        OnboardingImg(
+                            imgRes = robotImage[pagerState.currentPage],
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillParentMaxHeight(0.3f)
                         )
                     }
-                }
 
-                item {
-                    ProgressIndicator(
-                        currentScreen = pagerState.currentPage + 1,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 16.dp)
-                    )
+                    item {
+                        Box(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 1.dp)
+                        ) {
+                            TudeeCard(
+                                title = titleList[pagerState.currentPage],
+                                description = descriptionList[pagerState.currentPage],
+                                modifier = Modifier.align(Alignment.CenterEnd)
+                            )
+
+                            NextButton(
+                                imgRes = R.drawable.arrow_right_double,
+                                onClick = {
+                                    if (pagerState.currentPage < titleList.size - 1) {
+                                        scope.launch {
+                                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                                        }
+                                    } else {
+                                        onNavigateToHome()
+                                    }
+                                },
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .offset(y = (10).dp)
+                            )
+                        }
+                    }
+
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 32.dp)
+                                .navigationBarsPadding()
+                        ) {
+                            ProgressIndicator(
+                                currentScreen = pagerState.currentPage + 1,
+                                modifier = Modifier.run {
+                                    fillMaxWidth()
+                                        .align(Alignment.BottomCenter)
+                                        .padding(bottom = 16.dp)
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -207,3 +221,4 @@ private fun ProgressIndicator(
         ProgressBar(currentScreen = currentScreen)
     }
 }
+
