@@ -41,7 +41,6 @@ fun TopTudeeBar(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         LogoAndTitle(title = title, description = description)
-        // replace with theme switch icon
         DayNightSwitch(
             isDay = isDay,
         ){

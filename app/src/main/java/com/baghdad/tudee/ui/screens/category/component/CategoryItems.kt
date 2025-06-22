@@ -39,6 +39,7 @@ fun CategoryItems(state : List<CategoryUiState>, onCategoryClick : (Long) -> Uni
                     is Category.Image.Predefined -> painterResource(
                         id = it.image.type.toDrawable()
                     )
+
                 }
                     ?: painterResource(R.drawable.ic_add_image),
                 onClick = {
