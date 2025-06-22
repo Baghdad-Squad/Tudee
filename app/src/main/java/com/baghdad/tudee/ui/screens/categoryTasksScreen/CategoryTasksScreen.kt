@@ -34,7 +34,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
@@ -102,15 +101,15 @@ private fun CategoryTasksScreenContent(
 
     val tabs = listOf(
         Selectable(
-            TabItem("To Do", state.todoTasks.size, Task.State.TODO),
+            TabItem(stringResource(R.string.to_do), state.todoTasks.size, Task.State.TODO),
             isSelected = state.selectedTab == Task.State.TODO
         ),
         Selectable(
-            TabItem("In Progress", state.inProgressTasks.size, Task.State.IN_PROGRESS),
+            TabItem(stringResource(R.string.in_progress), state.inProgressTasks.size, Task.State.IN_PROGRESS),
             isSelected = state.selectedTab == Task.State.IN_PROGRESS
         ),
         Selectable(
-            TabItem("Done", state.doneTasks.size, Task.State.DONE),
+            TabItem(stringResource(R.string.done), state.doneTasks.size, Task.State.DONE),
             isSelected = state.selectedTab == Task.State.DONE
         )
     )
@@ -159,7 +158,6 @@ private fun CategoryTasksScreenContent(
             if (tasks.isEmpty()) {
                 TasksEmptyScreen()
             } else {
-
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier
