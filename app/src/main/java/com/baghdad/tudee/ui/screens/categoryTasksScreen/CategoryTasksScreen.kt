@@ -93,6 +93,13 @@ private fun CategoryTasksScreenContent(
             pagerState.animateScrollToPage(state.selectedTab.ordinal)
         }
     }
+    LaunchedEffect(pagerState.currentPage) {
+        val newTab = Task.State.entries[pagerState.currentPage]
+        if (state.selectedTab != newTab) {
+            onTabSelected(newTab)
+        }
+    }
+
     val tabs = listOf(
         Selectable(
             TabItem("To Do", state.todoTasks.size, Task.State.TODO),
@@ -110,8 +117,9 @@ private fun CategoryTasksScreenContent(
 
     Column(
         modifier = Modifier
-            .padding(top=40.dp)
-            .background(Theme.color.surfaceColor.surface)) {
+            .padding(top = 40.dp)
+            .background(Theme.color.surfaceColor.surface)
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -130,7 +138,8 @@ private fun CategoryTasksScreenContent(
                 Spacer(modifier = Modifier.weight(1f))
                 IconInBox(icon = R.drawable.pencil_edit_02, onIconClick = {
                     showEditCategoryDialog = true
-                })
+                }
+                )
             }
         }
         Tabs(
@@ -143,8 +152,8 @@ private fun CategoryTasksScreenContent(
             modifier = Modifier.weight(1f)
         ) { page ->
             val tasks = when (Task.State.entries[page]) {
-                Task.State.TODO -> state.todoTasks
                 Task.State.IN_PROGRESS -> state.inProgressTasks
+                Task.State.TODO -> state.todoTasks
                 Task.State.DONE -> state.doneTasks
             }
             if (tasks.isEmpty()) {
@@ -226,9 +235,4 @@ fun IconInBox(
         )
     }
 
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CategoryTasksScreenPreview() {
 }
