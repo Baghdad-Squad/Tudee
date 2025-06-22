@@ -4,4 +4,5 @@ import com.baghdad.tudee.domain.entity.Task
 
 interface AddEditTaskInteractionListener {
     fun onClickAddNewTask(task: Task)
+    fun editTask(task: Task)
 }
