@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,6 +26,7 @@ import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.delete_item.ShowDeleteTaskSheet
+import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomSheet
 import com.baghdad.tudee.ui.screens.tasks.components.HorizontalDayChipsSetup
 import com.baghdad.tudee.ui.screens.tasks.components.StatusTabs
@@ -75,9 +76,11 @@ fun TasksScreenContent(
     LaunchedEffect(pagerState.currentPage) {
         tasksInteractionListener.onTabSelected(Task.State.entries[pagerState.currentPage])
     }
-    Box(modifier = Modifier.fillMaxSize()
-        .background(Theme.color.surfaceColor.surface)
-        .padding(WindowInsets.statusBars.asPaddingValues())
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Theme.color.surfaceColor.surface)
+            .padding(WindowInsets.statusBars.asPaddingValues())
     ) {
         Column(
             modifier = Modifier
@@ -109,7 +112,9 @@ fun TasksScreenContent(
             )
             TasksHorizontalPager(
                 uiState = uiState,
-                onTaskClick = {},
+                onTaskClick = {
+                    tasksInteractionListener.toggleTaskDetailsDialog(it)
+                },
                 onDeleteTask = onTaskDelete,
                 pagerState = pagerState,
             )
@@ -117,7 +122,7 @@ fun TasksScreenContent(
 
         FloatingActionButton(
             onClick = {
-                tasksInteractionListener.toggleAddNewTaskDialog()
+                tasksInteractionListener.toggleAddEditTaskDialog()
             },
             painter = painterResource(id = R.drawable.ic_add),
             modifier = Modifier
@@ -135,17 +140,34 @@ fun TasksScreenContent(
         if (uiState.showAddNewTask) {
             TudeeBottomSheet(
                 isVisible = uiState.showAddNewTask,
-                onDismiss = { tasksInteractionListener.toggleAddNewTaskDialog() }
+                onDismiss = { tasksInteractionListener.toggleAddEditTaskDialog() }
             ) {
                 AddEditTaskBottomSheet(
-                    initial = null,
+                    initial = uiState.initialTask,
                     state = uiState.categories,
                     addEditTaskInteractionListener = viewModel,
                     onDismiss = {
-                        tasksInteractionListener.toggleAddNewTaskDialog()
+                        tasksInteractionListener.toggleAddEditTaskDialog()
                     }
                 )
             }
+        }
+        if (uiState.showTaskDetailsBottomSheet) {
+            TaskDetailsBottomSheet(
+                isVisible = uiState.showTaskDetailsBottomSheet,
+                onDismiss = { viewModel.toggleTaskDetailsDialog() },
+                task = uiState.selectedTaskDetails,
+                onEditClick = {
+                    viewModel.toggleAddEditTaskDialog(uiState.selectedTaskDetails.id)
+                    viewModel.toggleTaskDetailsDialog()
+                },
+                onUpdateTaskState = { newState ->
+                    tasksInteractionListener.updateTaskState(
+                        uiState.selectedTaskDetails.id,
+                        newState
+                    )
+                }
+            )
         }
     }
 }

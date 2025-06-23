@@ -1,11 +1,15 @@
 package com.baghdad.tudee.ui.screens.tasks
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.domain.service.CategoryService
 import com.baghdad.tudee.domain.service.TaskService
+import com.baghdad.tudee.ui.screens.homeScreen.TaskDetailsState
+import com.baghdad.tudee.ui.screens.homeScreen.toTaskDetailsState
 import com.baghdad.tudee.ui.utils.now
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -118,11 +122,42 @@ class TasksViewModel(
         loadTasksForDate(newDate)
     }
 
-    override fun toggleAddNewTaskDialog() {
+    override fun toggleAddEditTaskDialog(initialTaskId: Long?) {
+        val initialTask = initialTaskId?.let { taskId ->
+            getTaskById(taskId)
+        }
         _uiState.update {
             it.copy(
+                initialTask = initialTask,
                 showAddNewTask = !_uiState.value.showAddNewTask
             )
+        }
+    }
+
+    private fun getTaskById(taskId: Long): Task? {
+        return _uiState.value.todoTasks.find { it.id == taskId }
+            ?: _uiState.value.inProgressTasks.find { it.id == taskId }
+            ?: _uiState.value.doneTasks.find { it.id == taskId }
+    }
+
+    override fun toggleTaskDetailsDialog(selectedTask: Task?) {
+        val taskCategory = _uiState.value.categories.find { it.id == selectedTask?.categoryId }
+        _uiState.update {
+            it.copy(
+                selectedTaskDetails = selectedTask?.toTaskDetailsState(taskCategory) ?: TaskDetailsState(),
+                showTaskDetailsBottomSheet = !_uiState.value.showTaskDetailsBottomSheet
+            )
+        }
+    }
+
+    override fun updateTaskState(
+        taskId: Long,
+        newState: Task.State
+    ) {
+        viewModelScope.launch (Dispatchers.IO) {
+            val updatedTask = getTaskById(taskId)?.copy(state = newState) ?: return@launch
+            taskService.editTask(updatedTask)
+            toggleTaskDetailsDialog()
         }
     }
 
@@ -207,11 +242,28 @@ class TasksViewModel(
         return (this % 4 == 0 && this % 100 != 0) || (this % 400 == 0)
     }
 
-    override fun onClickAddNewTask(task: Task) {
+    override fun onClickSaveTask(task: Task) {
+        Log.d("TasksViewModel", "onClickSaveTask: $task")
+        if(task.id != 0L) {
+            updateTask(task)
+        } else {
+            createTask(task)
+        }
+    }
+
+    private fun updateTask(task: Task) {
+        viewModelScope.launch {
+            taskService.editTask(task)
+            loadTasksForDate(uiState.value.selectedDate?: LocalDate.now())
+            _uiState.update {
+                it.copy(showAddNewTask = false)
+            }
+        }
+    }
+
+    private fun createTask(task: Task) {
         viewModelScope.launch {
             taskService.createTask(task)
-
-
             loadTasksForDate(uiState.value.selectedDate?: LocalDate.now())
 
             _uiState.update {

@@ -2,6 +2,7 @@ package com.baghdad.tudee.ui.screens.tasks
 
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
+import com.baghdad.tudee.ui.screens.homeScreen.TaskDetailsState
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 
@@ -15,7 +16,10 @@ data class TasksUiState(
     val categories: List<Category> = emptyList(),
     val currentMonth : Month = Month.JUNE,
     val currentYear : Int = 2025,
-    val showAddNewTask: Boolean= false
+    val showAddNewTask: Boolean= false,
+    val showTaskDetailsBottomSheet: Boolean= false,
+    val selectedTaskDetails: TaskDetailsState = TaskDetailsState(),
+    val initialTask: Task? = null,
 )
 
 
