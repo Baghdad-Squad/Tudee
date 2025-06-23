@@ -7,7 +7,6 @@ import com.baghdad.tudee.designSystem.color.lightThemeColor
 import com.baghdad.tudee.designSystem.color.localTudeeColor
 import com.baghdad.tudee.designSystem.textStyle.localTudeeTextStyle
 import com.baghdad.tudee.designSystem.textStyle.tudeeTextStyle
-import com.baghdad.tudee.ui.utils.StatusBarTitleTheme
 
 
 @Composable
@@ -16,8 +15,6 @@ fun TudeeTheme(
     content: @Composable () -> Unit
 ) {
     val theme = if (isDarkTheme) darkThemeColor else lightThemeColor
-
-    StatusBarTitleTheme(isDarkTheme)
 
     CompositionLocalProvider(
         localTudeeColor provides theme,
