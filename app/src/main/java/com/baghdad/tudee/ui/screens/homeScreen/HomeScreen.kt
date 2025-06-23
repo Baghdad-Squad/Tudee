@@ -188,10 +188,10 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
 
                                     TextMoodIcon(
                                         text = when (state.sliderState) {
-                                            SliderState.STAY_WORKING -> "Stay working!"
-                                            SliderState.TADOO -> "Tadaa"
-                                            SliderState.ZERO_PROGRESS -> "Zero progress?!"
-                                            SliderState.NOTHING_IN_YOUR_LIST -> "Nothing on your list…"
+                                            SliderState.STAY_WORKING -> stringResource(R.string.Stay_working)
+                                            SliderState.TADOO -> stringResource(R.string.Tadaa)
+                                            SliderState.ZERO_PROGRESS -> stringResource(R.string.Zero_progress)
+                                            SliderState.NOTHING_IN_YOUR_LIST -> stringResource(R.string.Nothing_on_your_list)
 
                                         },
                                         icon = painterResource(
@@ -307,7 +307,6 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                 if (state.inProgressTasks.isNotEmpty())
                                     items(state.inProgressTasks.chunked(2)) { pair ->
                                         Column(modifier = Modifier.fillMaxWidth()) {
-                                            // First item in the pair
                                             CategoryTaskCard(
                                                 title = pair[0].title,
                                                 description = pair[0].description,
@@ -362,7 +361,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 val taskPairs =
-                                    state.todoTasks.chunked(2) // Split into [[task1, task2], [task3, task4], ...]
+                                    state.todoTasks.chunked(2)
 
                                 itemsIndexed(taskPairs) { index, pair ->
                                     Column(modifier = Modifier.fillMaxWidth()) {

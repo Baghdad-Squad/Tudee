@@ -65,5 +65,8 @@
     <string name="Cute_Robot">Cute Robot</string>
     <string name="Angry_Robott">Angry Robot</string>
     <string name="Overview_Card_Background">Overview Card Background</string>
-
+    <string name="Stay_working">Stay working!</string>
+    <string name="Tadaa">Tadaa!</string>
+    <string name="Zero_progress">Zero progress?!</string>
+    <string name="Nothing_on_your_list">Nothing on your list…</string>
 </resources>
