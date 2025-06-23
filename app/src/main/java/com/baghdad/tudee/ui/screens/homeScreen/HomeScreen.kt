@@ -238,10 +238,10 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                             }
                                         ),
                                         contentDescription = when (state.sliderState) {
-                                            SliderState.STAY_WORKING -> "Happy Robot"
-                                            SliderState.TADOO -> "Cute Robot"
-                                            SliderState.ZERO_PROGRESS -> "Angry Robot"
-                                            SliderState.NOTHING_IN_YOUR_LIST -> "Happy Robot"
+                                            SliderState.STAY_WORKING -> stringResource(R.string.happy_robot)
+                                            SliderState.TADOO -> stringResource(R.string.Cute_Robot)
+                                            SliderState.ZERO_PROGRESS -> stringResource(R.string.Angry_Robott)
+                                            SliderState.NOTHING_IN_YOUR_LIST -> stringResource(R.string.happy_robot)
                                         },
                                     )
                                 }
@@ -584,7 +584,7 @@ fun OverviewCard(
 
         Icon(
             painter = painterResource(R.drawable.overview_card_background),
-            contentDescription = "Overview Card Background",
+            contentDescription = stringResource(R.string.Overview_Card_Background),
             modifier = Modifier
                 .clip(RoundedCornerShape(topEnd = 20.dp))
                 .align(Alignment.TopEnd),

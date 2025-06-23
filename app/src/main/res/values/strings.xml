@@ -61,5 +61,9 @@
     <string name="you_just_scrolling_not_working_tudee_is_watching_back_to_work">You just scrolling, not working. Tudee is watching. back to work!!!</string>
     <string name="fill_your_day_with_something_awesome">Fill your day with something awesome.</string>
     <string name="overview">Overview</string>
+    <string name="happy_robot">Happy Robot</string>
+    <string name="Cute_Robot">Cute Robot</string>
+    <string name="Angry_Robott">Angry Robot</string>
+    <string name="Overview_Card_Background">Overview Card Background</string>
 
 </resources>
