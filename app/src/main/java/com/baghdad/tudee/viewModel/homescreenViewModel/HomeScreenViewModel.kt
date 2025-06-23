@@ -140,6 +140,7 @@ class HomeScreenViewModel(
     }
 
     fun openEditTask(task: Task) {
+        getCategories()
         _state.update { currentState ->
             currentState.copy(
                 editTaskState = currentState.editTaskState.copy(currentTask = task),
@@ -148,6 +149,11 @@ class HomeScreenViewModel(
                 showTaskDetails = false
             )
         }
+    }
+
+    fun prepareForAddNewTask() {
+        getCategories()
+        _state.update { it.copy(showAddNewTask = true) }
     }
 
     override fun onClickEditTask(task: Task) {

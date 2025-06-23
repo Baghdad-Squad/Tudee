@@ -74,10 +74,11 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
             FloatingActionButton(
                 painter = painterResource(R.drawable.ic_add),
                 onClick = {
-                    viewModel.togileEditTaskDialog()
+                    viewModel.prepareForAddNewTask()
                 },
                 modifier = Modifier.padding(16.dp)
             )
+
             if (state.showEditTask) {
                 TudeeBottomSheet(
                     isVisible = state.showEditTask,
@@ -99,7 +100,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                     }
                 ) {
                     AddEditTaskBottomSheet(
-                        initial = state.editTaskState.currentTask,
+                        initial = null,
                         state = state.editTaskState.categories,
                         addEditTaskInteractionListener = viewModel,
                         onDismiss = { viewModel.toggleAddNewTaskDialog() }
@@ -132,7 +133,6 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                 }
             }
         }
-
     ) {
         it
         Box(modifier = modifier.fillMaxSize()) {
@@ -156,7 +156,6 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                         .background(Theme.color.surfaceColor.surface)
                 ) {
                     item {
-
                         Box(
                             modifier = Modifier
                                 .zIndex(-1f)
