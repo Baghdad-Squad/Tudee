@@ -58,7 +58,8 @@ fun CategoryTasksScreen(
     navigateBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    CategoryTasksScreenContent(state = state,
+    CategoryTasksScreenContent(
+        state = state,
         onTabSelected = viewModel::onTabSelected,
         isPredefinedCategory = state.isPredefinedCategory,
         onArrowBackClicked = { navigateBack() },
