@@ -175,22 +175,24 @@ class HomeScreenViewModel(
     override fun moveTaskToDone(taskId: Long) {
         viewModelScope.launch {
             try {
-                taskService.getTasksByCategory(taskId)
-                    .collect { tasks ->
-                        tasks.find { it.id == taskId }?.let { task ->
-                            val updatedTask = task.copy(state = Task.State.DONE)
-                            taskService.editTask(updatedTask)
-                            _state.update { currentState ->
-                                currentState.copy(
-                                    inProgressTasks = _state.value.inProgressTasks - task,
-                                    doneTasks = _state.value.doneTasks + updatedTask,
-                                    todoTasks = _state.value.todoTasks - task,
-                                )
-                            }
-                        } ?: run {
-                            _state.update { it.copy(errorMessage = "Task not found") }
-                        }
+                val task = _state.value.inProgressTasks.find { it.id == taskId }
+                    ?: _state.value.todoTasks.find { it.id == taskId }
+
+                if (task != null) {
+                    val updatedTask = task.copy(state = Task.State.DONE)
+                    taskService.editTask(updatedTask)
+
+                    _state.update { currentState ->
+                        currentState.copy(
+                            inProgressTasks = currentState.inProgressTasks - task,
+                            todoTasks = currentState.todoTasks - task,
+                            doneTasks = currentState.doneTasks + updatedTask,
+                        )
                     }
+                } else {
+                    _state.update { it.copy(errorMessage = "Task not found") }
+                }
+
             } catch (e: Exception) {
                 _state.update { it.copy(errorMessage = "Failed to update task: ${e.message}") }
                 _state.value.errorMessage?.let {
@@ -205,7 +207,7 @@ class HomeScreenViewModel(
             try {
                 _state.value.inProgressTasks.find { it.id == taskId }?.let { task ->
                     taskService.editTask(
-                        task.copy(state = Task.State.DONE)
+                        task.copy(state = Task.State.TODO)
                     )
                 } ?: run {
                     _state.update { it.copy(errorMessage = "Task not found") }
