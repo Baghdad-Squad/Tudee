@@ -58,15 +58,13 @@ fun CategoryTasksScreen(
     navigateBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    CategoryTasksScreenContent(
-        state = state,
+    CategoryTasksScreenContent(state = state,
         onTabSelected = viewModel::onTabSelected,
         isPredefinedCategory = state.isPredefinedCategory,
         onArrowBackClicked = { navigateBack() },
         onCategoryTitleChanged = { newTitle -> viewModel.onCategoryTitleChanged(newTitle) },
         onDeleteClick = { viewModel.onDeleteCategory() },
-        onSaveButtonClick = { viewModel.onSaveCategoryChanges() }
-    )
+        onSaveButtonClick = { viewModel.onSaveCategoryChanges() })
 }
 
 @Composable
@@ -97,20 +95,18 @@ private fun CategoryTasksScreenContent(
         Selectable(
             TabItem("In Progress", state.inProgressTasks.size, Task.State.IN_PROGRESS),
             isSelected = state.selectedTab == Task.State.IN_PROGRESS
-        ),
-        Selectable(
+        ), Selectable(
             TabItem("To Do", state.todoTasks.size, Task.State.TODO),
             isSelected = state.selectedTab == Task.State.TODO
-        ),
-        Selectable(
+        ), Selectable(
             TabItem("Done", state.doneTasks.size, Task.State.DONE),
             isSelected = state.selectedTab == Task.State.DONE
         )
     )
 
     Column(
-        modifier = Modifier
-            .background(Theme.color.surfaceColor.surface)) {
+        modifier = Modifier.background(Theme.color.surfaceColor.surface)
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -137,8 +133,7 @@ private fun CategoryTasksScreenContent(
             modifier = Modifier.padding(bottom = 12.dp)
         )
         HorizontalPager(
-            state = pagerState,
-            modifier = Modifier.weight(1f)
+            state = pagerState, modifier = Modifier.weight(1f)
         ) { page ->
             val tasks = when (Task.State.entries[page]) {
                 Task.State.TODO -> state.todoTasks
@@ -202,25 +197,21 @@ private fun CategoryTasksScreenContent(
 @Composable
 fun IconInBox(
     modifier: Modifier = Modifier,
-    icon: Int, onIconClick: () -> Unit,
+    icon: Int,
+    onIconClick: () -> Unit,
     tint: Color = Theme.color.textColor.body
 ) {
-    Box(
-        modifier = modifier
-            .size(40.dp)
-            .border(
-                width = 1.dp,
-                shape = CircleShape,
-                color = Theme.color.textColor.stroke
-            )
-            .clickable { onIconClick() }
-    ) {
+    Box(modifier = modifier
+        .size(40.dp)
+        .border(
+            width = 1.dp, shape = CircleShape, color = Theme.color.textColor.stroke
+        )
+        .clickable { onIconClick() }) {
         Icon(
             painter = painterResource(id = icon),
             contentDescription = stringResource(R.string.arrow_left),
             tint = tint,
-            modifier = Modifier
-                .padding(10.dp)
+            modifier = Modifier.padding(10.dp)
         )
     }
 
