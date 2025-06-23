@@ -1,6 +1,5 @@
 package com.baghdad.tudee.ui.screens.categoryTasksScreen
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -32,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,6 +40,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.composable.TabItem
@@ -48,6 +49,7 @@ import com.baghdad.tudee.ui.composable.categoryBottomSheet.EditCategoryBottomShe
 import com.baghdad.tudee.ui.screens.tasks.components.TasksEmptyScreen
 import com.baghdad.tudee.ui.shared.Selectable
 import com.baghdad.tudee.ui.utils.getCategoryIconPainter
+import com.baghdad.tudee.ui.utils.image.uriToByteArray
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -64,6 +66,7 @@ fun CategoryTasksScreen(
         isPredefinedCategory = state.isPredefinedCategory,
         onArrowBackClicked = { navigateBack() },
         onCategoryTitleChanged = { newTitle -> viewModel.onCategoryTitleChanged(newTitle) },
+        onCategoryImageChanged = {newImage -> viewModel.onChangeImage(newImage)},
         onDeleteClick = { viewModel.onDeleteCategory() },
         onSaveButtonClick = { viewModel.onSaveCategoryChanges() }
     )
@@ -76,17 +79,18 @@ private fun CategoryTasksScreenContent(
     isPredefinedCategory: Boolean,
     onArrowBackClicked: () -> Unit,
     onCategoryTitleChanged: (String) -> Unit,
+    onCategoryImageChanged: (Category.Image) -> Unit,
     onDeleteClick: () -> Unit,
     onSaveButtonClick: () -> Unit,
 ) {
+    val context = LocalContext.current
     val pagerState = rememberPagerState(initialPage = state.selectedTab.ordinal) { 3 }
     var showEditCategoryDialog by remember { mutableStateOf(false) }
-    val result = remember { mutableStateOf<Uri?>(null) }
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
-        result.value = it
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { it ->
+        uriToByteArray(context, it)?.let { onCategoryImageChanged(Category.Image.ByteArray(it)) }
     }
     var tempCategoryName by remember { mutableStateOf(state.categoryName) }
-    val painter = rememberAsyncImagePainter(model = result.value)
+    val painter = rememberAsyncImagePainter(model = launcher)
 
     LaunchedEffect(state.selectedTab) {
         if (pagerState.currentPage != state.selectedTab.ordinal) {
@@ -180,6 +184,7 @@ private fun CategoryTasksScreenContent(
                 },
                 onSaveButtonClick = {
                     onCategoryTitleChanged(tempCategoryName)
+                    onCategoryImageChanged(state.categoryImage)
                     onSaveButtonClick()
                     showEditCategoryDialog = false
                 },

@@ -84,6 +84,10 @@ class CategoryTasksViewModel(
                 )
             )
         }
+
+    }
+    fun onChangeImage(newImage: Category.Image){
+        _state.update { it.copy(categoryImage = newImage) }
     }
 
 }
