@@ -75,7 +75,7 @@ class HomeScreenViewModel(
         }
     }
 
-    override fun onClickAddNewTask(task: Task) {
+    override fun onClickSaveTask(task: Task) {
         viewModelScope.launch {
             try {
                 taskService.createTask(task)
