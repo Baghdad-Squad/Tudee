@@ -5,9 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,9 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -43,12 +38,12 @@ import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.domain.entity.Task
-import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.composable.SnakeBar
+import com.baghdad.tudee.ui.composable.TaskSection
 import com.baghdad.tudee.ui.composable.TopTudeeBar
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
-import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
+import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomSheet
 import com.baghdad.tudee.ui.utils.formatDate
 import com.baghdad.tudee.ui.utils.insideBorder
@@ -117,7 +112,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                             viewModel.toggleTaskDetailsDialog()
                         },
                         onUpdateTaskState = { newState ->
-                            if(newState == Task.State.IN_PROGRESS){
+                            if (newState == Task.State.IN_PROGRESS) {
                                 viewModel.moveTaskToInProgress(state.taskDetailsState.id)
                             } else {
                                 viewModel.moveTaskToDone(state.taskDetailsState.id)
@@ -153,27 +148,27 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                 ) {
                     item {
 
-                    Box(
-                        modifier = Modifier
-                            .zIndex(-1f)
-                            .fillMaxWidth()
-                            .height(45.dp)
-                            .background(Theme.color.primaryColor.normal)
-                    )
-                    Column(
-                        modifier = Modifier
-                            .fillParentMaxWidth()
-                            .padding(horizontal = 16.dp)
-                            .offset(y = -45.dp)
-                            .background(
-                                Theme.color.surfaceColor.surface,
-                                shape = RoundedCornerShape(16.dp)
-                            )
-                    ) {
-                        TextDateIcon(
-                            text = stringResource(R.string.today, LocalDate.now().formatDate()),
-                            icon = painterResource(R.drawable.ic_date)
+                        Box(
+                            modifier = Modifier
+                                .zIndex(-1f)
+                                .fillMaxWidth()
+                                .height(45.dp)
+                                .background(Theme.color.primaryColor.normal)
                         )
+                        Column(
+                            modifier = Modifier
+                                .fillParentMaxWidth()
+                                .padding(horizontal = 16.dp)
+                                .offset(y = (-45).dp)
+                                .background(
+                                    Theme.color.surfaceColor.surface,
+                                    shape = RoundedCornerShape(16.dp)
+                                )
+                        ) {
+                            TextDateIcon(
+                                text = stringResource(R.string.today, LocalDate.now().formatDate()),
+                                icon = painterResource(R.drawable.ic_date)
+                            )
 
                             Row(
                                 modifier = Modifier
@@ -226,240 +221,104 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                                             )
                                     )
 
-                                Image(
-                                    painter = painterResource(
-                                        when (state.sliderState) {
-                                            SliderState.STAY_WORKING -> R.drawable.happy_robot
-                                            SliderState.TADOO -> R.drawable.image_cute_robot
-                                            SliderState.ZERO_PROGRESS -> R.drawable.image_angry
-                                            SliderState.NOTHING_IN_YOUR_LIST -> R.drawable.happy_robot
+                                    Image(
+                                        painter = painterResource(
+                                            when (state.sliderState) {
+                                                SliderState.STAY_WORKING -> R.drawable.happy_robot
+                                                SliderState.TADOO -> R.drawable.image_cute_robot
+                                                SliderState.ZERO_PROGRESS -> R.drawable.image_angry
+                                                SliderState.NOTHING_IN_YOUR_LIST -> R.drawable.happy_robot
 
-                                        }
-                                    ),
-                                    contentDescription = when (state.sliderState) {
-                                        SliderState.STAY_WORKING -> "Happy Robot"
-                                        SliderState.TADOO -> "Cute Robot"
-                                        SliderState.ZERO_PROGRESS -> "Angry Robot"
-                                        SliderState.NOTHING_IN_YOUR_LIST -> "Happy Robot"
-                                    },
+                                            }
+                                        ),
+                                        contentDescription = when (state.sliderState) {
+                                            SliderState.STAY_WORKING -> "Happy Robot"
+                                            SliderState.TADOO -> "Cute Robot"
+                                            SliderState.ZERO_PROGRESS -> "Angry Robot"
+                                            SliderState.NOTHING_IN_YOUR_LIST -> "Happy Robot"
+                                        },
+                                    )
+                                }
+
+                            }
+
+                            Text(
+                                text = stringResource(R.string.overview),
+                                style = Theme.typography.title.large,
+                                color = Theme.color.textColor.title,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 12.dp, bottom = 8.dp)
+                            )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                OverviewCard(
+                                    count = state.doneTasks.size,
+                                    background = Theme.color.status.greenAccent,
+                                    taskState = TaskState.DONE,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                OverviewCard(
+                                    count = state.inProgressTasks.size,
+                                    background = Theme.color.status.yellowAccent,
+                                    taskState = TaskState.IN_PROGRESS,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                OverviewCard(
+                                    count = state.todoTasks.size,
+                                    background = Theme.color.status.purpleAccent,
+                                    taskState = TaskState.TODO,
+                                    modifier = Modifier.weight(1f)
                                 )
                             }
 
                         }
-
-                        Text(
-                            text = stringResource(R.string.overview),
-                            style = Theme.typography.title.large,
-                            color = Theme.color.textColor.title,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 12.dp, bottom = 8.dp)
+                    }
+                    item {
+                        TaskSection(
+                            title = stringResource(R.string.in_progress),
+                            tasks = state.inProgressTasks,
+                            categories = state.categories,
+                            onTaskClick = { id -> viewModel.getTaskDetailsById(id) }
                         )
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            OverviewCard(
-                                count = state.doneTasks.size,
-                                background = Theme.color.status.greenAccent,
-                                taskState = TaskState.DONE,
-                                modifier = Modifier.weight(1f)
-                            )
-                            OverviewCard(
-                                count = state.inProgressTasks.size,
-                                background = Theme.color.status.yellowAccent,
-                                taskState = TaskState.IN_PROGRESS,
-                                modifier = Modifier.weight(1f)
-                            )
-                            OverviewCard(
-                                count = state.todoTasks.size,
-                                background = Theme.color.status.purpleAccent,
-                                taskState = TaskState.TODO,
-                                modifier = Modifier.weight(1f)
-                            )
-                        }
-
                     }
+                    item {
+                        TaskSection(
+                            title = stringResource(R.string.to_do),
+                            tasks = state.todoTasks,
+                            categories = state.categories,
+                            onTaskClick = { id -> viewModel.getTaskDetailsById(id) }
+                        )
+                    }
+
+                    item {
+                        TaskSection(
+                            title = stringResource(R.string.done),
+                            tasks = state.doneTasks,
+                            categories = state.categories,
+                            onTaskClick = { id -> viewModel.getTaskDetailsById(id) }
+                        )
+                    }
+
                 }
-                if (state.inProgressTasks.isNotEmpty())
-                    item {
-                        TextHeadTaskSection(
-                            name = stringResource(R.string.in_progress),
-                            numberOfItem = 12,
-                            modifier = Modifier.padding(
-                                start = 16.dp,
-                                end = 16.dp,
-                                bottom = 8.dp
-                            ),
-                        ) {
-
-                        }
-
-                        LazyRow(
-                            contentPadding = PaddingValues(horizontal = 16.dp),
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            if (state.inProgressTasks.isNotEmpty())
-                                items(state.inProgressTasks.chunked(2)) { pair ->
-                                    Column(modifier = Modifier.fillMaxWidth()) {
-                                        // First item in the pair
-                                        CategoryTaskCard(
-                                            title = pair[0].title,
-                                            description = pair[0].description,
-                                            priorityTask = pair[0].priority,
-                                            icon = painterResource(R.drawable.ic_quran),
-                                            modifier = Modifier
-                                                .fillParentMaxWidth(0.95f)
-                                                .padding(bottom = 8.dp)
-                                        ) {
-                                            viewModel.getTaskDetailsById(
-                                                id = pair[0].id
-                                            )
-                                        }
-
-                                        if (pair.size > 1) {
-                                            CategoryTaskCard(
-                                                title = pair[1].title,
-                                                description = pair[1].description,
-                                                priorityTask = pair[1].priority,
-                                                icon = painterResource(R.drawable.ic_quran),
-                                                modifier = Modifier.fillParentMaxWidth(0.95f)
-                                            ) {
-                                                viewModel.getTaskDetailsById(
-                                                    id = pair[1].id
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-
-                        }
-                    }
-                if (state.todoTasks.isNotEmpty())
-                    item {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        TextHeadTaskSection(
-                            name = stringResource(R.string.to_do),
-                            numberOfItem = 12,
-                            modifier = Modifier
-                                .fillParentMaxWidth(0.95f)
-                                .padding(bottom = 8.dp)
-                                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-                        ) {
-
-                        }
-
-                        LazyRow(
-                            contentPadding = PaddingValues(horizontal = 16.dp),
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            val taskPairs =
-                                state.todoTasks.chunked(2) // Split into [[task1, task2], [task3, task4], ...]
-
-                            itemsIndexed(taskPairs) { index, pair ->
-                                Column(modifier = Modifier.fillMaxWidth()) {
-                                    CategoryTaskCard(
-                                        title = pair[0].title,
-                                        description = pair[0].description,
-                                        priorityTask = pair[0].priority,
-                                        icon = painterResource(R.drawable.ic_quran),
-                                        modifier = Modifier
-                                            .fillParentMaxWidth(0.95f)
-                                            .padding(bottom = 8.dp)
-                                    ) {
-                                        viewModel.getTaskDetailsById(id = pair[0].id)
-                                    }
-
-                                    if (pair.size > 1) {
-                                        CategoryTaskCard(
-                                            title = pair[1].title,
-                                            description = pair[1].description,
-                                            priorityTask = pair[1].priority,
-                                            icon = painterResource(R.drawable.ic_quran),
-                                            modifier = Modifier
-                                                .fillParentMaxWidth(0.95f)
-                                                .padding(bottom = 8.dp)
-                                        ) {
-                                            viewModel.getTaskDetailsById(id = pair[1].id)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                if (state.doneTasks.isNotEmpty())
-                    item {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        TextHeadTaskSection(
-                            name = stringResource(R.string.done),
-                            numberOfItem = 12,
-                            modifier = Modifier.padding(
-                                start = 16.dp,
-                                end = 16.dp,
-                                bottom = 8.dp
-                            ),
-                        ) {
-
-                        }
-
-                        LazyRow(
-                            contentPadding = PaddingValues(horizontal = 16.dp),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 32.dp),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            items(state.doneTasks.chunked(2)) { pair ->
-                                Column(modifier = Modifier.fillMaxWidth()) {
-
-                                    CategoryTaskCard(
-                                        title = pair[0].title,
-                                        description = pair[0].description,
-                                        priorityTask = pair[0].priority,
-                                        icon = painterResource(R.drawable.ic_quran),
-                                        modifier = Modifier
-                                            .fillParentMaxWidth(0.95f)
-                                            .padding(bottom = 8.dp)
-                                    ) {
-                                        viewModel.getTaskDetailsById(id = pair[0].id)
-                                    }
-
-                                    if (pair.size > 1) {
-                                        CategoryTaskCard(
-                                            title = pair[1].title,
-                                            description = pair[1].description,
-                                            priorityTask = pair[1].priority,
-                                            icon = painterResource(R.drawable.ic_quran),
-                                            modifier = Modifier.fillParentMaxWidth(0.95f)
-                                        ) {
-                                            viewModel.getTaskDetailsById(id = pair[0].id)
-                                        }
-                                    }
-                                }
-                            }
-
-                        }
-                    }
-
             }
-        }
-        SnakeBar(
-            Modifier
-                .padding(horizontal = 16.dp)
-                .align(Alignment.TopCenter)
-                .padding(top = 120.dp),
-            message = state.showSnackBar.message,
-            isSuccess = !state.showSnackBar.isError,
-            isVisible = state.showSnackBar.isVisible
-        )
+            SnakeBar(
+                Modifier
+                    .padding(horizontal = 16.dp)
+                    .align(Alignment.TopCenter)
+                    .padding(top = 120.dp),
+                message = state.showSnackBar.message,
+                isSuccess = !state.showSnackBar.isError,
+                isVisible = state.showSnackBar.isVisible
+            )
 
+        }
     }
-}
 }
 
 @Composable
@@ -523,69 +382,70 @@ fun OverviewCard(
 ) {
 
 
-        Box(
-            modifier = modifier
-                .zIndex(999f)
-                .height(112.dp)
-                .width(96.dp)
-                .background(background, shape = RoundedCornerShape(20.dp))
-        ) {
-            Column(modifier
+    Box(
+        modifier = modifier
+            .zIndex(999f)
+            .height(112.dp)
+            .width(96.dp)
+            .background(background, shape = RoundedCornerShape(20.dp))
+    ) {
+        Column(
+            modifier
                 .padding(12.dp)
-                .background(Color.Transparent, shape = RoundedCornerShape(20.dp))) {
-                Box(
-                    modifier
-                        .size(40.dp)
-                        .background(
-                            color = Color(0x3DFFFFFF),
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .insideBorder(1.dp, Color(0x1FFFFFFF), 12.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(
-                            when (taskState) {
-                                TaskState.TODO -> R.drawable.ic_overview_card_todo
-                                TaskState.IN_PROGRESS -> R.drawable.ic_overview_card_in_progress
-                                TaskState.DONE -> R.drawable.ic_overview_card_done
-                            }
-                        ), contentDescription = when (taskState) {
-                            TaskState.TODO -> stringResource(R.string.to_do)
-                            TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
-                            TaskState.DONE -> stringResource(R.string.done)
-                        },
-                        tint = Theme.color.textColor.onPrimary,
-                        modifier = Modifier.size(24.dp)
+                .background(Color.Transparent, shape = RoundedCornerShape(20.dp))
+        ) {
+            Box(
+                modifier
+                    .size(40.dp)
+                    .background(
+                        color = Color(0x3DFFFFFF),
+                        shape = RoundedCornerShape(12.dp)
                     )
-                }
-                Text(
-                    text = count.toString(),
-                    style = Theme.typography.headline.medium,
-                    color = Theme.color.textColor.onPrimary,
-                )
-                Text(
-                    text = when (taskState) {
+                    .insideBorder(1.dp, Color(0x1FFFFFFF), 12.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(
+                        when (taskState) {
+                            TaskState.TODO -> R.drawable.ic_overview_card_todo
+                            TaskState.IN_PROGRESS -> R.drawable.ic_overview_card_in_progress
+                            TaskState.DONE -> R.drawable.ic_overview_card_done
+                        }
+                    ), contentDescription = when (taskState) {
                         TaskState.TODO -> stringResource(R.string.to_do)
                         TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
                         TaskState.DONE -> stringResource(R.string.done)
                     },
-                    style = Theme.typography.label.small,
-                    color = Theme.color.textColor.onPrimaryCaption,
+                    tint = Theme.color.textColor.onPrimary,
+                    modifier = Modifier.size(24.dp)
                 )
-
-
             }
+            Text(
+                text = count.toString(),
+                style = Theme.typography.headline.medium,
+                color = Theme.color.textColor.onPrimary,
+            )
+            Text(
+                text = when (taskState) {
+                    TaskState.TODO -> stringResource(R.string.to_do)
+                    TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
+                    TaskState.DONE -> stringResource(R.string.done)
+                },
+                style = Theme.typography.label.small,
+                color = Theme.color.textColor.onPrimaryCaption,
+            )
 
-                Icon(
-                    painter = painterResource(R.drawable.overview_card_background),
-                    contentDescription = "Overview Card Background",
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(topEnd = 20.dp))
-                        .align(Alignment.TopEnd)
-                        ,
-                    tint = Color.Unspecified
-                )
+
+        }
+
+        Icon(
+            painter = painterResource(R.drawable.overview_card_background),
+            contentDescription = "Overview Card Background",
+            modifier = Modifier
+                .clip(RoundedCornerShape(topEnd = 20.dp))
+                .align(Alignment.TopEnd),
+            tint = Color.Unspecified
+        )
 
     }
 }
