@@ -32,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -98,21 +99,29 @@ private fun CategoryTasksScreenContent(
             onTabSelected(newTab)
         }
     }
+    val context = LocalContext.current
 
-    val tabs = listOf(
-        Selectable(
-            TabItem(stringResource(R.string.to_do), state.todoTasks.size, Task.State.TODO),
-            isSelected = state.selectedTab == Task.State.TODO
-        ),
-        Selectable(
-            TabItem(stringResource(R.string.in_progress), state.inProgressTasks.size, Task.State.IN_PROGRESS),
-            isSelected = state.selectedTab == Task.State.IN_PROGRESS
-        ),
-        Selectable(
-            TabItem(stringResource(R.string.done), state.doneTasks.size, Task.State.DONE),
-            isSelected = state.selectedTab == Task.State.DONE
+    val tabs = remember (state.selectedTab, state.todoTasks, state.inProgressTasks, state.doneTasks) {
+        listOf(
+            Selectable(
+                TabItem(context.getString(R.string.to_do), state.todoTasks.size, Task.State.TODO),
+                isSelected = state.selectedTab == Task.State.TODO
+            ),
+            Selectable(
+                TabItem(
+                    context.getString(R.string.in_progress),
+                    state.inProgressTasks.size,
+                    Task.State.IN_PROGRESS
+                ),
+                isSelected = state.selectedTab == Task.State.IN_PROGRESS
+            ),
+            Selectable(
+                TabItem(context.getString(R.string.done), state.doneTasks.size, Task.State.DONE),
+                isSelected = state.selectedTab == Task.State.DONE
+            )
         )
-    )
+    }
+
 
     Column(
         modifier = Modifier
