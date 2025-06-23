@@ -31,6 +31,7 @@ import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.PriorityCh
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.TextFieldScreenPart
 import com.baghdad.tudee.ui.screens.tasks.AddEditTaskInteractionListener
 import com.baghdad.tudee.ui.utils.now
+import com.baghdad.tudee.viewModel.homescreenViewModel.HomeScreenViewModel
 import kotlinx.datetime.LocalDate
 
 
@@ -41,13 +42,11 @@ fun AddEditTaskBottomSheet(
     addEditTaskInteractionListener: AddEditTaskInteractionListener,
     onDismiss: () -> Unit = { },
 ) {
-
     var titleText by remember { mutableStateOf(initial?.title ?: "") }
     var paragraphText by remember { mutableStateOf(initial?.description ?: "") }
     var dateTime by remember { mutableStateOf(initial?.date ?: LocalDate.now()) }
     var selectedCategoryId by remember { mutableStateOf(initial?.categoryId) }
     var selectedPriority by remember { mutableStateOf(initial?.priority) }
-
 
     Column(modifier = Modifier.fillMaxSize()) {
         LazyVerticalGrid(
@@ -69,7 +68,8 @@ fun AddEditTaskBottomSheet(
                     paragraph = paragraphText,
                     onParagraphChange = { paragraphText = it },
                     dateTime = dateTime,
-                    onDateChange = { dateTime = it }
+                    onDateChange = { dateTime = it },
+                    isEditMode = initial != null
                 )
             }
 
