@@ -20,7 +20,7 @@ fun TasksHorizontalPager(
         state = pagerState,
     ) { currentPage ->
         when(currentPage){
-            0 -> {
+            Task.State.IN_PROGRESS.ordinal -> {
                 TasksList(
                     tasks = uiState.inProgressTasks,
                     categories = uiState.categories,
@@ -29,7 +29,7 @@ fun TasksHorizontalPager(
                     modifier = modifier
                 )
             }
-            1 -> {
+            Task.State.TODO.ordinal -> {
                 TasksList(
                     tasks = uiState.todoTasks,
                     categories = uiState.categories,
@@ -38,7 +38,7 @@ fun TasksHorizontalPager(
                     modifier = modifier
                 )
             }
-            2 -> {
+            Task.State.DONE.ordinal -> {
                 TasksList(
                     tasks = uiState.doneTasks,
                     categories = uiState.categories,
