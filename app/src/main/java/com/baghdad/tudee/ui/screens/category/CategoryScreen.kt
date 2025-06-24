@@ -142,6 +142,7 @@ fun CategoryScreenContent(
                             CategoryUiState(
                                 title = text,
                                 image = Category.Image.ByteArray(imageBytes),
+                                isPredefined = true
                             )
                         )
                     }
