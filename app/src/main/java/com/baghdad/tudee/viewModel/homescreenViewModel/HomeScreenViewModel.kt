@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
-import java.nio.file.Files.find
 
 class HomeScreenViewModel(
     private val appConfigurationService: AppConfigurationService,
@@ -75,7 +74,7 @@ class HomeScreenViewModel(
         }
     }
 
-    override fun onClickAddNewTask(task: Task) {
+    override fun onClickSaveTask(task: Task) {
         viewModelScope.launch {
             try {
                 taskService.createTask(task)
