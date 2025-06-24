@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.screens.OnboardingScreen.OnboardingScreen
-import com.baghdad.tudee.ui.screens.category.CategoryScreen
+import com.baghdad.tudee.ui.screens.categories.CategoriesScreen
 import com.baghdad.tudee.ui.screens.categoryTasksScreen.CategoryTasksScreen
 import com.baghdad.tudee.ui.screens.homeScreen.HomeScreen
 import com.baghdad.tudee.ui.screens.tasks.TasksScreen
@@ -53,7 +53,7 @@ fun TudeeNavHost(
 
 
         composable<Route.CategoriesScreen> {
-            CategoryScreen(
+            CategoriesScreen(
                 navigateToCategoryTask = {
                     navController.navigate(Route.CategoryTasksScreen(it))
                 }

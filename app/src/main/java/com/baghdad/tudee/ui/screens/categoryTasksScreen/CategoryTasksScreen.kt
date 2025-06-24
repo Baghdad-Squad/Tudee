@@ -28,9 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,7 +46,7 @@ import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.composable.TabItem
 import com.baghdad.tudee.ui.composable.Tabs
-import com.baghdad.tudee.ui.composable.categoryBottomSheet.EditCategoryBottomSheet
+import com.baghdad.tudee.ui.composable.bottomSheet.category.AddEditCategoryBottomSheet
 import com.baghdad.tudee.ui.screens.tasks.components.TasksEmptyScreen
 import com.baghdad.tudee.ui.shared.Selectable
 import com.baghdad.tudee.ui.utils.getCategoryIconPainter
@@ -66,12 +64,12 @@ fun CategoryTasksScreen(
     CategoryTasksScreenContent(
         state = state,
         onTabSelected = viewModel::onTabSelected,
-        isPredefinedCategory = state.isPredefinedCategory,
         onArrowBackClicked = { navigateBack() },
         onCategoryTitleChanged = { newTitle -> viewModel.onCategoryTitleChanged(newTitle) },
-        onCategoryImageChanged = {newImage -> viewModel.onChangeImage(newImage)},
-        onDeleteClick = { viewModel.onDeleteCategory() },
-        onSaveButtonClick = { viewModel.onSaveCategoryChanges() }
+        onCategoryImageChanged = { newImage -> viewModel.onChangeImage(newImage) },
+        onDeleteCategory = { viewModel.onDeleteCategory() },
+        onSaveButtonClick = { viewModel.onSaveCategoryChanges() },
+        onToggleEditCategorySheet = { viewModel.toggleEditCategorySheetVisibility() }
     )
 }
 
@@ -79,21 +77,24 @@ fun CategoryTasksScreen(
 private fun CategoryTasksScreenContent(
     state: CategoryTasksScreenUiState,
     onTabSelected: (Task.State) -> Unit,
-    isPredefinedCategory: Boolean,
     onArrowBackClicked: () -> Unit,
     onCategoryTitleChanged: (String) -> Unit,
     onCategoryImageChanged: (Category.Image) -> Unit,
-    onDeleteClick: () -> Unit,
+    onToggleEditCategorySheet: () -> Unit = {},
+    onToggleDeleteCategorySheet: () -> Unit = {},
+    onDeleteCategory: () -> Unit,
     onSaveButtonClick: () -> Unit,
 ) {
     val context = LocalContext.current
     val pagerState = rememberPagerState(initialPage = state.selectedTab.ordinal) { 3 }
-    var showEditCategoryDialog by remember { mutableStateOf(false) }
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { it ->
-        uriToByteArray(context, it)?.let { onCategoryImageChanged(Category.Image.ByteArray(it)) }
-    }
-    var tempCategoryName by remember { mutableStateOf(state.categoryName) }
-    val painter = rememberAsyncImagePainter(model = launcher)
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { it ->
+            uriToByteArray(
+                context,
+                it
+            )?.let { onCategoryImageChanged(Category.Image.ByteArray(it)) }
+        }
+    rememberAsyncImagePainter(model = launcher)
 
     LaunchedEffect(state.selectedTab) {
         if (pagerState.currentPage != state.selectedTab.ordinal) {
@@ -107,26 +108,35 @@ private fun CategoryTasksScreenContent(
         }
     }
 
-    val tabs = remember (state.selectedTab, state.todoTasks, state.inProgressTasks, state.doneTasks) {
-        listOf(
-            Selectable(
-                TabItem(
-                    context.getString(R.string.in_progress),
-                    state.inProgressTasks.size,
-                    Task.State.IN_PROGRESS
+    val tabs =
+        remember(state.selectedTab, state.todoTasks, state.inProgressTasks, state.doneTasks) {
+            listOf(
+                Selectable(
+                    TabItem(
+                        context.getString(R.string.in_progress),
+                        state.inProgressTasks.size,
+                        Task.State.IN_PROGRESS
+                    ),
+                    isSelected = state.selectedTab == Task.State.IN_PROGRESS
                 ),
-                isSelected = state.selectedTab == Task.State.IN_PROGRESS
-            ),
-            Selectable(
-                TabItem(context.getString(R.string.to_do), state.todoTasks.size, Task.State.TODO),
-                isSelected = state.selectedTab == Task.State.TODO
-            ),
-            Selectable(
-                TabItem(context.getString(R.string.done), state.doneTasks.size, Task.State.DONE),
-                isSelected = state.selectedTab == Task.State.DONE
+                Selectable(
+                    TabItem(
+                        context.getString(R.string.to_do),
+                        state.todoTasks.size,
+                        Task.State.TODO
+                    ),
+                    isSelected = state.selectedTab == Task.State.TODO
+                ),
+                Selectable(
+                    TabItem(
+                        context.getString(R.string.done),
+                        state.doneTasks.size,
+                        Task.State.DONE
+                    ),
+                    isSelected = state.selectedTab == Task.State.DONE
+                )
             )
-        )
-    }
+        }
 
 
     Column(
@@ -143,15 +153,15 @@ private fun CategoryTasksScreenContent(
         ) {
             IconInBox(icon = R.drawable.arrow_left_01, onIconClick = { onArrowBackClicked() })
             Text(
-                text = state.categoryName,
+                text = state.category.title,
                 style = Theme.typography.title.large,
                 color = Theme.color.textColor.title,
                 modifier = Modifier.padding(end = 16.dp)
             )
-            if (!isPredefinedCategory) {
+            if (!state.category.isPredefinedCategory) {
                 Spacer(modifier = Modifier.weight(1f))
                 IconInBox(icon = R.drawable.pencil_edit_02, onIconClick = {
-                    showEditCategoryDialog = true
+                    onToggleEditCategorySheet()
                 }
                 )
             }
@@ -185,7 +195,7 @@ private fun CategoryTasksScreenContent(
                             title = task.title,
                             description = task.description,
                             priorityTask = task.priority,
-                            icon = getCategoryIconPainter(categoryImage = state.categoryImage),
+                            icon = getCategoryIconPainter(categoryImage = state.category.image),
                             onClick = { println("Clicked task: ${task.title}") },
                             date = task.date.toString(),
                             showDate = true
@@ -193,32 +203,19 @@ private fun CategoryTasksScreenContent(
                     }
                 }
             }
-            EditCategoryBottomSheet(
-                isVisible = showEditCategoryDialog,
-                onDismiss = { showEditCategoryDialog = false },
-                title = tempCategoryName,
-                onCategoryTitleChanged = { tempCategoryName = it },
-                onEditImageIconClick = {
+            AddEditCategoryBottomSheet(
+                state = state.addEditCategorySheetState,
+                onCategoryTitleChanged = onCategoryTitleChanged,
+                onUploadIconClicked = {
                     launcher.launch(
                         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                     )
                 },
-                onSaveButtonClick = {
-                    onCategoryTitleChanged(tempCategoryName)
-                    onCategoryImageChanged(state.categoryImage)
-                    onSaveButtonClick()
-                    showEditCategoryDialog = false
+                onDismiss = {
+                    onToggleEditCategorySheet()
                 },
-                onDeleteClick = {
-                    onDeleteClick()
-                    showEditCategoryDialog = false
-                },
-                onCancelButtonClick = {
-                    tempCategoryName = state.categoryName
-                    showEditCategoryDialog = false
-                },
-                isLoading = state.isLoading,
-                image = painter
+                onDeleteClick = onToggleDeleteCategorySheet,
+                onSaveClick = onSaveButtonClick,
             )
         }
     }
