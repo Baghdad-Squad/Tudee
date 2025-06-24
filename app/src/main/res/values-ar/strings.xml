@@ -62,6 +62,15 @@
     <string name="you_just_scrolling_not_working_tudee_is_watching_back_to_work">أنت تتصفح فقط دون عمل، تودي تراقب. عد للعمل!</string>
     <string name="fill_your_day_with_something_awesome">املأ يومك بشيء رائع</string>
     <string name="overview">نظرة عامة</string>
-
-
+    <string name="happy_robot">روبوت سعيد</string>
+    <string name="Cute_Robot">روبوت لطيف</string>
+    <string name="Angry_Robott">روبوت غاضب</string>
+    <string name="Overview_Card_Background">خلفية بطاقة النظرة العامة</string>
+    <string name="Stay_working">استمر في العمل!</string>
+    <string name="Tadaa">تادا!</string>
+    <string name="Zero_progress">لا يوجد تقدم؟!</string>
+    <string name="Nothing_on_your_list">لا يوجد شيء في قائمتك…</string>
+    <string name="an_error_occurred_while_adding_category">حدث خطأ أثناء إضافة الفئة</string>
+    <string name="an_error_occurred_while_fetching_categories">حدث خطأ أثناء جلب الفئات</string>
+    <string name="empty_string" />
 </resources>

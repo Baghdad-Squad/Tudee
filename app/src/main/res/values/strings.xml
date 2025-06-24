@@ -69,4 +69,8 @@
     <string name="Tadaa">Tadaa!</string>
     <string name="Zero_progress">Zero progress?!</string>
     <string name="Nothing_on_your_list">Nothing on your list…</string>
+    <string name="an_error_occurred_while_adding_category">An error occurred while adding category</string>
+    <string name="an_error_occurred_while_fetching_categories">An error occurred while fetching categories</string>
+    <string name="empty_string" />
+
 </resources>
