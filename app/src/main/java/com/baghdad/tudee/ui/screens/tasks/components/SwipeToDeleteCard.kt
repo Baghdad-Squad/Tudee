@@ -101,7 +101,7 @@ fun SwipeToDeleteCard(
                             if (offsetX <= -maxSwipe * 0.5f) {
                                 onDelete()
                             } else {
-                                offsetX = 1f
+                                offsetX = 0f
                             }
                         }
                     }
