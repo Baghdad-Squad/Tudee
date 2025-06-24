@@ -111,7 +111,7 @@ fun AddEditTaskBottomSheet(
         }
         MainButtonPart(showButton, initial?.title, onSave = {
             if (initial == null) {
-                addEditTaskInteractionListener.onClickAddNewTask(
+                addEditTaskInteractionListener.onClickSaveTask(
                     Task(
                         id = 0L,
                         title = titleText,

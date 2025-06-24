@@ -105,6 +105,7 @@ class HomeScreenViewModel(
             try {
                 taskService.editTask(task)
             } catch (e: Exception) {
+                handleError(e)
             }
         }
     }
