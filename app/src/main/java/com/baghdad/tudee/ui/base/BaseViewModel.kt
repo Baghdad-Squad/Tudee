@@ -3,9 +3,9 @@ package com.baghdad.tudee.ui.base
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.baghdad.tudee.R
 import com.baghdad.tudee.ui.composable.SnackbarState
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -35,7 +35,7 @@ abstract class BaseViewModel<S, E>(initialState: S) : ViewModel() {
         onError: (Throwable) -> Unit,
         dispatcher: CoroutineDispatcher = Dispatchers.Default
     ) {
-        return runWithErrorCheck(onError, dispatcher) {
+        return runWithErrorHandling(onError, dispatcher) {
             function().let { result ->
                 onSuccess(result)
             }
@@ -48,7 +48,7 @@ abstract class BaseViewModel<S, E>(initialState: S) : ViewModel() {
         onError: (Throwable) -> Unit,
         dispatcher: CoroutineDispatcher = Dispatchers.Default
     ) {
-        runWithErrorCheck(onError, dispatcher) {
+        runWithErrorHandling(onError, dispatcher) {
             function().distinctUntilChanged().collectLatest {
                 onNewValue(it)
             }
@@ -91,17 +91,17 @@ abstract class BaseViewModel<S, E>(initialState: S) : ViewModel() {
         }
     }
 
-    private fun runWithErrorCheck(
+    private fun runWithErrorHandling(
         onError: (Throwable) -> Unit,
         dispatcher: CoroutineDispatcher,
         function: suspend () -> Unit,
     ) {
-        viewModelScope.launch(dispatcher) {
-            try {
-                function()
-            } catch (throwable: Throwable) {
-                onError(throwable)
-            }
+        val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+            onError(exception)
+        }
+
+        viewModelScope.launch(dispatcher + exceptionHandler) {
+            function()
         }
     }
 }
