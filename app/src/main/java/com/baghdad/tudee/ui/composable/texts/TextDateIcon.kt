@@ -10,7 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 
 @Composable
@@ -28,7 +30,7 @@ fun TextDateIcon(
     ) {
         Icon(
             painter = icon,
-            contentDescription = "date icon",
+            contentDescription = stringResource(R.string.date_icon),
             modifier = Modifier.padding(end = 8.dp)
         )
         Text(

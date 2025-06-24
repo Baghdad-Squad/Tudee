@@ -62,6 +62,12 @@
     <string name="you_just_scrolling_not_working_tudee_is_watching_back_to_work">أنت تتصفح فقط دون عمل، تودي تراقب. عد للعمل!</string>
     <string name="fill_your_day_with_something_awesome">املأ يومك بشيء رائع</string>
     <string name="overview">نظرة عامة</string>
+    <string name="overview_card_background">كارد الاحصائية العامة</string>
+    <string name="stay_working">استمر بالعمل!</string>
+    <string name="tadaa">Tadaa</string>
+    <string name="zero_progress">لايوجد تقدم !</string>
+    <string name="nothing_on_your_list">لايوجد مهام في قائمتك</string>
+    <string name="date_icon">ايقونة التاريخ</string>
 
 
 </resources>

@@ -384,10 +384,10 @@ private fun TextMoodSection(state: HomeScreenUIState) {
 
         TextMoodIcon(
             text = when (state.sliderState) {
-                SliderState.STAY_WORKING -> "Stay working!"
-                SliderState.TADOO -> "Tadaa"
-                SliderState.ZERO_PROGRESS -> "Zero progress?!"
-                SliderState.NOTHING_IN_YOUR_LIST -> "Nothing on your list…"
+                SliderState.STAY_WORKING -> stringResource(R.string.stay_working)
+                SliderState.TADOO -> stringResource(R.string.tadaa)
+                SliderState.ZERO_PROGRESS -> stringResource(R.string.zero_progress)
+                SliderState.NOTHING_IN_YOUR_LIST -> stringResource(R.string.nothing_on_your_list)
 
             },
             icon = painterResource(

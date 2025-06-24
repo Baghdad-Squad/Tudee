@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.ui.screens.homeScreen.TaskState
@@ -35,18 +34,16 @@ fun OverviewCard(
 
     Box(
         modifier = modifier
-            .zIndex(999f)
             .height(112.dp)
             .width(96.dp)
             .background(background, shape = RoundedCornerShape(20.dp))
     ) {
         Column(modifier
             .padding(12.dp)
-            .background(Color.Transparent, shape = RoundedCornerShape(20.dp))) {
+            .clip(shape = RoundedCornerShape(20.dp))) {
             Box(
                 modifier
-                    .
-                    size(40.dp)
+                    .size(40.dp)
                     .background(
                         color = Color(0x3DFFFFFF),
                         shape = RoundedCornerShape(12.dp)
@@ -90,7 +87,7 @@ fun OverviewCard(
 
         Icon(
             painter = painterResource(R.drawable.overview_card_background),
-            contentDescription = "Overview Card Background",
+            contentDescription = stringResource(R.string.overview_card_background),
             modifier = Modifier
                 .clip(RoundedCornerShape(topEnd = 20.dp))
                 .align(Alignment.TopEnd)
