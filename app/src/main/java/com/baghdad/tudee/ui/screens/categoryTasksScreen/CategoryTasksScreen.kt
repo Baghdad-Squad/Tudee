@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
@@ -45,6 +46,7 @@ import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.composable.TabItem
 import com.baghdad.tudee.ui.composable.Tabs
 import com.baghdad.tudee.ui.composable.categoryBottomSheet.EditCategoryBottomSheet
+import com.baghdad.tudee.ui.composable.delete_item.DeleteCategoryBottomSheet
 import com.baghdad.tudee.ui.screens.tasks.components.TasksEmptyScreen
 import com.baghdad.tudee.ui.shared.Selectable
 import com.baghdad.tudee.ui.utils.getCategoryIconPainter
@@ -65,7 +67,9 @@ fun CategoryTasksScreen(
         onArrowBackClicked = { navigateBack() },
         onCategoryTitleChanged = { newTitle -> viewModel.onCategoryTitleChanged(newTitle) },
         onDeleteClick = { viewModel.onDeleteCategory() },
-        onSaveButtonClick = { viewModel.onSaveCategoryChanges() }
+        onSaveButtonClick = { viewModel.onSaveCategoryChanges() },
+        isLoading = state.isLoading,
+
     )
 }
 
@@ -78,15 +82,18 @@ private fun CategoryTasksScreenContent(
     onCategoryTitleChanged: (String) -> Unit,
     onDeleteClick: () -> Unit,
     onSaveButtonClick: () -> Unit,
+    isLoading: Boolean,
 ) {
     val pagerState = rememberPagerState(initialPage = state.selectedTab.ordinal) { 3 }
-    var showEditCategoryDialog by remember { mutableStateOf(false) }
-    val result = remember { mutableStateOf<Uri?>(null) }
+    var isEditVisible by remember { mutableStateOf(false) }
+    var isDeleteVisible by remember { mutableStateOf(false) }
+
+    var result by remember { mutableStateOf<Uri?>(null) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
-        result.value = it
+        result = it
     }
     var tempCategoryName by remember { mutableStateOf(state.categoryName) }
-    val painter = rememberAsyncImagePainter(model = result.value)
+    val painter = rememberAsyncImagePainter(model = result ?: state.categoryImage.toString())
 
     LaunchedEffect(state.selectedTab) {
         if (pagerState.currentPage != state.selectedTab.ordinal) {
@@ -145,9 +152,8 @@ private fun CategoryTasksScreenContent(
             if (!isPredefinedCategory) {
                 Spacer(modifier = Modifier.weight(1f))
                 IconInBox(icon = R.drawable.pencil_edit_02, onIconClick = {
-                    showEditCategoryDialog = true
-                }
-                )
+                    isEditVisible = true
+                })
             }
         }
         Tabs(
@@ -186,33 +192,47 @@ private fun CategoryTasksScreenContent(
                     }
                 }
             }
-            EditCategoryBottomSheet(
-                isVisible = showEditCategoryDialog,
-                onDismiss = { showEditCategoryDialog = false },
-                title = tempCategoryName,
-                onCategoryTitleChanged = { tempCategoryName = it },
-                onEditImageIconClick = {
-                    launcher.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                    )
-                },
-                onSaveButtonClick = {
-                    onCategoryTitleChanged(tempCategoryName)
-                    onSaveButtonClick()
-                    showEditCategoryDialog = false
-                },
-                onDeleteClick = {
-                    onDeleteClick()
-                    showEditCategoryDialog = false
-                },
-                onCancelButtonClick = {
-                    tempCategoryName = state.categoryName
-                    showEditCategoryDialog = false
-                },
-                isLoading = state.isLoading,
-                image = painter
-            )
         }
+    }
+
+    if (isEditVisible) {
+        EditCategoryBottomSheet(
+            isVisible = true,
+            onDismiss = {
+                isEditVisible = false
+            },
+            title = tempCategoryName,
+            onCategoryTitleChanged = { tempCategoryName = it },
+            onEditImageIconClick = { launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
+            onSaveButtonClick = {
+                onCategoryTitleChanged(tempCategoryName)
+                isEditVisible = false
+                onSaveButtonClick()
+            },
+            onCancelButtonClick = {
+                isEditVisible = false
+            },
+            onDeleteClick = {
+                isEditVisible = false
+                isDeleteVisible = true
+            },
+            image = painter,
+            isLoading = isLoading
+        )
+    }
+
+    if (isDeleteVisible) {
+        DeleteCategoryBottomSheet(
+            onDeleteClick = {
+                isDeleteVisible = false
+                onDeleteClick()
+            },
+            onCancelClick = {
+                isDeleteVisible = false
+                isEditVisible = true
+            },
+            isLoading = isLoading
+        )
     }
 }
 
