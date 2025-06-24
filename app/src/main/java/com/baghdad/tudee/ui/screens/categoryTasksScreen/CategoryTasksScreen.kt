@@ -1,6 +1,5 @@
 package com.baghdad.tudee.ui.screens.categoryTasksScreen
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -12,10 +11,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
@@ -35,11 +37,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.composable.TabItem
@@ -48,6 +52,7 @@ import com.baghdad.tudee.ui.composable.categoryBottomSheet.EditCategoryBottomShe
 import com.baghdad.tudee.ui.screens.tasks.components.TasksEmptyScreen
 import com.baghdad.tudee.ui.shared.Selectable
 import com.baghdad.tudee.ui.utils.getCategoryIconPainter
+import com.baghdad.tudee.ui.utils.image.uriToByteArray
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -64,6 +69,7 @@ fun CategoryTasksScreen(
         isPredefinedCategory = state.isPredefinedCategory,
         onArrowBackClicked = { navigateBack() },
         onCategoryTitleChanged = { newTitle -> viewModel.onCategoryTitleChanged(newTitle) },
+        onCategoryImageChanged = {newImage -> viewModel.onChangeImage(newImage)},
         onDeleteClick = { viewModel.onDeleteCategory() },
         onSaveButtonClick = { viewModel.onSaveCategoryChanges() }
     )
@@ -76,17 +82,18 @@ private fun CategoryTasksScreenContent(
     isPredefinedCategory: Boolean,
     onArrowBackClicked: () -> Unit,
     onCategoryTitleChanged: (String) -> Unit,
+    onCategoryImageChanged: (Category.Image) -> Unit,
     onDeleteClick: () -> Unit,
     onSaveButtonClick: () -> Unit,
 ) {
+    val context = LocalContext.current
     val pagerState = rememberPagerState(initialPage = state.selectedTab.ordinal) { 3 }
     var showEditCategoryDialog by remember { mutableStateOf(false) }
-    val result = remember { mutableStateOf<Uri?>(null) }
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
-        result.value = it
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { it ->
+        uriToByteArray(context, it)?.let { onCategoryImageChanged(Category.Image.ByteArray(it)) }
     }
     var tempCategoryName by remember { mutableStateOf(state.categoryName) }
-    val painter = rememberAsyncImagePainter(model = result.value)
+    val painter = rememberAsyncImagePainter(model = launcher)
 
     LaunchedEffect(state.selectedTab) {
         if (pagerState.currentPage != state.selectedTab.ordinal) {
@@ -104,16 +111,16 @@ private fun CategoryTasksScreenContent(
     val tabs = remember (state.selectedTab, state.todoTasks, state.inProgressTasks, state.doneTasks) {
         listOf(
             Selectable(
-                TabItem(context.getString(R.string.to_do), state.todoTasks.size, Task.State.TODO),
-                isSelected = state.selectedTab == Task.State.TODO
-            ),
-            Selectable(
                 TabItem(
                     context.getString(R.string.in_progress),
                     state.inProgressTasks.size,
                     Task.State.IN_PROGRESS
                 ),
                 isSelected = state.selectedTab == Task.State.IN_PROGRESS
+            ),
+            Selectable(
+                TabItem(context.getString(R.string.to_do), state.todoTasks.size, Task.State.TODO),
+                isSelected = state.selectedTab == Task.State.TODO
             ),
             Selectable(
                 TabItem(context.getString(R.string.done), state.doneTasks.size, Task.State.DONE),
@@ -125,7 +132,7 @@ private fun CategoryTasksScreenContent(
 
     Column(
         modifier = Modifier
-            .padding(top = 40.dp)
+            .padding(WindowInsets.systemBars.asPaddingValues())
             .background(Theme.color.surfaceColor.surface)
     ) {
         Row(
@@ -167,6 +174,7 @@ private fun CategoryTasksScreenContent(
             if (tasks.isEmpty()) {
                 TasksEmptyScreen()
             } else {
+
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier
@@ -198,6 +206,7 @@ private fun CategoryTasksScreenContent(
                 },
                 onSaveButtonClick = {
                     onCategoryTitleChanged(tempCategoryName)
+                    onCategoryImageChanged(state.categoryImage)
                     onSaveButtonClick()
                     showEditCategoryDialog = false
                 },
@@ -242,4 +251,9 @@ fun IconInBox(
         )
     }
 
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CategoryTasksScreenPreview() {
 }
