@@ -12,10 +12,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
@@ -35,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
@@ -104,16 +108,16 @@ private fun CategoryTasksScreenContent(
     val tabs = remember (state.selectedTab, state.todoTasks, state.inProgressTasks, state.doneTasks) {
         listOf(
             Selectable(
-                TabItem(context.getString(R.string.to_do), state.todoTasks.size, Task.State.TODO),
-                isSelected = state.selectedTab == Task.State.TODO
-            ),
-            Selectable(
                 TabItem(
                     context.getString(R.string.in_progress),
                     state.inProgressTasks.size,
                     Task.State.IN_PROGRESS
                 ),
                 isSelected = state.selectedTab == Task.State.IN_PROGRESS
+            ),
+            Selectable(
+                TabItem(context.getString(R.string.to_do), state.todoTasks.size, Task.State.TODO),
+                isSelected = state.selectedTab == Task.State.TODO
             ),
             Selectable(
                 TabItem(context.getString(R.string.done), state.doneTasks.size, Task.State.DONE),
@@ -125,7 +129,7 @@ private fun CategoryTasksScreenContent(
 
     Column(
         modifier = Modifier
-            .padding(top = 40.dp)
+            .padding(WindowInsets.systemBars.asPaddingValues())
             .background(Theme.color.surfaceColor.surface)
     ) {
         Row(
@@ -167,6 +171,7 @@ private fun CategoryTasksScreenContent(
             if (tasks.isEmpty()) {
                 TasksEmptyScreen()
             } else {
+
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier
@@ -242,4 +247,9 @@ fun IconInBox(
         )
     }
 
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CategoryTasksScreenPreview() {
 }
