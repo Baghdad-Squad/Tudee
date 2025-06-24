@@ -59,6 +59,14 @@ data class TaskDetailsState(
     val category: Category? = null
 )
 
+fun Task.toTaskDetailsState(category: Category?) = TaskDetailsState(
+    id = this.id,
+    title = this.title,
+    description = this.description,
+    taskState = this.state,
+    taskPriority = this.priority,
+    category = category
+)
 
 
 enum class SliderState{

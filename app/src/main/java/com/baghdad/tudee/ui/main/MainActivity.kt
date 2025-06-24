@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -64,6 +65,7 @@ class MainActivity : ComponentActivity() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .navigationBarsPadding()
         ) {
             TudeeNavHost(
                 navController = navController,
@@ -73,21 +75,5 @@ class MainActivity : ComponentActivity() {
             )
             BottomNavigation(navController = navController)
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    TudeeTheme {
-        Greeting("Android")
     }
 }

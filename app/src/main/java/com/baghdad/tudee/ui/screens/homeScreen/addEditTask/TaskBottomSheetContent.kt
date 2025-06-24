@@ -42,11 +42,13 @@ fun AddEditTaskBottomSheet(
     addEditTaskInteractionListener: AddEditTaskInteractionListener,
     onDismiss: () -> Unit = { },
 ) {
+
     var titleText by remember { mutableStateOf(initial?.title ?: "") }
     var paragraphText by remember { mutableStateOf(initial?.description ?: "") }
     var dateTime by remember { mutableStateOf(initial?.date ?: LocalDate.now()) }
     var selectedCategoryId by remember { mutableStateOf(initial?.categoryId) }
     var selectedPriority by remember { mutableStateOf(initial?.priority) }
+
 
     Column(modifier = Modifier.fillMaxSize()) {
         LazyVerticalGrid(
