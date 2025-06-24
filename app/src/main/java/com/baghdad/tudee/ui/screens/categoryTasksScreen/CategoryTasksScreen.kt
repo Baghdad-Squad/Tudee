@@ -65,6 +65,7 @@ fun CategoryTasksScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     CategoryTasksScreenContent(
         state = state,
+        viewModelState = viewModel,
         onTabSelected = viewModel::onTabSelected,
         isPredefinedCategory = state.isPredefinedCategory,
         onArrowBackClicked = { navigateBack() },
@@ -78,6 +79,7 @@ fun CategoryTasksScreen(
 @Composable
 private fun CategoryTasksScreenContent(
     state: CategoryTasksScreenUiState,
+    viewModelState: CategoryTasksViewModel,
     onTabSelected: (Task.State) -> Unit,
     isPredefinedCategory: Boolean,
     onArrowBackClicked: () -> Unit,
@@ -86,13 +88,18 @@ private fun CategoryTasksScreenContent(
     onDeleteClick: () -> Unit,
     onSaveButtonClick: () -> Unit,
 ) {
+
     val context = LocalContext.current
+    var categoryImageState by remember(state.categoryImage) { mutableStateOf(state.categoryImage) }
     val pagerState = rememberPagerState(initialPage = state.selectedTab.ordinal) { 3 }
     var showEditCategoryDialog by remember { mutableStateOf(false) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { it ->
-        uriToByteArray(context, it)?.let { onCategoryImageChanged(Category.Image.ByteArray(it)) }
+        uriToByteArray(context, it)?.let {
+            categoryImageState = Category.Image.ByteArray(it)
+
+        }
     }
-    var tempCategoryName by remember { mutableStateOf(state.categoryName) }
+    var tempCategoryName by remember (state.categoryName) { mutableStateOf(viewModelState.state.value.categoryName) }
     val painter = rememberAsyncImagePainter(model = launcher)
 
     LaunchedEffect(state.selectedTab) {
