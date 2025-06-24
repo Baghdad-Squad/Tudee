@@ -12,10 +12,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
@@ -32,9 +35,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
@@ -93,24 +96,41 @@ private fun CategoryTasksScreenContent(
             pagerState.animateScrollToPage(state.selectedTab.ordinal)
         }
     }
-    val tabs = listOf(
-        Selectable(
-            TabItem("In Progress", state.inProgressTasks.size, Task.State.IN_PROGRESS),
-            isSelected = state.selectedTab == Task.State.IN_PROGRESS
-        ),
-        Selectable(
-            TabItem("To Do", state.todoTasks.size, Task.State.TODO),
-            isSelected = state.selectedTab == Task.State.TODO
-        ),
-        Selectable(
-            TabItem("Done", state.doneTasks.size, Task.State.DONE),
-            isSelected = state.selectedTab == Task.State.DONE
+    LaunchedEffect(pagerState.currentPage) {
+        val newTab = Task.State.entries[pagerState.currentPage]
+        if (state.selectedTab != newTab) {
+            onTabSelected(newTab)
+        }
+    }
+    val context = LocalContext.current
+
+    val tabs = remember (state.selectedTab, state.todoTasks, state.inProgressTasks, state.doneTasks) {
+        listOf(
+            Selectable(
+                TabItem(
+                    context.getString(R.string.in_progress),
+                    state.inProgressTasks.size,
+                    Task.State.IN_PROGRESS
+                ),
+                isSelected = state.selectedTab == Task.State.IN_PROGRESS
+            ),
+            Selectable(
+                TabItem(context.getString(R.string.to_do), state.todoTasks.size, Task.State.TODO),
+                isSelected = state.selectedTab == Task.State.TODO
+            ),
+            Selectable(
+                TabItem(context.getString(R.string.done), state.doneTasks.size, Task.State.DONE),
+                isSelected = state.selectedTab == Task.State.DONE
+            )
         )
-    )
+    }
+
 
     Column(
         modifier = Modifier
-            .background(Theme.color.surfaceColor.surface)) {
+            .padding(WindowInsets.systemBars.asPaddingValues())
+            .background(Theme.color.surfaceColor.surface)
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -122,13 +142,15 @@ private fun CategoryTasksScreenContent(
             Text(
                 text = state.categoryName,
                 style = Theme.typography.title.large,
-                color = Theme.color.textColor.title
+                color = Theme.color.textColor.title,
+                modifier = Modifier.padding(end = 16.dp)
             )
             if (!isPredefinedCategory) {
                 Spacer(modifier = Modifier.weight(1f))
                 IconInBox(icon = R.drawable.pencil_edit_02, onIconClick = {
                     showEditCategoryDialog = true
-                })
+                }
+                )
             }
         }
         Tabs(
@@ -141,14 +163,13 @@ private fun CategoryTasksScreenContent(
             modifier = Modifier.weight(1f)
         ) { page ->
             val tasks = when (Task.State.entries[page]) {
-                Task.State.TODO -> state.todoTasks
                 Task.State.IN_PROGRESS -> state.inProgressTasks
+                Task.State.TODO -> state.todoTasks
                 Task.State.DONE -> state.doneTasks
             }
             if (tasks.isEmpty()) {
                 TasksEmptyScreen()
             } else {
-
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier
@@ -224,9 +245,4 @@ fun IconInBox(
         )
     }
 
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CategoryTasksScreenPreview() {
 }
