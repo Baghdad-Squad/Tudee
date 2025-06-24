@@ -68,7 +68,7 @@ fun DayNightSwitch(
                 exit = slideOutHorizontally(
                     animationSpec = tween(800)
                 ) { fullWidth ->
-                    if (isRtl) -fullWidth else fullWidth
+                    if (isRtl) -fullWidth/2 else fullWidth/2
                 } + fadeOut(animationSpec = tween(800))
             ) {
                 Box(modifier = Modifier.fillMaxSize()) {
@@ -90,7 +90,7 @@ fun DayNightSwitch(
                 exit = slideOutHorizontally(
                     animationSpec = tween(800)
                 ) { fullWidth ->
-                    if (isRtl) fullWidth else -fullWidth
+                    if (isRtl) fullWidth/2 else -fullWidth/2
                 } + fadeOut(animationSpec = tween(800))
             ) {
                 Box(modifier = Modifier.fillMaxSize()) {
