@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.with
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -113,6 +114,7 @@ fun HorizontalDayChipsRow(
         LazyRow(
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
             state = LazyListState(firstVisibleItemIndex = if(dates.indexOf(selectedDate) < 2) 0 else dates.indexOf(selectedDate)-2)
         ) {
             items(dates) { date ->
