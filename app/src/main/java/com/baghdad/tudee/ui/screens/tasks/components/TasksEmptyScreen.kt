@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.baghdad.tudee.R
@@ -30,7 +30,6 @@ fun TasksEmptyScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-//            .offset(y = -(68).dp)
             .padding(start = 12.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -60,7 +59,6 @@ fun TasksEmptyScreen(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .zIndex(-1f)
                 ) {
-
                     TasksEmptyScreenIllustration()
                 }
             }
@@ -73,7 +71,7 @@ fun TasksEmptyScreen(modifier: Modifier = Modifier) {
 fun TasksEmptyScreenTextBox(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
-//            .offset(y = (-40).dp)
+            .offset(x = -(7).dp, y = (-15).dp)
             .clip(
                 RoundedCornerShape(
                     topStart = 16.dp,
@@ -114,21 +112,25 @@ private fun TasksEmptyScreenIllustration(modifier: Modifier = Modifier) {
         Image(
             painter = painterResource(id = R.drawable.no_tasks_image_container),
             contentDescription = stringResource(R.string.image_container),
-            modifier = Modifier.size(168.dp)
+            modifier = Modifier
+                .size(144.dp)
+                .offset(x = -(5).dp)
         )
         Image(
             painter = painterResource(id = R.drawable.no_tasks_overlay),
             contentDescription = stringResource(R.string.no_tasks_overlay_image),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .size(152.dp)
+                .size(136.dp)
+                .offset(x = (0).dp, y = (3).dp)
         )
-        Image(
+        Icon(
             painter = painterResource(id = R.drawable.progress_indicator),
             contentDescription = stringResource(R.string.progress_indicator),
+            tint = Theme.color.surfaceColor.surfaceHigh,
             modifier = Modifier
                 .align(Alignment.CenterStart)
-                .offset( x = (16).dp, y = (20).dp )
+                .padding(top = 20.dp,)
 
         )
         Image(
