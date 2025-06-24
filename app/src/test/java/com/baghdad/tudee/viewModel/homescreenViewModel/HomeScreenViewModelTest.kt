@@ -8,7 +8,7 @@ class HomeScreenViewModelTest {
  fun getState() {}
 
 @Test
- fun onClickAddNewTask() {}
+ fun onClickSaveTask() {}
 
 @Test
  fun showEditTaskDialog() {}

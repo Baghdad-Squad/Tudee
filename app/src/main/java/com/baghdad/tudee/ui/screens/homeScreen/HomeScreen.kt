@@ -60,14 +60,15 @@ import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    HomeScreenContent(modifier = modifier)
+fun HomeScreen(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier = Modifier) {
+    HomeScreenContent(navigateToTaskScreen,modifier = modifier)
 }
 
 @Composable
-fun HomeScreenContent(modifier: Modifier = Modifier) {
+fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier = Modifier) {
     val viewModel: HomeScreenViewModel = koinViewModel()
     val state by viewModel.state.collectAsState()
+
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -153,27 +154,27 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                 ) {
                     item {
 
-                    Box(
-                        modifier = Modifier
-                            .zIndex(-1f)
-                            .fillMaxWidth()
-                            .height(45.dp)
-                            .background(Theme.color.primaryColor.normal)
-                    )
-                    Column(
-                        modifier = Modifier
-                            .fillParentMaxWidth()
-                            .padding(horizontal = 16.dp)
-                            .offset(y = -45.dp)
-                            .background(
-                                Theme.color.surfaceColor.surface,
-                                shape = RoundedCornerShape(16.dp)
-                            )
-                    ) {
-                        TextDateIcon(
-                            text = stringResource(R.string.today, LocalDate.now().formatDate()),
-                            icon = painterResource(R.drawable.ic_date)
+                        Box(
+                            modifier = Modifier
+                                .zIndex(-1f)
+                                .fillMaxWidth()
+                                .height(45.dp)
+                                .background(Theme.color.primaryColor.normal)
                         )
+                        Column(
+                            modifier = Modifier
+                                .fillParentMaxWidth()
+                                .padding(horizontal = 16.dp)
+                                .offset(y = -45.dp)
+                                .background(
+                                    Theme.color.surfaceColor.surface,
+                                    shape = RoundedCornerShape(16.dp)
+                                )
+                        ) {
+                            TextDateIcon(
+                                text = stringResource(R.string.today, LocalDate.now().formatDate()),
+                                icon = painterResource(R.drawable.ic_date)
+                            )
 
                             Row(
                                 modifier = Modifier
@@ -187,10 +188,10 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
 
                                     TextMoodIcon(
                                         text = when (state.sliderState) {
-                                            SliderState.STAY_WORKING -> "Stay working!"
-                                            SliderState.TADOO -> "Tadaa"
-                                            SliderState.ZERO_PROGRESS -> "Zero progress?!"
-                                            SliderState.NOTHING_IN_YOUR_LIST -> "Nothing on your list…"
+                                            SliderState.STAY_WORKING -> stringResource(R.string.Stay_working)
+                                            SliderState.TADOO -> stringResource(R.string.Tadaa)
+                                            SliderState.ZERO_PROGRESS -> stringResource(R.string.Zero_progress)
+                                            SliderState.NOTHING_IN_YOUR_LIST -> stringResource(R.string.Nothing_on_your_list)
 
                                         },
                                         icon = painterResource(
@@ -226,87 +227,144 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                                             )
                                     )
 
-                                Image(
-                                    painter = painterResource(
-                                        when (state.sliderState) {
-                                            SliderState.STAY_WORKING -> R.drawable.happy_robot
-                                            SliderState.TADOO -> R.drawable.image_cute_robot
-                                            SliderState.ZERO_PROGRESS -> R.drawable.image_angry
-                                            SliderState.NOTHING_IN_YOUR_LIST -> R.drawable.happy_robot
+                                    Image(
+                                        painter = painterResource(
+                                            when (state.sliderState) {
+                                                SliderState.STAY_WORKING -> R.drawable.happy_robot
+                                                SliderState.TADOO -> R.drawable.image_cute_robot
+                                                SliderState.ZERO_PROGRESS -> R.drawable.image_angry
+                                                SliderState.NOTHING_IN_YOUR_LIST -> R.drawable.happy_robot
 
-                                        }
-                                    ),
-                                    contentDescription = when (state.sliderState) {
-                                        SliderState.STAY_WORKING -> "Happy Robot"
-                                        SliderState.TADOO -> "Cute Robot"
-                                        SliderState.ZERO_PROGRESS -> "Angry Robot"
-                                        SliderState.NOTHING_IN_YOUR_LIST -> "Happy Robot"
-                                    },
+                                            }
+                                        ),
+                                        contentDescription = when (state.sliderState) {
+                                            SliderState.STAY_WORKING -> stringResource(R.string.happy_robot)
+                                            SliderState.TADOO -> stringResource(R.string.Cute_Robot)
+                                            SliderState.ZERO_PROGRESS -> stringResource(R.string.Angry_Robott)
+                                            SliderState.NOTHING_IN_YOUR_LIST -> stringResource(R.string.happy_robot)
+                                        },
+                                    )
+                                }
+
+                        }
+
+                            Text(
+                                text = stringResource(R.string.overview),
+                                style = Theme.typography.title.large,
+                                color = Theme.color.textColor.title,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 12.dp, bottom = 8.dp)
+                            )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                OverviewCard(
+                                    count = state.doneTasks.size,
+                                    background = Theme.color.status.greenAccent,
+                                    taskState = TaskState.DONE,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                OverviewCard(
+                                    count = state.inProgressTasks.size,
+                                    background = Theme.color.status.yellowAccent,
+                                    taskState = TaskState.IN_PROGRESS,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                OverviewCard(
+                                    count = state.todoTasks.size,
+                                    background = Theme.color.status.purpleAccent,
+                                    taskState = TaskState.TODO,
+                                    modifier = Modifier.weight(1f)
                                 )
                             }
 
                         }
-
-                        Text(
-                            text = stringResource(R.string.overview),
-                            style = Theme.typography.title.large,
-                            color = Theme.color.textColor.title,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 12.dp, bottom = 8.dp)
-                        )
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            OverviewCard(
-                                count = state.doneTasks.size,
-                                background = Theme.color.status.greenAccent,
-                                taskState = TaskState.DONE,
-                                modifier = Modifier.weight(1f)
-                            )
-                            OverviewCard(
-                                count = state.inProgressTasks.size,
-                                background = Theme.color.status.yellowAccent,
-                                taskState = TaskState.IN_PROGRESS,
-                                modifier = Modifier.weight(1f)
-                            )
-                            OverviewCard(
-                                count = state.todoTasks.size,
-                                background = Theme.color.status.purpleAccent,
-                                taskState = TaskState.TODO,
-                                modifier = Modifier.weight(1f)
-                            )
-                        }
-
                     }
-                }
-                if (state.inProgressTasks.isNotEmpty())
-                    item {
-                        TextHeadTaskSection(
-                            name = stringResource(R.string.in_progress),
-                            numberOfItem = 12,
-                            modifier = Modifier.padding(
-                                start = 16.dp,
-                                end = 16.dp,
-                                bottom = 8.dp
-                            ),
-                        ) {
+                    if (state.inProgressTasks.isNotEmpty())
+                        item {
+                            TextHeadTaskSection(
+                                name = stringResource(R.string.in_progress),
+                                numberOfItem = state.inProgressTasks.size,
+                                modifier = Modifier.padding(
+                                    start = 16.dp,
+                                    end = 16.dp,
+                                    bottom = 8.dp
+                                ), onClick = {
+                                    navigateToTaskScreen(Task.State.IN_PROGRESS)
+                                }
+                            )
 
+                            LazyRow(
+                                contentPadding = PaddingValues(horizontal = 16.dp),
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                if (state.inProgressTasks.isNotEmpty())
+                                    items(state.inProgressTasks.chunked(2)) { pair ->
+                                        Column(modifier = Modifier.fillMaxWidth()) {
+                                            CategoryTaskCard(
+                                                title = pair[0].title,
+                                                description = pair[0].description,
+                                                priorityTask = pair[0].priority,
+                                                icon = painterResource(R.drawable.ic_quran),
+                                                modifier = Modifier
+                                                    .fillParentMaxWidth(0.95f)
+                                                    .padding(bottom = 8.dp)
+                                            ) {
+                                                viewModel.getTaskDetailsById(
+                                                    id = pair[0].id
+                                                )
+                                            }
+
+                                            if (pair.size > 1) {
+                                                CategoryTaskCard(
+                                                    title = pair[1].title,
+                                                    description = pair[1].description,
+                                                    priorityTask = pair[1].priority,
+                                                    icon = painterResource(R.drawable.ic_quran),
+                                                    modifier = Modifier.fillParentMaxWidth(0.95f)
+                                                ) {
+                                                    viewModel.getTaskDetailsById(
+                                                        id = pair[1].id
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    }
+
+                            }
                         }
+                    if (state.todoTasks.isNotEmpty())
+                        item {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            TextHeadTaskSection(
+                                name = stringResource(R.string.to_do),
+                                numberOfItem = state.todoTasks.size,
+                                modifier = Modifier
+                                    .fillParentMaxWidth(0.95f)
+                                    .padding(bottom = 8.dp)
+                                    .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                                onClick =
+                                    {
+                                        navigateToTaskScreen(Task.State.TODO)
+                                    },
+                            )
 
-                        LazyRow(
-                            contentPadding = PaddingValues(horizontal = 16.dp),
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            if (state.inProgressTasks.isNotEmpty())
-                                items(state.inProgressTasks.chunked(2)) { pair ->
+                            LazyRow(
+                                contentPadding = PaddingValues(horizontal = 16.dp),
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                val taskPairs =
+                                    state.todoTasks.chunked(2)
+
+                                itemsIndexed(taskPairs) { index, pair ->
                                     Column(modifier = Modifier.fillMaxWidth()) {
-                                        // First item in the pair
                                         CategoryTaskCard(
                                             title = pair[0].title,
                                             description = pair[0].description,
@@ -316,9 +374,61 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                                                 .fillParentMaxWidth(0.95f)
                                                 .padding(bottom = 8.dp)
                                         ) {
-                                            viewModel.getTaskDetailsById(
-                                                id = pair[0].id
-                                            )
+                                            viewModel.getTaskDetailsById(id = pair[0].id)
+                                        }
+
+                                        if (pair.size > 1) {
+                                            CategoryTaskCard(
+                                                title = pair[1].title,
+                                                description = pair[1].description,
+                                                priorityTask = pair[1].priority,
+                                                icon = painterResource(R.drawable.ic_quran),
+                                                modifier = Modifier
+                                                    .fillParentMaxWidth(0.95f)
+                                                    .padding(bottom = 8.dp)
+                                            ) {
+                                                viewModel.getTaskDetailsById(id = pair[1].id)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    if (state.doneTasks.isNotEmpty())
+                        item {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            TextHeadTaskSection(
+                                name = stringResource(R.string.done),
+                                numberOfItem = state.doneTasks.size,
+                                modifier = Modifier.padding(
+                                    start = 16.dp,
+                                    end = 16.dp,
+                                    bottom = 8.dp
+                                ), onClick = {
+                                    navigateToTaskScreen(Task.State.DONE)
+                                }
+                            )
+
+                            LazyRow(
+                                contentPadding = PaddingValues(horizontal = 16.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 32.dp),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                items(state.doneTasks.chunked(2)) { pair ->
+                                    Column(modifier = Modifier.fillMaxWidth()) {
+
+                                        CategoryTaskCard(
+                                            title = pair[0].title,
+                                            description = pair[0].description,
+                                            priorityTask = pair[0].priority,
+                                            icon = painterResource(R.drawable.ic_quran),
+                                            modifier = Modifier
+                                                .fillParentMaxWidth(0.95f)
+                                                .padding(bottom = 8.dp)
+                                        ) {
+                                            viewModel.getTaskDetailsById(id = pair[0].id)
                                         }
 
                                         if (pair.size > 1) {
@@ -329,122 +439,14 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                                                 icon = painterResource(R.drawable.ic_quran),
                                                 modifier = Modifier.fillParentMaxWidth(0.95f)
                                             ) {
-                                                viewModel.getTaskDetailsById(
-                                                    id = pair[1].id
-                                                )
+                                                viewModel.getTaskDetailsById(id = pair[0].id)
                                             }
                                         }
                                     }
                                 }
 
-                        }
-                    }
-                if (state.todoTasks.isNotEmpty())
-                    item {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        TextHeadTaskSection(
-                            name = stringResource(R.string.to_do),
-                            numberOfItem = 12,
-                            modifier = Modifier
-                                .fillParentMaxWidth(0.95f)
-                                .padding(bottom = 8.dp)
-                                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-                        ) {
-
-                        }
-
-                        LazyRow(
-                            contentPadding = PaddingValues(horizontal = 16.dp),
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            val taskPairs =
-                                state.todoTasks.chunked(2) // Split into [[task1, task2], [task3, task4], ...]
-
-                            itemsIndexed(taskPairs) { index, pair ->
-                                Column(modifier = Modifier.fillMaxWidth()) {
-                                    CategoryTaskCard(
-                                        title = pair[0].title,
-                                        description = pair[0].description,
-                                        priorityTask = pair[0].priority,
-                                        icon = painterResource(R.drawable.ic_quran),
-                                        modifier = Modifier
-                                            .fillParentMaxWidth(0.95f)
-                                            .padding(bottom = 8.dp)
-                                    ) {
-                                        viewModel.getTaskDetailsById(id = pair[0].id)
-                                    }
-
-                                    if (pair.size > 1) {
-                                        CategoryTaskCard(
-                                            title = pair[1].title,
-                                            description = pair[1].description,
-                                            priorityTask = pair[1].priority,
-                                            icon = painterResource(R.drawable.ic_quran),
-                                            modifier = Modifier
-                                                .fillParentMaxWidth(0.95f)
-                                                .padding(bottom = 8.dp)
-                                        ) {
-                                            viewModel.getTaskDetailsById(id = pair[1].id)
-                                        }
-                                    }
-                                }
                             }
                         }
-                    }
-                if (state.doneTasks.isNotEmpty())
-                    item {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        TextHeadTaskSection(
-                            name = stringResource(R.string.done),
-                            numberOfItem = 12,
-                            modifier = Modifier.padding(
-                                start = 16.dp,
-                                end = 16.dp,
-                                bottom = 8.dp
-                            ),
-                        ) {
-
-                        }
-
-                        LazyRow(
-                            contentPadding = PaddingValues(horizontal = 16.dp),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 32.dp),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            items(state.doneTasks.chunked(2)) { pair ->
-                                Column(modifier = Modifier.fillMaxWidth()) {
-
-                                    CategoryTaskCard(
-                                        title = pair[0].title,
-                                        description = pair[0].description,
-                                        priorityTask = pair[0].priority,
-                                        icon = painterResource(R.drawable.ic_quran),
-                                        modifier = Modifier
-                                            .fillParentMaxWidth(0.95f)
-                                            .padding(bottom = 8.dp)
-                                    ) {
-                                        viewModel.getTaskDetailsById(id = pair[0].id)
-                                    }
-
-                                    if (pair.size > 1) {
-                                        CategoryTaskCard(
-                                            title = pair[1].title,
-                                            description = pair[1].description,
-                                            priorityTask = pair[1].priority,
-                                            icon = painterResource(R.drawable.ic_quran),
-                                            modifier = Modifier.fillParentMaxWidth(0.95f)
-                                        ) {
-                                            viewModel.getTaskDetailsById(id = pair[0].id)
-                                        }
-                                    }
-                                }
-                            }
-
-                        }
-                    }
 
             }
         }
@@ -577,15 +579,14 @@ fun OverviewCard(
 
             }
 
-                Icon(
-                    painter = painterResource(R.drawable.overview_card_background),
-                    contentDescription = "Overview Card Background",
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(topEnd = 20.dp))
-                        .align(Alignment.TopEnd)
-                        ,
-                    tint = Color.Unspecified
-                )
+        Icon(
+            painter = painterResource(R.drawable.overview_card_background),
+            contentDescription = stringResource(R.string.Overview_Card_Background),
+            modifier = Modifier
+                .clip(RoundedCornerShape(topEnd = 20.dp))
+                .align(Alignment.TopEnd),
+            tint = Color.Unspecified
+        )
 
     }
 }
@@ -654,7 +655,7 @@ private fun ChipTextWithArrowIcon(
 @Composable
 fun HomeScreenPreview() {
     TudeeTheme {
-        HomeScreenContent()
+        HomeScreenContent(navigateToTaskScreen = {})
     }
 }
 

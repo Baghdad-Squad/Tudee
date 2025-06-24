@@ -77,7 +77,6 @@ fun CategoryScreenContent(
         Modifier
             .fillMaxSize()
             .background(Theme.color.surfaceColor.surface)
-            .padding(WindowInsets.statusBars.asPaddingValues())
     ) {
         Column() {
             CategoryScreenBar()
@@ -143,6 +142,7 @@ fun CategoryScreenContent(
                             CategoryUiState(
                                 title = text,
                                 image = Category.Image.ByteArray(imageBytes),
+                                isPredefined = true
                             )
                         )
                     }

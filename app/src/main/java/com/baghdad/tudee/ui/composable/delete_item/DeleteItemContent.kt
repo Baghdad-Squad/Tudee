@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,6 +25,7 @@ fun DeleteItemContent(
 ) {
     Box(
         modifier = Modifier
+            .wrapContentHeight()
             .padding(top = 24.dp)
             .background(
                 color = Theme.color.surfaceColor.surface,
