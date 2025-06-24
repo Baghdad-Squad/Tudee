@@ -29,7 +29,8 @@ fun Category.toUiState(): CategoryUiState {
             is Category.Image.ByteArray -> Category.Image.ByteArray(image.data)
             is Category.Image.Predefined -> Category.Image.Predefined(image.type)
 
-        }
+        },
+        isPredefined = isPredefinedCategory
     )
 }
 

@@ -20,7 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.BasicText
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -111,7 +111,7 @@ private fun Tab(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            BasicText(
+            Text(
                 text = selectableTab.value.title,
                 style = titleStyle,
                 overflow = TextOverflow.Ellipsis,
@@ -144,7 +144,7 @@ private fun Badge(
             ),
         contentAlignment = Alignment.Center
     ) {
-        BasicText(
+        Text(
             text = count.toString(),
             maxLines = 1,
             style = Theme.typography.label.medium.copy(
