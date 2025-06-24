@@ -36,7 +36,7 @@ fun NegativeTextButton(
         onClick = onClick,
         modifier = modifier.height(ButtonDefaults.defaultHeight),
         isEnabled = isEnabled,
-        contentPadding = PaddingValues(vertical = 18.dp, horizontal = 24.dp),
+        contentPadding = PaddingValues(0.dp),
         colors = ButtonColors(
             backgroundColor = Color.Transparent,
             contentColor = animatedContentColor
