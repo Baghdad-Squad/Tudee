@@ -1,6 +1,5 @@
 package com.baghdad.tudee.ui.composable.taskDetailsBottomSheet
 
-import android.R.attr.onClick
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -42,7 +41,7 @@ fun TaskActionsContainer(
                     shape = RoundedCornerShape(100)
                 )
                 .clip(RoundedCornerShape(100))
-                .noRippleClickable{
+                .noRippleClickable {
                     onEditClick()
                 },
             contentAlignment = Alignment.Center
@@ -64,7 +63,8 @@ fun TaskActionsContainer(
                     width = 1.dp,
                     color = Theme.color.textColor.stroke,
                     shape = RoundedCornerShape(100)
-                ).noRippleClickable{
+                )
+                .noRippleClickable {
                     onUpdateTaskStateClick()
                 },
             contentAlignment = Alignment.Center
