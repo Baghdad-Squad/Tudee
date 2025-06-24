@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.baghdad.tudee.domain.entity.Task
-import com.baghdad.tudee.ui.screens.OnboardingScreen.OnboardingScreen
+import com.baghdad.tudee.ui.screens.onboardingScreen.OnboardingScreen
 import com.baghdad.tudee.ui.screens.category.CategoryScreen
 import com.baghdad.tudee.ui.screens.categoryTasksScreen.CategoryTasksScreen
 import com.baghdad.tudee.ui.screens.homeScreen.HomeScreen
