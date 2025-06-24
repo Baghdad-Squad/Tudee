@@ -3,7 +3,6 @@ package com.baghdad.tudee.ui.composable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -40,6 +39,7 @@ fun TudeeCard(
     ) {
         Box(
             modifier = Modifier
+                .fillMaxWidth()
                 .padding(top = 24.dp, start = 16.dp, end = 16.dp, bottom = 48.dp)
                 .height(120.dp)
         ) {
@@ -51,8 +51,6 @@ fun TudeeCard(
                     ),
                 modifier = Modifier.align(Alignment.TopCenter)
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = description,
