@@ -92,9 +92,7 @@ private fun CategoryTasksScreenContent(
     var isEditVisible by remember { mutableStateOf(false) }
     var isDeleteVisible by remember { mutableStateOf(false) }
     val pagerState = rememberPagerState(initialPage = state.selectedTab.ordinal) { 3 }
-    var showEditCategoryDialog by remember { mutableStateOf(false) }
-    val launcher =
-        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { it ->
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { it ->
             uriToByteArray(
                 context,
                 it
@@ -115,7 +113,6 @@ private fun CategoryTasksScreenContent(
                     onTabSelected(newTab)
                 }
             }
-
             val tabs =
                 remember(
                     state.selectedTab,
@@ -250,21 +247,17 @@ private fun CategoryTasksScreenContent(
                     isLoading = isLoading
                 )
             }
-
-    if (isDeleteVisible) {
         DeleteCategoryBottomSheet(
+            isVisible = isDeleteVisible,
             onDeleteClick = {
                 isDeleteVisible = false
                 onDeleteClick()
             },
-            onCancelClick = {
+            onDismiss = {
                 isDeleteVisible = false
-                isEditVisible = true
             },
-            isLoading = isLoading
         )
     }
-}
 
 
 @Composable

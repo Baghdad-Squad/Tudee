@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,10 +21,11 @@ fun DeleteItemContent(
     cancelButtonText: String,
     onDeleteClick: () -> Unit,
     onCancelClick: () -> Unit,
-    isLoading: Boolean = false
 ) {
+
     Box(
         modifier = Modifier
+            .verticalScroll(rememberScrollState())
             .wrapContentHeight()
             .padding(top = 24.dp)
             .background(
@@ -46,7 +49,6 @@ fun DeleteItemContent(
                     cancelButtonText,
                     onDeleteClick,
                     onCancelClick,
-                    isLoading
                 )
             }
         }
