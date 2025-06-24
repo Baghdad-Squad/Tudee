@@ -2,7 +2,7 @@ package com.baghdad.tudee.ui.screens.tasks.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.awaitDragOrCancellation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,6 +32,7 @@ import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
+import kotlin.math.abs
 
 @Composable
 fun SwipeToDeleteCard(
@@ -42,7 +45,7 @@ fun SwipeToDeleteCard(
     onClick: () -> Unit,
 ) {
     val maxSwipe = 100f
-    var offsetX by remember { mutableStateOf(0f) }
+    var offsetX by remember { mutableFloatStateOf(0f) }
 
     val animatedOffsetX by animateFloatAsState(targetValue = offsetX)
 
@@ -70,21 +73,40 @@ fun SwipeToDeleteCard(
             Modifier
                 .offset(x = animatedOffsetX.dp)
                 .pointerInput(Unit) {
-                    detectDragGestures(
-                        onDragEnd = {
-                            if (offsetX <= -maxSwipe * 0.7f) {
+                    awaitPointerEventScope {
+                        while (true) {
+                            val down = awaitPointerEvent().changes.firstOrNull() ?: continue
+                            val drag = awaitDragOrCancellation(down.id) ?: continue
+
+                            var totalDragX = 0f
+                            var totalDragY = 0f
+
+                            while (drag.pressed) {
+                                val event = awaitPointerEvent()
+                                val change = event.changes.firstOrNull() ?: break
+                                val dragAmount = change.positionChange()
+
+                                totalDragX += dragAmount.x
+                                totalDragY += dragAmount.y
+
+                                if (abs(totalDragX) > abs(totalDragY)) {
+                                    change.consume()
+                                    val newOffset = offsetX + dragAmount.x
+                                    offsetX = newOffset.coerceIn(-maxSwipe, 0f)
+                                }
+
+                                if (!change.pressed) break
+                            }
+
+                            if (offsetX <= -maxSwipe * 0.5f) {
                                 onDelete()
                             } else {
-                                offsetX = 0f
+                                offsetX = 1f
                             }
-                        },
-                        onDrag = { change, dragAmount ->
-                            change.consume()
-                            val newOffset = offsetX + dragAmount.x
-                            offsetX = newOffset.coerceIn(-maxSwipe, 0f)
                         }
-                    )
+                    }
                 }
+
         ) {
             CategoryTaskCard(
                 title = title,
