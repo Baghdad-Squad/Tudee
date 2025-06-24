@@ -11,8 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.designSystem.theme.Theme
-
-
 @Composable
 fun DeleteItemContent(
     title: String,
