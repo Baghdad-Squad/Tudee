@@ -33,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -59,7 +60,7 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun CategoryTasksScreen(
     categoryId: Long,
-    viewModel: CategoryTasksViewModel = koinViewModel(parameters = { parametersOf(categoryId.toLong()) }),
+    viewModel: CategoryTasksViewModel = koinViewModel(parameters = { parametersOf(categoryId) }),
     navigateBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -239,6 +240,7 @@ fun IconInBox(
                 shape = CircleShape,
                 color = Theme.color.textColor.stroke
             )
+            .clip(CircleShape)
             .clickable { onIconClick() }
     ) {
         Icon(
