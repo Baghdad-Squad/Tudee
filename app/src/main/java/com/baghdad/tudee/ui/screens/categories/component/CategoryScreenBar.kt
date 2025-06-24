@@ -1,4 +1,4 @@
-package com.baghdad.tudee.ui.screens.category.component
+package com.baghdad.tudee.ui.screens.categories.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

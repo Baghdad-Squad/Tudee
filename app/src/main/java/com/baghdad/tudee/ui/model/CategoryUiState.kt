@@ -1,7 +1,6 @@
-package com.baghdad.tudee.ui.screens.category
+package com.baghdad.tudee.ui.model
 
 import com.baghdad.tudee.domain.entity.Category
-
 
 data class CategoryUiState(
     val id: Long = 0,

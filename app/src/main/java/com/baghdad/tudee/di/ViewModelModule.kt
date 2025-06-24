@@ -2,7 +2,7 @@ package com.baghdad.tudee.di
 
 import com.baghdad.tudee.viewModel.homescreenViewModel.HomeScreenViewModel
 import com.baghdad.tudee.ui.main.MainViewModel
-import com.baghdad.tudee.ui.screens.category.CategoryViewModel
+import com.baghdad.tudee.ui.screens.categories.CategoriesViewModel
 import com.baghdad.tudee.ui.screens.categoryTasksScreen.CategoryTasksViewModel
 import com.baghdad.tudee.ui.screens.tasks.TasksViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -14,7 +14,7 @@ val viewModelModule = module {
     viewModelOf(::TasksViewModel)
     viewModelOf(::MainViewModel)
     viewModelOf(::TasksViewModel)
-    viewModelOf(::CategoryViewModel)
+    viewModelOf(::CategoriesViewModel)
 
     viewModel { (categoryId: Long) ->
         CategoryTasksViewModel(categoryId, get(), get())
