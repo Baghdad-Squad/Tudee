@@ -98,7 +98,8 @@ fun AddEditTaskBottomSheet(
                         selectedCategoryId =
                             if (selectedCategoryId == category.id) null else category.id
                     },
-                    isSelected = selectedCategoryId == category.id
+                    isSelected = selectedCategoryId == category.id,
+                    isPredefined = category.isPredefinedCategory
                 )
             }
         }

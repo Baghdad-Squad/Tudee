@@ -49,6 +49,7 @@ import com.baghdad.tudee.ui.composable.TopTudeeBar
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
 import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
+import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.screens.category.mapper.toTask
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomSheet
 import com.baghdad.tudee.ui.utils.formatDate
@@ -61,12 +62,12 @@ import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    HomeScreenContent(modifier = modifier)
+fun HomeScreen(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier = Modifier) {
+    HomeScreenContent(navigateToTaskScreen,modifier = modifier)
 }
 
 @Composable
-fun HomeScreenContent(modifier: Modifier = Modifier) {
+fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier = Modifier) {
     val viewModel: HomeScreenViewModel = koinViewModel()
     val state by viewModel.state.collectAsState()
     Scaffold(
@@ -78,7 +79,6 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                 },
                 modifier = Modifier.padding(16.dp)
             )
-
             if (state.showEditTask) {
                 TudeeBottomSheet(
                     isVisible = state.showEditTask,
@@ -106,7 +106,6 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                         onDismiss = { viewModel.toggleAddNewTaskDialog() }
                     )
                 }
-
             } else if (state.showTaskDetails) {
 
                 TudeeBottomSheet(
@@ -133,6 +132,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                 }
             }
         }
+
     ) {
         it
         Box(modifier = modifier.fillMaxSize()) {
@@ -156,6 +156,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                         .background(Theme.color.surfaceColor.surface)
                 ) {
                     item {
+
                         Box(
                             modifier = Modifier
                                 .zIndex(-1f)
@@ -190,10 +191,10 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
 
                                     TextMoodIcon(
                                         text = when (state.sliderState) {
-                                            SliderState.STAY_WORKING -> "Stay working!"
-                                            SliderState.TADOO -> "Tadaa"
-                                            SliderState.ZERO_PROGRESS -> "Zero progress?!"
-                                            SliderState.NOTHING_IN_YOUR_LIST -> "Nothing on your list…"
+                                            SliderState.STAY_WORKING -> stringResource(R.string.Stay_working)
+                                            SliderState.TADOO -> stringResource(R.string.Tadaa)
+                                            SliderState.ZERO_PROGRESS -> stringResource(R.string.Zero_progress)
+                                            SliderState.NOTHING_IN_YOUR_LIST -> stringResource(R.string.Nothing_on_your_list)
 
                                         },
                                         icon = painterResource(
@@ -240,10 +241,10 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                                             }
                                         ),
                                         contentDescription = when (state.sliderState) {
-                                            SliderState.STAY_WORKING -> "Happy Robot"
-                                            SliderState.TADOO -> "Cute Robot"
-                                            SliderState.ZERO_PROGRESS -> "Angry Robot"
-                                            SliderState.NOTHING_IN_YOUR_LIST -> "Happy Robot"
+                                            SliderState.STAY_WORKING -> stringResource(R.string.happy_robot)
+                                            SliderState.TADOO -> stringResource(R.string.Cute_Robot)
+                                            SliderState.ZERO_PROGRESS -> stringResource(R.string.Angry_Robott)
+                                            SliderState.NOTHING_IN_YOUR_LIST -> stringResource(R.string.happy_robot)
                                         },
                                     )
                                 }
@@ -291,15 +292,15 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                         item {
                             TextHeadTaskSection(
                                 name = stringResource(R.string.in_progress),
-                                numberOfItem = 12,
+                                numberOfItem = state.inProgressTasks.size,
                                 modifier = Modifier.padding(
                                     start = 16.dp,
                                     end = 16.dp,
                                     bottom = 8.dp
-                                ),
-                            ) {
-
-                            }
+                                ), onClick = {
+                                    navigateToTaskScreen(Task.State.IN_PROGRESS)
+                                }
+                            )
 
                             LazyRow(
                                 contentPadding = PaddingValues(horizontal = 16.dp),
@@ -309,7 +310,6 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                                 if (state.inProgressTasks.isNotEmpty())
                                     items(state.inProgressTasks.chunked(2)) { pair ->
                                         Column(modifier = Modifier.fillMaxWidth()) {
-                                            // First item in the pair
                                             CategoryTaskCard(
                                                 title = pair[0].title,
                                                 description = pair[0].description,
@@ -347,14 +347,16 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                             Spacer(modifier = Modifier.height(16.dp))
                             TextHeadTaskSection(
                                 name = stringResource(R.string.to_do),
-                                numberOfItem = 12,
+                                numberOfItem = state.todoTasks.size,
                                 modifier = Modifier
                                     .fillParentMaxWidth(0.95f)
                                     .padding(bottom = 8.dp)
                                     .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-                            ) {
-
-                            }
+                                onClick =
+                                    {
+                                        navigateToTaskScreen(Task.State.TODO)
+                                    },
+                            )
 
                             LazyRow(
                                 contentPadding = PaddingValues(horizontal = 16.dp),
@@ -362,7 +364,7 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 val taskPairs =
-                                    state.todoTasks.chunked(2) // Split into [[task1, task2], [task3, task4], ...]
+                                    state.todoTasks.chunked(2)
 
                                 itemsIndexed(taskPairs) { index, pair ->
                                     Column(modifier = Modifier.fillMaxWidth()) {
@@ -400,15 +402,15 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                             Spacer(modifier = Modifier.height(16.dp))
                             TextHeadTaskSection(
                                 name = stringResource(R.string.done),
-                                numberOfItem = 12,
+                                numberOfItem = state.doneTasks.size,
                                 modifier = Modifier.padding(
                                     start = 16.dp,
                                     end = 16.dp,
                                     bottom = 8.dp
-                                ),
-                            ) {
-
-                            }
+                                ), onClick = {
+                                    navigateToTaskScreen(Task.State.DONE)
+                                }
+                            )
 
                             LazyRow(
                                 contentPadding = PaddingValues(horizontal = 16.dp),
@@ -488,6 +490,7 @@ private fun TextDateIcon(
             style = Theme.typography.label.medium,
             color = Theme.color.textColor.body
         )
+
     }
 }
 
@@ -523,6 +526,7 @@ fun OverviewCard(
     taskState: TaskState,
     modifier: Modifier = Modifier,
 ) {
+
 
     Box(
         modifier = modifier
@@ -656,7 +660,7 @@ private fun ChipTextWithArrowIcon(
 @Composable
 fun HomeScreenPreview() {
     TudeeTheme {
-        HomeScreenContent()
+        HomeScreenContent(navigateToTaskScreen = {})
     }
 }
 
