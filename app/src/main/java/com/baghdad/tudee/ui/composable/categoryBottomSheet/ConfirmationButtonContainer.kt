@@ -22,7 +22,6 @@ fun ConfirmationButtonContainer(
     onAddClick: () -> Unit,
     onCancelClick: () -> Unit,
     actionLabel:String,
-    isLoading:Boolean
 ) {
     Box(
         modifier = Modifier
@@ -37,7 +36,6 @@ fun ConfirmationButtonContainer(
             PrimaryButton(
                 label = actionLabel,
                 onClick = onAddClick,
-                isLoading = isLoading,
                 isEnabled = isEnabled,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)

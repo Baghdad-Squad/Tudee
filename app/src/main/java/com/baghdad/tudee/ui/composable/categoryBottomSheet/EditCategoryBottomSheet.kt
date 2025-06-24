@@ -35,7 +35,7 @@ fun EditCategoryBottomSheet(
     onCancelButtonClick: () -> Unit,
     onDeleteClick: () -> Unit,
     image:Painter,
-    isLoading: Boolean
+
 ) {
     TudeeBottomSheet(
         isVisible = isVisible,
@@ -98,7 +98,7 @@ fun EditCategoryBottomSheet(
                 onAddClick = onSaveButtonClick,
                 onCancelClick = onCancelButtonClick,
                 actionLabel = stringResource(R.string.save),
-                isLoading = isLoading
+
             )
 
         }

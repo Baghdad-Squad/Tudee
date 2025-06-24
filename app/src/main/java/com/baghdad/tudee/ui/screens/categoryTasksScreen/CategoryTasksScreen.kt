@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
@@ -71,8 +72,7 @@ fun CategoryTasksScreen(
         onCategoryTitleChanged = { newTitle -> viewModel.onCategoryTitleChanged(newTitle) },
         onCategoryImageChanged = {newImage -> viewModel.onChangeImage(newImage)},
         onDeleteClick = { viewModel.onDeleteCategory() },
-        onSaveButtonClick = { viewModel.onSaveCategoryChanges() },
-        isLoading = state.isLoading
+        onSaveButtonClick = { viewModel.onSaveCategoryChanges() }
     )
 }
 
@@ -86,132 +86,127 @@ private fun CategoryTasksScreenContent(
     onCategoryImageChanged: (Category.Image) -> Unit,
     onDeleteClick: () -> Unit,
     onSaveButtonClick: () -> Unit,
-    isLoading: Boolean,
 ) {
     val context = LocalContext.current
     var isEditVisible by remember { mutableStateOf(false) }
     var isDeleteVisible by remember { mutableStateOf(false) }
     val pagerState = rememberPagerState(initialPage = state.selectedTab.ordinal) { 3 }
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { it ->
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { it ->
             uriToByteArray(
                 context,
                 it
             )?.let { onCategoryImageChanged(Category.Image.ByteArray(it)) }
         }
 
-            var tempCategoryName by remember { mutableStateOf(state.categoryName) }
-            val painter = rememberAsyncImagePainter(model = launcher)
+    var tempCategoryName by remember { mutableStateOf(state.categoryName) }
+    val painter = rememberAsyncImagePainter(model = launcher)
 
-            LaunchedEffect(state.selectedTab) {
-                if (pagerState.currentPage != state.selectedTab.ordinal) {
-                    pagerState.animateScrollToPage(state.selectedTab.ordinal)
-                }
-            }
-            LaunchedEffect(pagerState.currentPage) {
-                val newTab = Task.State.entries[pagerState.currentPage]
-                if (state.selectedTab != newTab) {
-                    onTabSelected(newTab)
-                }
-            }
-            val tabs =
-                remember(
-                    state.selectedTab,
-                    state.todoTasks,
-                    state.inProgressTasks,
-                    state.doneTasks
-                ) {
-                    listOf(
-                        Selectable(
-                            TabItem(
-                                context.getString(R.string.in_progress),
-                                state.inProgressTasks.size,
-                                Task.State.IN_PROGRESS
-                            ),
-                            isSelected = state.selectedTab == Task.State.IN_PROGRESS
-                        ),
-                        Selectable(
-                            TabItem(
-                                context.getString(R.string.to_do),
-                                state.todoTasks.size,
-                                Task.State.TODO
-                            ),
-                            isSelected = state.selectedTab == Task.State.TODO
-                        ),
-                        Selectable(
-                            TabItem(
-                                context.getString(R.string.done),
-                                state.doneTasks.size,
-                                Task.State.DONE
-                            ),
-                            isSelected = state.selectedTab == Task.State.DONE
-                        )
-                    )
-                }
+    LaunchedEffect(state.selectedTab) {
+        if (pagerState.currentPage != state.selectedTab.ordinal) {
+            pagerState.animateScrollToPage(state.selectedTab.ordinal)
+        }
+    }
+    LaunchedEffect(pagerState.currentPage) {
+        val newTab = Task.State.entries[pagerState.currentPage]
+        if (state.selectedTab != newTab) {
+            onTabSelected(newTab)
+        }
+    }
 
-
-            Column(
-                modifier = Modifier
-                    .padding(WindowInsets.systemBars.asPaddingValues())
-                    .background(Theme.color.surfaceColor.surface)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    IconInBox(
-                        icon = R.drawable.arrow_left_01,
-                        onIconClick = { onArrowBackClicked() })
-                    Text(
-                        text = state.categoryName,
-                        style = Theme.typography.title.large,
-                        color = Theme.color.textColor.title,
-                        modifier = Modifier.padding(end = 16.dp)
-                    )
-                    if (!isPredefinedCategory) {
-                        Spacer(modifier = Modifier.weight(1f))
-                        IconInBox(icon = R.drawable.pencil_edit_02, onIconClick = {
-                            isEditVisible = true
-                        })
-                    }
-                }
-                Tabs(
-                    selectableTabs = tabs,
-                    onTabSelected = { tab -> onTabSelected(tab.status) },
-                    modifier = Modifier.padding(bottom = 12.dp)
+    val tabs =
+        remember(state.selectedTab, state.todoTasks, state.inProgressTasks, state.doneTasks) {
+            listOf(
+                Selectable(
+                    TabItem(
+                        context.getString(R.string.in_progress),
+                        state.inProgressTasks.size,
+                        Task.State.IN_PROGRESS
+                    ),
+                    isSelected = state.selectedTab == Task.State.IN_PROGRESS
+                ),
+                Selectable(
+                    TabItem(
+                        context.getString(R.string.to_do),
+                        state.todoTasks.size,
+                        Task.State.TODO
+                    ),
+                    isSelected = state.selectedTab == Task.State.TODO
+                ),
+                Selectable(
+                    TabItem(
+                        context.getString(R.string.done),
+                        state.doneTasks.size,
+                        Task.State.DONE
+                    ),
+                    isSelected = state.selectedTab == Task.State.DONE
                 )
-                HorizontalPager(
-                    state = pagerState,
-                    modifier = Modifier.weight(1f)
-                ) { page ->
-                    val tasks = when (Task.State.entries[page]) {
-                        Task.State.IN_PROGRESS -> state.inProgressTasks
-                        Task.State.TODO -> state.todoTasks
-                        Task.State.DONE -> state.doneTasks
-                    }
-                    if (tasks.isEmpty()) {
-                        TasksEmptyScreen()
-                    } else {
-                        LazyColumn(
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(horizontal = 16.dp)
-                        ) {
-                            items(tasks) { task ->
-                                CategoryTaskCard(
-                                    title = task.title,
-                                    description = task.description,
-                                    priorityTask = task.priority,
-                                    icon = getCategoryIconPainter(categoryImage = state.categoryImage),
-                                    onClick = { println("Clicked task: ${task.title}") },
-                                    date = task.date.toString(),
-                                    showDate = true
-                                )
-                            }
-                        }
+            )
+        }
+
+
+
+    Column(
+        modifier = Modifier
+            .padding(WindowInsets.systemBars.asPaddingValues())
+            .background(Theme.color.surfaceColor.surface)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            IconInBox(icon = R.drawable.arrow_left_01, onIconClick = { onArrowBackClicked() })
+            Text(
+                text = state.categoryName,
+                style = Theme.typography.title.large,
+                color = Theme.color.textColor.title,
+                modifier = Modifier.padding(end = 16.dp)
+            )
+            if (!isPredefinedCategory) {
+                Spacer(modifier = Modifier.weight(1f))
+                IconInBox(icon = R.drawable.pencil_edit_02, onIconClick = {
+                    isEditVisible = true
+                }
+                )
+            }
+        }
+        Tabs(
+            selectableTabs = tabs,
+            onTabSelected = { tab -> onTabSelected(tab.status) },
+            modifier = Modifier.padding(bottom = 12.dp)
+        )
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.weight(1f)
+        ) { page ->
+            val tasks = when (Task.State.entries[page]) {
+                Task.State.IN_PROGRESS -> state.inProgressTasks
+                Task.State.TODO -> state.todoTasks
+                Task.State.DONE -> state.doneTasks
+            }
+            if (tasks.isEmpty()) {
+                TasksEmptyScreen()
+            } else {
+
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp)
+                ) {
+                    items(tasks) { task ->
+                        CategoryTaskCard(
+                            title = task.title,
+                            description = task.description,
+                            priorityTask = task.priority,
+                            icon = getCategoryIconPainter(categoryImage = state.categoryImage),
+                            onClick = { println("Clicked task: ${task.title}") },
+                            date = task.date.toString(),
+                            showDate = true
+                        )
                     }
                 }
             }
@@ -243,21 +238,22 @@ private fun CategoryTasksScreenContent(
                         isEditVisible = false
                         isDeleteVisible = true
                     },
-                    image = painter,
-                    isLoading = isLoading
+                    image = painter
                 )
             }
-        DeleteCategoryBottomSheet(
-            isVisible = isDeleteVisible,
-            onDeleteClick = {
-                isDeleteVisible = false
-                onDeleteClick()
-            },
-            onDismiss = {
-                isDeleteVisible = false
-            },
-        )
+            DeleteCategoryBottomSheet(
+                isVisible = isDeleteVisible,
+                onDeleteClick = {
+                    isDeleteVisible = false
+                    onDeleteClick()
+                },
+                onDismiss = {
+                    isDeleteVisible = false
+                },
+            )
+        }
     }
+}
 
 
 @Composable
@@ -285,4 +281,9 @@ fun IconInBox(
         )
     }
 
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CategoryTasksScreenPreview() {
 }
