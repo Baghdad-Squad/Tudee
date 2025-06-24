@@ -106,7 +106,6 @@ private fun CategoryTasksScreenContent(
             onTabSelected(newTab)
         }
     }
-    val context = LocalContext.current
 
     val tabs = remember (state.selectedTab, state.todoTasks, state.inProgressTasks, state.doneTasks) {
         listOf(
