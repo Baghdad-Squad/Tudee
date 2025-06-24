@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -16,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.designSystem.theme.Theme
+
 
 @Composable
 fun ProgressBar(
@@ -27,7 +29,7 @@ fun ProgressBar(
     val inactiveColor = Theme.color.textColor.disable
 
     Row(
-        horizontalArrangement = Arrangement.SpaceEvenly,
+        horizontalArrangement = Arrangement.Center,
         modifier = modifier
             .fillMaxWidth()
     ) {
@@ -37,6 +39,7 @@ fun ProgressBar(
             )
             Box(
                 modifier = Modifier
+                    .padding(end = if(screen != numOfScreens){ 16.dp } else { 0.dp })
                     .height(5.dp)
                     .width(100.dp)
                     .clip(RoundedCornerShape(100.dp))

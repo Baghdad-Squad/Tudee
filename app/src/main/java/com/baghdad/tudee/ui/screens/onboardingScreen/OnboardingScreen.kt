@@ -1,18 +1,21 @@
-package com.baghdad.tudee.ui.screens.OnboardingScreen
+package com.baghdad.tudee.ui.screens.onboardingScreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -26,14 +29,13 @@ import androidx.compose.ui.zIndex
 import com.baghdad.tudee.R
 import com.baghdad.tudee.ui.composable.ProgressBar
 import com.baghdad.tudee.ui.composable.TudeeCard
-import com.baghdad.tudee.ui.composable.button.ButtonDefaults
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.button.TextButton
 import kotlinx.coroutines.launch
 
 @Composable
 fun OnboardingScreen(
-    onNavigateToHome: () -> Unit
+    onNavigateToHome: () -> Unit,
 ) {
     val pagerState = rememberPagerState {
         3
@@ -59,41 +61,52 @@ fun OnboardingScreen(
 
 
     OnboardingBackground {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .systemBarsPadding(),
+
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.align(Alignment.Center)
-            ) {
-                HorizontalPager(
-                    state = pagerState,
+            if (pagerState.currentPage < 2) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(), contentAlignment = Alignment.TopStart
+                ) {
+                    TextButton(
+                        label = "Skip",
+                        modifier = Modifier.padding(WindowInsets.statusBars.asPaddingValues()),
+                        onClick = {
+                            onNavigateToHome()
+                        },
+                        isEnabled = true,
+                        contentPadding = PaddingValues(
+                            vertical = 0.dp,
+                            horizontal = 16.dp
+                        ),
+                    )
+                }
+            } else Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(WindowInsets.statusBars.asPaddingValues())
+                    .padding(top = 56.dp)
+            )
 
-                    ) {
-                    Column {
-                        Row(
-                            horizontalArrangement = Arrangement.Start,
-                        ) {
-                            if (pagerState.currentPage < 2) {
-                                TextButton(
-                                    label = "Skip",
-                                    onClick = {
-                                        onNavigateToHome()
-                                    },
-                                    isEnabled = true,
-                                    contentPadding = PaddingValues(
-                                        vertical = 0.dp,
-                                        horizontal = 16.dp
-                                    )
-                                )
-                            } else {
-                                Spacer(modifier = Modifier.height(ButtonDefaults.defaultHeight)) // Placeholder for alignment
-                            }
-                        }
+            HorizontalPager(
+                state = pagerState,
 
-                        Spacer(modifier = Modifier.height(153.dp))
+                ) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.9f),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+
+                ) {
+
+
+                    item {
 
                         Image(
                             painter = painterResource(robotImage[pagerState.currentPage]),
@@ -102,10 +115,12 @@ fun OnboardingScreen(
                                 .fillMaxWidth()
                                 .height(260.dp)
                         )
+                    }
+                    item { Spacer(modifier = Modifier.height(32.dp)) }
+                    item {
 
-                        Spacer(modifier = Modifier.height(32.dp))
 
-                        Box {
+                        Box (modifier = Modifier.fillMaxWidth()){
                             TudeeCard(
                                 title = titleList[pagerState.currentPage],
                                 description = descriptionList[pagerState.currentPage]
@@ -123,27 +138,29 @@ fun OnboardingScreen(
                                     }
                                 },
                                 modifier = Modifier
-                                    .align(Alignment.BottomEnd)
+
+                                    .align(Alignment.BottomCenter)
                                     .padding(16.dp)
-                                    .offset(x = -(155).dp, y = 28.dp)
+                                    .offset(y = 28.dp)
                                     .zIndex(1f)
+
                             )
                         }
-
+                    }
+                    item {
                         Spacer(modifier = Modifier.height(32.dp))
                     }
                 }
+            }
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(bottom = 16.dp),
-                    contentAlignment = Alignment.BottomCenter
-                ) {
-                    ProgressBar(currentScreen = pagerState.currentPage + 1)
-                }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 16.dp),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                ProgressBar(currentScreen = pagerState.currentPage + 1)
             }
         }
     }
 }
-
