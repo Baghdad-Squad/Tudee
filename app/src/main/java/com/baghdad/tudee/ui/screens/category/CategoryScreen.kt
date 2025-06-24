@@ -77,7 +77,6 @@ fun CategoryScreenContent(
         Modifier
             .fillMaxSize()
             .background(Theme.color.surfaceColor.surface)
-            .padding(WindowInsets.statusBars.asPaddingValues())
     ) {
         Column() {
             CategoryScreenBar()
