@@ -146,6 +146,7 @@ fun CategoryScreenContent(
                                 isPredefined = true
                             )
                         )
+                        text = ""
                     }
                 }
                 showAddNewCategoryDialog = false
