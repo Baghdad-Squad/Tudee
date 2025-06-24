@@ -240,7 +240,6 @@ fun IconInBox(
                 shape = CircleShape,
                 color = Theme.color.textColor.stroke
             )
-            .clip(CircleShape)
             .noRippleClickable { onIconClick() }
     ) {
         Icon(
