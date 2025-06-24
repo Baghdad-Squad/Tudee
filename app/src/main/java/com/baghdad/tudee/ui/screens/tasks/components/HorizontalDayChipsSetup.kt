@@ -33,6 +33,8 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toLocalDateTime
+import java.time.format.TextStyle
+import java.util.Locale
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
@@ -121,7 +123,7 @@ fun HorizontalDayChipsRow(
                 val isSelected = date == selectedDate
                 DayChip(
                     dayNumber = date.dayOfMonth.toString(),
-                    dayName = date.dayOfWeek.name.take(3),
+                    dayName = date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
                     isSelected = isSelected,
                     onSelected = {
                         tasksInteractionListener.onDateSelectedFromHorizontalRow(date)
