@@ -21,9 +21,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
@@ -31,6 +35,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.ui.utils.noRippleClickable
+import kotlinx.coroutines.launch
 
 @Composable
 fun TudeeTextField(
@@ -44,7 +50,8 @@ fun TudeeTextField(
     maxLines: Int = 1,
 ) {
     var isFocused by remember { mutableStateOf(false) }
-
+    val textFieldFocusRequester = remember { FocusRequester() }
+    val scope = rememberCoroutineScope()
     val animatedBorderColor by animateColorAsState(
         targetValue = if (isFocused) Theme.color.primaryColor.normal
         else Theme.color.textColor.stroke,
@@ -63,7 +70,11 @@ fun TudeeTextField(
             .height(height.dp)
             .border(
                 1.dp, animatedBorderColor, RoundedCornerShape(16.dp)
-            ),
+            ).noRippleClickable{
+                scope.launch {
+                    textFieldFocusRequester.requestFocus()
+                }
+            },
         contentAlignment = Alignment.TopStart
     ) {
         Row(
@@ -106,7 +117,7 @@ fun TudeeTextField(
                         .fillMaxWidth()
                         .onFocusChanged { focusState ->
                             isFocused = focusState.isFocused
-                        },
+                        }.focusRequester(textFieldFocusRequester),
                     maxLines = maxLines,
                     readOnly = readOnly,
                     textStyle = Theme.typography.body.medium.copy(animatedContentColor)

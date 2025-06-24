@@ -13,6 +13,7 @@ import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.ui.composable.CategoryItem
 import com.baghdad.tudee.ui.screens.category.CategoryUiState
 import com.baghdad.tudee.ui.screens.category.mapper.toDrawable
+import com.baghdad.tudee.ui.utils.getCategoryIconPainter
 import com.baghdad.tudee.ui.utils.image.byteArrayToPainter
 
 @Composable
@@ -31,22 +32,13 @@ fun CategoryItems(state : List<CategoryUiState>, onCategoryClick : (Long) -> Uni
         items(state) {
             CategoryItem(
                 label = it.title,
-                icon = when (it.image) {
-                    is Category.Image.ByteArray -> byteArrayToPainter(
-                        it.image.data
-                    )
-
-                    is Category.Image.Predefined -> painterResource(
-                        id = it.image.type.toDrawable()
-                    )
-
-                }
-                    ?: painterResource(R.drawable.ic_add_image),
+                icon = getCategoryIconPainter(it.image),
                 onClick = {
                     onCategoryClick(it.id)
                 },
                 isSelected = false,
                 count = it.taskCount,
+                isPredefined = it.isPredefined
             )
 
         }

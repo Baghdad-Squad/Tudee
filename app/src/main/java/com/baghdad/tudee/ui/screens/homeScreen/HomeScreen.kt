@@ -17,11 +17,13 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,12 +31,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.composable.OverviewCard
@@ -42,12 +49,14 @@ import com.baghdad.tudee.ui.composable.SnakeBar
 import com.baghdad.tudee.ui.composable.TextHeadTaskSection
 import com.baghdad.tudee.ui.composable.TopTudeeBar
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
-import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
+import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.texts.TextDateIcon
 import com.baghdad.tudee.ui.composable.texts.TextMoodIcon
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomSheet
 import com.baghdad.tudee.ui.utils.formatDate
+import com.baghdad.tudee.ui.utils.insideBorder
+import com.baghdad.tudee.ui.utils.noRippleClickable
 import com.baghdad.tudee.ui.utils.now
 import com.baghdad.tudee.viewModel.homescreenViewModel.HomeScreenViewModel
 import kotlinx.datetime.LocalDate
@@ -55,18 +64,12 @@ import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun HomeScreen(
-    navigateToTasks: (Long) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    HomeScreenContent(navigateToTasks, modifier = modifier)
+fun HomeScreen(modifier: Modifier = Modifier) {
+    HomeScreenContent(modifier = modifier)
 }
 
 @Composable
-fun HomeScreenContent(
-    navigateToTasks: (Long) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun HomeScreenContent(modifier: Modifier = Modifier) {
     val viewModel: HomeScreenViewModel = koinViewModel()
     val state by viewModel.state.collectAsState()
     Scaffold(
@@ -78,15 +81,60 @@ fun HomeScreenContent(
                 },
                 modifier = Modifier.padding(16.dp)
             )
+            if (state.showEditTask) {
+                TudeeBottomSheet(
+                    isVisible = state.showEditTask,
+                    onDismiss = { viewModel.togileEditTaskDialog() }
+                ) {
+                    AddEditTaskBottomSheet(
+                        state = state.editTaskState.categories,
+                        addEditTaskInteractionListener = viewModel,
+                        onDismiss = { viewModel.togileEditTaskDialog() }
+                    )
+                }
+            } else if (state.showAddNewTask) {
+                TudeeBottomSheet(
+                    isVisible = state.showAddNewTask,
+                    onDismiss = {
+                        viewModel
+                            .toggleAddNewTaskDialog()
+                    }
+                ) {
+                    AddEditTaskBottomSheet(
+                        state = state.editTaskState.categories,
+                        addEditTaskInteractionListener = viewModel,
+                        onDismiss = { viewModel.toggleAddNewTaskDialog() }
+                    )
+                }
+            } else if (state.showTaskDetails) {
 
+                TudeeBottomSheet(
+                    isVisible = state.showTaskDetails,
+                    onDismiss = { viewModel.toggleTaskDetailsDialog() }
+                ) {
+                    TaskDetailsBottomSheet(
+                        isVisible = state.showTaskDetails,
+                        onDismiss = { viewModel.toggleTaskDetailsDialog() },
+                        task = state.taskDetailsState,
+                        onEditClick = {
+                            //TODO: show edit task bottom sheet
+                            viewModel.toggleTaskDetailsDialog()
+                        },
+                        onUpdateTaskState = { newState ->
+                            if(newState == Task.State.IN_PROGRESS){
+                                viewModel.moveTaskToInProgress(state.taskDetailsState.id)
+                            } else {
+                                viewModel.moveTaskToDone(state.taskDetailsState.id)
+                            }
+                            viewModel.toggleTaskDetailsDialog()
+                        }
+                    )
+                }
+            }
         }
 
     ) {
         it
-        EditBottomSheet(state, viewModel)
-        AddBottomSheet(state, viewModel)
-        TaskDetailsBottomSheet(state, viewModel)
-
         Box(modifier = modifier.fillMaxSize()) {
             Column(
                 modifier
@@ -415,6 +463,7 @@ private fun TextMoodSection(state: HomeScreenUIState) {
     }
 }
 
+
 @Composable
 fun SliderSection(state: HomeScreenUIState) {
     Row(
@@ -494,6 +543,7 @@ fun OverViewSection(state: HomeScreenUIState) {
         )
     }
 }
+
 
 enum class TaskState {
     TODO,

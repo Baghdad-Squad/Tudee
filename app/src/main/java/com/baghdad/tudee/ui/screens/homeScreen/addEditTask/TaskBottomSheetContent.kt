@@ -96,7 +96,8 @@ fun AddEditTaskBottomSheet(
                         selectedCategoryId =
                             if (selectedCategoryId == category.id) null else category.id
                     },
-                    isSelected = selectedCategoryId == category.id
+                    isSelected = selectedCategoryId == category.id,
+                    isPredefined = category.isPredefinedCategory
                 )
             }
         }
@@ -108,9 +109,9 @@ fun AddEditTaskBottomSheet(
             }
         }
         MainButtonPart(showButton, initial?.title, onSave = {
-            addEditTaskInteractionListener.onClickAddNewTask(
+            addEditTaskInteractionListener.onClickSaveTask(
                 Task(
-                    id = 0L,
+                    id = initial?.id?:0L,
                     title = titleText,
                     description = paragraphText,
                     date = dateTime,
