@@ -24,6 +24,7 @@ data class HomeScreenUIState(
     val showSnackBar: SnackBarState = SnackBarState(),
     val isLoading: Boolean = false,
     val categories: List<Category> = emptyList(),
+    val selectedDate: LocalDate? = null,
     )
 
 
