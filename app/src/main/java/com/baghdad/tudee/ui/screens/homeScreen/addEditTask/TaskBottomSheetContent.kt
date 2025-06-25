@@ -93,7 +93,10 @@ fun AddEditTaskBottomSheet(
 
             items(state) { category ->
                 CategoryItem(
-                    label = stringResource((category.image as Category.Image.Predefined).type.getLabelResId()),
+                    label = when (category.image) {
+                        is Category.Image.Predefined -> stringResource((category.image).type.getLabelResId())
+                        is Category.Image.ByteArray -> category.title
+                    },
                     icon = getCategoryIconPainter(category.image),
                     onClick = {
                         selectedCategoryId =
