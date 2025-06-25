@@ -199,8 +199,6 @@ private fun CategoryTasksScreenContent(
                     }
                 }
             }
-            Log.i("get category icon", getCategoryIconPainter(state.categoryImage).toString())
-            Log.d("get category icon", state.categoryImage.toString())
             EditCategoryBottomSheet(
                 isVisible = showEditCategoryDialog,
                 onDismiss = { showEditCategoryDialog = false },
