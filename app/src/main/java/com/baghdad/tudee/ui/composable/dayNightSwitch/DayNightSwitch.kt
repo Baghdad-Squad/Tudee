@@ -5,14 +5,12 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideOut
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -25,9 +23,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -41,6 +40,7 @@ fun DayNightSwitch(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
+    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
     val animateBackgroundColor by animateColorAsState(
         targetValue = if (isDay) Theme.color.primaryColor.normal else Color(0xFF1A1A44),
         animationSpec = tween(durationMillis = 300)
@@ -64,40 +64,36 @@ fun DayNightSwitch(
         ) {
             AnimatedVisibility(
                 visible = isDay,
-                enter = fadeIn(initialAlpha = 0.0f),
-                exit = slideOut(
+                enter = fadeIn(animationSpec = tween(800)),
+                exit = slideOutHorizontally(
                     animationSpec = tween(800)
-                ) {
-                    IntOffset(
-                        it.width - 80,
-                        0
-                    )
-                } + fadeOut(animationSpec = tween(800) , targetAlpha = 0.1f)
+                ) { fullWidth ->
+                    if (isRtl) -fullWidth/2 else fullWidth/2
+                } + fadeOut(animationSpec = tween(800))
             ) {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    Box() {
-                        Image(
-                            painter = painterResource(id = R.drawable.sun),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(32.dp)
-                                .align(Alignment.CenterStart)
-                                .clip(CircleShape)
-                                .noRippleClickable(onClick = { onClick() })
-                        )
-                    }
-
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Image(
+                        painter = painterResource(id = R.drawable.sun),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(32.dp)
+                            .align(Alignment.CenterStart)
+                            .clip(CircleShape)
+                            .noRippleClickable(onClick = onClick)
+                    )
                 }
             }
+
             AnimatedVisibility(
                 visible = !isDay,
-                enter = fadeIn(initialAlpha = 0.0f),
-                exit = slideOut(
+                enter = fadeIn(animationSpec = tween(800)),
+                exit = slideOutHorizontally(
                     animationSpec = tween(800)
-                ) { IntOffset(-it.width + 80, 0) } + fadeOut(tween(800),targetAlpha = 0.1f),
-
-                ) {
-                Box(Modifier.fillMaxWidth()) {
+                ) { fullWidth ->
+                    if (isRtl) fullWidth/2 else -fullWidth/2
+                } + fadeOut(animationSpec = tween(800))
+            ) {
+                Box(modifier = Modifier.fillMaxSize()) {
                     Image(
                         painter = painterResource(id = R.drawable.moon),
                         contentDescription = null,
@@ -105,18 +101,18 @@ fun DayNightSwitch(
                             .size(32.dp)
                             .align(Alignment.CenterEnd)
                             .clip(CircleShape)
-                            .noRippleClickable(onClick = { onClick() })
+                            .noRippleClickable(onClick = onClick)
                     )
                 }
             }
         }
+
         NightStars(isDay)
         CloudCircles(isDay)
         FadedMoonCircles(isDay)
         MoonCircleToCloudCircle(isDay)
     }
 }
-
 
 @Preview
 @Composable

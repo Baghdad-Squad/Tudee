@@ -62,9 +62,10 @@ fun BottomNavigation(
             modifier = modifier
                 .fillMaxWidth()
                 .background(Theme.color.surfaceColor.surfaceHigh)
+                .padding(start = 32.dp, end = 32.dp)
                 .padding(vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             BottomNavigationRoute.entries.forEach { item ->
                 (if (currentRoute == item.route::class.qualifiedName)
