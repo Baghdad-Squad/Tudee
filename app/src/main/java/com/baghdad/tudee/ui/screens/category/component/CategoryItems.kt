@@ -33,7 +33,10 @@ fun CategoryItems(state : List<CategoryUiState>, onCategoryClick : (Long) -> Uni
     ) {
         items(state) {
             CategoryItem(
-                label = stringResource((it.image as Category.Image.Predefined).type.getLabelResId()),
+                label = when(it.image){
+                    is Category.Image.Predefined -> stringResource((it.image).type.getLabelResId())
+                    is Category.Image.ByteArray -> it.title
+                },
                 icon = getCategoryIconPainter(it.image),
                 onClick = {
                     onCategoryClick(it.id)
