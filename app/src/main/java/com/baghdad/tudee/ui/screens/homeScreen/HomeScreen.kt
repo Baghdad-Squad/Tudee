@@ -39,13 +39,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.composable.SnakeBar
+import com.baghdad.tudee.ui.composable.TasksEmptyScreen
 import com.baghdad.tudee.ui.composable.TopTudeeBar
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
 import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
@@ -62,12 +62,12 @@ import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun HomeScreen(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier = Modifier) {
-    HomeScreenContent(navigateToTaskScreen,modifier = modifier)
+fun HomeScreen(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modifier = Modifier) {
+    HomeScreenContent(navigateToTaskScreen, modifier = modifier)
 }
 
 @Composable
-fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier = Modifier) {
+fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modifier = Modifier) {
     val viewModel: HomeScreenViewModel = koinViewModel()
     val state by viewModel.state.collectAsState()
     Scaffold(
@@ -92,19 +92,19 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                     )
                 }
             } else if (state.showAddNewTask) {
-            TudeeBottomSheet(
-                isVisible = state.showAddNewTask,
-                onDismiss = { viewModel.toggleAddNewTaskDialog() }
-            ) {
-                AddEditTaskBottomSheet(
-                    initial = state.addTaskState.currentTask,
-                    state = state.categories,
-                    addEditTaskInteractionListener = viewModel,
-                    onDismiss = {
-                       viewModel.toggleAddNewTaskDialog()
-                    }
-                )
-            }
+                TudeeBottomSheet(
+                    isVisible = state.showAddNewTask,
+                    onDismiss = { viewModel.toggleAddNewTaskDialog() }
+                ) {
+                    AddEditTaskBottomSheet(
+                        initial = state.addTaskState.currentTask,
+                        state = state.categories,
+                        addEditTaskInteractionListener = viewModel,
+                        onDismiss = {
+                            viewModel.toggleAddNewTaskDialog()
+                        }
+                    )
+                }
 
             } else if (state.showTaskDetails) {
 
@@ -353,9 +353,9 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                     .padding(bottom = 8.dp)
                                     .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
                                 onClick =
-                                    {
-                                        navigateToTaskScreen(Task.State.TODO)
-                                    },
+                                {
+                                    navigateToTaskScreen(Task.State.TODO)
+                                },
                             )
 
                             LazyRow(
@@ -451,6 +451,9 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
 
                             }
                         }
+                    if (state.todoTasks.isEmpty() && state.inProgressTasks.isEmpty() && state.doneTasks.isEmpty()) {
+                        item() { TasksEmptyScreen() }
+                    }
 
                 }
             }
