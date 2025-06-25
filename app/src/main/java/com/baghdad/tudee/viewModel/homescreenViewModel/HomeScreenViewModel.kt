@@ -88,7 +88,7 @@ class HomeScreenViewModel(
             taskService.editTask(task)
             loadTasksForDate(state.value.selectedDate?: LocalDate.now())
             _state.update {
-                it.copy(showAddNewTask = false, showEditTask = true)
+                it.copy(showAddNewTask = false)
             }
         }
     }
