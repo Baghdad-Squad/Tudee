@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -30,8 +31,8 @@ import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.MainButton
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.PriorityChipPart
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.TextFieldScreenPart
 import com.baghdad.tudee.ui.screens.tasks.AddEditTaskInteractionListener
+import com.baghdad.tudee.ui.utils.getCategoryIconPainter
 import com.baghdad.tudee.ui.utils.now
-import com.baghdad.tudee.viewModel.homescreenViewModel.HomeScreenViewModel
 import kotlinx.datetime.LocalDate
 
 
@@ -46,7 +47,7 @@ fun AddEditTaskBottomSheet(
     var titleText by remember { mutableStateOf(initial?.title ?: "") }
     var paragraphText by remember { mutableStateOf(initial?.description ?: "") }
     var dateTime by remember { mutableStateOf(initial?.date ?: LocalDate.now()) }
-    var selectedCategoryId by remember { mutableStateOf(initial?.categoryId) }
+    var selectedCategoryId by remember { mutableLongStateOf(initial?.categoryId ?: -1L) }
     var selectedPriority by remember { mutableStateOf(initial?.priority) }
 
 
@@ -96,7 +97,7 @@ fun AddEditTaskBottomSheet(
                     icon = getCategoryIconPainter(category.image),
                     onClick = {
                         selectedCategoryId =
-                            if (selectedCategoryId == category.id) null else category.id
+                            if (selectedCategoryId == category.id) -1 else category.id
                     },
                     isSelected = selectedCategoryId == category.id,
                     isPredefined = category.isPredefinedCategory
@@ -106,8 +107,7 @@ fun AddEditTaskBottomSheet(
 
         val showButton by remember {
             derivedStateOf {
-                titleText.isNotBlank() && paragraphText.isNotBlank() &&
-                        selectedCategoryId != null && selectedPriority != null
+                titleText.isNotBlank() && paragraphText.isNotBlank() && selectedPriority != null
             }
         }
         MainButtonPart(showButton, initial?.title, onSave = {
@@ -119,29 +119,28 @@ fun AddEditTaskBottomSheet(
                         description = paragraphText,
                         date = dateTime,
                         priority = selectedPriority ?: Task.Priority.LOW,
-                        categoryId = selectedCategoryId ?: -1L,
+                        categoryId = selectedCategoryId ,
                         state = Task.State.TODO
                     )
                 )
             } else {
-            addEditTaskInteractionListener.editTask(
-                Task(
-                    id = initial.id,
-                    title = titleText,
-                    description = paragraphText,
-                    date = dateTime,
-                    priority = selectedPriority ?: Task.Priority.LOW,
-                    categoryId = selectedCategoryId ?: -1L,
-                    state = initial.state
+                addEditTaskInteractionListener.onClickSaveTask(
+                    Task(
+                        id = initial.id,
+                        title = titleText,
+                        description = paragraphText,
+                        date = dateTime,
+                        priority = selectedPriority ?: Task.Priority.LOW,
+                        categoryId = selectedCategoryId ,
+                        state = initial.state
+                    )
                 )
-            )
             }
             onDismiss()
-        }, onDismiss = {
+        },onDismiss = {
             onDismiss()
         })
-    }
-}
+}}
 
 @Composable
 fun getCategoryIconPainter(categoryImage: Category.Image): Painter {
