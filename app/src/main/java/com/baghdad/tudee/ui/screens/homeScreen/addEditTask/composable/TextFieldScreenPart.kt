@@ -60,7 +60,8 @@ fun TextFieldScreenPart(
             modifier = Modifier.padding(vertical = 12.dp),
             hint = "Description",
             height = 168,
-            maxLines = 10
+            maxLines = 8,
+            maxCharacter = 512,
         )
 
         TudeeTextField(
