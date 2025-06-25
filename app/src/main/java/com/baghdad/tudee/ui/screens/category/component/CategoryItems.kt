@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.domain.entity.Category
@@ -31,7 +32,10 @@ fun CategoryItems(state : List<CategoryUiState>, onCategoryClick : (Long) -> Uni
     ) {
         items(state) {
             CategoryItem(
-                label = it.title,
+                label = when(it.image) {
+                    Category.Image.Predefined -> it.image.type
+                },
+
                 icon = getCategoryIconPainter(it.image),
                 onClick = {
                     onCategoryClick(it.id)

@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -37,7 +38,7 @@ fun TextFieldScreenPart(
         var isDatePickerVisible by remember { mutableStateOf(false) }
 
         Text(
-            text = "Add Task",
+            text = stringResource(R.string.add_task),
             style = Theme.typography.title.large.copy(Theme.color.textColor.title)
         )
 
@@ -46,7 +47,7 @@ fun TextFieldScreenPart(
         TudeeTextField(
             value = title,
             onValueChange = onTitleChange,
-            hint = "Task title",
+            hint = stringResource(R.string.task_title),
             leadingIcon = painterResource(id = R.drawable.ic_black_note),
         )
 
@@ -54,7 +55,7 @@ fun TextFieldScreenPart(
             value = paragraph,
             onValueChange = onParagraphChange,
             modifier = Modifier.padding(vertical = 12.dp),
-            hint = "Description",
+            hint = stringResource(R.string.description),
             height = 168,
             maxLines = 10
         )

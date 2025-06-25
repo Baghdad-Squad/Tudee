@@ -141,7 +141,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
             ) {
                 TopTudeeBar(
                     title = "Tudee",
-                    description = "Your personal task manager",
+                    description = stringResource(R.string.Your_personal_task_manager),
                     isDay = state.isDark.not(),
                     onChangeTheme = {
                         viewModel.onClickSwitchTheme()

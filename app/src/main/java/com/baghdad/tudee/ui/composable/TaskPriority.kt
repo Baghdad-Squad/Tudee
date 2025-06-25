@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -35,19 +36,19 @@ fun TaskPriority(
         Task.Priority.HIGH -> PriorityProperties(
             Theme.color.status.pinkAccent,
             R.drawable.ic_flag,
-            "High"
+            text = stringResource(R.string.priority_high)
         )
 
         Task.Priority.MEDIUM -> PriorityProperties(
             Theme.color.status.yellowAccent,
             R.drawable.ic_alert,
-            "Medium"
+            text = stringResource(R.string.priority_medium)
         )
 
         Task.Priority.LOW -> PriorityProperties(
             Theme.color.status.greenAccent,
             R.drawable.ic_trade_down,
-            "Low"
+            text = stringResource(R.string.priority_low)
         )
     }
 

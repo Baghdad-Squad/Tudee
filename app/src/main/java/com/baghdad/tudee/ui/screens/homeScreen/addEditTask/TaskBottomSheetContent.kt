@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.baghdad.tudee.R
@@ -82,7 +83,7 @@ fun AddEditTaskBottomSheet(
 
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = "Category",
+                    text = stringResource(R.string.category),
                     style = Theme.typography.title.medium.copy(Theme.color.textColor.title),
                     modifier = Modifier.padding(start = 16.dp)
                 )

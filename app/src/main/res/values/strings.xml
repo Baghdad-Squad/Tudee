@@ -69,4 +69,32 @@
     <string name="Tadaa">Tadaa!</string>
     <string name="Zero_progress">Zero progress?!</string>
     <string name="Nothing_on_your_list">Nothing on your list…</string>
+    <string name="Your_personal_task_manager">Your personal task manager</string>
+    <string name="add_task">Add Task</string>
+    <string name="task_title">Task title</string>
+    <string name="description">Description</string>
+    <string name="priority">Priority</string>
+    <string name="category">Category</string>
+    <string name="priority_high">High</string>
+    <string name="priority_medium">Medium</string>
+    <string name="priority_low">Low</string>
+    <string name="category_gym">Gym</string>
+    <string name="category_medical">Medical</string>
+    <string name="category_shopping">Shopping</string>
+    <string name="category_family_and_friend">Family and Friend</string>
+    <string name="category_cooking">Cooking</string>
+    <string name="category_entertainment">Entertainment</string>
+    <string name="category_traveling">Traveling</string>
+    <string name="category_agriculture">Agriculture</string>
+    <string name="category_coding">Coding</string>
+    <string name="category_adoration">Adoration</string>
+    <string name="category_fixing_bugs">Fixing Bugs</string>
+    <string name="category_cleaning">Cleaning</string>
+    <string name="category_work">Work</string>
+    <string name="category_budgeting">Budgeting</string>
+    <string name="category_self_care">Self-care</string>
+    <string name="category_event">Event</string>
+    <string name="category_education">Education</string>
+
+
 </resources>
