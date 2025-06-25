@@ -31,6 +31,7 @@ import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.MainButton
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.PriorityChipPart
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.TextFieldScreenPart
 import com.baghdad.tudee.ui.screens.tasks.AddEditTaskInteractionListener
+import com.baghdad.tudee.ui.utils.getLabelResId
 import com.baghdad.tudee.ui.utils.now
 import kotlinx.datetime.LocalDate
 
@@ -71,7 +72,7 @@ fun AddEditTaskBottomSheet(
                     onParagraphChange = { paragraphText = it },
                     dateTime = dateTime,
                     onDateChange = { dateTime = it },
-                    isEditMode = initial != null
+
                 )
             }
 
@@ -92,7 +93,7 @@ fun AddEditTaskBottomSheet(
 
             items(state) { category ->
                 CategoryItem(
-                    label = category.title,
+                    label = stringResource((category.image as Category.Image.Predefined).type.getLabelResId()),
                     icon = getCategoryIconPainter(category.image),
                     onClick = {
                         selectedCategoryId =

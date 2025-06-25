@@ -15,6 +15,7 @@ import com.baghdad.tudee.ui.composable.CategoryItem
 import com.baghdad.tudee.ui.screens.category.CategoryUiState
 import com.baghdad.tudee.ui.screens.category.mapper.toDrawable
 import com.baghdad.tudee.ui.utils.getCategoryIconPainter
+import com.baghdad.tudee.ui.utils.getLabelResId
 import com.baghdad.tudee.ui.utils.image.byteArrayToPainter
 
 @Composable
@@ -32,10 +33,7 @@ fun CategoryItems(state : List<CategoryUiState>, onCategoryClick : (Long) -> Uni
     ) {
         items(state) {
             CategoryItem(
-                label = when(it.image) {
-                    Category.Image.Predefined -> it.image.type
-                },
-
+                label = stringResource((it.image as Category.Image.Predefined).type.getLabelResId()),
                 icon = getCategoryIconPainter(it.image),
                 onClick = {
                     onCategoryClick(it.id)
