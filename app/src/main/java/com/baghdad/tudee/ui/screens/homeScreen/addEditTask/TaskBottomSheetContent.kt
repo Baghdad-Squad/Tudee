@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -31,7 +30,6 @@ import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.MainButton
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.PriorityChipPart
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.TextFieldScreenPart
 import com.baghdad.tudee.ui.screens.tasks.AddEditTaskInteractionListener
-import com.baghdad.tudee.ui.utils.getCategoryIconPainter
 import com.baghdad.tudee.ui.utils.now
 import kotlinx.datetime.LocalDate
 
@@ -47,7 +45,7 @@ fun AddEditTaskBottomSheet(
     var titleText by remember { mutableStateOf(initial?.title ?: "") }
     var paragraphText by remember { mutableStateOf(initial?.description ?: "") }
     var dateTime by remember { mutableStateOf(initial?.date ?: LocalDate.now()) }
-    var selectedCategoryId by remember { mutableLongStateOf(initial?.categoryId ?: -1L) }
+    var selectedCategoryId by remember { mutableStateOf(initial?.categoryId ?: -1L) }
     var selectedPriority by remember { mutableStateOf(initial?.priority) }
 
 
@@ -107,7 +105,8 @@ fun AddEditTaskBottomSheet(
 
         val showButton by remember {
             derivedStateOf {
-                titleText.isNotBlank() && paragraphText.isNotBlank() && selectedPriority != null
+                titleText.isNotBlank() && paragraphText.isNotBlank() &&
+                        selectedCategoryId != null && selectedPriority != null
             }
         }
         MainButtonPart(showButton, initial?.title, onSave = {
@@ -140,7 +139,8 @@ fun AddEditTaskBottomSheet(
         },onDismiss = {
             onDismiss()
         })
-}}
+    }
+}
 
 @Composable
 fun getCategoryIconPainter(categoryImage: Category.Image): Painter {

@@ -126,7 +126,10 @@ class TasksViewModel(
     override fun toggleAddEditTaskDialog(initialTaskId: Long?) {
         val initialTask = initialTaskId?.let { taskId ->
             getTaskById(taskId)
-        }
+        }?: Task(
+            date = uiState.value.selectedDate ?: LocalDate.now(),
+            id = 0, title = "", description = "", priority = Task.Priority.LOW, categoryId = 0, state = Task.State.TODO
+        )
         _uiState.update {
             it.copy(
                 initialTask = initialTask,
