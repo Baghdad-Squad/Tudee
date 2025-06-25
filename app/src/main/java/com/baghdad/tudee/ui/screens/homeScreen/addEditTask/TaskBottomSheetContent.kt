@@ -95,7 +95,7 @@ fun AddEditTaskBottomSheet(
                     icon = getCategoryIconPainter(category.image),
                     onClick = {
                         selectedCategoryId =
-                            if (selectedCategoryId == category.id) -1 else category.id
+                            if (selectedCategoryId == category.id) 0 else category.id
                     },
                     isSelected = selectedCategoryId == category.id,
                     isPredefined = category.isPredefinedCategory
