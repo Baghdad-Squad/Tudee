@@ -1,6 +1,5 @@
 package com.baghdad.tudee.ui.screens.categoryTasksScreen
 
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -48,8 +47,8 @@ import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.composable.TabItem
 import com.baghdad.tudee.ui.composable.Tabs
-import com.baghdad.tudee.ui.composable.categoryBottomSheet.EditCategoryBottomSheet
 import com.baghdad.tudee.ui.composable.TasksEmptyScreen
+import com.baghdad.tudee.ui.composable.categoryBottomSheet.EditCategoryBottomSheet
 import com.baghdad.tudee.ui.shared.Selectable
 import com.baghdad.tudee.ui.utils.getCategoryIconPainter
 import com.baghdad.tudee.ui.utils.image.uriToByteArray
@@ -66,7 +65,7 @@ fun CategoryTasksScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     CategoryTasksScreenContent(
         state = state,
-        viewModelState = viewModel,
+        categoryTasksViewModel = viewModel,
         onTabSelected = viewModel::onTabSelected,
         isPredefinedCategory = state.isPredefinedCategory,
         onArrowBackClicked = { navigateBack() },
@@ -80,7 +79,7 @@ fun CategoryTasksScreen(
 @Composable
 private fun CategoryTasksScreenContent(
     state: CategoryTasksScreenUiState,
-    viewModelState: CategoryTasksViewModel,
+    categoryTasksViewModel: CategoryTasksViewModel,
     onTabSelected: (Task.State) -> Unit,
     isPredefinedCategory: Boolean,
     onArrowBackClicked: () -> Unit,
@@ -91,13 +90,12 @@ private fun CategoryTasksScreenContent(
 ) {
 
     val context = LocalContext.current
-    val categoryImageState by remember { mutableStateOf(state.categoryImage) }
     val pagerState = rememberPagerState(initialPage = state.selectedTab.ordinal) { 3 }
     var showEditCategoryDialog by remember { mutableStateOf(false) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { it ->
         uriToByteArray(context, it)?.let { onCategoryImageChanged(Category.Image.ByteArray(it)) }
     }
-    var tempCategoryName by remember (state.categoryName) { mutableStateOf(viewModelState.state.value.categoryName) }
+    var tempCategoryName by remember (state.categoryName) { mutableStateOf(categoryTasksViewModel.state.value.categoryName) }
     val painter = rememberAsyncImagePainter(model = launcher)
 
     LaunchedEffect(state.selectedTab) {
@@ -202,7 +200,7 @@ private fun CategoryTasksScreenContent(
                 isVisible = showEditCategoryDialog,
                 onDismiss = { showEditCategoryDialog = false },
                 title = state.categoryName,
-                onCategoryTitleChanged = { viewModelState.onCategoryTitleChanged(it) },
+                onCategoryTitleChanged = { categoryTasksViewModel.onCategoryTitleChanged(it) },
                 onEditImageIconClick = {
                     launcher.launch(
                         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
