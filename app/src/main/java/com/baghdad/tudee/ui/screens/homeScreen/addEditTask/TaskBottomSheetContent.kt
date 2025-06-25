@@ -105,7 +105,7 @@ fun AddEditTaskBottomSheet(
         val showButton by remember {
             derivedStateOf {
                 titleText.isNotBlank() && paragraphText.isNotBlank() &&
-                        selectedCategoryId != null && selectedPriority != null
+                        selectedCategoryId != 0L && selectedPriority != null
             }
         }
         MainButtonPart(showButton, initial?.title, onSave = {
