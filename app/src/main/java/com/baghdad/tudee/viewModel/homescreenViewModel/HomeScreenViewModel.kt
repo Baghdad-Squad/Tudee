@@ -118,15 +118,6 @@ class HomeScreenViewModel(
         }
     }
 
-//    override fun editTask(task: Task) {
-//        viewModelScope.launch {
-//            try {
-//                taskService.editTask(task)
-//            } catch (e: Exception) {
-//                handleError(e)
-//            }
-//        }
-//    }
 
     override fun togileEditTaskDialog(initialTaskId: Long?) {
         val initialTask = initialTaskId?.let { taskId ->
@@ -163,23 +154,6 @@ class HomeScreenViewModel(
         }
     }
 
-    fun openEditTask(task: Task) {
-        getCategories()
-        _state.update { currentState ->
-            currentState.copy(
-                editTaskState = currentState.editTaskState.copy(currentTask = task),
-                showEditTask = true,
-                showAddNewTask = false,
-                showTaskDetails = false
-            )
-        }
-    }
-
-    fun prepareForAddNewTask() {
-        getCategories()
-        _state.update { it.copy(showAddNewTask = true) }
-    }
-
     override fun onClickEditTask(task: Task) {
         viewModelScope.launch {
             val taskUiState = _state.value.editTaskState
@@ -190,18 +164,6 @@ class HomeScreenViewModel(
             }
         }
     }
-//
-//    override fun toggleAddEditTaskDialog() {
-//
-//        Log.d("HomeScreenViewModel", "toggleAddEditTaskDialog: $initialTask")
-//        _state.update {
-//            it.copy(
-//                addTaskState = it.addTaskState.copy(currentTask = initialTask),
-//                showAddNewTask = !_state.value.showAddNewTask
-//            )
-//        }
-//    }
-
 
     override fun onClickSwitchTheme() {
         viewModelScope.launch {
@@ -232,7 +194,6 @@ class HomeScreenViewModel(
             )
         }
     }
-
 
     override fun moveTaskToDone(taskId: Long) {
         viewModelScope.launch {
