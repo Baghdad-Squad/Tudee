@@ -39,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
@@ -68,41 +69,42 @@ fun HomeScreen(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier = Modi
 fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier = Modifier) {
     val viewModel: HomeScreenViewModel = koinViewModel()
     val state by viewModel.state.collectAsState()
-
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
                 painter = painterResource(R.drawable.ic_add),
                 onClick = {
-                    viewModel.togileEditTaskDialog()
+                    viewModel.toggleAddNewTaskDialog()
                 },
                 modifier = Modifier.padding(16.dp)
             )
             if (state.showEditTask) {
                 TudeeBottomSheet(
                     isVisible = state.showEditTask,
-                    onDismiss = { viewModel.togileEditTaskDialog() }
+                    onDismiss = { viewModel.togileEditTaskDialog(initialTaskId = null) }
                 ) {
                     AddEditTaskBottomSheet(
+                        initial = state.editTaskState.currentTask,
                         state = state.editTaskState.categories,
                         addEditTaskInteractionListener = viewModel,
-                        onDismiss = { viewModel.togileEditTaskDialog() }
+                        onDismiss = { viewModel.togileEditTaskDialog(null) }
                     )
                 }
             } else if (state.showAddNewTask) {
-                TudeeBottomSheet(
-                    isVisible = state.showAddNewTask,
+            TudeeBottomSheet(
+                isVisible = state.showAddNewTask,
+                onDismiss = { viewModel.toggleAddNewTaskDialog() }
+            ) {
+                AddEditTaskBottomSheet(
+                    initial = state.addTaskState.currentTask,
+                    state = state.categories,
+                    addEditTaskInteractionListener = viewModel,
                     onDismiss = {
-                        viewModel
-                            .toggleAddNewTaskDialog()
+                       viewModel.toggleAddNewTaskDialog()
                     }
-                ) {
-                    AddEditTaskBottomSheet(
-                        state = state.editTaskState.categories,
-                        addEditTaskInteractionListener = viewModel,
-                        onDismiss = { viewModel.toggleAddNewTaskDialog() }
-                    )
-                }
+                )
+            }
+
             } else if (state.showTaskDetails) {
 
                 TudeeBottomSheet(
@@ -114,11 +116,11 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                         onDismiss = { viewModel.toggleTaskDetailsDialog() },
                         task = state.taskDetailsState,
                         onEditClick = {
-                            //TODO: show edit task bottom sheet
                             viewModel.toggleTaskDetailsDialog()
+                            viewModel.togileEditTaskDialog(state.taskDetailsState.id)
                         },
                         onUpdateTaskState = { newState ->
-                            if(newState == Task.State.IN_PROGRESS){
+                            if (newState == Task.State.IN_PROGRESS) {
                                 viewModel.moveTaskToInProgress(state.taskDetailsState.id)
                             } else {
                                 viewModel.moveTaskToDone(state.taskDetailsState.id)
@@ -246,7 +248,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                     )
                                 }
 
-                        }
+                            }
 
                             Text(
                                 text = stringResource(R.string.overview),
@@ -448,20 +450,20 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                             }
                         }
 
+                }
             }
-        }
-        SnakeBar(
-            Modifier
-                .padding(horizontal = 16.dp)
-                .align(Alignment.TopCenter)
-                .padding(top = 120.dp),
-            message = state.showSnackBar.message,
-            isSuccess = !state.showSnackBar.isError,
-            isVisible = state.showSnackBar.isVisible
-        )
+            SnakeBar(
+                Modifier
+                    .padding(horizontal = 16.dp)
+                    .align(Alignment.TopCenter)
+                    .padding(top = 120.dp),
+                message = state.showSnackBar.message,
+                isSuccess = !state.showSnackBar.isError,
+                isVisible = state.showSnackBar.isVisible
+            )
 
+        }
     }
-}
 }
 
 @Composable
@@ -525,59 +527,61 @@ fun OverviewCard(
 ) {
 
 
-        Box(
-            modifier = modifier
-                .zIndex(999f)
-                .height(112.dp)
-                .width(96.dp)
-                .background(background, shape = RoundedCornerShape(20.dp))
-        ) {
-            Column(modifier
+    Box(
+        modifier = modifier
+            .zIndex(999f)
+            .height(112.dp)
+            .width(96.dp)
+            .background(background, shape = RoundedCornerShape(20.dp))
+    ) {
+        Column(
+            modifier
                 .padding(12.dp)
-                .background(Color.Transparent, shape = RoundedCornerShape(20.dp))) {
-                Box(
-                    modifier
-                        .size(40.dp)
-                        .background(
-                            color = Color(0x3DFFFFFF),
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .insideBorder(1.dp, Color(0x1FFFFFFF), 12.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(
-                            when (taskState) {
-                                TaskState.TODO -> R.drawable.ic_overview_card_todo
-                                TaskState.IN_PROGRESS -> R.drawable.ic_overview_card_in_progress
-                                TaskState.DONE -> R.drawable.ic_overview_card_done
-                            }
-                        ), contentDescription = when (taskState) {
-                            TaskState.TODO -> stringResource(R.string.to_do)
-                            TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
-                            TaskState.DONE -> stringResource(R.string.done)
-                        },
-                        tint = Theme.color.textColor.onPrimary,
-                        modifier = Modifier.size(24.dp)
+                .background(Color.Transparent, shape = RoundedCornerShape(20.dp))
+        ) {
+            Box(
+                modifier
+                    .size(40.dp)
+                    .background(
+                        color = Color(0x3DFFFFFF),
+                        shape = RoundedCornerShape(12.dp)
                     )
-                }
-                Text(
-                    text = count.toString(),
-                    style = Theme.typography.headline.medium,
-                    color = Theme.color.textColor.onPrimary,
-                )
-                Text(
-                    text = when (taskState) {
+                    .insideBorder(1.dp, Color(0x1FFFFFFF), 12.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(
+                        when (taskState) {
+                            TaskState.TODO -> R.drawable.ic_overview_card_todo
+                            TaskState.IN_PROGRESS -> R.drawable.ic_overview_card_in_progress
+                            TaskState.DONE -> R.drawable.ic_overview_card_done
+                        }
+                    ), contentDescription = when (taskState) {
                         TaskState.TODO -> stringResource(R.string.to_do)
                         TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
                         TaskState.DONE -> stringResource(R.string.done)
                     },
-                    style = Theme.typography.label.small,
-                    color = Theme.color.textColor.onPrimaryCaption,
+                    tint = Theme.color.textColor.onPrimary,
+                    modifier = Modifier.size(24.dp)
                 )
-
-
             }
+            Text(
+                text = count.toString(),
+                style = Theme.typography.headline.medium,
+                color = Theme.color.textColor.onPrimary,
+            )
+            Text(
+                text = when (taskState) {
+                    TaskState.TODO -> stringResource(R.string.to_do)
+                    TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
+                    TaskState.DONE -> stringResource(R.string.done)
+                },
+                style = Theme.typography.label.small,
+                color = Theme.color.textColor.onPrimaryCaption,
+            )
+
+
+        }
 
         Icon(
             painter = painterResource(R.drawable.overview_card_background),
