@@ -2,7 +2,6 @@ package com.baghdad.tudee.ui.screens.tasks.components
 
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.baghdad.tudee.domain.entity.Task

@@ -2,7 +2,6 @@ package com.baghdad.tudee.ui.screens.category.mapper
 
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.ui.screens.category.CategoryUiState
-import kotlin.uuid.ExperimentalUuidApi
 
 
 fun CategoryUiState.toEntity(): Category {

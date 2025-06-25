@@ -3,8 +3,6 @@ package com.baghdad.tudee.data.mapper
 import com.baghdad.tudee.data.model.TaskDto
 import com.baghdad.tudee.domain.entity.Task
 import kotlinx.datetime.LocalDate
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 fun TaskDto.toEntity(): Task = Task(
     id = this.id,

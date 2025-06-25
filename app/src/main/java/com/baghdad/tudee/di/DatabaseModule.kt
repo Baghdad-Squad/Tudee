@@ -7,7 +7,6 @@ import com.baghdad.tudee.data.database.dao.AppConfigurationDao
 import com.baghdad.tudee.data.database.dao.CategoryDao
 import com.baghdad.tudee.data.database.dao.TaskDao
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val databaseModule = module {

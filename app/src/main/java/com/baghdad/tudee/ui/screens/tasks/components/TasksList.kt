@@ -17,7 +17,6 @@ import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.TasksEmptyScreen
 import com.baghdad.tudee.ui.screens.category.mapper.toDrawable
-import com.baghdad.tudee.ui.screens.tasks.TasksUiState
 
 @Composable
 fun TasksList(

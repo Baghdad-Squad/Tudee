@@ -21,7 +21,6 @@ import com.baghdad.tudee.ui.utils.formatDate
 import com.baghdad.tudee.ui.utils.millisToLocalDate
 import com.baghdad.tudee.ui.utils.onClickTextField
 import kotlinx.datetime.LocalDate
-import kotlin.uuid.ExperimentalUuidApi
 
 @Composable
 fun TextFieldScreenPart(

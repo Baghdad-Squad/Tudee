@@ -1,6 +1,5 @@
 package com.baghdad.tudee.viewModel.homescreenViewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baghdad.tudee.domain.entity.Task

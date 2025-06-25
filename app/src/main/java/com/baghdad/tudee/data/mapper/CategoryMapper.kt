@@ -2,7 +2,6 @@ package com.baghdad.tudee.data.mapper
 
 import com.baghdad.tudee.data.model.CategoryDto
 import com.baghdad.tudee.domain.entity.Category
-import kotlin.uuid.ExperimentalUuidApi
 
 fun CategoryDto.toEntity(): Category {
     val image = when (imageType) {

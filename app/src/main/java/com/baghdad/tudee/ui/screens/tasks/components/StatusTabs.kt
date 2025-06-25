@@ -10,7 +10,6 @@ import com.baghdad.tudee.R
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.TabItem
 import com.baghdad.tudee.ui.composable.Tabs
-import com.baghdad.tudee.ui.screens.tasks.TasksInteractionListener
 import com.baghdad.tudee.ui.screens.tasks.TasksUiState
 import com.baghdad.tudee.ui.shared.Selectable
 
