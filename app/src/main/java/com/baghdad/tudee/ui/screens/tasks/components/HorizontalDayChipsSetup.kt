@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.with
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,6 +33,8 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toLocalDateTime
+import java.time.format.TextStyle
+import java.util.Locale
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
@@ -54,7 +57,7 @@ fun HorizontalDayChipsSetup(
         year = uiState.currentYear.toString(),
         onNextArrowClicked = { tasksInteractionListener.onNextMonthArrowClick() },
         onPreviousArrowClicked = { tasksInteractionListener.onPreviousMonthArrowClick() },
-        onDownArrowClicked = { showDatePicker = true },
+        onMonthClicked = { showDatePicker = true },
         modifier = modifier.padding(horizontal = 12.dp)
     )
 
@@ -113,13 +116,14 @@ fun HorizontalDayChipsRow(
         LazyRow(
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
             state = LazyListState(firstVisibleItemIndex = if(dates.indexOf(selectedDate) < 2) 0 else dates.indexOf(selectedDate)-2)
         ) {
             items(dates) { date ->
                 val isSelected = date == selectedDate
                 DayChip(
                     dayNumber = date.dayOfMonth.toString(),
-                    dayName = date.dayOfWeek.name.take(3),
+                    dayName = date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
                     isSelected = isSelected,
                     onSelected = {
                         tasksInteractionListener.onDateSelectedFromHorizontalRow(date)

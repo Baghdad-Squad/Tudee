@@ -19,9 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -33,7 +36,7 @@ import com.baghdad.tudee.ui.utils.noRippleClickable
 fun TasksHeader(
     month: String,
     year: String,
-    onDownArrowClicked: () -> Unit,
+    onMonthClicked: () -> Unit,
     onNextArrowClicked: () -> Unit,
     onPreviousArrowClicked: () -> Unit,
     modifier: Modifier = Modifier
@@ -52,7 +55,8 @@ fun TasksHeader(
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = Modifier.noRippleClickable { onMonthClicked() }
         ) {
             AnimatedContent(
                 targetState = "$month, $year",
@@ -73,9 +77,9 @@ fun TasksHeader(
                 tint = Theme.color.textColor.body,
                 modifier = Modifier
                     .rotate(90f)
-                    .noRippleClickable { onDownArrowClicked() }
             )
         }
+
         NavigationIcon(
             icon = painterResource(id = R.drawable.ic_right_arrow),
             contentDescription = stringResource(R.string.right_arrow),
@@ -90,6 +94,8 @@ fun NavigationIcon(
     contentDescription: String,
     modifier: Modifier = Modifier
 ) {
+    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
+
     Box(
         modifier = modifier
             .clip(CircleShape)
@@ -103,7 +109,12 @@ fun NavigationIcon(
             painter = icon,
             contentDescription = contentDescription,
             tint = Theme.color.textColor.body,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier
+                .padding(8.dp)
+                .graphicsLayer {
+                    scaleX = if (isRtl) -1f else 1f
+                }
         )
+
     }
 }

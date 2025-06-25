@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,11 +26,12 @@ import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.delete_item.ShowDeleteTaskSheet
+import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomSheet
 import com.baghdad.tudee.ui.screens.tasks.components.HorizontalDayChipsSetup
 import com.baghdad.tudee.ui.screens.tasks.components.StatusTabs
-import com.baghdad.tudee.ui.screens.tasks.components.TasksEmptyScreen
-import com.baghdad.tudee.ui.screens.tasks.components.TasksList
+import com.baghdad.tudee.ui.screens.tasks.components.TasksHorizontalPager
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -68,6 +71,11 @@ fun TasksScreenContent(
     onConfirmDelete: () -> Unit,
     onCancelDelete: () -> Unit
 ) {
+    val pagerState = rememberPagerState { 3 }
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(pagerState.currentPage) {
+        tasksInteractionListener.onTabSelected(Task.State.entries[pagerState.currentPage])
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -77,7 +85,7 @@ fun TasksScreenContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Theme.color.surfaceColor.surface)
+                .background(Theme.color.surfaceColor.surfaceHigh)
                 .padding(vertical = 20.dp)
         ) {
             Text(
@@ -95,22 +103,26 @@ fun TasksScreenContent(
 
             StatusTabs(
                 uiState = uiState,
-                tasksInteractionListener = tasksInteractionListener
+                onTabSelected = {
+                    scope.launch {
+                        pagerState.animateScrollToPage(it.ordinal)
+                    }
+                },
+                selectedTab = uiState.selectedTab
             )
-
-            if (uiState.tasksDisplayed.isNotEmpty()) {
-                TasksList(
-                    uiState = uiState,
-                    onTaskDelete = onTaskDelete
-                )
-            } else {
-                TasksEmptyScreen()
-            }
+            TasksHorizontalPager(
+                uiState = uiState,
+                onTaskClick = {
+                    tasksInteractionListener.toggleTaskDetailsDialog(it)
+                },
+                onDeleteTask = onTaskDelete,
+                pagerState = pagerState,
+            )
         }
 
         FloatingActionButton(
             onClick = {
-                tasksInteractionListener.toggleAddNewTaskDialog()
+                tasksInteractionListener.toggleAddEditTaskDialog()
             },
             painter = painterResource(id = R.drawable.ic_add),
             modifier = Modifier
@@ -129,19 +141,35 @@ fun TasksScreenContent(
         if (uiState.showAddNewTask) {
             TudeeBottomSheet(
                 isVisible = uiState.showAddNewTask,
-                onDismiss = { tasksInteractionListener.toggleAddNewTaskDialog() }
+                onDismiss = { tasksInteractionListener.toggleAddEditTaskDialog() }
             ) {
                 AddEditTaskBottomSheet(
-                    initial = null,
+                    initial = uiState.initialTask,
                     state = uiState.categories,
                     addEditTaskInteractionListener = viewModel,
                     onDismiss = {
-                        tasksInteractionListener.toggleAddNewTaskDialog()
+                        tasksInteractionListener.toggleAddEditTaskDialog()
                     }
                 )
             }
         }
-
+        if (uiState.showTaskDetailsBottomSheet) {
+            TaskDetailsBottomSheet(
+                isVisible = uiState.showTaskDetailsBottomSheet,
+                onDismiss = { viewModel.toggleTaskDetailsDialog() },
+                task = uiState.selectedTaskDetails,
+                onEditClick = {
+                    viewModel.toggleAddEditTaskDialog(uiState.selectedTaskDetails.id)
+                    viewModel.toggleTaskDetailsDialog()
+                },
+                onUpdateTaskState = { newState ->
+                    tasksInteractionListener.updateTaskState(
+                        uiState.selectedTaskDetails.id,
+                        newState
+                    )
+                }
+            )
+        }
     }
 }
 

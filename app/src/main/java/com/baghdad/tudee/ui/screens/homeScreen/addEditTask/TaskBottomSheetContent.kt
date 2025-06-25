@@ -96,7 +96,8 @@ fun AddEditTaskBottomSheet(
                         selectedCategoryId =
                             if (selectedCategoryId == category.id) null else category.id
                     },
-                    isSelected = selectedCategoryId == category.id
+                    isSelected = selectedCategoryId == category.id,
+                    isPredefined = category.isPredefinedCategory
                 )
             }
         }
@@ -104,13 +105,13 @@ fun AddEditTaskBottomSheet(
         val showButton by remember {
             derivedStateOf {
                 titleText.isNotBlank() && paragraphText.isNotBlank() &&
-                        selectedCategoryId != null && selectedPriority != null
+                        selectedCategoryId != 0L && selectedPriority != null
             }
         }
         MainButtonPart(showButton, initial?.title, onSave = {
-            addEditTaskInteractionListener.onClickAddNewTask(
+            addEditTaskInteractionListener.onClickSaveTask(
                 Task(
-                    id = 0L,
+                    id = initial?.id?:0L,
                     title = titleText,
                     description = paragraphText,
                     date = dateTime,

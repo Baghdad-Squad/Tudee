@@ -10,7 +10,6 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -20,7 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.BasicText
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -41,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.shared.Selectable
+import com.baghdad.tudee.ui.utils.noRippleClickable
 
 @Composable
 fun Tabs(
@@ -106,12 +106,12 @@ private fun Tab(
             modifier = Modifier
                 .height(40.dp)
                 .animateContentSize(tween(ANIMATION_DURATION))
-                .clickable { onClick() }
+                .noRippleClickable { onClick() }
                 .then(underlineModifier),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            BasicText(
+            Text(
                 text = selectableTab.value.title,
                 style = titleStyle,
                 overflow = TextOverflow.Ellipsis,
@@ -144,7 +144,7 @@ private fun Badge(
             ),
         contentAlignment = Alignment.Center
     ) {
-        BasicText(
+        Text(
             text = count.toString(),
             maxLines = 1,
             style = Theme.typography.label.medium.copy(
