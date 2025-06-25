@@ -7,7 +7,7 @@ data class CategoryTasksScreenUiState(
     val inProgressTasks: List<Task> = emptyList(),
     val todoTasks: List<Task> = emptyList(),
     val doneTasks: List<Task> = emptyList(),
-    val selectedTab: Task.State = Task.State.TODO,
+    val selectedTab: Task.State = Task.State.IN_PROGRESS,
     val categoryName: String = "",
     val categoryImage: Category.Image = Category.Image.Predefined(Category.PredefinedType.EDUCATION),
     val isPredefinedCategory: Boolean = true,
