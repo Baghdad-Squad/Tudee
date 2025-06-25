@@ -52,6 +52,7 @@ import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomS
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomSheet
 import com.baghdad.tudee.ui.utils.formatDate
+import com.baghdad.tudee.ui.utils.getCategoryIconPainter
 import com.baghdad.tudee.ui.utils.insideBorder
 import com.baghdad.tudee.ui.utils.noRippleClickable
 import com.baghdad.tudee.ui.utils.now
@@ -313,7 +314,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                                 title = pair[0].title,
                                                 description = pair[0].description,
                                                 priorityTask = pair[0].priority,
-                                                icon = painterResource(R.drawable.ic_quran),
+                                                icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[0].categoryId }!!.image),
                                                 modifier = Modifier
                                                     .fillParentMaxWidth(0.95f)
                                                     .padding(bottom = 8.dp)
@@ -328,7 +329,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                                     title = pair[1].title,
                                                     description = pair[1].description,
                                                     priorityTask = pair[1].priority,
-                                                    icon = painterResource(R.drawable.ic_quran),
+                                                    icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[1].categoryId }!!.image),
                                                     modifier = Modifier.fillParentMaxWidth(0.95f)
                                                 ) {
                                                     viewModel.getTaskDetailsById(
@@ -364,6 +365,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                             ) {
                                 val taskPairs =
                                     state.todoTasks.chunked(2)
+                                state.categories.firstOrNull { it.id == state.todoTasks[0].categoryId }
 
                                 itemsIndexed(taskPairs) { index, pair ->
                                     Column(modifier = Modifier.fillMaxWidth()) {
@@ -371,7 +373,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                             title = pair[0].title,
                                             description = pair[0].description,
                                             priorityTask = pair[0].priority,
-                                            icon = painterResource(R.drawable.ic_quran),
+                                            icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[0].categoryId }!!.image),
                                             modifier = Modifier
                                                 .fillParentMaxWidth(0.95f)
                                                 .padding(bottom = 8.dp)
@@ -384,7 +386,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                                 title = pair[1].title,
                                                 description = pair[1].description,
                                                 priorityTask = pair[1].priority,
-                                                icon = painterResource(R.drawable.ic_quran),
+                                                icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[1].categoryId }!!.image),
                                                 modifier = Modifier
                                                     .fillParentMaxWidth(0.95f)
                                                     .padding(bottom = 8.dp)
@@ -425,7 +427,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                             title = pair[0].title,
                                             description = pair[0].description,
                                             priorityTask = pair[0].priority,
-                                            icon = painterResource(R.drawable.ic_quran),
+                                            icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[0].categoryId }!!.image),
                                             modifier = Modifier
                                                 .fillParentMaxWidth(0.95f)
                                                 .padding(bottom = 8.dp)
@@ -438,7 +440,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                                 title = pair[1].title,
                                                 description = pair[1].description,
                                                 priorityTask = pair[1].priority,
-                                                icon = painterResource(R.drawable.ic_quran),
+                                                icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[1].categoryId }!!.image),
                                                 modifier = Modifier.fillParentMaxWidth(0.95f)
                                             ) {
                                                 viewModel.getTaskDetailsById(id = pair[0].id)
