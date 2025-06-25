@@ -1,5 +1,6 @@
 package com.baghdad.tudee.ui.screens.categoryTasksScreen
 
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -90,14 +91,11 @@ private fun CategoryTasksScreenContent(
 ) {
 
     val context = LocalContext.current
-    var categoryImageState by remember(state.categoryImage) { mutableStateOf(state.categoryImage) }
+    val categoryImageState by remember { mutableStateOf(state.categoryImage) }
     val pagerState = rememberPagerState(initialPage = state.selectedTab.ordinal) { 3 }
     var showEditCategoryDialog by remember { mutableStateOf(false) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { it ->
-        uriToByteArray(context, it)?.let {
-            categoryImageState = Category.Image.ByteArray(it)
-
-        }
+        uriToByteArray(context, it)?.let { onCategoryImageChanged(Category.Image.ByteArray(it)) }
     }
     var tempCategoryName by remember (state.categoryName) { mutableStateOf(viewModelState.state.value.categoryName) }
     val painter = rememberAsyncImagePainter(model = launcher)
@@ -200,11 +198,13 @@ private fun CategoryTasksScreenContent(
                     }
                 }
             }
+            Log.i("get category icon", getCategoryIconPainter(state.categoryImage).toString())
+            Log.d("get category icon", state.categoryImage.toString())
             EditCategoryBottomSheet(
                 isVisible = showEditCategoryDialog,
                 onDismiss = { showEditCategoryDialog = false },
-                title = tempCategoryName,
-                onCategoryTitleChanged = { tempCategoryName = it },
+                title = state.categoryName,
+                onCategoryTitleChanged = { viewModelState.onCategoryTitleChanged(it) },
                 onEditImageIconClick = {
                     launcher.launch(
                         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
@@ -225,7 +225,7 @@ private fun CategoryTasksScreenContent(
                     showEditCategoryDialog = false
                 },
                 isLoading = state.isLoading,
-                image = painter
+                image =  getCategoryIconPainter(state.categoryImage)
             )
         }
     }
