@@ -1,6 +1,5 @@
 package com.baghdad.tudee.ui.screens.categories
 
-import com.baghdad.tudee.ui.composable.SnackbarState
 import com.baghdad.tudee.ui.composable.bottomSheet.category.AddEditCategorySheetUiState
 import com.baghdad.tudee.ui.model.CategoryUiState
 
