@@ -71,7 +71,8 @@ fun CategoryTasksScreen(
         onCategoryImageChanged = { newImage -> viewModel.onChangeImage(newImage) },
         onDeleteCategory = { viewModel.onDeleteCategory() },
         onSaveButtonClick = { viewModel.onSaveCategoryChanges() },
-        onToggleEditCategorySheet = { viewModel.toggleEditCategorySheetVisibility() }
+        onToggleEditCategorySheet = { viewModel.toggleEditCategorySheetVisibility() },
+        onToggleDeleteCategorySheet = { /*TODO: show delete category bottom sheet*/ }
     )
 }
 
@@ -82,8 +83,8 @@ private fun CategoryTasksScreenContent(
     onArrowBackClicked: () -> Unit,
     onCategoryTitleChanged: (String) -> Unit,
     onCategoryImageChanged: (Category.Image) -> Unit,
-    onToggleEditCategorySheet: () -> Unit = {},
-    onToggleDeleteCategorySheet: () -> Unit = {},
+    onToggleEditCategorySheet: () -> Unit,
+    onToggleDeleteCategorySheet: () -> Unit,
     onDeleteCategory: () -> Unit,
     onSaveButtonClick: () -> Unit,
 ) {
@@ -198,7 +199,7 @@ private fun CategoryTasksScreenContent(
                             description = task.description,
                             priorityTask = task.priority,
                             icon = getCategoryIconPainter(categoryImage = state.category.image),
-                            onClick = { println("Clicked task: ${task.title}") },
+                            onClick = { /*TODO: Show task details bottom sheet*/ },
                             date = task.date.toString(),
                             showDate = true
                         )
