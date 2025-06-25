@@ -45,7 +45,7 @@ fun AddEditTaskBottomSheet(
     var titleText by remember { mutableStateOf(initial?.title ?: "") }
     var paragraphText by remember { mutableStateOf(initial?.description ?: "") }
     var dateTime by remember { mutableStateOf(initial?.date ?: LocalDate.now()) }
-    var selectedCategoryId by remember { mutableStateOf(initial?.categoryId ?: -1L) }
+    var selectedCategoryId by remember { mutableStateOf(initial?.categoryId ?: 0L) }
     var selectedPriority by remember { mutableStateOf(initial?.priority) }
 
 
