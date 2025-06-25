@@ -1,4 +1,4 @@
-package com.baghdad.tudee.data.service.shared
+package com.baghdad.tudee.data.service.errorHandling
 
 import android.database.sqlite.SQLiteDatabaseCorruptException
 import android.database.sqlite.SQLiteException

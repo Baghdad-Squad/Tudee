@@ -134,7 +134,8 @@ fun TasksScreenContent(
             ShowDeleteTaskSheet(
                 onDeleteConfirmed = onConfirmDelete,
                 onCancelConfirmed = onCancelDelete,
-                isLoading = false
+                isLoading = false,
+                isVisible = true
             )
         }
         if (uiState.showAddNewTask) {

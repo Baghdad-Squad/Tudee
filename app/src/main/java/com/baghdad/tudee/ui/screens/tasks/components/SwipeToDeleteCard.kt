@@ -1,6 +1,8 @@
 package com.baghdad.tudee.ui.screens.tasks.components
 
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitDragOrCancellation
 import androidx.compose.foundation.layout.Box
@@ -47,7 +49,13 @@ fun SwipeToDeleteCard(
     val maxSwipe = 100f
     var offsetX by remember { mutableFloatStateOf(0f) }
 
-    val animatedOffsetX by animateFloatAsState(targetValue = offsetX)
+    val animatedOffsetX by animateFloatAsState(
+        targetValue = offsetX,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioLowBouncy,
+            stiffness = Spring.StiffnessMedium
+        )
+    )
 
     Box(
         Modifier
@@ -100,6 +108,7 @@ fun SwipeToDeleteCard(
 
                             if (offsetX <= -maxSwipe * 0.5f) {
                                 onDelete()
+                                offsetX = 0f
                             } else {
                                 offsetX = 0f
                             }
