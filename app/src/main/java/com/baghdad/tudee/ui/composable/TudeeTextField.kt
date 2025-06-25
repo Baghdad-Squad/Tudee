@@ -48,6 +48,7 @@ fun TudeeTextField(
     leadingIcon: Painter? = null,
     height: Int = 56,
     maxLines: Int = 1,
+    maxCharacter: Int = 32
 ) {
     var isFocused by remember { mutableStateOf(false) }
     val textFieldFocusRequester = remember { FocusRequester() }
@@ -112,7 +113,9 @@ fun TudeeTextField(
                 }
                 BasicTextField(
                     value = value,
-                    onValueChange = onValueChange,
+                    onValueChange = { input ->
+                        input.takeIf { it.length <= maxCharacter }?.let(onValueChange)
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .onFocusChanged { focusState ->
