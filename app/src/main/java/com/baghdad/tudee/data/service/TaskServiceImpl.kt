@@ -4,7 +4,7 @@ import com.baghdad.tudee.data.database.dao.TaskDao
 import com.baghdad.tudee.data.mapper.toDto
 import com.baghdad.tudee.data.mapper.toEntities
 import com.baghdad.tudee.data.model.TaskDto
-import com.baghdad.tudee.data.service.shared.DatabaseErrorHandler
+import com.baghdad.tudee.data.service.errorHandling.DatabaseErrorHandler
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.domain.service.TaskService
 import kotlinx.coroutines.flow.Flow
