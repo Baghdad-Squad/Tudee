@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -36,9 +37,9 @@ fun TextFieldScreenPart(
     {
         var isDatePickerVisible by remember { mutableStateOf(false) }
         val condition = if (isEditMode){
-            "Edit Task"
+           stringResource(R.string.edit_task)
         }else{
-            "Add Task"
+            stringResource(R.string.add_task)
         }
         Text(
             text = condition,

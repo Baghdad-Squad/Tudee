@@ -585,7 +585,7 @@ fun OverviewCard(
 
         Icon(
             painter = painterResource(R.drawable.overview_card_background),
-            contentDescription = "Overview Card Background",
+            contentDescription = stringResource(R.string.Overview_Card_Background),
             modifier = Modifier
                 .clip(RoundedCornerShape(topEnd = 20.dp))
                 .align(Alignment.TopEnd),
