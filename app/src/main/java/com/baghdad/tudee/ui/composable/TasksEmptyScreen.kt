@@ -122,7 +122,7 @@ private fun TasksEmptyScreenIllustration(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .size(136.dp)
-                .offset(x = (0).dp, y = (3).dp)
+                .offset( y = (3).dp)
         )
         Icon(
             painter = painterResource(id = R.drawable.progress_indicator),
