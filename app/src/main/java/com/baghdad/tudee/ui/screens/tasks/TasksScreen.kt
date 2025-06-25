@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -87,6 +89,7 @@ fun TasksScreenContent(
                 .fillMaxSize()
                 .background(Theme.color.surfaceColor.surfaceHigh)
                 .padding(vertical = 20.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             Text(
                 text = stringResource(R.string.tasks),
