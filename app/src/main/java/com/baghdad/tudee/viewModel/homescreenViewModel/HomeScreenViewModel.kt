@@ -75,46 +75,70 @@ class HomeScreenViewModel(
     }
 
     override fun onClickSaveTask(task: Task) {
+        Log.d("TasksViewModel", "onClickSaveTask: $task")
+        if(task.id != 0L) {
+            updateTask(task)
+        } else {
+            createTask(task)
+        }
+    }
+
+    private fun updateTask(task: Task) {
         viewModelScope.launch {
-            try {
-                taskService.createTask(task)
-                _state.update { currentState ->
-                    currentState.copy(
-                        inProgressTasks = currentState.inProgressTasks + task,
-                        todoTasks = currentState.todoTasks - task,
-                        doneTasks = currentState.doneTasks - task
-                    )
-                }
-                showSuccessMessage("Task added successfully")
+            taskService.editTask(task)
+            loadTasksForDate(state.value.selectedDate?: LocalDate.now())
+            _state.update {
+                it.copy(showAddNewTask = false, showEditTask = true)
+            }
+        }
+    }
+
+    private fun createTask(task: Task) {
+        viewModelScope.launch {
+            taskService.createTask(task)
+            loadTasksForDate(state.value.selectedDate?: LocalDate.now())
+
+            _state.update {
+                it.copy(showAddNewTask = false)
+            }
+        }
+    }
+    private fun loadTasksForDate(selectedDate: LocalDate) {
+        viewModelScope.launch {
+            taskService.getTasksByDate(selectedDate).collect { tasks ->
+                val groupedTasksByState = tasks.groupBy { it.state }
                 _state.update {
                     it.copy(
-                        showAddNewTask = false,
-                        showEditTask = false,
-                        showTaskDetails = false,
+                        todoTasks = groupedTasksByState[Task.State.TODO] ?: emptyList(),
+                        inProgressTasks = groupedTasksByState[Task.State.IN_PROGRESS] ?: emptyList(),
+                        doneTasks = groupedTasksByState[Task.State.DONE] ?: emptyList()
                     )
                 }
-
-            } catch (e: Exception) {
-                handleError(e)
             }
         }
     }
 
-    override fun editTask(task: Task) {
-        viewModelScope.launch {
-            try {
-                taskService.editTask(task)
-            } catch (e: Exception) {
-                handleError(e)
-            }
-        }
-    }
+//    override fun editTask(task: Task) {
+//        viewModelScope.launch {
+//            try {
+//                taskService.editTask(task)
+//            } catch (e: Exception) {
+//                handleError(e)
+//            }
+//        }
+//    }
 
-    override fun togileEditTaskDialog() {
+    override fun togileEditTaskDialog(initialTaskId: Long?) {
+        val initialTask = initialTaskId?.let { taskId ->
+            _state.value.inProgressTasks.find { it.id == taskId }
+                ?: _state.value.todoTasks.find { it.id == taskId }
+                ?: _state.value.doneTasks.find { it.id == taskId }
+        }
+        Log.d("HomeScreenViewModel", "toggleAddEditTaskDialog: $initialTask $initialTaskId")
         _state.update {
             it.copy(
                 showEditTask = !_state.value.showEditTask,
-                editTaskState = TaskUIState()
+                editTaskState = it.editTaskState.copy(currentTask = initialTask)
             )
         }
     }
@@ -166,6 +190,17 @@ class HomeScreenViewModel(
             }
         }
     }
+//
+//    override fun toggleAddEditTaskDialog() {
+//
+//        Log.d("HomeScreenViewModel", "toggleAddEditTaskDialog: $initialTask")
+//        _state.update {
+//            it.copy(
+//                addTaskState = it.addTaskState.copy(currentTask = initialTask),
+//                showAddNewTask = !_state.value.showAddNewTask
+//            )
+//        }
+//    }
 
 
     override fun onClickSwitchTheme() {
