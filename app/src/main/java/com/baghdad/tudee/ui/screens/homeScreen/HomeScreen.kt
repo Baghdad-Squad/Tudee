@@ -47,9 +47,10 @@ import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.composable.SnakeBar
 import com.baghdad.tudee.ui.composable.TopTudeeBar
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
-import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
+import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomSheet
+import com.baghdad.tudee.ui.screens.homeScreen.component.NoTaskMessage
 import com.baghdad.tudee.ui.utils.formatDate
 import com.baghdad.tudee.ui.utils.insideBorder
 import com.baghdad.tudee.ui.utils.noRippleClickable
@@ -60,12 +61,12 @@ import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun HomeScreen(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier = Modifier) {
-    HomeScreenContent(navigateToTaskScreen,modifier = modifier)
+fun HomeScreen(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modifier = Modifier) {
+    HomeScreenContent(navigateToTaskScreen, modifier = modifier)
 }
 
 @Composable
-fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier = Modifier) {
+fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modifier = Modifier) {
     val viewModel: HomeScreenViewModel = koinViewModel()
     val state by viewModel.state.collectAsState()
 
@@ -118,7 +119,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                             viewModel.toggleTaskDetailsDialog()
                         },
                         onUpdateTaskState = { newState ->
-                            if(newState == Task.State.IN_PROGRESS){
+                            if (newState == Task.State.IN_PROGRESS) {
                                 viewModel.moveTaskToInProgress(state.taskDetailsState.id)
                             } else {
                                 viewModel.moveTaskToDone(state.taskDetailsState.id)
@@ -246,7 +247,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                     )
                                 }
 
-                        }
+                            }
 
                             Text(
                                 text = stringResource(R.string.overview),
@@ -448,20 +449,26 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                             }
                         }
 
-            }
-        }
-        SnakeBar(
-            Modifier
-                .padding(horizontal = 16.dp)
-                .align(Alignment.TopCenter)
-                .padding(top = 120.dp),
-            message = state.showSnackBar.message,
-            isSuccess = !state.showSnackBar.isError,
-            isVisible = state.showSnackBar.isVisible
-        )
+                    if (state.todoTasks.isEmpty() && state.inProgressTasks.isEmpty() && state.doneTasks.isEmpty()) {
+                        item() {
+                            NoTaskMessage()
+                        }
+                    }
 
+                }
+            }
+            SnakeBar(
+                Modifier
+                    .padding(horizontal = 16.dp)
+                    .align(Alignment.TopCenter)
+                    .padding(top = 120.dp),
+                message = state.showSnackBar.message,
+                isSuccess = !state.showSnackBar.isError,
+                isVisible = state.showSnackBar.isVisible
+            )
+
+        }
     }
-}
 }
 
 @Composable
@@ -525,59 +532,61 @@ fun OverviewCard(
 ) {
 
 
-        Box(
-            modifier = modifier
-                .zIndex(999f)
-                .height(112.dp)
-                .width(96.dp)
-                .background(background, shape = RoundedCornerShape(20.dp))
-        ) {
-            Column(modifier
+    Box(
+        modifier = modifier
+            .zIndex(999f)
+            .height(112.dp)
+            .width(96.dp)
+            .background(background, shape = RoundedCornerShape(20.dp))
+    ) {
+        Column(
+            modifier
                 .padding(12.dp)
-                .background(Color.Transparent, shape = RoundedCornerShape(20.dp))) {
-                Box(
-                    modifier
-                        .size(40.dp)
-                        .background(
-                            color = Color(0x3DFFFFFF),
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .insideBorder(1.dp, Color(0x1FFFFFFF), 12.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(
-                            when (taskState) {
-                                TaskState.TODO -> R.drawable.ic_overview_card_todo
-                                TaskState.IN_PROGRESS -> R.drawable.ic_overview_card_in_progress
-                                TaskState.DONE -> R.drawable.ic_overview_card_done
-                            }
-                        ), contentDescription = when (taskState) {
-                            TaskState.TODO -> stringResource(R.string.to_do)
-                            TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
-                            TaskState.DONE -> stringResource(R.string.done)
-                        },
-                        tint = Theme.color.textColor.onPrimary,
-                        modifier = Modifier.size(24.dp)
+                .background(Color.Transparent, shape = RoundedCornerShape(20.dp))
+        ) {
+            Box(
+                modifier
+                    .size(40.dp)
+                    .background(
+                        color = Color(0x3DFFFFFF),
+                        shape = RoundedCornerShape(12.dp)
                     )
-                }
-                Text(
-                    text = count.toString(),
-                    style = Theme.typography.headline.medium,
-                    color = Theme.color.textColor.onPrimary,
-                )
-                Text(
-                    text = when (taskState) {
+                    .insideBorder(1.dp, Color(0x1FFFFFFF), 12.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(
+                        when (taskState) {
+                            TaskState.TODO -> R.drawable.ic_overview_card_todo
+                            TaskState.IN_PROGRESS -> R.drawable.ic_overview_card_in_progress
+                            TaskState.DONE -> R.drawable.ic_overview_card_done
+                        }
+                    ), contentDescription = when (taskState) {
                         TaskState.TODO -> stringResource(R.string.to_do)
                         TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
                         TaskState.DONE -> stringResource(R.string.done)
                     },
-                    style = Theme.typography.label.small,
-                    color = Theme.color.textColor.onPrimaryCaption,
+                    tint = Theme.color.textColor.onPrimary,
+                    modifier = Modifier.size(24.dp)
                 )
-
-
             }
+            Text(
+                text = count.toString(),
+                style = Theme.typography.headline.medium,
+                color = Theme.color.textColor.onPrimary,
+            )
+            Text(
+                text = when (taskState) {
+                    TaskState.TODO -> stringResource(R.string.to_do)
+                    TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
+                    TaskState.DONE -> stringResource(R.string.done)
+                },
+                style = Theme.typography.label.small,
+                color = Theme.color.textColor.onPrimaryCaption,
+            )
+
+
+        }
 
         Icon(
             painter = painterResource(R.drawable.overview_card_background),
