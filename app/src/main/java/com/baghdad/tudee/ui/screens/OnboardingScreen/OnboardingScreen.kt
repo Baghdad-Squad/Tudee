@@ -59,7 +59,7 @@ fun OnboardingScreen(
     )
 
 
-    OnboardingBackground {
+    OnboardingBackground() {
 
         HorizontalPager(
             state = pagerState,
