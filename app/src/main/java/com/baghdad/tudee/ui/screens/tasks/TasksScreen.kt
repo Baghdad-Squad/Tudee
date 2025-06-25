@@ -85,7 +85,7 @@ fun TasksScreenContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Theme.color.surfaceColor.surface)
+                .background(Theme.color.surfaceColor.surfaceHigh)
                 .padding(vertical = 20.dp)
         ) {
             Text(
@@ -134,7 +134,8 @@ fun TasksScreenContent(
             ShowDeleteTaskSheet(
                 onDeleteConfirmed = onConfirmDelete,
                 onCancelConfirmed = onCancelDelete,
-                isLoading = false
+                isLoading = false,
+                isVisible = true
             )
         }
         if (uiState.showAddNewTask) {
