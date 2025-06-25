@@ -28,15 +28,9 @@ fun DayChip(
     onSelected: () -> Unit = { },
 ) {
 
-    val dayNumberColor by animateColorAsState(
-        targetValue = if (isSelected) Theme.color.textColor.onPrimary else Theme.color.textColor.body,
-        animationSpec = tween(durationMillis = 250)
-    )
+    val dayNumberColor = if (isSelected) Theme.color.textColor.onPrimary else Theme.color.textColor.body
 
-    val dayNameColor by animateColorAsState(
-        targetValue = if (isSelected) Theme.color.textColor.onPrimaryCaption else Theme.color.textColor.hint,
-        animationSpec = tween(durationMillis = 250)
-    )
+    val dayNameColor = if (isSelected) Theme.color.textColor.onPrimaryCaption else Theme.color.textColor.hint
 
     Column(
         modifier = modifier
