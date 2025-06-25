@@ -45,12 +45,14 @@ import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.composable.SnakeBar
+import com.baghdad.tudee.ui.composable.TasksEmptyScreen
 import com.baghdad.tudee.ui.composable.TopTudeeBar
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
 import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomSheet
 import com.baghdad.tudee.ui.utils.formatDate
+import com.baghdad.tudee.ui.utils.getCategoryIconPainter
 import com.baghdad.tudee.ui.utils.insideBorder
 import com.baghdad.tudee.ui.utils.noRippleClickable
 import com.baghdad.tudee.ui.utils.now
@@ -60,49 +62,50 @@ import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun HomeScreen(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier = Modifier) {
-    HomeScreenContent(navigateToTaskScreen,modifier = modifier)
+fun HomeScreen(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modifier = Modifier) {
+    HomeScreenContent(navigateToTaskScreen, modifier = modifier)
 }
 
 @Composable
-fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier = Modifier) {
+fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modifier = Modifier) {
     val viewModel: HomeScreenViewModel = koinViewModel()
     val state by viewModel.state.collectAsState()
-
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
                 painter = painterResource(R.drawable.ic_add),
                 onClick = {
-                    viewModel.togileEditTaskDialog()
+                    viewModel.toggleAddNewTaskDialog()
                 },
                 modifier = Modifier.padding(16.dp)
             )
             if (state.showEditTask) {
                 TudeeBottomSheet(
                     isVisible = state.showEditTask,
-                    onDismiss = { viewModel.togileEditTaskDialog() }
+                    onDismiss = { viewModel.togileEditTaskDialog(initialTaskId = null) }
                 ) {
                     AddEditTaskBottomSheet(
+                        initial = state.editTaskState.currentTask,
                         state = state.editTaskState.categories,
                         addEditTaskInteractionListener = viewModel,
-                        onDismiss = { viewModel.togileEditTaskDialog() }
+                        onDismiss = { viewModel.togileEditTaskDialog(null) }
                     )
                 }
             } else if (state.showAddNewTask) {
                 TudeeBottomSheet(
                     isVisible = state.showAddNewTask,
-                    onDismiss = {
-                        viewModel
-                            .toggleAddNewTaskDialog()
-                    }
+                    onDismiss = { viewModel.toggleAddNewTaskDialog() }
                 ) {
                     AddEditTaskBottomSheet(
-                        state = state.editTaskState.categories,
+                        initial = state.addTaskState.currentTask,
+                        state = state.categories,
                         addEditTaskInteractionListener = viewModel,
-                        onDismiss = { viewModel.toggleAddNewTaskDialog() }
+                        onDismiss = {
+                            viewModel.toggleAddNewTaskDialog()
+                        }
                     )
                 }
+
             } else if (state.showTaskDetails) {
 
                 TudeeBottomSheet(
@@ -114,11 +117,11 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                         onDismiss = { viewModel.toggleTaskDetailsDialog() },
                         task = state.taskDetailsState,
                         onEditClick = {
-                            //TODO: show edit task bottom sheet
                             viewModel.toggleTaskDetailsDialog()
+                            viewModel.togileEditTaskDialog(state.taskDetailsState.id)
                         },
                         onUpdateTaskState = { newState ->
-                            if(newState == Task.State.IN_PROGRESS){
+                            if (newState == Task.State.IN_PROGRESS) {
                                 viewModel.moveTaskToInProgress(state.taskDetailsState.id)
                             } else {
                                 viewModel.moveTaskToDone(state.taskDetailsState.id)
@@ -246,7 +249,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                     )
                                 }
 
-                        }
+                            }
 
                             Text(
                                 text = stringResource(R.string.overview),
@@ -311,7 +314,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                                 title = pair[0].title,
                                                 description = pair[0].description,
                                                 priorityTask = pair[0].priority,
-                                                icon = painterResource(R.drawable.ic_quran),
+                                                icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[0].categoryId }!!.image),
                                                 modifier = Modifier
                                                     .fillParentMaxWidth(0.95f)
                                                     .padding(bottom = 8.dp)
@@ -326,7 +329,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                                     title = pair[1].title,
                                                     description = pair[1].description,
                                                     priorityTask = pair[1].priority,
-                                                    icon = painterResource(R.drawable.ic_quran),
+                                                    icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[1].categoryId }!!.image),
                                                     modifier = Modifier.fillParentMaxWidth(0.95f)
                                                 ) {
                                                     viewModel.getTaskDetailsById(
@@ -350,9 +353,9 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                     .padding(bottom = 8.dp)
                                     .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
                                 onClick =
-                                    {
-                                        navigateToTaskScreen(Task.State.TODO)
-                                    },
+                                {
+                                    navigateToTaskScreen(Task.State.TODO)
+                                },
                             )
 
                             LazyRow(
@@ -362,6 +365,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                             ) {
                                 val taskPairs =
                                     state.todoTasks.chunked(2)
+                                state.categories.firstOrNull { it.id == state.todoTasks[0].categoryId }
 
                                 itemsIndexed(taskPairs) { index, pair ->
                                     Column(modifier = Modifier.fillMaxWidth()) {
@@ -369,7 +373,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                             title = pair[0].title,
                                             description = pair[0].description,
                                             priorityTask = pair[0].priority,
-                                            icon = painterResource(R.drawable.ic_quran),
+                                            icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[0].categoryId }!!.image),
                                             modifier = Modifier
                                                 .fillParentMaxWidth(0.95f)
                                                 .padding(bottom = 8.dp)
@@ -382,7 +386,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                                 title = pair[1].title,
                                                 description = pair[1].description,
                                                 priorityTask = pair[1].priority,
-                                                icon = painterResource(R.drawable.ic_quran),
+                                                icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[1].categoryId }!!.image),
                                                 modifier = Modifier
                                                     .fillParentMaxWidth(0.95f)
                                                     .padding(bottom = 8.dp)
@@ -423,7 +427,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                             title = pair[0].title,
                                             description = pair[0].description,
                                             priorityTask = pair[0].priority,
-                                            icon = painterResource(R.drawable.ic_quran),
+                                            icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[0].categoryId }!!.image),
                                             modifier = Modifier
                                                 .fillParentMaxWidth(0.95f)
                                                 .padding(bottom = 8.dp)
@@ -436,7 +440,7 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
                                                 title = pair[1].title,
                                                 description = pair[1].description,
                                                 priorityTask = pair[1].priority,
-                                                icon = painterResource(R.drawable.ic_quran),
+                                                icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[1].categoryId }!!.image),
                                                 modifier = Modifier.fillParentMaxWidth(0.95f)
                                             ) {
                                                 viewModel.getTaskDetailsById(id = pair[0].id)
@@ -447,21 +451,24 @@ fun HomeScreenContent(navigateToTaskScreen:(Task.State)->Unit,modifier: Modifier
 
                             }
                         }
+                    if (state.todoTasks.isEmpty() && state.inProgressTasks.isEmpty() && state.doneTasks.isEmpty()) {
+                        item() { TasksEmptyScreen() }
+                    }
 
+                }
             }
-        }
-        SnakeBar(
-            Modifier
-                .padding(horizontal = 16.dp)
-                .align(Alignment.TopCenter)
-                .padding(top = 120.dp),
-            message = state.showSnackBar.message,
-            isSuccess = !state.showSnackBar.isError,
-            isVisible = state.showSnackBar.isVisible
-        )
+            SnakeBar(
+                Modifier
+                    .padding(horizontal = 16.dp)
+                    .align(Alignment.TopCenter)
+                    .padding(top = 120.dp),
+                message = state.showSnackBar.message,
+                isSuccess = !state.showSnackBar.isError,
+                isVisible = state.showSnackBar.isVisible
+            )
 
+        }
     }
-}
 }
 
 @Composable
@@ -480,7 +487,8 @@ private fun TextDateIcon(
         Icon(
             painter = icon,
             contentDescription = "date icon",
-            modifier = Modifier.padding(end = 8.dp)
+            modifier = Modifier.padding(end = 8.dp),
+            tint = Theme.color.textColor.body
         )
         Text(
             text = text,
@@ -525,59 +533,61 @@ fun OverviewCard(
 ) {
 
 
-        Box(
-            modifier = modifier
-                .zIndex(999f)
-                .height(112.dp)
-                .width(96.dp)
-                .background(background, shape = RoundedCornerShape(20.dp))
-        ) {
-            Column(modifier
+    Box(
+        modifier = modifier
+            .zIndex(999f)
+            .height(112.dp)
+            .width(96.dp)
+            .background(background, shape = RoundedCornerShape(20.dp))
+    ) {
+        Column(
+            modifier
                 .padding(12.dp)
-                .background(Color.Transparent, shape = RoundedCornerShape(20.dp))) {
-                Box(
-                    modifier
-                        .size(40.dp)
-                        .background(
-                            color = Color(0x3DFFFFFF),
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .insideBorder(1.dp, Color(0x1FFFFFFF), 12.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(
-                            when (taskState) {
-                                TaskState.TODO -> R.drawable.ic_overview_card_todo
-                                TaskState.IN_PROGRESS -> R.drawable.ic_overview_card_in_progress
-                                TaskState.DONE -> R.drawable.ic_overview_card_done
-                            }
-                        ), contentDescription = when (taskState) {
-                            TaskState.TODO -> stringResource(R.string.to_do)
-                            TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
-                            TaskState.DONE -> stringResource(R.string.done)
-                        },
-                        tint = Theme.color.textColor.onPrimary,
-                        modifier = Modifier.size(24.dp)
+                .background(Color.Transparent, shape = RoundedCornerShape(20.dp))
+        ) {
+            Box(
+                modifier
+                    .size(40.dp)
+                    .background(
+                        color = Color(0x3DFFFFFF),
+                        shape = RoundedCornerShape(12.dp)
                     )
-                }
-                Text(
-                    text = count.toString(),
-                    style = Theme.typography.headline.medium,
-                    color = Theme.color.textColor.onPrimary,
-                )
-                Text(
-                    text = when (taskState) {
+                    .insideBorder(1.dp, Color(0x1FFFFFFF), 12.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(
+                        when (taskState) {
+                            TaskState.TODO -> R.drawable.ic_overview_card_todo
+                            TaskState.IN_PROGRESS -> R.drawable.ic_overview_card_in_progress
+                            TaskState.DONE -> R.drawable.ic_overview_card_done
+                        }
+                    ), contentDescription = when (taskState) {
                         TaskState.TODO -> stringResource(R.string.to_do)
                         TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
                         TaskState.DONE -> stringResource(R.string.done)
                     },
-                    style = Theme.typography.label.small,
-                    color = Theme.color.textColor.onPrimaryCaption,
+                    tint = Theme.color.textColor.onPrimary,
+                    modifier = Modifier.size(24.dp)
                 )
-
-
             }
+            Text(
+                text = count.toString(),
+                style = Theme.typography.headline.medium,
+                color = Theme.color.textColor.onPrimary,
+            )
+            Text(
+                text = when (taskState) {
+                    TaskState.TODO -> stringResource(R.string.to_do)
+                    TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
+                    TaskState.DONE -> stringResource(R.string.done)
+                },
+                style = Theme.typography.label.small,
+                color = Theme.color.textColor.onPrimaryCaption,
+            )
+
+
+        }
 
         Icon(
             painter = painterResource(R.drawable.overview_card_background),

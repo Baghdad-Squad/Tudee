@@ -75,35 +75,59 @@ class HomeScreenViewModel(
     }
 
     override fun onClickSaveTask(task: Task) {
-        viewModelScope.launch {
-            try {
-                taskService.createTask(task)
-                _state.update { currentState ->
-                    currentState.copy(
-                        inProgressTasks = currentState.inProgressTasks + task,
-                        todoTasks = currentState.todoTasks - task,
-                        doneTasks = currentState.doneTasks - task
-                    )
-                }
-                showSuccessMessage("Task added successfully")
-                _state.update {
-                    it.copy(
-                        showAddNewTask = false,
-                        showEditTask = false,
-                        showTaskDetails = false,
-                    )
-                }
+        if(task.id != 0L) {
+            updateTask(task)
+        } else {
+            createTask(task)
+        }
+    }
 
-            } catch (e: Exception) {
-                handleError(e)
+    private fun updateTask(task: Task) {
+        viewModelScope.launch {
+            taskService.editTask(task)
+            loadTasksForDate(state.value.selectedDate?: LocalDate.now())
+            _state.update {
+                it.copy(showAddNewTask = false)
             }
         }
     }
 
-    override fun togileEditTaskDialog() {
+    private fun createTask(task: Task) {
+        viewModelScope.launch {
+            taskService.createTask(task)
+            loadTasksForDate(state.value.selectedDate?: LocalDate.now())
+
+            _state.update {
+                it.copy(showAddNewTask = false)
+            }
+        }
+    }
+    private fun loadTasksForDate(selectedDate: LocalDate) {
+        viewModelScope.launch {
+            taskService.getTasksByDate(selectedDate).collect { tasks ->
+                val groupedTasksByState = tasks.groupBy { it.state }
+                _state.update {
+                    it.copy(
+                        todoTasks = groupedTasksByState[Task.State.TODO] ?: emptyList(),
+                        inProgressTasks = groupedTasksByState[Task.State.IN_PROGRESS] ?: emptyList(),
+                        doneTasks = groupedTasksByState[Task.State.DONE] ?: emptyList()
+                    )
+                }
+            }
+        }
+    }
+
+
+    override fun togileEditTaskDialog(initialTaskId: Long?) {
+        val initialTask = initialTaskId?.let { taskId ->
+            _state.value.inProgressTasks.find { it.id == taskId }
+                ?: _state.value.todoTasks.find { it.id == taskId }
+                ?: _state.value.doneTasks.find { it.id == taskId }
+        }
         _state.update {
             it.copy(
                 showEditTask = !_state.value.showEditTask,
+                editTaskState = it.editTaskState.copy(currentTask = initialTask)
             )
         }
     }
@@ -128,7 +152,6 @@ class HomeScreenViewModel(
         }
     }
 
-
     override fun onClickEditTask(task: Task) {
         viewModelScope.launch {
             val taskUiState = _state.value.editTaskState
@@ -139,7 +162,6 @@ class HomeScreenViewModel(
             }
         }
     }
-
 
     override fun onClickSwitchTheme() {
         viewModelScope.launch {
@@ -170,7 +192,6 @@ class HomeScreenViewModel(
             )
         }
     }
-
 
     override fun moveTaskToDone(taskId: Long) {
         viewModelScope.launch {
@@ -280,10 +301,6 @@ class HomeScreenViewModel(
                     val tasksToday = it.groupBy {
                         it.state
                     }
-                    Log.d(
-                        "HomeScreenViewModel",
-                        "Tasks grouped by state: $tasksToday fro date: $dateNow"
-                    )
                     _state.update {
                         it.copy(
                             inProgressTasks = tasksToday[Task.State.IN_PROGRESS] ?: emptyList(),
@@ -335,7 +352,6 @@ class HomeScreenViewModel(
         }
 
     }
-
     private suspend fun handleError(error: Exception) {
         val errorMessage = when (error) {
             is StorageFullException -> error.message.toString()
@@ -369,7 +385,6 @@ class HomeScreenViewModel(
             isError = isError
         )
     }
-
     private fun hideSnackbarMessage() {
         showSnarkMessage(
             message = "",
