@@ -5,7 +5,7 @@ import com.baghdad.tudee.data.mapper.toDto
 import com.baghdad.tudee.data.mapper.toEntities
 import com.baghdad.tudee.data.mapper.toEntity
 import com.baghdad.tudee.data.model.CategoryDto
-import com.baghdad.tudee.data.service.shared.DatabaseErrorHandler
+import com.baghdad.tudee.data.service.errorHandling.DatabaseErrorHandler
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.service.CategoryService
 import kotlinx.coroutines.flow.Flow

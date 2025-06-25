@@ -45,7 +45,7 @@ fun AddEditTaskBottomSheet(
     var titleText by remember { mutableStateOf(initial?.title ?: "") }
     var paragraphText by remember { mutableStateOf(initial?.description ?: "") }
     var dateTime by remember { mutableStateOf(initial?.date ?: LocalDate.now()) }
-    var selectedCategoryId by remember { mutableStateOf(initial?.categoryId) }
+    var selectedCategoryId by remember { mutableStateOf(initial?.categoryId ?: -1L) }
     var selectedPriority by remember { mutableStateOf(initial?.priority) }
 
 
@@ -69,7 +69,8 @@ fun AddEditTaskBottomSheet(
                     paragraph = paragraphText,
                     onParagraphChange = { paragraphText = it },
                     dateTime = dateTime,
-                    onDateChange = { dateTime = it }
+                    onDateChange = { dateTime = it },
+                    isEditMode = initial != null
                 )
             }
 
@@ -94,7 +95,7 @@ fun AddEditTaskBottomSheet(
                     icon = getCategoryIconPainter(category.image),
                     onClick = {
                         selectedCategoryId =
-                            if (selectedCategoryId == category.id) null else category.id
+                            if (selectedCategoryId == category.id) -1 else category.id
                     },
                     isSelected = selectedCategoryId == category.id,
                     isPredefined = category.isPredefinedCategory
@@ -105,23 +106,37 @@ fun AddEditTaskBottomSheet(
         val showButton by remember {
             derivedStateOf {
                 titleText.isNotBlank() && paragraphText.isNotBlank() &&
-                        selectedCategoryId != null && selectedPriority != null
+                        selectedCategoryId != 0L && selectedPriority != null
             }
         }
         MainButtonPart(showButton, initial?.title, onSave = {
-            addEditTaskInteractionListener.onClickSaveTask(
-                Task(
-                    id = initial?.id?:0L,
-                    title = titleText,
-                    description = paragraphText,
-                    date = dateTime,
-                    priority = selectedPriority ?: Task.Priority.LOW,
-                    categoryId = selectedCategoryId ?: -1L,
-                    state = Task.State.TODO
+            if (initial == null) {
+                addEditTaskInteractionListener.onClickSaveTask(
+                    Task(
+                        id = 0L,
+                        title = titleText,
+                        description = paragraphText,
+                        date = dateTime,
+                        priority = selectedPriority ?: Task.Priority.LOW,
+                        categoryId = selectedCategoryId ,
+                        state = Task.State.TODO
+                    )
                 )
-            )
+            } else {
+                addEditTaskInteractionListener.onClickSaveTask(
+                    Task(
+                        id = initial.id,
+                        title = titleText,
+                        description = paragraphText,
+                        date = dateTime,
+                        priority = selectedPriority ?: Task.Priority.LOW,
+                        categoryId = selectedCategoryId ,
+                        state = initial.state
+                    )
+                )
+            }
             onDismiss()
-        }, onDismiss = {
+        },onDismiss = {
             onDismiss()
         })
     }

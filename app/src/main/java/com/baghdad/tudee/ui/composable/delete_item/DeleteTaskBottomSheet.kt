@@ -26,9 +26,11 @@ fun DeleteTaskBottomSheet(
 
 @Composable
 fun ShowDeleteTaskSheet(
+    isVisible: Boolean,
     onDeleteConfirmed: () -> Unit = {},
     onCancelConfirmed: () -> Unit = {},
 ) {
+
     var showSheet by remember { mutableStateOf(false) }
         TudeeBottomSheet(
             isVisible = showSheet,
@@ -45,4 +47,14 @@ fun ShowDeleteTaskSheet(
                 }
             )
         }
+    TudeeBottomSheet(
+        isVisible = isVisible,
+        onDismiss = { onCancelConfirmed() }
+    ) {
+        DeleteTaskBottomSheet(
+            isLoading = isLoading,
+            onDeleteClick = { onDeleteConfirmed() },
+            onCancelClick = { onCancelConfirmed() }
+        )
+    }
 }
