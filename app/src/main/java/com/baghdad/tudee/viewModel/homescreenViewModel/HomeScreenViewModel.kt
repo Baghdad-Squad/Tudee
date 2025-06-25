@@ -75,7 +75,6 @@ class HomeScreenViewModel(
     }
 
     override fun onClickSaveTask(task: Task) {
-        Log.d("TasksViewModel", "onClickSaveTask: $task")
         if(task.id != 0L) {
             updateTask(task)
         } else {
@@ -125,7 +124,6 @@ class HomeScreenViewModel(
                 ?: _state.value.todoTasks.find { it.id == taskId }
                 ?: _state.value.doneTasks.find { it.id == taskId }
         }
-        Log.d("HomeScreenViewModel", "toggleAddEditTaskDialog: $initialTask $initialTaskId")
         _state.update {
             it.copy(
                 showEditTask = !_state.value.showEditTask,
@@ -303,10 +301,6 @@ class HomeScreenViewModel(
                     val tasksToday = it.groupBy {
                         it.state
                     }
-                    Log.d(
-                        "HomeScreenViewModel",
-                        "Tasks grouped by state: $tasksToday fro date: $dateNow"
-                    )
                     _state.update {
                         it.copy(
                             inProgressTasks = tasksToday[Task.State.IN_PROGRESS] ?: emptyList(),
