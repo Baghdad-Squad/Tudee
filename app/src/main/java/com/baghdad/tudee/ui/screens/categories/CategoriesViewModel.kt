@@ -25,16 +25,14 @@ class CategoriesViewModel(
     )
 
     private suspend fun onNewCategoriesValue(newCategories: List<Category>) {
-        val categories = newCategories.toUiState()
+        val categories = newCategories.toUiStates(
+            taskCountProvider = ::getTaskCount
+        )
         updateState { state ->
             state.copy(
                 categories = categories
             )
         }
-    }
-
-    private suspend fun List<Category>.toUiState() = this.map { category ->
-        category.toUiState().copy(taskCount = getTaskCount(category.id))
     }
 
     private fun onGetCategoriesError(error: Throwable) {
@@ -51,19 +49,22 @@ class CategoriesViewModel(
     }
 
     override fun onAddCategory() = tryToExecute(
-        function = suspend {
-            val category = Category(
+        function = ::addCategory,
+        onSuccess = { onAddNewCategorySuccess() },
+        onError = ::onAddNewCategoryError
+    )
+
+    private suspend fun addCategory() {
+        categoryService.createCategory(
+            Category(
                 id = 0L,
                 title = currentState.addCategorySheetState.categoryTitle,
                 image = Category.Image.ByteArray(
                     currentState.addCategorySheetState.categoryImageByteArray ?: byteArrayOf()
                 )
             )
-            categoryService.createCategory(category)
-        },
-        onSuccess = { onAddNewCategorySuccess() },
-        onError = ::onAddNewCategoryError
-    )
+        )
+    }
 
     override fun onUpdateCategoryTitle(newTitle: String) {
         updateState {

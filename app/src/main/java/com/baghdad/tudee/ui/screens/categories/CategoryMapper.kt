@@ -15,3 +15,11 @@ fun Category.toUiState(): CategoryUiState {
         isPredefined = isPredefinedCategory
     )
 }
+
+suspend fun List<Category>.toUiStates(
+    taskCountProvider: suspend (categoryId: Long) -> Int
+) = this.map { category ->
+    category.toUiState().copy(
+        taskCount = taskCountProvider(category.id)
+    )
+}
