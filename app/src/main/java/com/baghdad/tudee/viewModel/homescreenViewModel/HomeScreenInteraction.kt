@@ -8,7 +8,7 @@ interface HomeScreenInteraction {
     fun onClickSwitchTheme()
     fun showTaskDetailsDialog()
     fun showAddTaskDialog()
-    fun togileEditTaskDialog()
+    fun togileEditTaskDialog(initialTask: Long?)
     fun onClickEditTask(task: Task)
     fun moveTaskToDone(taskId: Long)
     fun moveTaskToTodo(taskId: Long)

@@ -24,6 +24,7 @@ data class HomeScreenUIState(
     val showSnackBar: SnackBarState = SnackBarState(),
     val isLoading: Boolean = false,
     val categories: List<Category> = emptyList(),
+    val selectedDate: LocalDate? = null,
     )
 
 
@@ -43,8 +44,9 @@ data class TaskUIState(
     val priority: Task.Priority = Task.Priority.LOW,
     val categoryId: Long = -1L,
     val categories: List<Category> = emptyList(),
-    val state: Task.State = Task.State.TODO
-)
+    val state: Task.State = Task.State.TODO,
+    val currentTask: Task? = null,
+    )
 
 
 

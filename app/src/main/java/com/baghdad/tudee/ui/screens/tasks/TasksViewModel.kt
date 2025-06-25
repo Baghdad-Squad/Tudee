@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.handleCoroutineException
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
@@ -125,7 +126,10 @@ class TasksViewModel(
     override fun toggleAddEditTaskDialog(initialTaskId: Long?) {
         val initialTask = initialTaskId?.let { taskId ->
             getTaskById(taskId)
-        }
+        }?: Task(
+            date = uiState.value.selectedDate ?: LocalDate.now(),
+            id = 0, title = "", description = "", priority = Task.Priority.LOW, categoryId = 0, state = Task.State.TODO
+        )
         _uiState.update {
             it.copy(
                 initialTask = initialTask,
