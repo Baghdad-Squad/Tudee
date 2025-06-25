@@ -272,14 +272,4 @@ class TasksViewModel(
             }
         }
     }
-
-    override fun editTask(task: Task) {
-        viewModelScope.launch {
-            try {
-                taskService.editTask(task)
-            } catch (e: Exception) {
-                error(e)
-            }
-        }
-    }
 }
