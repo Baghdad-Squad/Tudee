@@ -100,7 +100,7 @@ fun AddCategoryBottomSheet(
                     onAddClick = onAddButtonClick,
                     onCancelClick = onCancelButtonClick,
                     actionLabel = stringResource(R.string.add),
-                    isLoading = isLoading
+
                 )
 
             }
