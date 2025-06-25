@@ -1,4 +1,4 @@
-package com.baghdad.tudee.data.service.shared
+package com.baghdad.tudee.data.service.errorHandling
 
 import com.baghdad.tudee.domain.exception.DatabaseCorruptException
 import com.baghdad.tudee.domain.exception.DatabaseException
