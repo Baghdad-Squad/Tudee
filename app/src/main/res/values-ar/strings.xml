@@ -89,6 +89,15 @@
     <string name="category_self_care">اهتمام بالنفس</string>
     <string name="category_event">فعالية</string>
     <string name="category_education">تعليم</string>
-
-
+    <string name="edit_task">تعديل المهمة</string>
+    <string name="happy_robot">روبوت سعيد</string>
+    <string name="Cute_Robot">روبوت لطيف</string>
+    <string name="Angry_Robott">روبوت غاضب</string>
+    <string name="Overview_Card_Background">خلفية بطاقة النظرة العامة</string>
+    <string name="Stay_working">استمر في العمل!</string>
+    <string name="Tadaa">تادا!</string>
+    <string name="Zero_progress">لا يوجد تقدم؟!</string>
+    <string name="an_error_occurred_while_adding_category">حدث خطأ أثناء إضافة الفئة</string>
+    <string name="an_error_occurred_while_fetching_categories">حدث خطأ أثناء جلب الفئات</string>
+    <string name="empty_string" />
 </resources>

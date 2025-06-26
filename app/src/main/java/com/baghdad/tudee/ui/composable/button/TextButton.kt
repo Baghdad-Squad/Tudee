@@ -24,7 +24,7 @@ fun TextButton(
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     isEnabled: Boolean = true,
-    contentPadding : PaddingValues= PaddingValues(vertical = 18.dp, horizontal = 24.dp)
+    contentPadding : PaddingValues= PaddingValues(0.dp)
 ) {
     val animatedContentColor by animateColorAsState(
         targetValue = if (isEnabled) Theme.color.primaryColor.normal

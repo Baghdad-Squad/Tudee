@@ -10,14 +10,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.ui.composable.BottomNavigation
+import com.baghdad.tudee.ui.navigation.LocalNavController
 import com.baghdad.tudee.ui.navigation.Route
 import com.baghdad.tudee.ui.navigation.TudeeNavHost
 import com.baghdad.tudee.ui.screens.SplashScreen.SplashScreen
@@ -30,20 +34,26 @@ class MainActivity : ComponentActivity() {
         setContent {
             val mainViewModel = koinViewModel<MainViewModel>()
             val state by mainViewModel.uiState.collectAsStateWithLifecycle()
-            TudeeTheme(
-                isDarkTheme = state.isDarkTheme == true
+            val navController = rememberNavController()
+            CompositionLocalProvider(
+                LocalNavController provides navController
             ) {
-                AnimatedContent(
-                    targetState = state.isDarkTheme == null || state.isFirstLaunch == null
-                ) { isLoading ->
-                    if (isLoading) {
-                        SplashScreen()
-                    } else {
-                        AppContent(
-                            isFirstLaunch = state.isFirstLaunch != false,
-                        )
-                    }
+                TudeeTheme(
+                    isDarkTheme = state.isDarkTheme == true,
+                ) {
+                    AnimatedContent(
+                        targetState = state.isDarkTheme == null || state.isFirstLaunch == null
+                    ) { isLoading ->
+                        if (isLoading) {
+                            SplashScreen()
+                        } else {
+                            AppContent(
+                                isFirstLaunch = state.isFirstLaunch != false,
+                                navController = navController
+                            )
+                        }
 
+                    }
                 }
             }
         }
@@ -53,8 +63,8 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun AppContent(
         isFirstLaunch: Boolean,
+        navController: NavHostController
     ) {
-        val navController = rememberNavController()
         val startDestination = remember(isFirstLaunch) {
             if (isFirstLaunch) {
                 Route.OnboardingScreen
