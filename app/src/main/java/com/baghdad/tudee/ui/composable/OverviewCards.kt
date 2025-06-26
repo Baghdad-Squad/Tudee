@@ -86,17 +86,7 @@ fun OverviewCards(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            painter = painterResource(
-                                when (it.taskState) {
-                                    TaskState.TODO -> R.drawable.ic_overview_card_todo
-                                    TaskState.IN_PROGRESS -> R.drawable.ic_overview_card_in_progress
-                                    TaskState.DONE -> R.drawable.ic_overview_card_done
-                                }
-                            ), contentDescription = when (it.taskState) {
-                                TaskState.TODO -> stringResource(R.string.to_do)
-                                TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
-                                TaskState.DONE -> stringResource(R.string.done)
-                            },
+                            painter = painterResource(it.taskState.toPainterResource()), contentDescription = it.taskState.toStringResource() ,
                             tint = color.textColor.onPrimary,
                             modifier = Modifier.size(24.dp)
                         )
@@ -107,11 +97,7 @@ fun OverviewCards(
                         color = color.textColor.onPrimary,
                     )
                     Text(
-                        text = when (it.taskState) {
-                            TaskState.TODO -> stringResource(R.string.to_do)
-                            TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
-                            TaskState.DONE -> stringResource(R.string.done)
-                        },
+                        text = it.taskState.toStringResource(),
                         style = Theme.typography.label.small,
                         color = color.textColor.onPrimaryCaption,
                     )
@@ -138,3 +124,23 @@ private data class OverViewCard(
     val background: Color,
     val count: Int,
 )
+
+
+@Composable
+fun TaskState.toStringResource(): String {
+    return when (this) {
+        TaskState.TODO -> stringResource(R.string.to_do)
+        TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
+        TaskState.DONE -> stringResource(R.string.done)
+    }
+}
+
+@Composable
+fun TaskState.toPainterResource(): Int {
+    return when (this) {
+        TaskState.TODO -> R.drawable.ic_overview_card_todo
+        TaskState.IN_PROGRESS -> R.drawable.ic_overview_card_in_progress
+        TaskState.DONE -> R.drawable.ic_overview_card_done
+    }
+}
+
