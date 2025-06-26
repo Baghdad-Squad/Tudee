@@ -13,25 +13,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 
 @Composable
-fun CategoryScreenBar() {
+fun CategoriesTopAppBar() {
     Box(
         modifier = Modifier
             .background(Theme.color.surfaceColor.surfaceHigh)
             .fillMaxWidth()
-            .height(104.dp)
             .padding(WindowInsets.statusBars.asPaddingValues())
 
     ) {
         Text(
             text = stringResource(R.string.categories),
             modifier = Modifier.align(Alignment.CenterStart)
-                .padding(start = 16.dp),
+                .padding(vertical = 20.dp, horizontal = 16.dp),
             style = Theme.typography.title.large,
             color = Theme.color.textColor.title
         )

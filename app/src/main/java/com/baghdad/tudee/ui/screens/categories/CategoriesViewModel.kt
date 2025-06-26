@@ -1,10 +1,13 @@
 package com.baghdad.tudee.ui.screens.categories
 
+import android.util.Log
 import com.baghdad.tudee.R
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.service.CategoryService
 import com.baghdad.tudee.domain.service.TaskService
 import com.baghdad.tudee.ui.base.BaseViewModel
+import com.baghdad.tudee.ui.composable.bottomSheet.category.toEntity
+import com.baghdad.tudee.ui.model.toUiStates
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
@@ -12,7 +15,7 @@ class CategoriesViewModel(
     private val categoryService: CategoryService,
     private val taskService: TaskService
 ) : CategoriesInteractionListener,
-    BaseViewModel<CategoriesUiState, CategoriesUiEffect>(initialState = CategoriesUiState()) {
+    BaseViewModel<CategoriesScreenState, CategoriesScreenEffect>(initialState = CategoriesScreenState()) {
 
     init {
         getCategories()
@@ -26,7 +29,7 @@ class CategoriesViewModel(
 
     private suspend fun onNewCategoriesValue(newCategories: List<Category>) {
         val categories = newCategories.toUiStates(
-            taskCountProvider = ::getTaskCount
+            taskCountProvider = ::getTaskCountForCategory
         )
         updateState { state ->
             state.copy(
@@ -42,27 +45,33 @@ class CategoriesViewModel(
         )
     }
 
-    private suspend fun getTaskCount(id: Long): Int {
-        return taskService.getTasksByCategory(id)
+    private suspend fun getTaskCountForCategory(categoryId: Long): Int {
+        return taskService.getTasksByCategory(categoryId)
             .map { it.count() }
             .first()
     }
 
-    override fun onAddCategory() = tryToExecute(
-        function = ::addCategory,
-        onSuccess = { onAddNewCategorySuccess() },
-        onError = ::onAddNewCategoryError
-    )
+    override fun onAddCategory() {
+        tryToExecute<Unit>(
+            function = { categoryService.createCategory(currentState.addCategorySheetState.toEntity())},
+            onSuccess = { onAddNewCategorySuccess() },
+            onError = ::onAddNewCategoryError
+        )
+    }
 
-    private suspend fun addCategory() {
-        categoryService.createCategory(
-            Category(
-                id = 0L,
-                title = currentState.addCategorySheetState.categoryTitle,
-                image = Category.Image.ByteArray(
-                    currentState.addCategorySheetState.categoryImageByteArray ?: byteArrayOf()
-                )
-            )
+    private fun onAddNewCategorySuccess() {
+        onDismissAddCategorySheet()
+        showSnackbar(
+            messageRes = R.string.added_category_successfully,
+            isSuccess = true
+        )
+    }
+
+    private fun onAddNewCategoryError(error: Throwable) {
+        onDismissAddCategorySheet()
+        showSnackbar(
+            messageRes = R.string.an_error_occurred_while_adding_category,
+            isSuccess = false
         )
     }
 
@@ -76,21 +85,21 @@ class CategoriesViewModel(
         }
     }
 
-    override fun onUpdateCategoryImage(byteArray: ByteArray) {
+    override fun onUpdateCategoryImageByteArray(categoryImageByteArray: ByteArray) {
         updateState {
             it.copy(
                 addCategorySheetState = it.addCategorySheetState.copy(
-                    categoryImageByteArray = byteArray
+                    categoryImageByteArray = categoryImageByteArray
                 )
             )
         }
     }
 
-    override fun onToggleAddCategorySheetVisibility() {
+    override fun onAddCategoryClicked() {
         updateState { state ->
             state.copy(
                 addCategorySheetState = state.addCategorySheetState.copy(
-                    isVisible = !state.addCategorySheetState.isVisible,
+                    isVisible = true,
                     categoryTitle = "",
                     categoryImageByteArray = null
                 )
@@ -98,25 +107,21 @@ class CategoriesViewModel(
         }
     }
 
-    override fun onCategoryClick(categoryId: Long) {
-        emitNewEffect(
-            CategoriesUiEffect.NavigateToCategoryTasks(categoryId)
-        )
+    override fun onDismissAddCategorySheet() {
+        updateState { state ->
+            state.copy(
+                addCategorySheetState = state.addCategorySheetState.copy(
+                    isVisible = false
+                )
+            )
+        }
     }
 
-    private fun onAddNewCategorySuccess() {
-        showSnackbar(
-            messageRes = R.string.added_category_successfully,
-            isSuccess = true
-        )
-        onToggleAddCategorySheetVisibility()
-    }
-
-    private fun onAddNewCategoryError(error: Throwable) {
-        showSnackbar(
-            messageRes = R.string.an_error_occurred_while_adding_category,
-            isSuccess = false
-        )
-        onToggleAddCategorySheetVisibility()
+    override fun onCategoryClicked(categoryId: Long?) {
+        categoryId?.let {
+            emitNewEffect(
+                CategoriesScreenEffect.NavigateToCategoryTasks(categoryId)
+            )
+        }
     }
 }

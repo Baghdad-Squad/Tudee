@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.ui.base.EffectHandler
@@ -18,25 +19,26 @@ import com.baghdad.tudee.ui.composable.SnackbarState
 import com.baghdad.tudee.ui.composable.TudeeScaffold
 import com.baghdad.tudee.ui.composable.bottomSheet.category.AddEditCategoryBottomSheet
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
-import com.baghdad.tudee.ui.screens.categories.component.CategoryItems
-import com.baghdad.tudee.ui.screens.categories.component.CategoryScreenBar
+import com.baghdad.tudee.ui.navigation.LocalNavController
+import com.baghdad.tudee.ui.navigation.Route
+import com.baghdad.tudee.ui.screens.categories.component.CategoriesList
+import com.baghdad.tudee.ui.screens.categories.component.CategoriesTopAppBar
 import com.baghdad.tudee.ui.utils.image.uriToByteArray
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CategoriesScreen(
     viewModel: CategoriesViewModel = koinViewModel(),
-    navigateToCategoryTask: (Long) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarState by viewModel.snackbarState.collectAsStateWithLifecycle()
+    val navController = LocalNavController.current
     EffectHandler(
-        effects = viewModel.effects
-    ) { effect ->
-        when (effect) {
-            is CategoriesUiEffect.NavigateToCategoryTasks -> navigateToCategoryTask(effect.categoryId)
+        effects = viewModel.effects,
+        onNewEffect  = { effect ->
+            onNewEffect(effect, navController)
         }
-    }
+    )
     CategoriesScreenContent(
         state = state,
         snackbarState = snackbarState,
@@ -44,30 +46,37 @@ fun CategoriesScreen(
     )
 }
 
+private fun onNewEffect(
+    effect: CategoriesScreenEffect,
+    navController: NavHostController
+) {
+    when (effect) {
+        is CategoriesScreenEffect.NavigateToCategoryTasks -> navController.navigate(Route.CategoryTasksScreen(effect.categoryId))
+    }
+}
+
 @Composable
 private fun CategoriesScreenContent(
-    state: CategoriesUiState,
+    state: CategoriesScreenState,
     snackbarState: SnackbarState,
     interactionListener: CategoriesInteractionListener
 ) {
     val context = LocalContext.current
     val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            uriToByteArray(context, uri)?.let { interactionListener.onUpdateCategoryImage(it) }
+            uriToByteArray(context, uri)?.let { interactionListener.onUpdateCategoryImageByteArray(it) }
         }
     TudeeScaffold(
         modifier = Modifier
             .background(Theme.color.surfaceColor.surface),
         topBar = {
-            CategoryScreenBar()
+            CategoriesTopAppBar()
         },
         floatingActionButton = {
             FloatingActionButton(
-                painter = painterResource(
-                    id = R.drawable.ic_add_category
-                ),
+                painter = painterResource(id = R.drawable.ic_add_category),
                 onClick = {
-                    interactionListener.onToggleAddCategorySheetVisibility()
+                    interactionListener.onAddCategoryClicked()
                 }
             )
         },
@@ -77,9 +86,9 @@ private fun CategoriesScreenContent(
             )
         }
     ) {
-        CategoryItems(
-            state = state.categories,
-            onCategoryClick = interactionListener::onCategoryClick
+        CategoriesList(
+            categories = state.categories,
+            onCategoryClick = { interactionListener.onCategoryClicked(it.id) },
         )
         AddEditCategoryBottomSheet(
             state = state.addCategorySheetState,
@@ -89,9 +98,7 @@ private fun CategoriesScreenContent(
                     PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                 )
             },
-            onDismiss = {
-                interactionListener.onToggleAddCategorySheetVisibility()
-            },
+            onDismiss = interactionListener::onDismissAddCategorySheet,
             onSaveClick = interactionListener::onAddCategory
         )
     }

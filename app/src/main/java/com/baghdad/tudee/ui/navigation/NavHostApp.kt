@@ -53,11 +53,7 @@ fun TudeeNavHost(
 
 
         composable<Route.CategoriesScreen> {
-            CategoriesScreen(
-                navigateToCategoryTask = {
-                    navController.navigate(Route.CategoryTasksScreen(it))
-                }
-            )
+            CategoriesScreen()
         }
 
         composable<Route.HomeScreen> {
