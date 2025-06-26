@@ -1,7 +1,5 @@
 package com.baghdad.tudee.ui.screens.homeScreen
 
-import androidx.annotation.DrawableRes
-import com.baghdad.tudee.R
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.utils.now
@@ -76,3 +74,14 @@ enum class SliderState{
     ZERO_PROGRESS,
     NOTHING_IN_YOUR_LIST
 }
+
+fun TaskUIState.toTask() =
+    Task(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        date = this.date,
+        priority = this.priority,
+        categoryId = this.categoryId,
+        state = this.state
+    )
