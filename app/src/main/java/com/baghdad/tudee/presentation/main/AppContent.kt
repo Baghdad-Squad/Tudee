@@ -1,5 +1,9 @@
 package com.baghdad.tudee.presentation.main
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -14,7 +18,17 @@ fun AppContent(
     navController: NavHostController
 ) {
     val startDestination = rememberStartDestination(isFirstLaunch)
-    NavigationContent(modifier, navController, startDestination)
-    BottomNavigation(navController = navController)
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .navigationBarsPadding()
+    ) {
+        NavigationContent(modifier.weight(1f).
+            fillMaxWidth(),
+            navController,
+            startDestination
+        )
+        BottomNavigation(navController = navController)
+    }
 }
 
