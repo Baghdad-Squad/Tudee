@@ -99,4 +99,10 @@
     <string name="category_self_care">Self-care</string>
     <string name="category_event">Event</string>
     <string name="category_education">Education</string>
+    <string name="an_error_occurred_while_fetching_the_category">An error occurred while fetching the category</string>
+    <string name="an_error_occurred_while_fetching_the_tasks">An error occurred while fetching the tasks</string>
+    <string name="category_deleted_successfully">Category deleted successfully</string>
+    <string name="an_error_occured_while_deleting_the_category">An error occured while deleting the category</string>
+    <string name="an_error_occurred_while_updating_the_category">An error occurred while updating the category</string>
+    <string name="category_updated_successfully">Category updated successfully</string>
 </resources>
