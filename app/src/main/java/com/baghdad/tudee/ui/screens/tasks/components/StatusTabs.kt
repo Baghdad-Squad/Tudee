@@ -10,14 +10,13 @@ import com.baghdad.tudee.R
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.TabItem
 import com.baghdad.tudee.ui.composable.Tabs
-import com.baghdad.tudee.ui.screens.tasks.TasksInteractionListener
-import com.baghdad.tudee.ui.screens.tasks.TasksUiState
+import com.baghdad.tudee.ui.screens.tasks.TasksScreenState
 import com.baghdad.tudee.ui.shared.Selectable
 
 @Composable
 fun StatusTabs(
     onTabSelected: (Task.State) -> Unit,
-    uiState: TasksUiState,
+    uiState: TasksScreenState,
     selectedTab: Task.State,
     modifier: Modifier = Modifier
 ) {
@@ -30,21 +29,29 @@ fun StatusTabs(
                 Selectable(
                     value = TabItem(
                         stringResource(R.string.in_progress),
-                        badgeCount = if (selectedTab == Task.State.IN_PROGRESS) uiState.inProgressTasks.size else null
+                        badgeCount = if (selectedTab == Task.State.IN_PROGRESS)
+                            uiState.inProgressTasks.size
+                        else null
                     ),
                     isSelected = selectedTab == Task.State.IN_PROGRESS
                 ),
                 Selectable(
                     value = TabItem(
                         stringResource(R.string.to_do),
-                        badgeCount = if (selectedTab == Task.State.TODO) uiState.todoTasks.size else null
+                        badgeCount =
+                            if (selectedTab == Task.State.TODO)
+                                uiState.todoTasks.size
+                            else null
                     ),
                     isSelected = selectedTab == Task.State.TODO
                 ),
                 Selectable(
                     value = TabItem(
                         stringResource(R.string.done),
-                        badgeCount = if (selectedTab == Task.State.DONE) uiState.doneTasks.size else null
+                        badgeCount =
+                            if (selectedTab == Task.State.DONE)
+                                uiState.doneTasks.size
+                            else null
                     ),
                     isSelected = selectedTab == Task.State.DONE
                 )

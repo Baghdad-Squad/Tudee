@@ -19,7 +19,7 @@ import com.baghdad.tudee.ui.composable.button.PrimaryButton
 import com.baghdad.tudee.ui.composable.button.SecondaryButton
 
 @Composable
-fun MainButtonPart (isEnable: Boolean, initial: String? = null, onSave: ()-> Unit , onDismiss: ()-> Unit){
+fun MainButtonPart (isEnable: Boolean, initial: Long? = null, onSave: ()-> Unit , onDismiss: ()-> Unit){
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -30,7 +30,9 @@ fun MainButtonPart (isEnable: Boolean, initial: String? = null, onSave: ()-> Uni
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            val value = if (initial != null) stringResource(R.string.save) else stringResource(R.string.add)
+            val value = if (initial != null && initial!= 0L)
+                stringResource(R.string.save)
+            else stringResource(R.string.add)
             PrimaryButton(
                 label = value,
                 onClick = {onSave()},

@@ -23,6 +23,7 @@
     <string name="taskDescription">Solve all exercises from page 45 to 50 in the \ntextbook, Solve all exercises from page 45 to 50 in \nthe textbook.</string>
     <string name="taskTitleExample">Organize Study Desk</string>
     <string name="task_details">Task details</string>
+    <string name="an_error_occurred_while_loading_tasks">an error occurred while loading tasks</string>
     <string name="label">label</string>
     <string name="move_to_in_progress">Move to in progress</string>
     <string name="move_to_done">Move to done</string>
@@ -74,6 +75,7 @@
     <string name="edit_task">Edit Task </string>
     <string name="an_error_occurred_while_adding_category">An error occurred while adding category</string>
     <string name="an_error_occurred_while_fetching_categories">An error occurred while fetching categories</string>
+    <string name="an_error_occurred_while_saving_task">An error occurred while saving task</string>
     <string name="empty_string" />
     <string name="task_title">Task title</string>
     <string name="description">Description</string>
