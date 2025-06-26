@@ -107,4 +107,5 @@
     <string name="category_updated_successfully">تم تحديث الفئة بنجاح</string>
 
     <string name="empty_string" />
+    <string name="arrow_icon">سهم الى اليسار</string>
 </resources>
