@@ -39,6 +39,7 @@ import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import kotlin.math.abs
 
+
 @Composable
 fun SwipeToDeleteCard(
     title: String,
@@ -47,11 +48,12 @@ fun SwipeToDeleteCard(
     icon: Painter,
     modifier: Modifier = Modifier,
     onDelete: () -> Unit,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
-    val maxSwipe = 100f
+    val maxSwipeDistance = 100f
     var offsetX by remember { mutableFloatStateOf(0f) }
-    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
+    val layoutDirection = LocalLayoutDirection.current
+    val isRtl = layoutDirection == LayoutDirection.Rtl
 
     val animatedOffsetX by animateFloatAsState(
         targetValue = offsetX,
@@ -62,11 +64,11 @@ fun SwipeToDeleteCard(
     )
 
     Box(
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
             .clip(RoundedCornerShape(16.dp))
-            .background(Theme.color.status.errorVariant, shape = RoundedCornerShape(16.dp))
+            .background(Theme.color.status.errorVariant)
     ) {
         Box(
             modifier = Modifier
@@ -82,12 +84,9 @@ fun SwipeToDeleteCard(
         }
 
         Box(
-            Modifier
-
+            modifier = Modifier
                 .offset(x = animatedOffsetX.dp)
-                .graphicsLayer {
-                    scaleX = if (isRtl) -1f else 1f
-                }
+                .graphicsLayer { scaleX = if (isRtl) -1f else 1f }
                 .pointerInput(Unit) {
                     awaitPointerEventScope {
                         while (true) {
@@ -107,27 +106,22 @@ fun SwipeToDeleteCard(
 
                                 if (abs(totalDragX) > abs(totalDragY)) {
                                     change.consume()
-                                    val newOffset = offsetX + dragAmount.x
-                                    offsetX = newOffset.coerceIn(-maxSwipe, 0f)
+                                    offsetX =
+                                        (offsetX + dragAmount.x).coerceIn(-maxSwipeDistance, 0f)
                                 }
 
                                 if (!change.pressed) break
                             }
 
-                            if (offsetX <= -maxSwipe * 0.5f) {
+                            if (offsetX <= -maxSwipeDistance * 0.5f) {
                                 onDelete()
-                                offsetX = 0f
-                            } else {
-                                offsetX = 0f
                             }
 
+                            offsetX = 0f // Reset after interaction
                         }
-
                     }
                 }
-
-        )
-        {
+        ) {
             CategoryTaskCard(
                 title = title,
                 description = description,
