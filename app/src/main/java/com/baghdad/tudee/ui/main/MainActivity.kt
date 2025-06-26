@@ -60,30 +60,5 @@ class MainActivity : ComponentActivity() {
 
     }
 
-    @Composable
-    fun AppContent(
-        isFirstLaunch: Boolean,
-        navController: NavHostController
-    ) {
-        val startDestination = remember(isFirstLaunch) {
-            if (isFirstLaunch) {
-                Route.OnboardingScreen
-            } else {
-                Route.HomeScreen
-            }
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .navigationBarsPadding()
-        ) {
-            TudeeNavHost(
-                navController = navController,
-                startDestination = startDestination,
-                modifier = Modifier
-                    .weight(1f)
-            )
-            BottomNavigation(navController = navController)
-        }
-    }
+
 }
