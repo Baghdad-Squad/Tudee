@@ -15,19 +15,26 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.base.EffectHandler
+import com.baghdad.tudee.ui.composable.AnimatedSnackbar
+import com.baghdad.tudee.ui.composable.SnackbarState
 import com.baghdad.tudee.ui.composable.Tabs
+import com.baghdad.tudee.ui.composable.TudeeScaffold
+import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.delete_item.ShowDeleteCategorySheet
 import com.baghdad.tudee.ui.navigation.LocalNavController
 import com.baghdad.tudee.ui.navigation.Route
+import com.baghdad.tudee.ui.screens.categories.component.CategoriesTopAppBar
 import com.baghdad.tudee.ui.screens.categoryTasksScreen.components.CategoryTasksPager
 import com.baghdad.tudee.ui.screens.categoryTasksScreen.components.CategoryTasksScreenHeader
 import com.baghdad.tudee.ui.screens.categoryTasksScreen.components.rememberTabs
@@ -42,7 +49,7 @@ fun CategoryTasksScreen(
     navigateBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-
+    val snackBarState by viewModel.snackbarState.collectAsStateWithLifecycle()
     val navController = LocalNavController.current
 
     EffectHandler(
@@ -52,6 +59,7 @@ fun CategoryTasksScreen(
         }
     )
     CategoryTasksScreenContent(
+        snackBarState = snackBarState,
         state = state,
         onArrowBackClicked = { navigateBack() },
         listener = viewModel,
@@ -70,6 +78,7 @@ private fun onNewEffect(
 
 @Composable
 private fun CategoryTasksScreenContent(
+    snackBarState:SnackbarState,
     state: CategoryTasksScreenUiState,
     onArrowBackClicked: () -> Unit,
     listener: CategoriesTasksInteractionListener
@@ -97,49 +106,60 @@ private fun CategoryTasksScreenContent(
         }
     }
 
-
-    Column(
+    TudeeScaffold(
         modifier = Modifier
-            .padding(WindowInsets.statusBars.asPaddingValues())
-            .background(Theme.color.surfaceColor.surface)
+            .background(Theme.color.surfaceColor.surface),
+        topBar = {
+            CategoryTasksScreenHeader(
+                state = state,
+                onArrowBackClicked = onArrowBackClicked,
+                listener = listener
+            )
+        },
+
+        snackbar = {
+            AnimatedSnackbar(
+                snackbarState = snackBarState
+            )
+        }
     ) {
+        Column(
+            modifier = Modifier
+                .background(Theme.color.surfaceColor.surface)
+        ) {
 
-        CategoryTasksScreenHeader(
-            state = state,
-            onArrowBackClicked = onArrowBackClicked,
-            listener = listener
-        )
-        val tabs = rememberTabs(state, context)
+            val tabs = rememberTabs(state, context)
 
-        Tabs(
-            selectableTabs = tabs,
-            onTabSelected = { tab -> listener.onTabSelected(tab.status) },
-            modifier = Modifier.padding(bottom = 12.dp)
-        )
+            Tabs(
+                selectableTabs = tabs,
+                onTabSelected = { tab -> listener.onTabSelected(tab.status) },
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
 
-        CategoryTasksPager(
-            pagerState = pagerState,
-            state = state,
-            onCategoryTitleChanged = listener::onCategoryTitleChanged,
-            onUploadImage = {
-                imageLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            },
-            onDismissEditSheet = listener::onToggleEditCategorySheetVisibility,
-            onDeleteCategoryClick = listener::toggleDeleteCategorySheet,
-            onSaveCategoryChanges = listener::onSaveCategoryChanges
-        )
-        ShowDeleteCategorySheet(
-            isVisible = state.showDeleteCategorySheet,
-            onDeleteConfirmed = {
-                listener.onDeleteCategory()
-                listener.toggleDeleteCategorySheet()
-            },
-            onCancelConfirmed = {
-                listener.toggleDeleteCategorySheet()
-            }
-        )
+            CategoryTasksPager(
+                pagerState = pagerState,
+                state = state,
+                onCategoryTitleChanged = listener::onCategoryTitleChanged,
+                onUploadImage = {
+                    imageLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                },
+                onDismissEditSheet = listener::onToggleEditCategorySheetVisibility,
+                onDeleteCategoryClick = listener::toggleDeleteCategorySheet,
+                onSaveCategoryChanges = listener::onSaveCategoryChanges
+            )
+            ShowDeleteCategorySheet(
+                isVisible = state.showDeleteCategorySheet,
+                onDeleteConfirmed = {
+                    listener.onDeleteCategory()
+                    listener.toggleDeleteCategorySheet()
+                },
+                onCancelConfirmed = {
+                    listener.toggleDeleteCategorySheet()
+                }
+            )
 
 
+        }
     }
 }
 

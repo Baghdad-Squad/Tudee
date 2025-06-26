@@ -12,63 +12,73 @@ class CategoryTasksViewModel(
     val taskService: TaskService,
     val categoryService: CategoryService,
 ) : BaseViewModel<CategoryTasksScreenUiState, CategoryTasksScreenEffect>(
-    CategoryTasksScreenUiState()), CategoriesTasksInteractionListener
- {
+    CategoryTasksScreenUiState()
+), CategoriesTasksInteractionListener {
 
     init {
         getCategoryById()
         getTasksByCategoryId()
     }
 
-     override fun onTabSelected(tab: Task.State) {
+    override fun onTabSelected(tab: Task.State) {
         updateState {
             it.copy(selectedTab = tab)
         }
     }
 
-    private fun getCategoryById(){
+    private fun getCategoryById() {
         tryToExecute(
-            function = {categoryService.getCategoryById(categoryId) },
+            function = { categoryService.getCategoryById(categoryId) },
             onSuccess = { category ->
                 category?.let {
-                    updateState {
-                        it.copy(
-                            category = category,
-                            addEditCategorySheetState = it.addEditCategorySheetState.copy(
-                                categoryTitle = category.title,
-                                categoryImageByteArray = (category.image as? Category.Image.ByteArray)?.data
-                            )
-                        )
-                    }
+                    onGetCategoryByIdSuccess(it)
                 }
             },
-            onError = {
-                showSnackbar(
-                    messageRes =R.string.an_error_occurred_while_fetching_the_category,
-                    isSuccess = false,
+            onError = { onGetCategoryByIdError() }
+        )
+    }
+
+    private fun onGetCategoryByIdSuccess(category: Category) {
+        updateState {
+            it.copy(
+                category = category,
+                addEditCategorySheetState = it.addEditCategorySheetState.copy(
+                    categoryTitle = category.title,
+                    categoryImageByteArray = (category.image as? Category.Image.ByteArray)?.data
                 )
-            }
+            )
+        }
+    }
+
+    private fun onGetCategoryByIdError() {
+        showSnackbar(
+            messageRes = R.string.an_error_occurred_while_fetching_the_category,
+            isSuccess = false
         )
     }
 
     private fun getTasksByCategoryId() {
         tryToCollect(
-            function = {taskService.getTasksByCategory(categoryId) } ,
-            onNewValue = { tasks ->
-                updateState {
-                    it.copy(
-                        todoTasks = tasks.filter { task -> task.state == Task.State.TODO },
-                        inProgressTasks = tasks.filter { task -> task.state == Task.State.IN_PROGRESS },
-                        doneTasks = tasks.filter { task -> task.state == Task.State.DONE }
-                    )
-                }
-            },
-            onError = {
-                showSnackbar(
-                    messageRes = R.string.an_error_occurred_while_fetching_the_tasks,
-                    isSuccess = false,
-                )
-            }
+            function = { taskService.getTasksByCategory(categoryId) },
+            onNewValue = { tasks -> onGetTasksByCategoryIdSuccess(tasks) },
+            onError = { onGetTasksByCategoryIdError() }
+        )
+    }
+
+    private fun onGetTasksByCategoryIdSuccess(tasks: List<Task>) {
+        updateState {
+            it.copy(
+                todoTasks = tasks.filter { task -> task.state == Task.State.TODO },
+                inProgressTasks = tasks.filter { task -> task.state == Task.State.IN_PROGRESS },
+                doneTasks = tasks.filter { task -> task.state == Task.State.DONE }
+            )
+        }
+    }
+
+    private fun onGetTasksByCategoryIdError() {
+        showSnackbar(
+            messageRes = R.string.an_error_occurred_while_fetching_the_tasks,
+            isSuccess = false,
         )
 
     }
@@ -85,61 +95,69 @@ class CategoryTasksViewModel(
     }
 
 
-    override fun onDeleteCategory(){
+    override fun onDeleteCategory() {
         tryToExecute(
-            function = {categoryService.deleteCategory(categoryId)},
-            onSuccess = {
-                showSnackbar(
-                    messageRes = R.string.category_deleted_successfully,
-                    isSuccess = true,
-                )
-                emitNewEffect(CategoryTasksScreenEffect.NavigateToCategoriesScreen)
-            },
-            onError = {
-                showSnackbar(
-                    messageRes = R.string.an_error_occured_while_deleting_the_category,
-                    isSuccess = false,
-                )
-            }
+            function = { categoryService.deleteCategory(categoryId) },
+            onSuccess = { onDeleteCategorySuccess() },
+            onError = { onDeleteCategoryError() }
+        )
+    }
+
+    private fun onDeleteCategorySuccess() {
+        showSnackbar(
+            messageRes = R.string.category_deleted_successfully,
+            isSuccess = true,
+        )
+        emitNewEffect(CategoryTasksScreenEffect.NavigateToCategoriesScreen)
+    }
+
+    private fun onDeleteCategoryError() {
+        showSnackbar(
+            messageRes = R.string.an_error_occured_while_deleting_the_category,
+            isSuccess = false,
         )
     }
 
 
     override fun onSaveCategoryChanges() {
-       tryToExecute(
-           function = {
-               categoryService.editCategory(
-                   Category(
-                       id = categoryId,
-                       title = currentState.addEditCategorySheetState.categoryTitle,
-                       image = Category.Image.ByteArray(
-                           currentState.addEditCategorySheetState.categoryImageByteArray
-                               ?: byteArrayOf()
-                       ),
-                   )
-               )
-           },
-           onSuccess = {
-               showSnackbar(
-                   messageRes = R.string.category_updated_successfully,
-                   isSuccess = true
-               )
-               getCategoryById()
-               onToggleEditCategorySheetVisibility()
-               emitNewEffect(CategoryTasksScreenEffect.NavigateToCategoriesScreen)
-
-           },
-           onError = {
-               showSnackbar(
-                   messageRes = R.string.an_error_occurred_while_updating_the_category,
-                   isSuccess = false
-               )
-           }
-       )
+        tryToExecute(
+            function = { updateCategoryFromSheetState() },
+            onSuccess = { onSaveCategoryChangesSuccess() },
+            onError = { onSaveCategoryChangesError() }
+        )
     }
 
+    private suspend fun updateCategoryFromSheetState(): Unit = categoryService.editCategory(
+        Category(
+            id = categoryId,
+            title = currentState.addEditCategorySheetState.categoryTitle,
+            image = Category.Image.ByteArray(
+                currentState.addEditCategorySheetState.categoryImageByteArray ?: byteArrayOf()
+            ),
+        )
+    )
+
+    private fun onSaveCategoryChangesSuccess() {
+        showSnackbar(
+            messageRes = R.string.category_updated_successfully,
+            isSuccess = true
+        )
+        getCategoryById()
+        onToggleEditCategorySheetVisibility()
+        emitNewEffect(CategoryTasksScreenEffect.NavigateToCategoriesScreen)
+    }
+
+    private fun onSaveCategoryChangesError() {
+        showSnackbar(
+            messageRes = R.string.an_error_occurred_while_updating_the_category,
+            isSuccess = false
+        )
+    }
+
+
+
     override fun onChangeImage(newImage: Category.Image) {
-       updateState {
+        updateState {
             it.copy(
                 addEditCategorySheetState = it.addEditCategorySheetState.copy(
                     categoryImageByteArray = (newImage as? Category.Image.ByteArray)?.data
@@ -149,7 +167,7 @@ class CategoryTasksViewModel(
     }
 
     override fun onToggleEditCategorySheetVisibility() {
-       updateState{
+        updateState {
             it.copy(
                 addEditCategorySheetState = it.addEditCategorySheetState.copy(
                     isVisible = !it.addEditCategorySheetState.isVisible
