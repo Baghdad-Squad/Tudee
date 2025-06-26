@@ -75,6 +75,7 @@
     <string name="edit_task">Edit Task </string>
     <string name="an_error_occurred_while_adding_category">An error occurred while adding category</string>
     <string name="an_error_occurred_while_fetching_categories">An error occurred while fetching categories</string>
+    <string name="an_error_occurred_while_saving_task">An error occurred while saving task</string>
     <string name="empty_string" />
     <string name="task_title">Task title</string>
     <string name="description">Description</string>
