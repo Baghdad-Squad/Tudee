@@ -1,38 +1,27 @@
 package com.baghdad.tudee.ui.screens.homeScreen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,21 +29,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.baghdad.tudee.R
+import com.baghdad.tudee.designSystem.chips.ChipTextWithArrowIcon
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.domain.entity.Task
-import com.baghdad.tudee.ui.composable.CategoryTaskCard
+import com.baghdad.tudee.ui.composable.MoodSliderChangeable
+import com.baghdad.tudee.ui.composable.OverviewCards
+import com.baghdad.tudee.ui.composable.PairOfTask
 import com.baghdad.tudee.ui.composable.SnakeBar
 import com.baghdad.tudee.ui.composable.TasksEmptyScreen
 import com.baghdad.tudee.ui.composable.TopTudeeBar
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
-import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
+import com.baghdad.tudee.ui.composable.TudeeScaffold
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
+import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomSheet
 import com.baghdad.tudee.ui.utils.formatDate
-import com.baghdad.tudee.ui.utils.getCategoryIconPainter
-import com.baghdad.tudee.ui.utils.insideBorder
-import com.baghdad.tudee.ui.utils.noRippleClickable
 import com.baghdad.tudee.ui.utils.now
 import com.baghdad.tudee.viewModel.homescreenViewModel.HomeScreenViewModel
 import kotlinx.datetime.LocalDate
@@ -70,409 +60,106 @@ fun HomeScreen(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modifier = 
 fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modifier = Modifier) {
     val viewModel: HomeScreenViewModel = koinViewModel()
     val state by viewModel.state.collectAsState()
-    Scaffold(
+
+
+    TudeeScaffold(
+        topBar = {
+            TopTudeeBar(
+                title = "Tudee",
+                description = stringResource(R.string.Your_personal_task_manager),
+                isDay = state.isDark.not(),
+                onChangeTheme = {
+                    viewModel.onClickSwitchTheme()
+                }
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(
                 painter = painterResource(R.drawable.ic_add),
                 onClick = {
                     viewModel.toggleAddNewTaskDialog()
                 },
-                modifier = Modifier.padding(16.dp)
             )
-            if (state.showEditTask) {
-                TudeeBottomSheet(
-                    isVisible = state.showEditTask,
-                    onDismiss = { viewModel.togileEditTaskDialog(initialTaskId = null) }
-                ) {
-                    AddEditTaskBottomSheet(
-                        initial = state.editTaskState.currentTask,
-                        state = state.editTaskState.categories,
-                        addEditTaskInteractionListener = viewModel,
-                        onDismiss = { viewModel.togileEditTaskDialog(null) }
-                    )
-                }
-            } else if (state.showAddNewTask) {
-                TudeeBottomSheet(
-                    isVisible = state.showAddNewTask,
-                    onDismiss = { viewModel.toggleAddNewTaskDialog() }
-                ) {
-                    AddEditTaskBottomSheet(
-                        initial = state.addTaskState.currentTask,
-                        state = state.categories,
-                        addEditTaskInteractionListener = viewModel,
-                        onDismiss = {
-                            viewModel.toggleAddNewTaskDialog()
-                        }
-                    )
-                }
-
-            } else if (state.showTaskDetails) {
-
-                TudeeBottomSheet(
-                    isVisible = state.showTaskDetails,
-                    onDismiss = { viewModel.toggleTaskDetailsDialog() }
-                ) {
-                    TaskDetailsBottomSheet(
-                        isVisible = state.showTaskDetails,
-                        onDismiss = { viewModel.toggleTaskDetailsDialog() },
-                        task = state.taskDetailsState,
-                        onEditClick = {
-                            viewModel.toggleTaskDetailsDialog()
-                            viewModel.togileEditTaskDialog(state.taskDetailsState.id)
-                        },
-                        onUpdateTaskState = { newState ->
-                            if (newState == Task.State.IN_PROGRESS) {
-                                viewModel.moveTaskToInProgress(state.taskDetailsState.id)
-                            } else {
-                                viewModel.moveTaskToDone(state.taskDetailsState.id)
-                            }
-                            viewModel.toggleTaskDetailsDialog()
-                        }
-                    )
-                }
-            }
+        },
+        snackbar = {
+            SnakeBar(
+                message = state.showSnackBar.message,
+                isSuccess = !state.showSnackBar.isError,
+                isVisible = state.showSnackBar.isVisible
+            )
         }
-
     ) {
-        it
-        Box(modifier = modifier.fillMaxSize()) {
-            Column(
-                modifier
-                    .fillMaxSize()
-                    .background(Theme.color.primaryColor.normal)
-                    .padding(WindowInsets.statusBars.asPaddingValues())
-            ) {
-                TopTudeeBar(
-                    title = "Tudee",
-                    description = stringResource(R.string.Your_personal_task_manager),
-                    isDay = state.isDark.not(),
-                    onChangeTheme = {
-                        viewModel.onClickSwitchTheme()
-                    }
-                )
+
+
+        BottomSheetHandler(state, viewModel)
+        Box(modifier = modifier.fillMaxSize()
+            .background(Theme.color.primaryColor.normal)
+        ) {
+
                 LazyColumn(
                     Modifier
                         .fillMaxSize()
                         .background(Theme.color.surfaceColor.surface)
                 ) {
-                    item {
+                    item { StatusTasksSection(state, modifier = Modifier.fillParentMaxWidth()) }
 
-                        Box(
-                            modifier = Modifier
-                                .zIndex(-1f)
-                                .fillMaxWidth()
-                                .height(45.dp)
-                                .background(Theme.color.primaryColor.normal)
-                        )
-                        Column(
-                            modifier = Modifier
-                                .fillParentMaxWidth()
-                                .padding(horizontal = 16.dp)
-                                .offset(y = -45.dp)
-                                .background(
-                                    Theme.color.surfaceColor.surface,
-                                    shape = RoundedCornerShape(16.dp)
-                                )
-                        ) {
-                            TextDateIcon(
-                                text = stringResource(R.string.today, LocalDate.now().formatDate()),
-                                icon = painterResource(R.drawable.ic_date)
-                            )
-
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 12.dp, end = 4.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                            ) {
-
-                                Column(modifier = Modifier.fillMaxWidth(0.6f)) {
-
-                                    TextMoodIcon(
-                                        text = when (state.sliderState) {
-                                            SliderState.STAY_WORKING -> stringResource(R.string.Stay_working)
-                                            SliderState.TADOO -> stringResource(R.string.Tadaa)
-                                            SliderState.ZERO_PROGRESS -> stringResource(R.string.Zero_progress)
-                                            SliderState.NOTHING_IN_YOUR_LIST -> stringResource(R.string.Nothing_on_your_list)
-
-                                        },
-                                        icon = painterResource(
-                                            id = when (state.sliderState) {
-                                                SliderState.STAY_WORKING -> R.drawable.ic_okay_feedback
-                                                SliderState.TADOO -> R.drawable.ic_good_feedback
-                                                SliderState.ZERO_PROGRESS -> R.drawable.ic_bad_feedback
-                                                SliderState.NOTHING_IN_YOUR_LIST -> R.drawable.ic_poor_feedback
-
-                                            }
-                                        )
-                                    )
-                                    Text(
-                                        text = when (state.sliderState) {
-                                            SliderState.STAY_WORKING -> stringResource(R.string.you_ve_completed_3_out_of_10_tasks_keep_going)
-                                            SliderState.TADOO -> stringResource(R.string.you_re_doing_amazing_tudee_is_proud_of_you)
-                                            SliderState.ZERO_PROGRESS -> stringResource(R.string.you_just_scrolling_not_working_tudee_is_watching_back_to_work)
-                                            SliderState.NOTHING_IN_YOUR_LIST -> stringResource(R.string.fill_your_day_with_something_awesome)
-
-                                        },
-                                        style = Theme.typography.body.small,
-                                        color = Theme.color.textColor.body,
-                                        modifier = Modifier.padding(top = 4.dp)
-                                    )
-                                }
-                                Box(contentAlignment = Alignment.Center) {
-                                    Box(
-                                        modifier = Modifier
-                                            .size(64.dp)
-                                            .background(
-                                                Theme.color.primaryColor.normal.copy(0.4f),
-                                                shape = RoundedCornerShape(100)
-                                            )
-                                    )
-
-                                    Image(
-                                        painter = painterResource(
-                                            when (state.sliderState) {
-                                                SliderState.STAY_WORKING -> R.drawable.happy_robot
-                                                SliderState.TADOO -> R.drawable.image_cute_robot
-                                                SliderState.ZERO_PROGRESS -> R.drawable.image_angry
-                                                SliderState.NOTHING_IN_YOUR_LIST -> R.drawable.happy_robot
-
-                                            }
-                                        ),
-                                        contentDescription = when (state.sliderState) {
-                                            SliderState.STAY_WORKING -> stringResource(R.string.happy_robot)
-                                            SliderState.TADOO -> stringResource(R.string.Cute_Robot)
-                                            SliderState.ZERO_PROGRESS -> stringResource(R.string.Angry_Robott)
-                                            SliderState.NOTHING_IN_YOUR_LIST -> stringResource(R.string.happy_robot)
-                                        },
-                                    )
-                                }
-
-                            }
-
-                            Text(
-                                text = stringResource(R.string.overview),
-                                style = Theme.typography.title.large,
-                                color = Theme.color.textColor.title,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 12.dp, bottom = 8.dp)
-                            )
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                OverviewCard(
-                                    count = state.doneTasks.size,
-                                    background = Theme.color.status.greenAccent,
-                                    taskState = TaskState.DONE,
-                                    modifier = Modifier.weight(1f)
-                                )
-                                OverviewCard(
-                                    count = state.inProgressTasks.size,
-                                    background = Theme.color.status.yellowAccent,
-                                    taskState = TaskState.IN_PROGRESS,
-                                    modifier = Modifier.weight(1f)
-                                )
-                                OverviewCard(
-                                    count = state.todoTasks.size,
-                                    background = Theme.color.status.purpleAccent,
-                                    taskState = TaskState.TODO,
-                                    modifier = Modifier.weight(1f)
-                                )
-                            }
-
-                        }
-                    }
                     if (state.inProgressTasks.isNotEmpty())
                         item {
-                            TextHeadTaskSection(
+                            HorizontalTaskSection(
                                 name = stringResource(R.string.in_progress),
                                 numberOfItem = state.inProgressTasks.size,
-                                modifier = Modifier.padding(
-                                    start = 16.dp,
-                                    end = 16.dp,
-                                    bottom = 8.dp
-                                ), onClick = {
-                                    navigateToTaskScreen(Task.State.IN_PROGRESS)
-                                }
+                                tasks = state.inProgressTasks,
+                                state = state,
+                                viewModel = viewModel,
+                                modifier = Modifier
+                                    .offset(y = -22.dp)
+                                    .fillParentMaxWidth()
+                                    .padding(bottom = 8.dp),
+                                onClick = { navigateToTaskScreen(Task.State.IN_PROGRESS) }
                             )
-
-                            LazyRow(
-                                contentPadding = PaddingValues(horizontal = 16.dp),
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                if (state.inProgressTasks.isNotEmpty())
-                                    items(state.inProgressTasks.chunked(2)) { pair ->
-                                        Column(modifier = Modifier.fillMaxWidth()) {
-                                            CategoryTaskCard(
-                                                title = pair[0].title,
-                                                description = pair[0].description,
-                                                priorityTask = pair[0].priority,
-                                                icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[0].categoryId }!!.image),
-                                                modifier = Modifier
-                                                    .fillParentMaxWidth(0.95f)
-                                                    .padding(bottom = 8.dp)
-                                            ) {
-                                                viewModel.getTaskDetailsById(
-                                                    id = pair[0].id
-                                                )
-                                            }
-
-                                            if (pair.size > 1) {
-                                                CategoryTaskCard(
-                                                    title = pair[1].title,
-                                                    description = pair[1].description,
-                                                    priorityTask = pair[1].priority,
-                                                    icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[1].categoryId }!!.image),
-                                                    modifier = Modifier.fillParentMaxWidth(0.95f)
-                                                ) {
-                                                    viewModel.getTaskDetailsById(
-                                                        id = pair[1].id
-                                                    )
-                                                }
-                                            }
-                                        }
-                                    }
-
-                            }
                         }
                     if (state.todoTasks.isNotEmpty())
                         item {
-                            Spacer(modifier = Modifier.height(16.dp))
-                            TextHeadTaskSection(
+                            HorizontalTaskSection(
                                 name = stringResource(R.string.to_do),
                                 numberOfItem = state.todoTasks.size,
+                                tasks = state.todoTasks,
+                                state = state,
+                                viewModel = viewModel,
                                 modifier = Modifier
-                                    .fillParentMaxWidth(0.95f)
-                                    .padding(bottom = 8.dp)
-                                    .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-                                onClick =
-                                {
-                                    navigateToTaskScreen(Task.State.TODO)
-                                },
+                                    .offset(y = -22.dp)
+                                    .fillParentMaxWidth()
+                                    .padding(bottom = 8.dp),
+                                onClick = { navigateToTaskScreen(Task.State.TODO) }
                             )
-
-                            LazyRow(
-                                contentPadding = PaddingValues(horizontal = 16.dp),
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                val taskPairs =
-                                    state.todoTasks.chunked(2)
-                                state.categories.firstOrNull { it.id == state.todoTasks[0].categoryId }
-
-                                itemsIndexed(taskPairs) { index, pair ->
-                                    Column(modifier = Modifier.fillMaxWidth()) {
-                                        CategoryTaskCard(
-                                            title = pair[0].title,
-                                            description = pair[0].description,
-                                            priorityTask = pair[0].priority,
-                                            icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[0].categoryId }!!.image),
-                                            modifier = Modifier
-                                                .fillParentMaxWidth(0.95f)
-                                                .padding(bottom = 8.dp)
-                                        ) {
-                                            viewModel.getTaskDetailsById(id = pair[0].id)
-                                        }
-
-                                        if (pair.size > 1) {
-                                            CategoryTaskCard(
-                                                title = pair[1].title,
-                                                description = pair[1].description,
-                                                priorityTask = pair[1].priority,
-                                                icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[1].categoryId }!!.image),
-                                                modifier = Modifier
-                                                    .fillParentMaxWidth(0.95f)
-                                                    .padding(bottom = 8.dp)
-                                            ) {
-                                                viewModel.getTaskDetailsById(id = pair[1].id)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
                         }
                     if (state.doneTasks.isNotEmpty())
                         item {
-                            Spacer(modifier = Modifier.height(16.dp))
-                            TextHeadTaskSection(
+                            HorizontalTaskSection(
                                 name = stringResource(R.string.done),
                                 numberOfItem = state.doneTasks.size,
-                                modifier = Modifier.padding(
-                                    start = 16.dp,
-                                    end = 16.dp,
-                                    bottom = 8.dp
-                                ), onClick = {
-                                    navigateToTaskScreen(Task.State.DONE)
-                                }
-                            )
-
-                            LazyRow(
-                                contentPadding = PaddingValues(horizontal = 16.dp),
+                                tasks = state.doneTasks,
+                                state = state,
+                                viewModel = viewModel,
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(bottom = 32.dp),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                items(state.doneTasks.chunked(2)) { pair ->
-                                    Column(modifier = Modifier.fillMaxWidth()) {
+                                    .offset(y = -22.dp)
 
-                                        CategoryTaskCard(
-                                            title = pair[0].title,
-                                            description = pair[0].description,
-                                            priorityTask = pair[0].priority,
-                                            icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[0].categoryId }!!.image),
-                                            modifier = Modifier
-                                                .fillParentMaxWidth(0.95f)
-                                                .padding(bottom = 8.dp)
-                                        ) {
-                                            viewModel.getTaskDetailsById(id = pair[0].id)
-                                        }
-
-                                        if (pair.size > 1) {
-                                            CategoryTaskCard(
-                                                title = pair[1].title,
-                                                description = pair[1].description,
-                                                priorityTask = pair[1].priority,
-                                                icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[1].categoryId }!!.image),
-                                                modifier = Modifier.fillParentMaxWidth(0.95f)
-                                            ) {
-                                                viewModel.getTaskDetailsById(id = pair[0].id)
-                                            }
-                                        }
-                                    }
-                                }
-
-                            }
+                                    .fillParentMaxWidth()
+                                    .padding(bottom = 8.dp),
+                                onClick = { navigateToTaskScreen(Task.State.DONE) }
+                            )
                         }
                     if (state.todoTasks.isEmpty() && state.inProgressTasks.isEmpty() && state.doneTasks.isEmpty()) {
-                        item() { TasksEmptyScreen() }
+                        item { TasksEmptyScreen() }
                     }
-
                 }
             }
-            SnakeBar(
-                Modifier
-                    .padding(horizontal = 16.dp)
-                    .align(Alignment.TopCenter)
-                    .padding(top = 120.dp),
-                message = state.showSnackBar.message,
-                isSuccess = !state.showSnackBar.isError,
-                isVisible = state.showSnackBar.isVisible
-            )
-
         }
-    }
+
 }
 
 @Composable
-private fun TextDateIcon(
+fun TextDateIcon(
     text: String,
     modifier: Modifier = Modifier,
     icon: Painter,
@@ -501,106 +188,60 @@ private fun TextDateIcon(
 
 
 @Composable
-private fun TextMoodIcon(
-    text: String,
-    modifier: Modifier = Modifier,
-    icon: Painter = painterResource(R.drawable.ic_okay_feedback),
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Text(
-            text = text,
-            style = Theme.typography.title.small,
-            color = Theme.color.textColor.title
-        )
-        Image(
-            painter = icon,
-            contentDescription = "mood icon",
-            modifier = Modifier.padding(end = 8.dp)
-        )
-    }
-}
-
-@Composable
-fun OverviewCard(
-    count: Int,
-    background: Color,
-    taskState: TaskState,
-    modifier: Modifier = Modifier,
-) {
-
-
-    Box(
-        modifier = modifier
-            .zIndex(999f)
-            .height(112.dp)
-            .width(96.dp)
-            .background(background, shape = RoundedCornerShape(20.dp))
-    ) {
-        Column(
-            modifier
-                .padding(12.dp)
-                .background(Color.Transparent, shape = RoundedCornerShape(20.dp))
+private fun BottomSheetHandler(state: HomeScreenUIState, viewModel: HomeScreenViewModel) {
+    if (state.showEditTask) {
+        TudeeBottomSheet(
+            isVisible = state.showEditTask,
+            onDismiss = { viewModel.togileEditTaskDialog(initialTaskId = null) }
         ) {
-            Box(
-                modifier
-                    .size(40.dp)
-                    .background(
-                        color = Color(0x3DFFFFFF),
-                        shape = RoundedCornerShape(12.dp)
-                    )
-                    .insideBorder(1.dp, Color(0x1FFFFFFF), 12.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(
-                        when (taskState) {
-                            TaskState.TODO -> R.drawable.ic_overview_card_todo
-                            TaskState.IN_PROGRESS -> R.drawable.ic_overview_card_in_progress
-                            TaskState.DONE -> R.drawable.ic_overview_card_done
-                        }
-                    ), contentDescription = when (taskState) {
-                        TaskState.TODO -> stringResource(R.string.to_do)
-                        TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
-                        TaskState.DONE -> stringResource(R.string.done)
-                    },
-                    tint = Theme.color.textColor.onPrimary,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-            Text(
-                text = count.toString(),
-                style = Theme.typography.headline.medium,
-                color = Theme.color.textColor.onPrimary,
+            AddEditTaskBottomSheet(
+                initial = state.editTaskState.currentTask,
+                state = state.editTaskState.categories,
+                addEditTaskInteractionListener = viewModel,
+                onDismiss = { viewModel.togileEditTaskDialog(null) }
             )
-            Text(
-                text = when (taskState) {
-                    TaskState.TODO -> stringResource(R.string.to_do)
-                    TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
-                    TaskState.DONE -> stringResource(R.string.done)
-                },
-                style = Theme.typography.label.small,
-                color = Theme.color.textColor.onPrimaryCaption,
+        }
+    } else if (state.showAddNewTask) {
+        TudeeBottomSheet(
+            isVisible = state.showAddNewTask,
+            onDismiss = { viewModel.toggleAddNewTaskDialog() }
+        ) {
+            AddEditTaskBottomSheet(
+                initial = state.addTaskState.currentTask,
+                state = state.categories,
+                addEditTaskInteractionListener = viewModel,
+                onDismiss = {
+                    viewModel.toggleAddNewTaskDialog()
+                }
             )
-
-
         }
 
-        Icon(
-            painter = painterResource(R.drawable.overview_card_background),
-            contentDescription = stringResource(R.string.Overview_Card_Background),
-            modifier = Modifier
-                .clip(RoundedCornerShape(topEnd = 20.dp))
-                .align(Alignment.TopEnd),
-            tint = Color.Unspecified
-        )
+    } else if (state.showTaskDetails) {
 
+        TudeeBottomSheet(
+            isVisible = state.showTaskDetails,
+            onDismiss = { viewModel.toggleTaskDetailsDialog() }
+        ) {
+            TaskDetailsBottomSheet(
+                isVisible = state.showTaskDetails,
+                onDismiss = { viewModel.toggleTaskDetailsDialog() },
+                task = state.taskDetailsState,
+                onEditClick = {
+                    viewModel.toggleTaskDetailsDialog()
+                    viewModel.togileEditTaskDialog(state.taskDetailsState.id)
+                },
+                onUpdateTaskState = { newState ->
+                    if (newState == Task.State.IN_PROGRESS) {
+                        viewModel.moveTaskToInProgress(state.taskDetailsState.id)
+                    } else {
+                        viewModel.moveTaskToDone(state.taskDetailsState.id)
+                    }
+                    viewModel.toggleTaskDetailsDialog()
+                }
+            )
+        }
     }
 }
-
 
 @Composable
 fun TextHeadTaskSection(
@@ -627,39 +268,91 @@ fun TextHeadTaskSection(
 }
 
 @Composable
-private fun ChipTextWithArrowIcon(
+private fun StatusTasksSection(state: HomeScreenUIState, modifier: Modifier = Modifier) {
+    Box(
+        modifier = Modifier
+            .zIndex(-1f)
+            .fillMaxWidth()
+            .height(45.dp)
+            .background(Theme.color.primaryColor.normal)
+    )
+    Column(
+        modifier = modifier
+            .padding(horizontal = 16.dp)
+            .offset(y = -45.dp)
+            .background(
+                Theme.color.surfaceColor.surfaceHigh,
+                shape = RoundedCornerShape(16.dp)
+            )
+    ) {
+        TextDateIcon(
+            text = stringResource(R.string.today, LocalDate.now().formatDate()),
+            icon = painterResource(R.drawable.ic_date)
+        )
+
+        MoodSliderChangeable(state)
+
+        OverViewSection(state)
+    }
+}
+
+@Composable
+private fun OverViewSection(state: HomeScreenUIState) {
+    Text(
+        text = stringResource(R.string.overview),
+        style = Theme.typography.title.large,
+        color = Theme.color.textColor.title,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 12.dp, bottom = 8.dp)
+    )
+    OverviewCards(
+        state = state,
+        modifier = Modifier
+    )
+
+}
+
+@Composable
+fun HorizontalTaskSection(
+    name: String,
     numberOfItem: Int,
+    tasks: List<Task>,
+    state: HomeScreenUIState,
+    viewModel: HomeScreenViewModel,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-
-    Row(
-        modifier
-            .background(
-                Theme.color.surfaceColor.surfaceHigh,
-                shape = RoundedCornerShape(100.dp)
-            )
-            .padding(horizontal = 8.dp, vertical = 6.dp)
-            .noRippleClickable {
-                onClick()
-            },
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Text(
-            text = "$numberOfItem",
-            style = Theme.typography.label.medium,
-            color = Theme.color.textColor.body
+    Column(modifier = modifier) {
+        TextHeadTaskSection(
+            name = name,
+            numberOfItem = numberOfItem,
+            modifier = Modifier.padding(
+                start = 16.dp,
+                end = 16.dp,
+                bottom = 8.dp
+            ),
+            onClick = onClick
         )
-        Icon(
-            painter = painterResource(R.drawable.ic_arrow),
-            contentDescription = "Arrow Icon",
-            tint = Theme.color.textColor.body
-        )
-
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            if (tasks.isNotEmpty()) {
+                items(tasks.chunked(2)) { pair ->
+                    PairOfTask(
+                        modifier = Modifier.fillParentMaxWidth(0.97f),
+                        pair = pair,
+                        state = state,
+                        viewModel = viewModel,
+                    )
+                }
+            }
+        }
     }
-
 }
+
 
 @Preview
 @Composable
