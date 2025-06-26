@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
@@ -47,11 +48,11 @@ fun ChipTextWithArrowIcon(
         )
         Icon(
             painter = painterResource(R.drawable.ic_arrow),
-            contentDescription = "Arrow Icon",
             tint = Theme.color.textColor.body,
             modifier = Modifier.graphicsLayer {
                 scaleX = if (isRtl) -1f else 1f
-            }
+            },
+            contentDescription = stringResource(R.string.arrow_icon),
         )
 
     }
