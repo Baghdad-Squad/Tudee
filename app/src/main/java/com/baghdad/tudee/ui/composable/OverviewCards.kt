@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.designSystem.theme.Theme.color
 import com.baghdad.tudee.ui.screens.homeScreen.HomeScreenUIState
 import com.baghdad.tudee.ui.screens.homeScreen.TaskState
 import com.baghdad.tudee.ui.utils.insideBorder
@@ -33,16 +35,22 @@ fun OverviewCards(
     state: HomeScreenUIState,
     modifier: Modifier = Modifier,
 ) {
+    val purpleAccent = color.status.purpleAccent
+    val yellowAccent = color.status.yellowAccent
+    val greenAccent = color.status.greenAccent
 
-    val overViews = listOf(
-        OverViewCard(TaskState.TODO, Theme.color.status.purpleAccent, state.todoTasks.size),
-        OverViewCard(
-            TaskState.IN_PROGRESS,
-            Theme.color.status.yellowAccent,
-            state.inProgressTasks.size
-        ),
-        OverViewCard(TaskState.DONE, Theme.color.status.greenAccent, state.doneTasks.size)
-    )
+    val overViews = remember {
+        listOf(
+            OverViewCard(TaskState.TODO, purpleAccent, state.todoTasks.size),
+            OverViewCard(
+                TaskState.IN_PROGRESS,
+                yellowAccent,
+                state.inProgressTasks.size
+            ),
+            OverViewCard(TaskState.DONE, greenAccent, state.doneTasks.size)
+        )
+    }
+
 
     Row(
         modifier = Modifier
@@ -89,14 +97,14 @@ fun OverviewCards(
                                 TaskState.IN_PROGRESS -> stringResource(R.string.in_progress)
                                 TaskState.DONE -> stringResource(R.string.done)
                             },
-                            tint = Theme.color.textColor.onPrimary,
+                            tint = color.textColor.onPrimary,
                             modifier = Modifier.size(24.dp)
                         )
                     }
                     Text(
                         text = it.count.toString(),
                         style = Theme.typography.headline.medium,
-                        color = Theme.color.textColor.onPrimary,
+                        color = color.textColor.onPrimary,
                     )
                     Text(
                         text = when (it.taskState) {
@@ -105,7 +113,7 @@ fun OverviewCards(
                             TaskState.DONE -> stringResource(R.string.done)
                         },
                         style = Theme.typography.label.small,
-                        color = Theme.color.textColor.onPrimaryCaption,
+                        color = color.textColor.onPrimaryCaption,
                     )
 
 
