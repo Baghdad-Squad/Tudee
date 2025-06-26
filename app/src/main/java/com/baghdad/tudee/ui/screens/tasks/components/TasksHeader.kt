@@ -84,7 +84,7 @@ fun TasksHeader(
         NavigationIcon(
             icon = painterResource(id = R.drawable.ic_right_arrow),
             contentDescription = stringResource(R.string.right_arrow),
-            modifier = Modifier.clickable { onPreviousArrowClicked()}
+            modifier = Modifier.clickable { onNextArrowClicked()}
                 )
     }
 }

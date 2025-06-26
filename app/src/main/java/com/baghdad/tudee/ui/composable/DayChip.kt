@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
+import com.baghdad.tudee.ui.utils.getLocalizedNumber
 import com.baghdad.tudee.ui.utils.noRippleClickable
 
 @Composable
@@ -54,7 +55,7 @@ fun DayChip(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = dayNumber,
+            text = getLocalizedNumber(dayNumber.toInt()),
             style = Theme.typography.title.medium,
             color = dayNumberColor,
             modifier = Modifier.padding(bottom = 2.dp)
