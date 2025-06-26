@@ -1,5 +1,6 @@
 package com.baghdad.tudee.ui.screens.tasks
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.baghdad.tudee.R
 import com.baghdad.tudee.domain.entity.Task
@@ -61,8 +62,11 @@ class TasksViewModel(
 
 
     override fun onDeleteTask(task: Task) {
-        viewModelScope.launch {
-            taskService.deleteTask(task.id)
+        updateState {
+            it.copy(
+                taskToDelete = task,
+                showDeleteSheet = true
+            )
         }
     }
 
@@ -160,15 +164,18 @@ class TasksViewModel(
             toggleTaskDetailsDialog()
         }
     }
+
     override fun onConfirmDelete() {
-        currentState.taskToDelete?.let {
-            onDeleteTask(it)
-        }
-        updateState {
-            it.copy(
-                taskToDelete = null,
-                showDeleteSheet = true
-            )
+        viewModelScope.launch {
+            currentState.taskToDelete?.let {
+                taskService.deleteTask(it.id)
+            }
+            updateState {
+                it.copy(
+                    taskToDelete = null,
+                    showDeleteSheet = false
+                )
+            }
         }
     }
 
@@ -269,8 +276,6 @@ class TasksViewModel(
 
     override fun onClickSaveTask(task: Task) {
         try {
-
-
             if (task.id != 0L) {
                 updateTask(task)
             } else {
@@ -302,7 +307,6 @@ class TasksViewModel(
         viewModelScope.launch {
             taskService.createTask(task)
             loadTasksForDate(currentState.selectedDate ?: LocalDate.now())
-
             updateState {
                 it.copy(showAddNewTask = false)
             }

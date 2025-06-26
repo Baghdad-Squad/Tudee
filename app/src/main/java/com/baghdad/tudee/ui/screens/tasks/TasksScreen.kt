@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -30,6 +31,7 @@ import com.baghdad.tudee.ui.composable.TudeeScaffold
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.delete_item.ShowDeleteTaskSheet
 import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
+import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomSheet
 import com.baghdad.tudee.ui.screens.tasks.components.HorizontalDayChipsSetup
 import com.baghdad.tudee.ui.screens.tasks.components.StatusTabs
 import com.baghdad.tudee.ui.screens.tasks.components.TasksHorizontalPager
@@ -52,7 +54,8 @@ fun TasksScreen(
     TasksScreenContent(
         state = state,
         tasksInteractionListener = viewModel,
-        snackbarState = snackbarState
+        snackbarState = snackbarState,
+        initialState = initialState
     )
 }
 
@@ -60,11 +63,17 @@ fun TasksScreen(
 @Composable
 fun TasksScreenContent(
     state: TasksScreenState,
+    initialState: Task.State? = null,
     tasksInteractionListener: TasksInteractionListener,
     snackbarState: SnackbarState,
     ) {
-    val pagerState = rememberPagerState { 3 }
+
+    val pagerState = rememberPagerState(
+        initialPage = initialState?.ordinal ?: state.selectedTab.ordinal
+    ) { Task.State.entries.size }
+
     val scope = rememberCoroutineScope()
+
     LaunchedEffect(pagerState.currentPage) {
         tasksInteractionListener.onTabSelected(Task.State.entries[pagerState.currentPage])
     }
@@ -78,6 +87,7 @@ fun TasksScreenContent(
                     .background(Theme.color.surfaceColor.surfaceHigh)
                     .fillMaxWidth()
                     .padding(WindowInsets.statusBars.asPaddingValues())
+                    .zIndex(1f)
             ){
                 Text(
                     text = stringResource(R.string.tasks),
@@ -146,14 +156,14 @@ fun TasksScreenContent(
                     isVisible = state.showAddNewTask,
                     onDismiss = { tasksInteractionListener.toggleAddEditTaskDialog() }
                 ) {
-//                    AddEditTaskBottomSheet(
-//                        initial = state.initialTask,
-//                        state = state.categories,
-//                        addEditTaskInteractionListener = tasksInteractionListener::onClickSaveTask,
-//                        onDismiss = {
-//                            tasksInteractionListener.toggleAddEditTaskDialog()
-//                        }
-//                    )
+                    AddEditTaskBottomSheet(
+                        initial = state.initialTask,
+                        state = state.categories,
+                        onClickSaveTask = tasksInteractionListener::onClickSaveTask,
+                        onDismiss = {
+                            tasksInteractionListener.toggleAddEditTaskDialog()
+                        }
+                    )
                 }
             }
             if (state.showTaskDetailsBottomSheet) {

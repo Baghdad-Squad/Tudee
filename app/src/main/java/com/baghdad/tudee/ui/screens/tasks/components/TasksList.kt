@@ -28,12 +28,11 @@ fun TasksList(
         targetState = tasks.isEmpty(),
     ) { isEmpty ->
         if(isEmpty){
-            TasksEmptyScreen()
+            TasksEmptyScreen(modifier)
         } else {
             LazyColumn(
                 modifier = modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 40.dp),
+                    .padding(horizontal = 16.dp),
                 contentPadding = PaddingValues(vertical = 12.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
@@ -49,6 +48,7 @@ fun TasksList(
                         icon = getCategoryIconPainter(category.image),
                         onDelete = { onTaskDelete(task) },
                         onClick = { onTaskClick(task) },
+                        modifier = Modifier.animateItem()
                     )
                 }
             }

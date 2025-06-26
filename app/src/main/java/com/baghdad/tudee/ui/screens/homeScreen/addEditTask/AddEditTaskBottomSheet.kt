@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -30,7 +31,6 @@ import com.baghdad.tudee.ui.composable.CategoryItem
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.MainButtonPart
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.PriorityChipPart
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.TextFieldScreenPart
-import com.baghdad.tudee.ui.screens.tasks.AddEditTaskInteractionListener
 import com.baghdad.tudee.ui.utils.getLabelResId
 import com.baghdad.tudee.ui.utils.now
 import kotlinx.datetime.LocalDate
@@ -40,15 +40,15 @@ import kotlinx.datetime.LocalDate
 fun AddEditTaskBottomSheet(
     initial: Task? = null,
     state: List<Category>,
-    addEditTaskInteractionListener: AddEditTaskInteractionListener,
     onDismiss: () -> Unit = { },
+    onClickSaveTask: (Task) -> Unit,
 ) {
 
     var titleText by remember { mutableStateOf(initial?.title ?: "") }
     var paragraphText by remember { mutableStateOf(initial?.description ?: "") }
     var dateTime by remember { mutableStateOf(initial?.date ?: LocalDate.now()) }
-    var selectedCategoryId by remember { mutableStateOf(initial?.categoryId ?: 0L) }
-    var selectedPriority by remember { mutableStateOf(initial?.priority) }
+    var selectedCategoryId by remember { mutableLongStateOf(initial?.categoryId ?: 0L) }
+    var selectedPriority by remember { mutableStateOf(initial?.takeIf {it.id != 0L}?.priority) }
 
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -66,7 +66,7 @@ fun AddEditTaskBottomSheet(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 TextFieldScreenPart(
-                    isAdd = initial == null,
+                    isAdd = initial == null || initial.id == 0L,
                     title = titleText,
                     onTitleChange = { titleText = it },
                     paragraph = paragraphText,
@@ -114,9 +114,9 @@ fun AddEditTaskBottomSheet(
                         selectedCategoryId != 0L && selectedPriority != null
             }
         }
-        MainButtonPart(showButton, initial?.title, onSave = {
+        MainButtonPart(showButton, initial?.id, onSave = {
             if (initial == null) {
-                addEditTaskInteractionListener.onClickSaveTask(
+                onClickSaveTask(
                     Task(
                         id = 0L,
                         title = titleText,
@@ -128,7 +128,7 @@ fun AddEditTaskBottomSheet(
                     )
                 )
             } else {
-                addEditTaskInteractionListener.onClickSaveTask(
+                onClickSaveTask(
                     Task(
                         id = initial.id,
                         title = titleText,

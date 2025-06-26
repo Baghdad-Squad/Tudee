@@ -10,7 +10,7 @@ interface TasksInteractionListener {
     fun onDeleteTask(task: Task)
     fun onPreviousMonthArrowClick()
     fun onNextMonthArrowClick()
-    fun toggleAddEditTaskDialog(initialTask: Long? = null)
+    fun toggleAddEditTaskDialog(initialTaskId: Long? = null)
     fun toggleTaskDetailsDialog(selectedTaskId: Task? = null)
     fun updateTaskState(taskId: Long, newState: Task.State)
     fun onClickSaveTask(task: Task)
