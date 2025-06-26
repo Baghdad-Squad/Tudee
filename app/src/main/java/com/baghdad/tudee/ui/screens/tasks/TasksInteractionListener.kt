@@ -13,4 +13,7 @@ interface TasksInteractionListener {
     fun toggleAddEditTaskDialog(initialTask: Long? = null)
     fun toggleTaskDetailsDialog(selectedTaskId: Task? = null)
     fun updateTaskState(taskId: Long, newState: Task.State)
+    fun onClickSaveTask(task: Task)
+    fun onConfirmDelete()
+    fun onCancelDelete()
 }
