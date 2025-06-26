@@ -70,7 +70,6 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 # Koin
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
-ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroid" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
