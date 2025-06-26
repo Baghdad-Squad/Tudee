@@ -5,6 +5,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -39,6 +40,21 @@ fun CategoriesScreen(
             onNewEffect(effect, navController)
         }
     )
+    LaunchedEffect(navController.currentBackStackEntry) {
+        navController.currentBackStackEntry?.savedStateHandle?.let { handle ->
+            handle.get<Int>("snackBar_message")?.let { messageRes ->
+                val isSuccess = handle.get<Boolean>("snackBar_success") == true
+
+                viewModel.showSnackbar(
+                    messageRes = messageRes,
+                    isSuccess = isSuccess
+                )
+
+                handle.remove<Int>("snackBar_message")
+                handle.remove<Boolean>("snackBar_success")
+            }
+        }
+    }
     CategoriesScreenContent(
         state = state,
         snackbarState = snackbarState,

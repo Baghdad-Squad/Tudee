@@ -14,7 +14,10 @@ data class CategoryTasksScreenUiState(
         title = "",
         image = Category.Image.Predefined(Category.PredefinedType.ENTERTAINMENT)
     ),
-    val addEditCategorySheetState: AddEditCategorySheetUiState = AddEditCategorySheetUiState(isEditing = true),
+    val addEditCategorySheetState: AddEditCategorySheetUiState = AddEditCategorySheetUiState(
+        isEditing = true
+    ),
     val errorMessage: String? = null,
     val isLoading: Boolean = false,
+    val showDeleteCategorySheet: Boolean = false
 )

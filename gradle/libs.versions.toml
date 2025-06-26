@@ -1,15 +1,14 @@
 [versions]
 agp = "8.7.3"
 coilCompose = "2.7.0"
-coilComposeVersion = "2.4.0"
 koinCore = "3.5.3"
 kotlin = "2.0.0"
 kotlinxCoroutinesAndroid = "1.10.2"
 ksp = "2.0.0-1.0.22"
 coreKtx = "1.16.0"
 junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
+junitVersion = "1.1.5"
+espressoCore = "3.5.0"
 kotlinxDatetime = "0.6.0"
 lifecycleRuntimeKtx = "2.9.1"
 activityCompose = "1.10.1"
@@ -39,9 +38,6 @@ androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-
-# ViewModel
-androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 
 # Room
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
@@ -74,7 +70,6 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 # Koin
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
-ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroid" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
@@ -95,4 +90,62 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+[bundles]
+
+compose = [
+    "androidx-ui",
+    "androidx-ui-graphics",
+    "androidx-ui-tooling-preview",
+    "androidx-activity-compose",
+    "androidx-lifecycle-runtime-ktx",
+    "material3",
+    "androidx-runtime"
+]
+
+compose-test = [
+    "androidx-ui-test-junit4",
+    "androidx-ui-test-manifest",
+    "androidx-ui-tooling"
+]
+
+koin = [
+    "koin-core",
+    "koin-android",
+    "koin-androidx-compose"
+]
+
+room = [
+    "androidx-room-runtime",
+    "androidx-room-ktx",
+    "androidx-room-compiler"
+]
+
+kotlinx = [
+    "kotlinx-coroutines-android",
+    "kotlinx-coroutines-core",
+    "kotlinx-coroutines-test",
+    "kotlinx-datetime",
+    "kotlinx-serialization-json"
+]
+
+junit-test = [
+    "junit",
+    "junit-jupiter",
+    "androidx-junit",
+    "androidx-espresso-core",
+    "truth",
+    "mockk",
+    "mockk-android",
+    "androidx-room-testing"
+]
+
+coil = [
+    "coil-compose"
+]
+
+navigation = [
+    "navigation-compose"
+]
+
 
