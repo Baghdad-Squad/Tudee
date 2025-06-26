@@ -93,7 +93,7 @@ class CategoryTasksViewModel(
                     messageRes = R.string.category_deleted_successfully,
                     isSuccess = true,
                 )
-                emitNewEffect(CategoryTasksScreenEffect.OnCategoryDeleted)
+                emitNewEffect(CategoryTasksScreenEffect.NavigateToCategoriesScreen)
             },
             onError = {
                 showSnackbar(
@@ -120,12 +120,14 @@ class CategoryTasksViewModel(
                )
            },
            onSuccess = {
-               getCategoryById()
-               onToggleEditCategorySheetVisibility()
                showSnackbar(
                    messageRes = R.string.category_updated_successfully,
                    isSuccess = true
                )
+               getCategoryById()
+               onToggleEditCategorySheetVisibility()
+               emitNewEffect(CategoryTasksScreenEffect.NavigateToCategoriesScreen)
+
            },
            onError = {
                showSnackbar(

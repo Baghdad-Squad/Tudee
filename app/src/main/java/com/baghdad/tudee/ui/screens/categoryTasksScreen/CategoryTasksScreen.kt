@@ -9,12 +9,10 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,21 +20,17 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
-import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.base.EffectHandler
-import com.baghdad.tudee.ui.composable.TabItem
 import com.baghdad.tudee.ui.composable.Tabs
-import com.baghdad.tudee.ui.composable.TasksEmptyScreen
-import com.baghdad.tudee.ui.composable.bottomSheet.category.AddEditCategoryBottomSheet
 import com.baghdad.tudee.ui.composable.delete_item.ShowDeleteCategorySheet
 import com.baghdad.tudee.ui.navigation.LocalNavController
 import com.baghdad.tudee.ui.navigation.Route
-import com.baghdad.tudee.ui.screens.categoryTasksScreen.components.CategoryTasksList
+import com.baghdad.tudee.ui.screens.categoryTasksScreen.components.CategoryTasksPager
 import com.baghdad.tudee.ui.screens.categoryTasksScreen.components.CategoryTasksScreenHeader
-import com.baghdad.tudee.ui.shared.Selectable
+import com.baghdad.tudee.ui.screens.categoryTasksScreen.components.rememberTabs
 import com.baghdad.tudee.ui.utils.image.uriToByteArray
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -69,7 +63,7 @@ private fun onNewEffect(
     navController: NavHostController
 ) {
     when (effect) {
-        is CategoryTasksScreenEffect.OnCategoryDeleted -> navController.navigate(Route.CategoriesScreen)
+        is CategoryTasksScreenEffect.NavigateToCategoriesScreen -> navController.navigate(Route.CategoriesScreen)
     }
 }
 
@@ -82,14 +76,14 @@ private fun CategoryTasksScreenContent(
 ) {
     val context = LocalContext.current
     val pagerState = rememberPagerState(initialPage = state.selectedTab.ordinal) { 3 }
-    val launcher =
+    val imageLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { it ->
             uriToByteArray(
                 context,
                 it
             )?.let { listener.onChangeImage(Category.Image.ByteArray(it)) }
         }
-    rememberAsyncImagePainter(model = launcher)
+    rememberAsyncImagePainter(model = imageLauncher)
 
     LaunchedEffect(state.selectedTab) {
         if (pagerState.currentPage != state.selectedTab.ordinal) {
@@ -103,36 +97,6 @@ private fun CategoryTasksScreenContent(
         }
     }
 
-    val tabs =
-        remember(state.selectedTab, state.todoTasks, state.inProgressTasks, state.doneTasks) {
-            listOf(
-                Selectable(
-                    TabItem(
-                        context.getString(R.string.in_progress),
-                        state.inProgressTasks.size,
-                        Task.State.IN_PROGRESS
-                    ),
-                    isSelected = state.selectedTab == Task.State.IN_PROGRESS
-                ),
-                Selectable(
-                    TabItem(
-                        context.getString(R.string.to_do),
-                        state.todoTasks.size,
-                        Task.State.TODO
-                    ),
-                    isSelected = state.selectedTab == Task.State.TODO
-                ),
-                Selectable(
-                    TabItem(
-                        context.getString(R.string.done),
-                        state.doneTasks.size,
-                        Task.State.DONE
-                    ),
-                    isSelected = state.selectedTab == Task.State.DONE
-                )
-            )
-        }
-
 
     Column(
         modifier = Modifier
@@ -145,6 +109,7 @@ private fun CategoryTasksScreenContent(
             onArrowBackClicked = onArrowBackClicked,
             listener = listener
         )
+        val tabs = rememberTabs(state, context)
 
         Tabs(
             selectableTabs = tabs,
@@ -152,53 +117,28 @@ private fun CategoryTasksScreenContent(
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier.weight(1f)
-        ) { page ->
-            val tasks = when (Task.State.entries[page]) {
-                Task.State.IN_PROGRESS -> state.inProgressTasks
-                Task.State.TODO -> state.todoTasks
-                Task.State.DONE -> state.doneTasks
+        CategoryTasksPager(
+            pagerState = pagerState,
+            state = state,
+            onCategoryTitleChanged = listener::onCategoryTitleChanged,
+            onUploadImage = {
+                imageLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            },
+            onDismissEditSheet = listener::onToggleEditCategorySheetVisibility,
+            onDeleteCategoryClick = listener::toggleDeleteCategorySheet,
+            onSaveCategoryChanges = listener::onSaveCategoryChanges
+        )
+        ShowDeleteCategorySheet(
+            isVisible = state.showDeleteCategorySheet,
+            onDeleteConfirmed = {
+                listener.onDeleteCategory()
+                listener.toggleDeleteCategorySheet()
+            },
+            onCancelConfirmed = {
+                listener.toggleDeleteCategorySheet()
             }
+        )
 
-            if (tasks.isEmpty()) {
-                TasksEmptyScreen()
-
-            } else {
-                CategoryTasksList(
-                    tasks = tasks,
-                    state = state
-                )
-            }
-            AddEditCategoryBottomSheet(
-                state = state.addEditCategorySheetState,
-                onCategoryTitleChanged = listener::onCategoryTitleChanged,
-                onUploadIconClicked = {
-                    launcher.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                    )
-                },
-                onDismiss = {
-                    listener.onToggleEditCategorySheetVisibility()
-                },
-                onDeleteClick = listener::toggleDeleteCategorySheet,
-                onSaveClick = listener::onSaveCategoryChanges,
-            )
-
-        }
-        if (state.showDeleteCategorySheet) {
-            ShowDeleteCategorySheet(
-                isVisible = state.showDeleteCategorySheet,
-                onDeleteConfirmed = {
-                    listener.onDeleteCategory()
-                    listener.toggleDeleteCategorySheet()
-                },
-                onCancelConfirmed = {
-                    listener.toggleDeleteCategorySheet()
-                }
-            )
-        }
 
     }
 }
