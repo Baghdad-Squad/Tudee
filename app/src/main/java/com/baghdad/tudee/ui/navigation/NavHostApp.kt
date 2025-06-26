@@ -1,6 +1,7 @@
 package com.baghdad.tudee.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -21,53 +22,62 @@ fun TudeeNavHost(
     startDestination: Route,
     modifier: Modifier = Modifier,
     ) {
-
-    NavHost(
-        modifier = modifier,
-        startDestination = startDestination,
-        navController = navController
+    CompositionLocalProvider(
+        LocalNavController provides navController
     ) {
-        composable<Route.OnboardingScreen> {
-            OnboardingScreen (
-                onNavigateToHome = {
-                    navController.navigate(Route.HomeScreen) {
-                        popUpTo(Route.OnboardingScreen) {
-                            inclusive = true
+        NavHost(
+            modifier = modifier,
+            startDestination = startDestination,
+            navController = navController
+        ) {
+            composable<Route.OnboardingScreen> {
+                OnboardingScreen(
+                    onNavigateToHome = {
+                        navController.navigate(Route.HomeScreen) {
+                            popUpTo(Route.OnboardingScreen) {
+                                inclusive = true
+                            }
                         }
                     }
-                }
-            )
-        }
+                )
+            }
 
-        composable<Route.TasksScreen>(
-            typeMap = mapOf(
-                typeOf<Task.State>() to NavType.EnumType(Task.State::class.java),
-            )
+            composable<Route.TasksScreen>(
+                typeMap = mapOf(
+                    typeOf<Task.State>() to NavType.EnumType(Task.State::class.java),
+                )
 
-        ){ navBackStackEntry ->
-            val state = navBackStackEntry.toRoute<Route.TasksScreen>().taskState
-            TasksScreen(
-                initialState = state
-            )
-        }
+            ) { navBackStackEntry ->
+                val state = navBackStackEntry.toRoute<Route.TasksScreen>().taskState
+                TasksScreen(
+                    initialState = state
+                )
+            }
 
 
-        composable<Route.CategoriesScreen> {
-            CategoriesScreen()
-        }
+            composable<Route.CategoriesScreen> {
+                CategoriesScreen()
+            }
 
-        composable<Route.HomeScreen> {
-            HomeScreen(navigateToTaskScreen = {navController.navigate(route = Route.TasksScreen(it))})
-        }
+            composable<Route.HomeScreen> {
+                HomeScreen(navigateToTaskScreen = {
+                    navController.navigate(
+                        route = Route.TasksScreen(
+                            it
+                        )
+                    )
+                })
+            }
 
-        composable<Route.CategoryTasksScreen>{
-             val categoryId = it.toRoute<Route.CategoryTasksScreen>().categoryId
-            CategoryTasksScreen(
-                categoryId = categoryId,
-                navigateBack = {
-                    navController.popBackStack()
-                }
-            )
+            composable<Route.CategoryTasksScreen> {
+                val categoryId = it.toRoute<Route.CategoryTasksScreen>().categoryId
+                CategoryTasksScreen(
+                    categoryId = categoryId,
+                    navigateBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
         }
     }
 }
