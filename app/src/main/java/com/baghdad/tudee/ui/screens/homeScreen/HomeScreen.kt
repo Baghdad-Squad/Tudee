@@ -363,35 +363,37 @@ fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modi
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                val taskPairs =
-                                    state.todoTasks.chunked(2)
-                                state.categories.firstOrNull { it.id == state.todoTasks[0].categoryId }
+                                if(state.todoTasks.isNotEmpty()) {
+                                    val taskPairs =
+                                        state.todoTasks.chunked(2)
+                                    state.categories.firstOrNull { it.id == state.todoTasks[0].categoryId }
 
-                                itemsIndexed(taskPairs) { index, pair ->
-                                    Column(modifier = Modifier.fillMaxWidth()) {
-                                        CategoryTaskCard(
-                                            title = pair[0].title,
-                                            description = pair[0].description,
-                                            priorityTask = pair[0].priority,
-                                            icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[0].categoryId }!!.image),
-                                            modifier = Modifier
-                                                .fillParentMaxWidth(0.95f)
-                                                .padding(bottom = 8.dp)
-                                        ) {
-                                            viewModel.getTaskDetailsById(id = pair[0].id)
-                                        }
-
-                                        if (pair.size > 1) {
+                                    itemsIndexed(taskPairs) { index, pair ->
+                                        Column(modifier = Modifier.fillMaxWidth()) {
                                             CategoryTaskCard(
-                                                title = pair[1].title,
-                                                description = pair[1].description,
-                                                priorityTask = pair[1].priority,
-                                                icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[1].categoryId }!!.image),
+                                                title = pair[0].title,
+                                                description = pair[0].description,
+                                                priorityTask = pair[0].priority,
+                                                icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[0].categoryId }!!.image),
                                                 modifier = Modifier
                                                     .fillParentMaxWidth(0.95f)
                                                     .padding(bottom = 8.dp)
                                             ) {
-                                                viewModel.getTaskDetailsById(id = pair[1].id)
+                                                viewModel.getTaskDetailsById(id = pair[0].id)
+                                            }
+
+                                            if (pair.size > 1) {
+                                                CategoryTaskCard(
+                                                    title = pair[1].title,
+                                                    description = pair[1].description,
+                                                    priorityTask = pair[1].priority,
+                                                    icon = getCategoryIconPainter(state.categories.firstOrNull { it.id == pair[1].categoryId }!!.image),
+                                                    modifier = Modifier
+                                                        .fillParentMaxWidth(0.95f)
+                                                        .padding(bottom = 8.dp)
+                                                ) {
+                                                    viewModel.getTaskDetailsById(id = pair[1].id)
+                                                }
                                             }
                                         }
                                     }
