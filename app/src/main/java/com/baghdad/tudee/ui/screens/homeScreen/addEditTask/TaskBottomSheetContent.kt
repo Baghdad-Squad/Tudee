@@ -26,11 +26,11 @@ import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
+import com.baghdad.tudee.ui.composable.CategoryItem
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.MainButtonPart
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.PriorityChipPart
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.TextFieldScreenPart
 import com.baghdad.tudee.ui.screens.tasks.AddEditTaskInteractionListener
-import com.baghdad.tudee.ui.shared.components.CategoryItem
 import com.baghdad.tudee.ui.utils.getLabelResId
 import com.baghdad.tudee.ui.utils.now
 import kotlinx.datetime.LocalDate
@@ -66,14 +66,14 @@ fun AddEditTaskBottomSheet(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 TextFieldScreenPart(
+                    isAdd = initial == null,
                     title = titleText,
                     onTitleChange = { titleText = it },
                     paragraph = paragraphText,
                     onParagraphChange = { paragraphText = it },
                     dateTime = dateTime,
                     onDateChange = { dateTime = it },
-
-                    )
+                )
             }
 
             item(span = { GridItemSpan(maxLineSpan) }) {
@@ -123,7 +123,7 @@ fun AddEditTaskBottomSheet(
                         description = paragraphText,
                         date = dateTime,
                         priority = selectedPriority ?: Task.Priority.LOW,
-                        categoryId = selectedCategoryId,
+                        categoryId = selectedCategoryId ,
                         state = Task.State.TODO
                     )
                 )
@@ -135,13 +135,13 @@ fun AddEditTaskBottomSheet(
                         description = paragraphText,
                         date = dateTime,
                         priority = selectedPriority ?: Task.Priority.LOW,
-                        categoryId = selectedCategoryId,
+                        categoryId = selectedCategoryId ,
                         state = initial.state
                     )
                 )
             }
             onDismiss()
-        }, onDismiss = {
+        },onDismiss = {
             onDismiss()
         })
     }

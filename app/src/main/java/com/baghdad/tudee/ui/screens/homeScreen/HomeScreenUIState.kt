@@ -74,3 +74,14 @@ enum class SliderState{
     ZERO_PROGRESS,
     NOTHING_IN_YOUR_LIST
 }
+
+fun TaskUIState.toTask() =
+    Task(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        date = this.date,
+        priority = this.priority,
+        categoryId = this.categoryId,
+        state = this.state
+    )

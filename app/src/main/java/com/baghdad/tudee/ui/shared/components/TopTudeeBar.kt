@@ -1,4 +1,4 @@
-package com.baghdad.tudee.ui.shared.components
+package com.baghdad.tudee.ui.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
-import com.baghdad.tudee.ui.shared.components.dayNightSwitch.DayNightSwitch
+import com.baghdad.tudee.ui.composable.dayNightSwitch.DayNightSwitch
 import com.baghdad.tudee.ui.utils.insideBorder
 
 @Composable
@@ -35,13 +38,19 @@ fun TopTudeeBar(
         modifier = modifier
             .fillMaxWidth()
             .background(Theme.color.primaryColor.normal)
+            .padding(WindowInsets.statusBars.asPaddingValues())
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         LogoAndTitle(title = title, description = description)
-        DayNightSwitch(isDay = isDay) { onChangeTheme() }
+        DayNightSwitch(
+            isDay = isDay,
+        ){
+            onChangeTheme()
+        }
     }
+
 }
 
 

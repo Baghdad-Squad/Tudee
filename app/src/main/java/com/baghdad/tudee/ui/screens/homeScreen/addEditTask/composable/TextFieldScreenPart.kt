@@ -26,6 +26,7 @@ import kotlin.uuid.ExperimentalUuidApi
 @OptIn(ExperimentalUuidApi::class)
 @Composable
 fun TextFieldScreenPart(
+    isAdd: Boolean = true,
     title: String,
     onTitleChange: (String) -> Unit,
     paragraph: String,
@@ -38,7 +39,7 @@ fun TextFieldScreenPart(
         var isDatePickerVisible by remember { mutableStateOf(false) }
 
         Text(
-            text = stringResource(R.string.add_task),
+            text = stringResource(if(isAdd) R.string.add_task else R.string.edit_task),
             style = Theme.typography.title.large.copy(Theme.color.textColor.title)
         )
 

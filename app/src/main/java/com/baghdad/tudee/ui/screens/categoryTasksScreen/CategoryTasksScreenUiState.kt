@@ -19,4 +19,5 @@ data class CategoryTasksScreenUiState(
     ),
     val errorMessage: String? = null,
     val isLoading: Boolean = false,
+    val showDeleteCategorySheet: Boolean = false
 )

@@ -27,30 +27,21 @@ fun DeleteCategoryBottomSheet(
     )
 }
 
-
 @Composable
 fun ShowDeleteCategorySheet(
-    modifier: Modifier = Modifier,
-    onDeleteConfirmed: () -> Unit = {},
-    onCancelConfirmed: () -> Unit = {},
+    isVisible: Boolean,
+    onDeleteConfirmed: () -> Unit,
+    onCancelConfirmed: () -> Unit,
     isLoading: Boolean = false,
 ) {
-    var showSheet by remember { mutableStateOf(false) }
     TudeeBottomSheet(
-        isVisible = showSheet,
-        onDismiss = { showSheet = false }
+        isVisible = isVisible,
+        onDismiss = onCancelConfirmed
     ) {
         DeleteCategoryBottomSheet(
             isLoading = isLoading,
-            onDeleteClick = {
-                onDeleteConfirmed()
-                showSheet = false
-            },
-            onCancelClick = {
-                onCancelConfirmed()
-                showSheet = false
-            }
+            onDeleteClick = onDeleteConfirmed,
+            onCancelClick = onCancelConfirmed
         )
     }
 }
-
