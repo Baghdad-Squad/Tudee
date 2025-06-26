@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -17,6 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.baghdad.tudee.designSystem.components.BottomNavigation
+import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.ui.navigation.LocalNavController
 import com.baghdad.tudee.ui.navigation.Route
@@ -71,8 +73,9 @@ class MainActivity : ComponentActivity() {
         }
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .background(Theme.color.surfaceColor.surfaceHigh)
                 .navigationBarsPadding()
+                .fillMaxSize()
         ) {
             TudeeNavHost(
                 navController = navController,
