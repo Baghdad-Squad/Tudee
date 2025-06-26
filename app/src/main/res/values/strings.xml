@@ -105,7 +105,7 @@
     <string name="an_error_occured_while_deleting_the_category">An error occured while deleting the category</string>
     <string name="an_error_occurred_while_updating_the_category">An error occurred while updating the category</string>
     <string name="category_updated_successfully">Category updated successfully</string>
-    <string name="tudee">Tudee</string>
+    <string name="tudee" translatable="false">Tudee</string>
     <string name="storage_is_full">\n</string>
     <string name="database_is_corrupt">\n</string>
     <string name="database_exception">\n</string>
