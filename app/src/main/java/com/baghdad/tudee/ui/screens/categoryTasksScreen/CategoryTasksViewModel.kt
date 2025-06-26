@@ -122,6 +122,10 @@ class CategoryTasksViewModel(
            onSuccess = {
                getCategoryById()
                onToggleEditCategorySheetVisibility()
+               showSnackbar(
+                   messageRes = R.string.category_updated_successfully,
+                   isSuccess = true
+               )
            },
            onError = {
                showSnackbar(
