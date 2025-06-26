@@ -23,15 +23,8 @@ import kotlinx.datetime.toLocalDateTime
 class TasksViewModel(
     private val taskService: TaskService,
     private val categoryService: CategoryService
-) : TasksInteractionListener, AddEditTaskInteractionListener,
-    BaseViewModel<TasksScreenState, TasksScreenEffect>(TasksScreenState()) {
-
-
-    private val _taskToDelete = MutableStateFlow<Task?>(null)
-    val taskToDelete = _taskToDelete.asStateFlow()
-
-    private val _showDeleteSheet = MutableStateFlow(false)
-    val showDeleteSheet = _showDeleteSheet.asStateFlow()
+) : BaseViewModel<TasksScreenState, Unit>(TasksScreenState()),
+    TasksInteractionListener {
 
     init {
         getCurrentTasks()
@@ -42,9 +35,7 @@ class TasksViewModel(
     override fun onTabSelected(selectedTab: Task.State) {
         updateState {
             it.copy(
-                tasksUiState = it.tasksUiState.copy(
-                    selectedTab = selectedTab
-                )
+                selectedTab = selectedTab,
             )
         }
     }
@@ -52,9 +43,7 @@ class TasksViewModel(
     override fun onDateSelectedFromHorizontalRow(selectedDate: LocalDate) {
         updateState {
             it.copy(
-                tasksUiState = it.tasksUiState.copy(
-                    selectedDate = selectedDate
-                ),
+                selectedDate = selectedDate
             )
         }
         loadTasksForDate(selectedDate)
@@ -64,12 +53,10 @@ class TasksViewModel(
         val newMonthDates = getMonthDates(selectedDate)
         updateState {
             it.copy(
-                tasksUiState = it.tasksUiState.copy(
-                    selectedDate = selectedDate,
-                    monthDates = newMonthDates,
-                    currentMonth = selectedDate.month,
-                    currentYear = selectedDate.year
-                )
+                selectedDate = selectedDate,
+                monthDates = newMonthDates,
+                currentMonth = selectedDate.month,
+                currentYear = selectedDate.year
             )
         }
         loadTasksForDate(selectedDate)
@@ -83,11 +70,11 @@ class TasksViewModel(
     }
 
     override fun onPreviousMonthArrowClick() {
-        val currentMonthOrdinal = state.value.tasksUiState.currentMonth.ordinal
+        val currentMonthOrdinal = state.value.currentMonth.ordinal
         val newMonthOrdinal = if (currentMonthOrdinal == 0) 11 else currentMonthOrdinal - 1
         val newYear =
-            if (currentMonthOrdinal == 0) state.value.tasksUiState.currentYear - 1
-            else state.value.tasksUiState.currentYear
+            if (currentMonthOrdinal == 0) state.value.currentYear - 1
+            else state.value.currentYear
         val newMonth = Month.entries[newMonthOrdinal]
 
         val newDate = LocalDate(newYear, newMonth, 1)
@@ -95,12 +82,10 @@ class TasksViewModel(
 
         updateState {
             it.copy(
-                tasksUiState = it.tasksUiState.copy(
-                    currentMonth = newMonth,
-                    currentYear = newYear,
-                    monthDates = newMonthDates,
-                    selectedDate = newDate
-                )
+                currentMonth = newMonth,
+                currentYear = newYear,
+                monthDates = newMonthDates,
+                selectedDate = newDate
             )
         }
 
@@ -108,11 +93,11 @@ class TasksViewModel(
     }
 
     override fun onNextMonthArrowClick() {
-        val currentMonthOrdinal = state.value.tasksUiState.currentMonth.ordinal
+        val currentMonthOrdinal = state.value.currentMonth.ordinal
         val newMonthOrdinal = if (currentMonthOrdinal == 11) 0 else currentMonthOrdinal + 1
         val newYear =
-            if (currentMonthOrdinal == 11) state.value.tasksUiState.currentYear + 1
-            else state.value.tasksUiState.currentYear
+            if (currentMonthOrdinal == 11) state.value.currentYear + 1
+            else state.value.currentYear
         val newMonth = Month.entries[newMonthOrdinal]
 
         val newDate = LocalDate(newYear, newMonth, 1)
@@ -120,12 +105,10 @@ class TasksViewModel(
 
         updateState {
             it.copy(
-                tasksUiState = it.tasksUiState.copy(
-                    currentMonth = newMonth,
-                    currentYear = newYear,
-                    monthDates = newMonthDates,
-                    selectedDate = newDate
-                )
+                currentMonth = newMonth,
+                currentYear = newYear,
+                monthDates = newMonthDates,
+                selectedDate = newDate
             )
         }
 
@@ -136,7 +119,7 @@ class TasksViewModel(
         val initialTask = initialTaskId?.let { taskId ->
             getTaskById(taskId)
         } ?: Task(
-            date = state.value.tasksUiState.selectedDate ?: LocalDate.now(),
+            date = state.value.selectedDate ?: LocalDate.now(),
             id = 0,
             title = "",
             description = "",
@@ -146,30 +129,26 @@ class TasksViewModel(
         )
         updateState {
             it.copy(
-                it.tasksUiState.copy(
-                    initialTask = initialTask,
-                    showAddNewTask = !state.value.tasksUiState.showAddNewTask
-                )
+                initialTask = initialTask,
+                showAddNewTask = !state.value.showAddNewTask
             )
         }
     }
 
     private fun getTaskById(taskId: Long): Task? {
-        return currentState.tasksUiState.todoTasks.find { it.id == taskId }
-            ?: currentState.tasksUiState.inProgressTasks.find { it.id == taskId }
-            ?: currentState.tasksUiState.doneTasks.find { it.id == taskId }
+        return currentState.todoTasks.find { it.id == taskId }
+            ?: currentState.inProgressTasks.find { it.id == taskId }
+            ?: currentState.doneTasks.find { it.id == taskId }
     }
 
     override fun toggleTaskDetailsDialog(selectedTask: Task?) {
         val taskCategory =
-            currentState.tasksUiState.categories.find { it.id == selectedTask?.categoryId }
+            currentState.categories.find { it.id == selectedTask?.categoryId }
         updateState {
             it.copy(
-                it.tasksUiState.copy(
-                    selectedTaskDetails = selectedTask?.toTaskDetailsState(taskCategory)
-                        ?: TaskDetailsState(),
-                    showTaskDetailsBottomSheet = !currentState.tasksUiState.showTaskDetailsBottomSheet
-                )
+                selectedTaskDetails = selectedTask?.toTaskDetailsState(taskCategory)
+                    ?: TaskDetailsState(),
+                showTaskDetailsBottomSheet = !currentState.showTaskDetailsBottomSheet
             )
         }
     }
@@ -186,21 +165,33 @@ class TasksViewModel(
     }
 
     fun onTaskSwipeToDelete(task: Task) {
-        _taskToDelete.value = task
-        _showDeleteSheet.value = true
-    }
-
-    fun confirmDelete() {
-        _taskToDelete.value?.let { task ->
-            onDeleteTask(task)
+        updateState {
+            it.copy(
+                taskToDelete = task,
+                showDeleteSheet = true
+            )
         }
-        _taskToDelete.value = null
-        _showDeleteSheet.value = false
     }
 
-    fun cancelDelete() {
-        _taskToDelete.value = null
-        _showDeleteSheet.value = false
+    override fun onConfirmDelete() {
+        currentState.taskToDelete?.let {
+            onDeleteTask(it)
+        }
+        updateState {
+            it.copy(
+                taskToDelete = null,
+                showDeleteSheet = true
+            )
+        }
+    }
+
+    override fun onCancelDelete() {
+        updateState {
+            it.copy(
+                taskToDelete = null,
+                showDeleteSheet = false
+            )
+        }
     }
 
     private fun loadTasksForDate(selectedDate: LocalDate) {
@@ -210,19 +201,18 @@ class TasksViewModel(
                 val groupedTasksByState = tasks.groupBy { it.state }
                 updateState {
                     it.copy(
-                        tasksUiState = it.tasksUiState.copy(
-                            todoTasks = groupedTasksByState[Task.State.TODO] ?: emptyList(),
-                            inProgressTasks = groupedTasksByState[Task.State.IN_PROGRESS]
-                                ?: emptyList(),
-                            doneTasks = groupedTasksByState[Task.State.DONE] ?: emptyList(),
-                            selectedDate = selectedDate
-                        )
-                    )
+                        todoTasks = groupedTasksByState[Task.State.TODO] ?: emptyList(),
+                        inProgressTasks = groupedTasksByState[Task.State.IN_PROGRESS]
+                            ?: emptyList(),
+                        doneTasks = groupedTasksByState[Task.State.DONE] ?: emptyList(),
+                        selectedDate = selectedDate
+                    ) // make this should be extracted as a function
                 }
             },
             onError = ::onLoadTasksForDateError
         )
     }
+
     private fun onLoadTasksForDateError(error: Throwable) {
         showSnackbar(
             messageRes = R.string.an_error_occurred_while_loading_tasks,
@@ -236,15 +226,14 @@ class TasksViewModel(
             onNewValue = { categories ->
                 updateState {
                     it.copy(
-                        tasksUiState = it.tasksUiState.copy(
-                            categories = categories
-                        )
+                        categories = categories
                     )
                 }
             },
-            onError = :: onGetCategoriesError
+            onError = ::onGetCategoriesError
         )
     }
+
     private fun onGetCategoriesError(error: Throwable) {
         showSnackbar(
             messageRes = R.string.an_error_occurred_while_fetching_categories,
@@ -259,10 +248,8 @@ class TasksViewModel(
 
         updateState {
             it.copy(
-                it.tasksUiState.copy(
                 selectedDate = today,
                 monthDates = initialWeek
-            )
             )
         }
 
@@ -291,22 +278,32 @@ class TasksViewModel(
     }
 
     override fun onClickSaveTask(task: Task) {
-        Log.d("TasksViewModel", "onClickSaveTask: $task")
-        if (task.id != 0L) {
-            updateTask(task)
-        } else {
-            createTask(task)
+        try {
+
+
+            if (task.id != 0L) {
+                updateTask(task)
+            } else {
+                createTask(task)
+            }
+        } catch (e: Throwable) {
+            onClickSaveTaskError(e)
         }
+    }
+
+    private fun onClickSaveTaskError(error: Throwable) {
+        showSnackbar(
+            messageRes = R.string.an_error_occurred_while_saving_task,
+            isSuccess = false
+        )
     }
 
     private fun updateTask(task: Task) {
         viewModelScope.launch {
             taskService.editTask(task)
-            loadTasksForDate(currentState.tasksUiState.selectedDate ?: LocalDate.now())
+            loadTasksForDate(currentState.selectedDate ?: LocalDate.now())
             updateState {
-                it.copy(
-                    it.tasksUiState.copy(showAddNewTask = false)
-                )
+                it.copy(showAddNewTask = false)
             }
         }
     }
@@ -314,13 +311,19 @@ class TasksViewModel(
     private fun createTask(task: Task) {
         viewModelScope.launch {
             taskService.createTask(task)
-            loadTasksForDate(currentState.tasksUiState.selectedDate ?: LocalDate.now())
+            loadTasksForDate(currentState.selectedDate ?: LocalDate.now())
 
             updateState {
-                it.copy(
-                    it.tasksUiState.copy(showAddNewTask = false)
-                )
+                it.copy(showAddNewTask = false)
             }
+        }
+    }
+
+    fun setInitialTaskState(taskState: Task.State) {
+        updateState {
+            it.copy(
+                selectedTab = taskState
+            )
         }
     }
 }
