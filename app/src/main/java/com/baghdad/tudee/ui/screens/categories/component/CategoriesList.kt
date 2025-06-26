@@ -1,4 +1,4 @@
-package com.baghdad.tudee.ui.screens.category.component
+package com.baghdad.tudee.ui.screens.categories.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -6,19 +6,21 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.baghdad.tudee.R
-import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.ui.composable.CategoryItem
-import com.baghdad.tudee.ui.screens.category.CategoryUiState
-import com.baghdad.tudee.ui.screens.category.mapper.toDrawable
+import com.baghdad.tudee.ui.model.CategoryUiState
 import com.baghdad.tudee.ui.utils.getCategoryIconPainter
-import com.baghdad.tudee.ui.utils.image.byteArrayToPainter
+import com.baghdad.tudee.ui.utils.getCategoryTitle
 
 @Composable
-fun CategoryItems(state : List<CategoryUiState>, onCategoryClick : (Long) -> Unit){
+fun CategoriesList(
+    categories: List<CategoryUiState>,
+    onCategoryClick: (CategoryUiState) -> Unit,
+    modifier: Modifier = Modifier
+) {
     LazyVerticalGrid(
+        modifier = modifier,
         columns = GridCells.Adaptive(104.dp),
         contentPadding = PaddingValues(
             start = 16.dp,
@@ -29,19 +31,17 @@ fun CategoryItems(state : List<CategoryUiState>, onCategoryClick : (Long) -> Uni
         verticalArrangement = Arrangement.spacedBy(24.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(state) {
+        items(categories) {
             CategoryItem(
-                label = it.title,
+                label = getCategoryTitle(it),
                 icon = getCategoryIconPainter(it.image),
                 onClick = {
-                    onCategoryClick(it.id)
+                    onCategoryClick(it)
                 },
                 isSelected = false,
                 count = it.taskCount,
                 isPredefined = it.isPredefined
             )
-
         }
-
     }
 }

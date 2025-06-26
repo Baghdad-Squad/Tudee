@@ -37,19 +37,19 @@ class CategoryTasksViewModel(
             category?.let {
                 _state.update {
                     it.copy(
-                        categoryName = category.title,
-                        categoryImage = category.image,
-                        isPredefinedCategory = category.isPredefinedCategory
+                        category = category,
+                        addEditCategorySheetState = it.addEditCategorySheetState.copy(
+                            categoryTitle = category.title,
+                            categoryImageByteArray = (category.image as? Category.Image.ByteArray)?.data
+                        )
                     )
                 }
             }
         }
-
-
     }
 
     fun getTasksByCategoryId(categoryId: Long) {
-        viewModelScope.launch (Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             taskService.getTasksByCategory(categoryId).collect { tasks ->
                 _state.update {
                     it.copy(
@@ -58,14 +58,18 @@ class CategoryTasksViewModel(
                         doneTasks = tasks.filter { task -> task.state == Task.State.DONE }
                     )
                 }
-
             }
-
         }
     }
 
     fun onCategoryTitleChanged(newTitle: String) {
-        _state.update { it.copy(categoryName = newTitle) }
+        _state.update {
+            it.copy(
+                addEditCategorySheetState = it.addEditCategorySheetState.copy(
+                    categoryTitle = newTitle
+                )
+            )
+        }
     }
 
     fun onDeleteCategory() {
@@ -73,21 +77,52 @@ class CategoryTasksViewModel(
             categoryService.deleteCategory(categoryId)
         }
     }
+
     fun onSaveCategoryChanges() {
         viewModelScope.launch(Dispatchers.IO) {
             val currentState = _state.value
             categoryService.editCategory(
                 Category(
                     id = categoryId,
-                    title = currentState.categoryName,
-                    image = currentState.categoryImage,
+                    title = currentState.addEditCategorySheetState.categoryTitle,
+                    image = Category.Image.ByteArray(
+                        currentState.addEditCategorySheetState.categoryImageByteArray
+                            ?: byteArrayOf()
+                    ),
+                )
+            )
+            getCategoryById()
+            toggleEditCategorySheetVisibility()
+        }
+    }
+
+    fun onChangeImage(newImage: Category.Image) {
+        _state.update {
+            it.copy(
+                addEditCategorySheetState = it.addEditCategorySheetState.copy(
+                    categoryImageByteArray = (newImage as? Category.Image.ByteArray)?.data
                 )
             )
         }
-
     }
-    fun onChangeImage(newImage: Category.Image){
-        _state.update { it.copy(categoryImage = newImage) }
+
+    fun toggleEditCategorySheetVisibility() {
+        _state.update {
+            it.copy(
+                addEditCategorySheetState = it.addEditCategorySheetState.copy(
+                    isVisible = !it.addEditCategorySheetState.isVisible
+                )
+            )
+        }
+    }
+    fun toggleDeleteCategorySheet() {
+        _state.update {
+            it.copy(
+                addEditCategorySheetState = it.addEditCategorySheetState.copy(
+                    isVisible = !it.addEditCategorySheetState.isVisible
+                )
+            )
+        }
     }
 
 }

@@ -8,7 +8,7 @@ import com.baghdad.tudee.R
 import com.baghdad.tudee.domain.entity.Category
 
 @Composable
-fun getCategoryIconPainter(categoryImage: Category.Image): Painter {
+fun getCategoryIconPainter(categoryImage: Category.Image?): Painter {
     return when (val image = categoryImage) {
         is Category.Image.Predefined -> {
             val resId = when (image.type) {
@@ -29,9 +29,6 @@ fun getCategoryIconPainter(categoryImage: Category.Image): Painter {
                 Category.PredefinedType.BUDGETING -> return painterResource(R.drawable.ic_money_bag)
                 Category.PredefinedType.SELF_CARE -> return painterResource(R.drawable.ic_in_love)
                 Category.PredefinedType.EVENT -> return painterResource(R.drawable.ic_birthday_cake)
-                else -> {
-                    return painterResource(R.drawable.ic_birthday_cake)
-                }
             }
             painterResource(id = resId)
         }
@@ -43,5 +40,10 @@ fun getCategoryIconPainter(categoryImage: Category.Image): Painter {
                 error = painterResource(R.drawable.calendar_favorite_01)
             )
         }
+
+        else -> {
+            painterResource(R.drawable.ic_birthday_cake)
+        }
     }
 }
+

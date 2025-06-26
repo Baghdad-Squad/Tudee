@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.baghdad.tudee.R
@@ -30,6 +31,7 @@ import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.MainButton
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.PriorityChipPart
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.composable.TextFieldScreenPart
 import com.baghdad.tudee.ui.screens.tasks.AddEditTaskInteractionListener
+import com.baghdad.tudee.ui.utils.getLabelResId
 import com.baghdad.tudee.ui.utils.now
 import kotlinx.datetime.LocalDate
 
@@ -45,7 +47,7 @@ fun AddEditTaskBottomSheet(
     var titleText by remember { mutableStateOf(initial?.title ?: "") }
     var paragraphText by remember { mutableStateOf(initial?.description ?: "") }
     var dateTime by remember { mutableStateOf(initial?.date ?: LocalDate.now()) }
-    var selectedCategoryId by remember { mutableStateOf(initial?.categoryId ?: -1L) }
+    var selectedCategoryId by remember { mutableStateOf(initial?.categoryId ?: 0L) }
     var selectedPriority by remember { mutableStateOf(initial?.priority) }
 
 
@@ -70,7 +72,7 @@ fun AddEditTaskBottomSheet(
                     onParagraphChange = { paragraphText = it },
                     dateTime = dateTime,
                     onDateChange = { dateTime = it },
-                    isEditMode = initial != null
+
                 )
             }
 
@@ -83,7 +85,7 @@ fun AddEditTaskBottomSheet(
 
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = "Category",
+                    text = stringResource(R.string.category),
                     style = Theme.typography.title.medium.copy(Theme.color.textColor.title),
                     modifier = Modifier.padding(start = 16.dp)
                 )
@@ -91,11 +93,14 @@ fun AddEditTaskBottomSheet(
 
             items(state) { category ->
                 CategoryItem(
-                    label = category.title,
+                    label = when (category.image) {
+                        is Category.Image.Predefined -> stringResource((category.image).type.getLabelResId())
+                        is Category.Image.ByteArray -> category.title
+                    },
                     icon = getCategoryIconPainter(category.image),
                     onClick = {
                         selectedCategoryId =
-                            if (selectedCategoryId == category.id) -1 else category.id
+                            if (selectedCategoryId == category.id) 0 else category.id
                     },
                     isSelected = selectedCategoryId == category.id,
                     isPredefined = category.isPredefinedCategory

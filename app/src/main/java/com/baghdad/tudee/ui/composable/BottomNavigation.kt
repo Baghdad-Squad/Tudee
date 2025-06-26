@@ -77,7 +77,9 @@ fun BottomNavigation(
                     NavItem(
                         isSelected = currentRoute == item.route::class.qualifiedName,
                         onClick = {
-                            navController.navigate(item.route)
+                            if(currentRoute != item.route::class.qualifiedName) {
+                                navController.navigate(item.route)
+                            }
                         },
                         icon = it
                     )

@@ -1,4 +1,4 @@
-package com.baghdad.tudee.ui.composable.categoryBottomSheet
+package com.baghdad.tudee.ui.composable.bottomSheet.category
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +19,7 @@ import com.baghdad.tudee.ui.composable.button.SecondaryButton
 @Composable
 fun ConfirmationButtonContainer(
     isEnabled: Boolean,
-    onAddClick: () -> Unit,
+    onActionClick: () -> Unit,
     onCancelClick: () -> Unit,
     actionLabel:String,
     isLoading:Boolean
@@ -36,7 +36,7 @@ fun ConfirmationButtonContainer(
         ) {
             PrimaryButton(
                 label = actionLabel,
-                onClick = onAddClick,
+                onClick = onActionClick,
                 isLoading = isLoading,
                 isEnabled = isEnabled,
                 modifier = Modifier
