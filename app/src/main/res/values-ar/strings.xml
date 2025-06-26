@@ -108,4 +108,5 @@
 
     <string name="empty_string" />
     <string name="arrow_icon">سهم الى اليسار</string>
+    <string name="formatted_date">%1$s %2$s %3$s</string>
 </resources>

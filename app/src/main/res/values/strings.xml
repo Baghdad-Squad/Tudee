@@ -106,4 +106,6 @@
     <string name="an_error_occurred_while_updating_the_category">An error occurred while updating the category</string>
     <string name="category_updated_successfully">Category edited successfully.</string>
     <string name="arrow_icon">right arrow icon</string>
+    <string name="formatted_date">%1$s %2$s %3$s</string>
+
 </resources>
