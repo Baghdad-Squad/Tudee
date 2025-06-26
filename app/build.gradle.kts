@@ -69,8 +69,3 @@ dependencies {
     androidTestImplementation(libs.bundles.junit.test)
     debugImplementation(libs.bundles.compose.test)
 }
-
-
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
-}
