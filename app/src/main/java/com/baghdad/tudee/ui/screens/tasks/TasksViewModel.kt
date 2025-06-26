@@ -1,6 +1,5 @@
 package com.baghdad.tudee.ui.screens.tasks
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.baghdad.tudee.R
 import com.baghdad.tudee.domain.entity.Task
@@ -11,8 +10,6 @@ import com.baghdad.tudee.ui.screens.homeScreen.TaskDetailsState
 import com.baghdad.tudee.ui.screens.homeScreen.toTaskDetailsState
 import com.baghdad.tudee.ui.utils.now
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate

@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.ui.composable.DayChip
 import com.baghdad.tudee.ui.composable.dateYearDialog.DateDialog
 import com.baghdad.tudee.ui.screens.tasks.TasksInteractionListener
-import com.baghdad.tudee.ui.screens.tasks.TasksUiState
+import com.baghdad.tudee.ui.screens.tasks.TasksScreenState
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -40,13 +40,13 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun HorizontalDayChipsSetup(
-    uiState: TasksUiState,
+    uiState: TasksScreenState,
     tasksInteractionListener: TasksInteractionListener,
     modifier: Modifier = Modifier
 ) {
 
     var showDatePicker by remember { mutableStateOf(false) }
-    val selectedDate = uiState.selectedDate
+    val selectedDate = uiState.selectedDate// this should be as a parameter
 
     val dates: List<LocalDate> = uiState.monthDates
 
