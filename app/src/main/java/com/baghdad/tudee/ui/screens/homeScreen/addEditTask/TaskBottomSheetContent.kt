@@ -66,13 +66,13 @@ fun AddEditTaskBottomSheet(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 TextFieldScreenPart(
+                    isAdd = initial == null,
                     title = titleText,
                     onTitleChange = { titleText = it },
                     paragraph = paragraphText,
                     onParagraphChange = { paragraphText = it },
                     dateTime = dateTime,
                     onDateChange = { dateTime = it },
-
                 )
             }
 

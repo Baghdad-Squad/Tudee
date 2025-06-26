@@ -101,4 +101,5 @@
     <string name="category_self_care">Self-care</string>
     <string name="category_event">Event</string>
     <string name="category_education">Education</string>
+    <string name="arrow_icon">right arrow icon</string>
 </resources>

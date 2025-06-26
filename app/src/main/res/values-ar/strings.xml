@@ -102,4 +102,5 @@
     <string name="an_error_occurred_while_loading_tasks">حدث خطأ اثناء تحمليل المهام</string>
     <string name="an_error_occurred_while_saving_task">حدث خطأ اثناء حفظ المهام</string>
     <string name="empty_string" />
+    <string name="arrow_icon">سهم الى اليسار</string>
 </resources>
