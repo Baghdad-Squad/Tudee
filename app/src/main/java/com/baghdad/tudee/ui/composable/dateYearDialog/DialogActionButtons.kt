@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -24,8 +26,8 @@ fun DialogActionButtons(
     Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(end = 2.dp),
-    horizontalArrangement = Arrangement.SpaceBetween
+                .padding(start = 12.dp, end = 2.dp),
+             horizontalArrangement = Arrangement.SpaceBetween
     ) {
         TextButton(
             label = stringResource(id = R.string.clear_text),
@@ -35,10 +37,13 @@ fun DialogActionButtons(
         )
         Spacer(modifier = Modifier.weight(1f))
         TextButton(
+            modifier = Modifier.widthIn(min = 74.dp),
             label = stringResource(id = R.string.cancel_text),
             onClick = onDismiss
         )
         TextButton(
+            modifier = Modifier.padding(start = 8.dp)
+                .widthIn(min = 51.dp),
             label = stringResource(id = R.string.ok_text),
             onClick = {
                 onDateSelected(datePickerState.selectedDateMillis)
