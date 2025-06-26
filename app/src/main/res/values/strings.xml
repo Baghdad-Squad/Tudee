@@ -69,7 +69,7 @@
     <string name="Tadaa">Tadaa!</string>
     <string name="Zero_progress">Zero progress?!</string>
     <string name="Nothing_on_your_list">Nothing on your list…</string>
-    <string name="Your_personal_task_manager">Your personal task manager</string>
+    <string name="Your_personal_task_manager">Your cute Helper for Every Task</string>
     <string name="add_task">Add Task</string>
     <string name="edit_task">Edit Task </string>
     <string name="an_error_occurred_while_adding_category">An error occurred while adding category</string>
@@ -105,4 +105,5 @@
     <string name="an_error_occured_while_deleting_the_category">An error occured while deleting the category</string>
     <string name="an_error_occurred_while_updating_the_category">An error occurred while updating the category</string>
     <string name="category_updated_successfully">Category updated successfully</string>
+    <string name="tudee">Tudee</string>
 </resources>

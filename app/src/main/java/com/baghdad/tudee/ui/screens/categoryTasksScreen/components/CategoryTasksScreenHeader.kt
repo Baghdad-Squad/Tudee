@@ -12,6 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -26,6 +29,8 @@ fun CategoryTasksScreenHeader(
     listener: CategoriesTasksInteractionListener,
     modifier: Modifier = Modifier
 ) {
+    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -38,7 +43,12 @@ fun CategoryTasksScreenHeader(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        IconInBox(icon = R.drawable.arrow_left_01, onIconClick = { onArrowBackClicked() })
+        IconInBox(
+            icon = R.drawable.arrow_left_01,
+            onIconClick = { onArrowBackClicked() },
+            modifier = Modifier.graphicsLayer {
+                scaleX = if (isRtl) -1f else 1f
+            })
         Text(
             text = state.category.title,
             style = Theme.typography.title.large,

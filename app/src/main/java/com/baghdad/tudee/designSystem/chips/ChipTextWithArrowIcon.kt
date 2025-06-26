@@ -10,10 +10,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.ui.utils.getLocalizedNumber
 import com.baghdad.tudee.ui.utils.noRippleClickable
 
 @Composable
@@ -22,7 +26,7 @@ fun ChipTextWithArrowIcon(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-
+    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
     Row(
         modifier
             .background(
@@ -37,14 +41,17 @@ fun ChipTextWithArrowIcon(
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
-            text = "$numberOfItem",
+            text = getLocalizedNumber(numberOfItem),
             style = Theme.typography.label.medium,
             color = Theme.color.textColor.body
         )
         Icon(
             painter = painterResource(R.drawable.ic_arrow),
             contentDescription = "Arrow Icon",
-            tint = Theme.color.textColor.body
+            tint = Theme.color.textColor.body,
+            modifier = Modifier.graphicsLayer {
+                scaleX = if (isRtl) -1f else 1f
+            }
         )
 
     }

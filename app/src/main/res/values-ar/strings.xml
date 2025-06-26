@@ -100,4 +100,5 @@
     <string name="an_error_occurred_while_adding_category">حدث خطأ أثناء إضافة الفئة</string>
     <string name="an_error_occurred_while_fetching_categories">حدث خطأ أثناء جلب الفئات</string>
     <string name="empty_string" />
+    <string name="tudee">تادي</string>
 </resources>

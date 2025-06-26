@@ -15,12 +15,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -45,6 +45,7 @@ import com.baghdad.tudee.ui.composable.SnakeBar
 import com.baghdad.tudee.ui.composable.TasksEmptyScreen
 import com.baghdad.tudee.ui.composable.TopTudeeBar
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
+import com.baghdad.tudee.ui.composable.TudeeScaffold
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomSheet
@@ -64,36 +65,37 @@ fun HomeScreen(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modifier = 
 fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modifier = Modifier) {
     val viewModel: HomeScreenViewModel = koinViewModel()
     val state by viewModel.state.collectAsState()
-    Scaffold(
+    TudeeScaffold(
         floatingActionButton = {
             FloatingActionButton(
                 painter = painterResource(R.drawable.ic_add),
                 onClick = {
                     viewModel.toggleAddNewTaskDialog()
                 },
-                modifier = Modifier.padding(16.dp)
+            )
+        },
+        topBar = {
+            TopTudeeBar(
+                title = stringResource(R.string.tudee),
+                description = stringResource(R.string.Your_personal_task_manager),
+                isDay = state.isDark.not(),
+                onChangeTheme = {
+                    viewModel.onClickSwitchTheme()
+                },
+
             )
         }
 
 
     ) {
         BottomSheetHandler(state, viewModel)
-        it
         Box(modifier = modifier.fillMaxSize()) {
             Column(
                 modifier
                     .fillMaxSize()
                     .background(Theme.color.primaryColor.normal)
-                    .padding(WindowInsets.statusBars.asPaddingValues())
             ) {
-                TopTudeeBar(
-                    title = "Tudee",
-                    description = stringResource(R.string.Your_personal_task_manager),
-                    isDay = state.isDark.not(),
-                    onChangeTheme = {
-                        viewModel.onClickSwitchTheme()
-                    }
-                )
+
                 LazyColumn(
                     Modifier
                         .fillMaxSize()
@@ -108,7 +110,9 @@ fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modi
                                 tasks = state.inProgressTasks,
                                 state = state,
                                 viewModel = viewModel,
-                                modifier = Modifier.fillParentMaxWidth().padding(bottom = 8.dp),
+                                modifier = Modifier
+                                    .fillParentMaxWidth()
+                                    .padding(bottom = 8.dp),
                                 onClick = { navigateToTaskScreen(Task.State.IN_PROGRESS) }
                             )
                         }
@@ -120,7 +124,9 @@ fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modi
                                 tasks = state.todoTasks,
                                 state = state,
                                 viewModel = viewModel,
-                                modifier = Modifier.fillParentMaxWidth().padding(bottom = 8.dp),
+                                modifier = Modifier
+                                    .fillParentMaxWidth()
+                                    .padding(bottom = 8.dp),
                                 onClick = { navigateToTaskScreen(Task.State.TODO) }
                             )
                         }
@@ -133,7 +139,9 @@ fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modi
                                 tasks = state.doneTasks,
                                 state = state,
                                 viewModel = viewModel,
-                                modifier = Modifier.fillParentMaxWidth().padding(bottom = 8.dp),
+                                modifier = Modifier
+                                    .fillParentMaxWidth()
+                                    .padding(bottom = 8.dp),
                                 onClick = { navigateToTaskScreen(Task.State.DONE) }
                             )
                         }
@@ -158,7 +166,7 @@ fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modi
 }
 
 @Composable
- fun TextDateIcon(
+fun TextDateIcon(
     text: String,
     modifier: Modifier = Modifier,
     icon: Painter,
@@ -184,8 +192,6 @@ fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modi
 
     }
 }
-
-
 
 
 @Composable
@@ -267,6 +273,7 @@ fun TextHeadTaskSection(
 
     }
 }
+
 @Composable
 private fun StatusTasksSection(state: HomeScreenUIState, modifier: Modifier = Modifier) {
     Box(
@@ -295,8 +302,9 @@ private fun StatusTasksSection(state: HomeScreenUIState, modifier: Modifier = Mo
         OverViewSection(state)
     }
 }
+
 @Composable
-private fun OverViewSection(state: HomeScreenUIState){
+private fun OverViewSection(state: HomeScreenUIState) {
     Text(
         text = stringResource(R.string.overview),
         style = Theme.typography.title.large,
