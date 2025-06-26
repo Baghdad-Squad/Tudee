@@ -31,6 +31,7 @@ import com.baghdad.tudee.ui.composable.TabItem
 import com.baghdad.tudee.ui.composable.Tabs
 import com.baghdad.tudee.ui.composable.TasksEmptyScreen
 import com.baghdad.tudee.ui.composable.bottomSheet.category.AddEditCategoryBottomSheet
+import com.baghdad.tudee.ui.composable.delete_item.ShowDeleteCategorySheet
 import com.baghdad.tudee.ui.navigation.LocalNavController
 import com.baghdad.tudee.ui.navigation.Route
 import com.baghdad.tudee.ui.screens.categoryTasksScreen.components.CategoryTasksList
@@ -59,7 +60,6 @@ fun CategoryTasksScreen(
     CategoryTasksScreenContent(
         state = state,
         onArrowBackClicked = { navigateBack() },
-        onToggleDeleteCategorySheet = { /*TODO: show delete category bottom sheet*/ },
         listener = viewModel,
     )
 }
@@ -78,7 +78,6 @@ private fun onNewEffect(
 private fun CategoryTasksScreenContent(
     state: CategoryTasksScreenUiState,
     onArrowBackClicked: () -> Unit,
-    onToggleDeleteCategorySheet: () -> Unit,
     listener: CategoriesTasksInteractionListener
 ) {
     val context = LocalContext.current
@@ -183,10 +182,24 @@ private fun CategoryTasksScreenContent(
                 onDismiss = {
                     listener.onToggleEditCategorySheetVisibility()
                 },
-                onDeleteClick = onToggleDeleteCategorySheet,
+                onDeleteClick = listener::toggleDeleteCategorySheet,
                 onSaveClick = listener::onSaveCategoryChanges,
             )
+
         }
+        if (state.showDeleteCategorySheet) {
+            ShowDeleteCategorySheet(
+                isVisible = state.showDeleteCategorySheet,
+                onDeleteConfirmed = {
+                    listener.onDeleteCategory()
+                    listener.toggleDeleteCategorySheet()
+                },
+                onCancelConfirmed = {
+                    listener.toggleDeleteCategorySheet()
+                }
+            )
+        }
+
     }
 }
 

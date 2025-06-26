@@ -17,4 +17,5 @@ data class CategoryTasksScreenUiState(
     val addEditCategorySheetState: AddEditCategorySheetUiState = AddEditCategorySheetUiState(isEditing = true),
     val errorMessage: String? = null,
     val isLoading: Boolean = false,
+    val showDeleteCategorySheet: Boolean = false
 )

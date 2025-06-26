@@ -10,4 +10,5 @@ interface CategoriesTasksInteractionListener {
     fun onSaveCategoryChanges()
     fun onChangeImage(newImage: Category.Image)
     fun onToggleEditCategorySheetVisibility()
+    fun toggleDeleteCategorySheet()
 }

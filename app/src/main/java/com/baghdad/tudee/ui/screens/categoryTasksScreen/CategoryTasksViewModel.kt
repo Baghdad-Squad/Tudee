@@ -156,12 +156,10 @@ class CategoryTasksViewModel(
         }
     }
 
-    fun toggleDeleteCategorySheet() {
+    override fun toggleDeleteCategorySheet() {
         updateState {
             it.copy(
-                addEditCategorySheetState = it.addEditCategorySheetState.copy(
-                    isVisible = !it.addEditCategorySheetState.isVisible
-                )
+                showDeleteCategorySheet = !it.showDeleteCategorySheet
             )
         }
     }
