@@ -1,5 +1,6 @@
 package com.baghdad.tudee.ui.screens.OnboardingScreen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,6 +32,7 @@ fun OnboardingBackground(
 
 }
 
+@SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
 fun BackgroundShape(
     modifier: Modifier = Modifier
