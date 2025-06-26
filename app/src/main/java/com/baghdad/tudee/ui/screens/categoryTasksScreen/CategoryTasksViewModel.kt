@@ -104,11 +104,12 @@ class CategoryTasksViewModel(
     }
 
     private fun onDeleteCategorySuccess() {
-        showSnackbar(
-            messageRes = R.string.category_deleted_successfully,
-            isSuccess = true,
+        emitNewEffect(
+            CategoryTasksScreenEffect.NavigateToCategoriesScreenWithResult(
+                message = R.string.category_deleted_successfully,
+                isSuccess = true
+            )
         )
-        emitNewEffect(CategoryTasksScreenEffect.NavigateToCategoriesScreen)
     }
 
     private fun onDeleteCategoryError() {
@@ -138,13 +139,16 @@ class CategoryTasksViewModel(
     )
 
     private fun onSaveCategoryChangesSuccess() {
-        showSnackbar(
-            messageRes = R.string.category_updated_successfully,
-            isSuccess = true
-        )
+
         getCategoryById()
         onToggleEditCategorySheetVisibility()
-        emitNewEffect(CategoryTasksScreenEffect.NavigateToCategoriesScreen)
+
+        emitNewEffect(
+            CategoryTasksScreenEffect.NavigateToCategoriesScreenWithResult(
+                message = R.string.category_updated_successfully,
+                isSuccess = true
+            )
+        )
     }
 
     private fun onSaveCategoryChangesError() {
@@ -153,7 +157,6 @@ class CategoryTasksViewModel(
             isSuccess = false
         )
     }
-
 
 
     override fun onChangeImage(newImage: Category.Image) {

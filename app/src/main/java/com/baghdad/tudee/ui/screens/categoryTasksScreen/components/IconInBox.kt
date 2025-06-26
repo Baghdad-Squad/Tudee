@@ -20,7 +20,8 @@ import com.baghdad.tudee.ui.utils.noRippleClickable
 @Composable
 fun IconInBox(
     modifier: Modifier = Modifier,
-    icon: Int, onIconClick: () -> Unit,
+    icon: Int,
+    onIconClick: () -> Unit,
     tint: Color = Theme.color.textColor.body
 ) {
     Box(

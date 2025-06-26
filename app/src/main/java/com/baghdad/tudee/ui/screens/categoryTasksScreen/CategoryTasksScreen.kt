@@ -5,23 +5,18 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
-import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
@@ -30,11 +25,9 @@ import com.baghdad.tudee.ui.composable.AnimatedSnackbar
 import com.baghdad.tudee.ui.composable.SnackbarState
 import com.baghdad.tudee.ui.composable.Tabs
 import com.baghdad.tudee.ui.composable.TudeeScaffold
-import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.delete_item.ShowDeleteCategorySheet
 import com.baghdad.tudee.ui.navigation.LocalNavController
 import com.baghdad.tudee.ui.navigation.Route
-import com.baghdad.tudee.ui.screens.categories.component.CategoriesTopAppBar
 import com.baghdad.tudee.ui.screens.categoryTasksScreen.components.CategoryTasksPager
 import com.baghdad.tudee.ui.screens.categoryTasksScreen.components.CategoryTasksScreenHeader
 import com.baghdad.tudee.ui.screens.categoryTasksScreen.components.rememberTabs
@@ -71,14 +64,21 @@ private fun onNewEffect(
     navController: NavHostController
 ) {
     when (effect) {
-        is CategoryTasksScreenEffect.NavigateToCategoriesScreen -> navController.navigate(Route.CategoriesScreen)
+        is CategoryTasksScreenEffect.NavigateToCategoriesScreenWithResult -> {
+            navController.previousBackStackEntry?.savedStateHandle?.apply {
+                set("snackBar_message", effect.message)
+                set("snackBar_success", effect.isSuccess)
+            }
+            navController.popBackStack()
+
+        }
     }
 }
 
 
 @Composable
 private fun CategoryTasksScreenContent(
-    snackBarState:SnackbarState,
+    snackBarState: SnackbarState,
     state: CategoryTasksScreenUiState,
     onArrowBackClicked: () -> Unit,
     listener: CategoriesTasksInteractionListener

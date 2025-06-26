@@ -99,5 +99,12 @@
     <string name="Zero_progress">لا يوجد تقدم؟!</string>
     <string name="an_error_occurred_while_adding_category">حدث خطأ أثناء إضافة الفئة</string>
     <string name="an_error_occurred_while_fetching_categories">حدث خطأ أثناء جلب الفئات</string>
+    <string name="an_error_occurred_while_fetching_the_category">تعذَّر تحميل بيانات الفئة</string>
+    <string name="an_error_occurred_while_fetching_the_tasks">تعذَّر تحميل قائمة المهام</string>
+    <string name="category_deleted_successfully">تم حذف الفئة بنجاح</string>
+    <string name="an_error_occured_while_deleting_the_category">تعذَّر حذف الفئة</string>
+    <string name="an_error_occurred_while_updating_the_category">تعذَّر تحديث بيانات الفئة</string>
+    <string name="category_updated_successfully">تم تحديث الفئة بنجاح</string>
+
     <string name="empty_string" />
 </resources>
