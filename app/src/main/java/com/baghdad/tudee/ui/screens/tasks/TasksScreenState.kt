@@ -1,8 +1,28 @@
 package com.baghdad.tudee.ui.screens.tasks
 
+import com.baghdad.tudee.domain.entity.Category
+import com.baghdad.tudee.domain.entity.Task
+import com.baghdad.tudee.ui.screens.homeScreen.TaskDetailsState
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Month
+
 data class TasksScreenState(
-    val tasksUiState: TasksUiState = TasksUiState(),
+    val taskToDelete: Task? = null,
+    val showDeleteSheet: Boolean = false,
     val isLoading: Boolean = true,
     val isError: Boolean = false,
     val errorMessage: String? = null,
+    val todoTasks : List<Task> = emptyList(),
+    val inProgressTasks : List<Task> = emptyList(),
+    val doneTasks : List<Task> = emptyList(),
+    val selectedTab: Task.State = Task.State.IN_PROGRESS,
+    val selectedDate: LocalDate? = null,
+    val monthDates: List<LocalDate> = emptyList(),
+    val categories: List<Category> = emptyList(),
+    val currentMonth : Month = Month.JUNE,
+    val currentYear : Int = 2025,
+    val showAddNewTask: Boolean= false,
+    val showTaskDetailsBottomSheet: Boolean= false,
+    val selectedTaskDetails: TaskDetailsState = TaskDetailsState(),
+    val initialTask: Task? = null,
 )
