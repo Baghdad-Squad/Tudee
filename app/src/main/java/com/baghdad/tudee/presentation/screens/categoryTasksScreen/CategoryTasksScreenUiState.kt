@@ -1,0 +1,20 @@
+package com.baghdad.tudee.presentation.screens.categoryTasksScreen
+
+import com.baghdad.tudee.domain.entity.Category
+import com.baghdad.tudee.domain.entity.Task
+import com.baghdad.tudee.presentation.composable.bottomSheet.category.AddEditCategorySheetUiState
+
+data class CategoryTasksScreenUiState(
+    val inProgressTasks: List<Task> = emptyList(),
+    val todoTasks: List<Task> = emptyList(),
+    val doneTasks: List<Task> = emptyList(),
+    val selectedTab: Task.State = Task.State.IN_PROGRESS,
+    val category: Category = Category(
+        id = 0L,
+        title = "",
+        image = Category.Image.Predefined(Category.PredefinedType.ENTERTAINMENT)
+    ),
+    val addEditCategorySheetState: AddEditCategorySheetUiState = AddEditCategorySheetUiState(isEditing = true),
+    val errorMessage: String? = null,
+    val isLoading: Boolean = false,
+)

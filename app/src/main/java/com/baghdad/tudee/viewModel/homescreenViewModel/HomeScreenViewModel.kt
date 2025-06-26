@@ -1,6 +1,5 @@
 package com.baghdad.tudee.viewModel.homescreenViewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baghdad.tudee.domain.entity.Task
@@ -10,12 +9,12 @@ import com.baghdad.tudee.domain.exception.StorageFullException
 import com.baghdad.tudee.domain.service.AppConfigurationService
 import com.baghdad.tudee.domain.service.CategoryService
 import com.baghdad.tudee.domain.service.TaskService
-import com.baghdad.tudee.ui.screens.homeScreen.HomeScreenUIState
-import com.baghdad.tudee.ui.screens.homeScreen.SliderState
-import com.baghdad.tudee.ui.screens.homeScreen.TaskDetailsState
-import com.baghdad.tudee.ui.screens.homeScreen.TaskUIState
-import com.baghdad.tudee.ui.screens.tasks.AddEditTaskInteractionListener
-import com.baghdad.tudee.ui.utils.now
+import com.baghdad.tudee.presentation.screens.homeScreen.HomeScreenUIState
+import com.baghdad.tudee.presentation.screens.homeScreen.SliderState
+import com.baghdad.tudee.presentation.screens.homeScreen.TaskDetailsState
+import com.baghdad.tudee.presentation.screens.homeScreen.TaskUIState
+import com.baghdad.tudee.presentation.screens.tasks.AddEditTaskInteractionListener
+import com.baghdad.tudee.presentation.utils.now
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

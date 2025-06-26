@@ -7,7 +7,7 @@ import com.baghdad.tudee.designSystem.color.lightThemeColor
 import com.baghdad.tudee.designSystem.color.localTudeeColor
 import com.baghdad.tudee.designSystem.textStyle.localTudeeTextStyle
 import com.baghdad.tudee.designSystem.textStyle.tudeeTextStyle
-import com.baghdad.tudee.ui.utils.StatusBarTitleTheme
+import com.baghdad.tudee.presentation.utils.StatusBarTitleTheme
 
 
 @Composable
