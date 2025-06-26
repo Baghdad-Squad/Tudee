@@ -1,6 +1,5 @@
 package com.baghdad.tudee.ui.screens.tasks
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.baghdad.tudee.R
 import com.baghdad.tudee.domain.entity.Task
@@ -11,7 +10,6 @@ import com.baghdad.tudee.ui.screens.homeScreen.TaskDetailsState
 import com.baghdad.tudee.ui.screens.homeScreen.toTaskDetailsState
 import com.baghdad.tudee.ui.utils.now
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
@@ -158,25 +156,38 @@ class TasksViewModel(
         taskId: Long,
         newState: Task.State
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val updatedTask = getTaskById(taskId)?.copy(state = newState) ?: return@launch
-            taskService.editTask(updatedTask)
-            toggleTaskDetailsDialog()
-        }
+        tryToExecute(
+            function = { val updatedTask = getTaskById(taskId)?.copy(state = newState)
+                    ?: throw IllegalArgumentException("Task not found")
+                taskService.editTask(updatedTask)
+            },
+            onSuccess = {
+                toggleTaskDetailsDialog()
+                loadTasksForDate(currentState.selectedDate ?: LocalDate.now())
+            },
+            onError = ::onClickSaveTaskError,
+            scope = viewModelScope,
+            dispatcher = Dispatchers.IO
+        )
     }
 
     override fun onConfirmDelete() {
-        viewModelScope.launch {
-            currentState.taskToDelete?.let {
-                taskService.deleteTask(it.id)
-            }
-            updateState {
-                it.copy(
-                    taskToDelete = null,
-                    showDeleteSheet = false
-                )
-            }
-        }
+        tryToExecute(
+            function = {
+                currentState.taskToDelete?.let { task ->
+                    taskService.deleteTask(task.id) }
+            },
+            onSuccess = {
+                updateState {
+                    it.copy(
+                        taskToDelete = null,
+                        showDeleteSheet = false
+                    )
+                }
+                loadTasksForDate(currentState.selectedDate ?: LocalDate.now())
+            },
+            onError = ::onClickSaveTaskError,
+        )
     }
 
     override fun onCancelDelete() {
@@ -294,22 +305,28 @@ class TasksViewModel(
     }
 
     private fun updateTask(task: Task) {
-        viewModelScope.launch {
-            taskService.editTask(task)
-            loadTasksForDate(currentState.selectedDate ?: LocalDate.now())
-            updateState {
-                it.copy(showAddNewTask = false)
-            }
-        }
+        tryToExecute(
+            function = { taskService.editTask(task) },
+            onSuccess = {
+                loadTasksForDate(currentState.selectedDate ?: LocalDate.now())
+                updateState {
+                    it.copy(showAddNewTask = false)
+                }
+            },
+            onError = ::onClickSaveTaskError,
+        )
     }
 
     private fun createTask(task: Task) {
-        viewModelScope.launch {
-            taskService.createTask(task)
-            loadTasksForDate(currentState.selectedDate ?: LocalDate.now())
-            updateState {
-                it.copy(showAddNewTask = false)
-            }
-        }
+        tryToExecute(
+            function = { taskService.createTask(task) },
+            onSuccess = {
+                loadTasksForDate(currentState.selectedDate ?: LocalDate.now())
+                updateState {
+                    it.copy(showAddNewTask = false)
+                }
+            },
+            onError = ::onClickSaveTaskError,
+        )
     }
 }
