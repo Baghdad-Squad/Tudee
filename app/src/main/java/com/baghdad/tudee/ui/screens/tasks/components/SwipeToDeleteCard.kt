@@ -24,11 +24,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -48,6 +51,7 @@ fun SwipeToDeleteCard(
 ) {
     val maxSwipe = 100f
     var offsetX by remember { mutableFloatStateOf(0f) }
+    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
 
     val animatedOffsetX by animateFloatAsState(
         targetValue = offsetX,
@@ -62,7 +66,7 @@ fun SwipeToDeleteCard(
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
             .clip(RoundedCornerShape(16.dp))
-            .background(Theme.color.status.errorVariant)
+            .background(Theme.color.status.errorVariant, shape = RoundedCornerShape(16.dp))
     ) {
         Box(
             modifier = Modifier
@@ -79,7 +83,11 @@ fun SwipeToDeleteCard(
 
         Box(
             Modifier
+
                 .offset(x = animatedOffsetX.dp)
+                .graphicsLayer {
+                    scaleX = if (isRtl) -1f else 1f
+                }
                 .pointerInput(Unit) {
                     awaitPointerEventScope {
                         while (true) {
@@ -112,18 +120,23 @@ fun SwipeToDeleteCard(
                             } else {
                                 offsetX = 0f
                             }
+
                         }
+
                     }
                 }
 
-        ) {
+        )
+        {
             CategoryTaskCard(
                 title = title,
                 description = description,
                 priorityTask = priorityTask,
                 icon = icon,
                 onClick = onClick,
-                modifier = modifier
+                modifier = modifier.graphicsLayer {
+                    scaleX = if (isRtl) 1f else -1f
+                }
             )
         }
     }
