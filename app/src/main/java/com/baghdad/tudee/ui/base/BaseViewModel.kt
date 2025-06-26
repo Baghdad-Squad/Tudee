@@ -1,12 +1,15 @@
 package com.baghdad.tudee.ui.base
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baghdad.tudee.ui.composable.SnackbarState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -31,14 +34,13 @@ abstract class BaseViewModel<S, E>(initialState: S) : ViewModel() {
 
     protected fun <T> tryToExecute(
         function: suspend () -> T,
-        onSuccess: (T) -> Unit,
+        onSuccess: ((T) -> Unit)? = null,
         onError: (Throwable) -> Unit,
-        dispatcher: CoroutineDispatcher = Dispatchers.Default
-    ) {
-        return runWithErrorHandling(onError, dispatcher) {
-            function().let { result ->
-                onSuccess(result)
-            }
+        scope: CoroutineScope = viewModelScope,
+        dispatcher: CoroutineDispatcher = Dispatchers.IO
+    ): Job = runWithErrorHandling(onError, scope, dispatcher) {
+        function().let { result ->
+            onSuccess?.invoke(result)
         }
     }
 
@@ -46,14 +48,14 @@ abstract class BaseViewModel<S, E>(initialState: S) : ViewModel() {
         function: suspend () -> Flow<T>,
         onNewValue: suspend (T) -> Unit,
         onError: (Throwable) -> Unit,
-        dispatcher: CoroutineDispatcher = Dispatchers.Default
-    ) {
-        runWithErrorHandling(onError, dispatcher) {
+        scope: CoroutineScope = viewModelScope,
+        dispatcher: CoroutineDispatcher = Dispatchers.IO
+    ): Job =
+        runWithErrorHandling(onError, scope, dispatcher) {
             function().distinctUntilChanged().collectLatest {
                 onNewValue(it)
             }
         }
-    }
 
     protected fun updateState(updater: (S) -> S) {
         _state.update(updater)
@@ -93,14 +95,14 @@ abstract class BaseViewModel<S, E>(initialState: S) : ViewModel() {
 
     private fun runWithErrorHandling(
         onError: (Throwable) -> Unit,
+        scope: CoroutineScope,
         dispatcher: CoroutineDispatcher,
         function: suspend () -> Unit,
-    ) {
-        val exceptionHandler = CoroutineExceptionHandler { _, exception ->
-            onError(exception)
+    ): Job {
+        val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            onError(throwable)
         }
-
-        viewModelScope.launch(dispatcher + exceptionHandler) {
+        return scope.launch(dispatcher + coroutineExceptionHandler) {
             function()
         }
     }
