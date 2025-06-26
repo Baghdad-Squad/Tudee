@@ -17,9 +17,7 @@ fun MainScreen(
 ) {
     val state by mainViewModel.uiState.collectAsStateWithLifecycle()
     val navController = rememberNavController()
-    CompositionLocalProvider(
-        LocalNavController provides navController
-    ) {
+
         TudeeTheme(isDarkTheme = state.isDarkTheme == true) {
             val isLoading = state.isDarkTheme == null || state.isFirstLaunch == null
             AnimatedContent(
@@ -36,4 +34,3 @@ fun MainScreen(
             }
         }
     }
-}
