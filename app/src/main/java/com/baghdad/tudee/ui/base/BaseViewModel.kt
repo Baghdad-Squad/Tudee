@@ -64,7 +64,7 @@ abstract class BaseViewModel<S, E>(initialState: S) : ViewModel() {
     protected val currentState: S
         get() = _state.value
 
-    protected fun showSnackbar(
+     fun showSnackbar(
         @StringRes
         messageRes: Int,
         isSuccess: Boolean,
