@@ -1,0 +1,65 @@
+package com.baghdad.tudee.presentation.screens.tasks.components
+
+import android.content.Context
+import androidx.compose.foundation.layout.Row
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.baghdad.tudee.R
+import com.baghdad.tudee.domain.entity.Task
+import com.baghdad.tudee.presentation.composable.TabItem
+import com.baghdad.tudee.presentation.composable.Tabs
+import com.baghdad.tudee.presentation.screens.tasks.TasksUiState
+import com.baghdad.tudee.presentation.shared.Selectable
+
+@Composable
+fun StatusTabs(
+    onTabSelected: (Task.State) -> Unit,
+    uiState: TasksUiState,
+    selectedTab: Task.State,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    Row(
+        modifier = modifier
+    ) {
+        Tabs(
+            selectableTabs = listOf(
+                Selectable(
+                    value = TabItem(
+                        stringResource(R.string.in_progress),
+                        badgeCount = if (selectedTab == Task.State.IN_PROGRESS) uiState.inProgressTasks.size else null
+                    ),
+                    isSelected = selectedTab == Task.State.IN_PROGRESS
+                ),
+                Selectable(
+                    value = TabItem(
+                        stringResource(R.string.to_do),
+                        badgeCount = if (selectedTab == Task.State.TODO) uiState.todoTasks.size else null
+                    ),
+                    isSelected = selectedTab == Task.State.TODO
+                ),
+                Selectable(
+                    value = TabItem(
+                        stringResource(R.string.done),
+                        badgeCount = if (selectedTab == Task.State.DONE) uiState.doneTasks.size else null
+                    ),
+                    isSelected = selectedTab == Task.State.DONE
+                )
+            ),
+            onTabSelected = {
+                onTabSelected(it.title.toTaskStatus(context = context))
+            },
+        )
+    }
+}
+
+fun String.toTaskStatus(context: Context): Task.State {
+    return when (this) {
+        context.getString(R.string.to_do) -> Task.State.TODO
+        context.getString(R.string.in_progress) -> Task.State.IN_PROGRESS
+        context.getString(R.string.done) -> Task.State.DONE
+        else -> Task.State.TODO
+    }
+}

@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Tudee"
         tools:targetApi="31">
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".presentation.main.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Tudee">
             <intent-filter>
