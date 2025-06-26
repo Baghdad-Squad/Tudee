@@ -23,6 +23,7 @@ import com.baghdad.tudee.ui.utils.onClickTextField
 import kotlinx.datetime.LocalDate
 import kotlin.uuid.ExperimentalUuidApi
 
+@OptIn(ExperimentalUuidApi::class)
 @Composable
 fun TextFieldScreenPart(
     title: String,
@@ -31,18 +32,13 @@ fun TextFieldScreenPart(
     onParagraphChange: (String) -> Unit,
     dateTime: LocalDate,
     onDateChange: (LocalDate) -> Unit,
-    isEditMode:Boolean=false
 ) {
     Column(Modifier.padding(horizontal = 16.dp))
     {
         var isDatePickerVisible by remember { mutableStateOf(false) }
-        val condition = if (isEditMode){
-           stringResource(R.string.edit_task)
-        }else{
-            stringResource(R.string.add_task)
-        }
+
         Text(
-            text = condition,
+            text = stringResource(R.string.add_task),
             style = Theme.typography.title.large.copy(Theme.color.textColor.title)
         )
 
@@ -51,7 +47,7 @@ fun TextFieldScreenPart(
         TudeeTextField(
             value = title,
             onValueChange = onTitleChange,
-            hint = "Task title",
+            hint = stringResource(R.string.task_title),
             leadingIcon = painterResource(id = R.drawable.ic_black_note),
         )
 
@@ -59,10 +55,9 @@ fun TextFieldScreenPart(
             value = paragraph,
             onValueChange = onParagraphChange,
             modifier = Modifier.padding(vertical = 12.dp),
-            hint = "Description",
+            hint = stringResource(R.string.description),
             height = 168,
-            maxLines = 8,
-            maxCharacter = 512,
+            maxLines = 10
         )
 
         TudeeTextField(
@@ -89,5 +84,9 @@ fun TextFieldScreenPart(
                 onDateChange(millisToLocalDate(it!!))
             }
         )
+
+
     }
+
+
 }

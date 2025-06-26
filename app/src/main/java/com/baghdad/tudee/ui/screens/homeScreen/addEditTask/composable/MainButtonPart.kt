@@ -11,7 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.ui.composable.button.PrimaryButton
 import com.baghdad.tudee.ui.composable.button.SecondaryButton
@@ -28,8 +30,7 @@ fun MainButtonPart (isEnable: Boolean, initial: String? = null, onSave: ()-> Uni
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            var value = "Add"
-            if (initial != null) value = "Save" else value = "Add"
+            val value = if (initial != null) stringResource(R.string.save) else stringResource(R.string.add)
             PrimaryButton(
                 label = value,
                 onClick = {onSave()},
@@ -40,7 +41,7 @@ fun MainButtonPart (isEnable: Boolean, initial: String? = null, onSave: ()-> Uni
                     .fillMaxWidth()
             )
             SecondaryButton(
-                label = "Cancel",
+                label = stringResource(R.string.cancel),
                 onClick = {
                     onDismiss()
                 },

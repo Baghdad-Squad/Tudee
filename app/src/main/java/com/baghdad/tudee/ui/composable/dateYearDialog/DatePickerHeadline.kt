@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.ui.utils.formatDateLocalized
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -37,8 +38,7 @@ fun DatePickerHeadline(datePickerState: DatePickerState){
         selectedDate?.let { date ->
             AnimatedVisibility(visible = true) {
                 Text(
-                    text = "${date.dayOfWeek.name.take(3).lowercase().replaceFirstChar { it.uppercase() }}, " +
-                            "${date.month.name.lowercase().replaceFirstChar { it.uppercase() }} ${date.dayOfMonth}",
+                    text = formatDateLocalized(date),
                     style = Theme.typography.headline.large
                 )
             }
