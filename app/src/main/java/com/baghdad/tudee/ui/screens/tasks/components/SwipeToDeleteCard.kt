@@ -62,7 +62,7 @@ fun SwipeToDeleteCard(
     )
 
     Box(
-        Modifier
+        modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
             .clip(RoundedCornerShape(16.dp))
@@ -128,17 +128,16 @@ fun SwipeToDeleteCard(
 
         )
         {
-            Box(Modifier.graphicsLayer {
-                scaleX = if (isRtl) -1f else 1f
-            }) {
-                CategoryTaskCard(
-                    title = title,
-                    description = description,
-                    priorityTask = priorityTask,
-                    icon = icon,
-                    onClick = onClick,
-                )
-            }
+            CategoryTaskCard(
+                title = title,
+                description = description,
+                priorityTask = priorityTask,
+                icon = icon,
+                onClick = onClick,
+                modifier = Modifier.graphicsLayer {
+                    scaleX = if (isRtl) -1f else 1f
+                }
+            )
         }
     }
 }

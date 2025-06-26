@@ -4,20 +4,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.baghdad.tudee.designSystem.theme.Theme
@@ -26,11 +23,11 @@ import com.baghdad.tudee.ui.composable.BottomNavigation
 import com.baghdad.tudee.ui.navigation.LocalNavController
 import com.baghdad.tudee.ui.navigation.Route
 import com.baghdad.tudee.ui.navigation.TudeeNavHost
-import com.baghdad.tudee.ui.screens.SplashScreen.SplashScreen
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -43,25 +40,14 @@ class MainActivity : ComponentActivity() {
                 TudeeTheme(
                     isDarkTheme = state.isDarkTheme == true,
                 ) {
-                    AnimatedContent(
-                        targetState = state.isDarkTheme == null || state.isFirstLaunch == null
-                    ) { isLoading ->
-                        if (isLoading) {
-                            SplashScreen()
-                        } else {
-                            AppContent(
-                                isFirstLaunch = state.isFirstLaunch != false,
-                                navController = navController
-                            )
-                        }
-
-                    }
+                    AppContent(
+                        isFirstLaunch = state.isFirstLaunch == true,
+                        navController = navController
+                    )
                 }
             }
         }
-
     }
-
     @Composable
     fun AppContent(
         isFirstLaunch: Boolean,

@@ -118,6 +118,9 @@ dependencies {
     // Coroutines testing
     testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.kotlinx.coroutines.test)
+
+    // splash screen
+    implementation(libs.androidx.core.splashscreen)
 }
 
 ksp {
