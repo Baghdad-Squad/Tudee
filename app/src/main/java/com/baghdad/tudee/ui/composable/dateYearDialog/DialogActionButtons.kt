@@ -35,14 +35,19 @@ fun DialogActionButtons(
                 datePickerState.selectedDateMillis = null
             }
         )
+
         Spacer(modifier = Modifier.weight(1f))
+
         TextButton(
-            modifier = Modifier.widthIn(min = 74.dp),
+            modifier = Modifier
+                .widthIn(min = 74.dp),
             label = stringResource(id = R.string.cancel_text),
             onClick = onDismiss
         )
+
         TextButton(
-            modifier = Modifier.padding(start = 8.dp)
+            modifier = Modifier
+                .padding(start = 8.dp)
                 .widthIn(min = 51.dp),
             label = stringResource(id = R.string.ok_text),
             onClick = {
