@@ -1,5 +1,7 @@
 package com.baghdad.tudee.ui.composable.bottomSheet.category
 
+import com.baghdad.tudee.domain.entity.Category
+
 data class AddEditCategorySheetUiState(
     val isVisible: Boolean = false,
     val isEditing: Boolean = false,
@@ -13,3 +15,11 @@ data class AddEditCategorySheetUiState(
     val isCategoryImageUploaded
         get() = categoryImageByteArray != null
 }
+
+fun AddEditCategorySheetUiState.toEntity(categoryId: Long? = null): Category = Category(
+    id = categoryId ?: 0L,
+    title = categoryTitle,
+    image = Category.Image.ByteArray(
+        this.categoryImageByteArray ?: byteArrayOf()
+    )
+)
