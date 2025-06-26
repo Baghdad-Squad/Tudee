@@ -37,16 +37,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
+import com.baghdad.tudee.ui.base.EffectHandler
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.composable.TabItem
 import com.baghdad.tudee.ui.composable.Tabs
 import com.baghdad.tudee.ui.composable.bottomSheet.category.AddEditCategoryBottomSheet
 import com.baghdad.tudee.ui.composable.TasksEmptyScreen
+import com.baghdad.tudee.ui.navigation.LocalNavController
+import com.baghdad.tudee.ui.navigation.Route
 import com.baghdad.tudee.ui.shared.Selectable
 import com.baghdad.tudee.ui.utils.getCategoryIconPainter
 import com.baghdad.tudee.ui.utils.image.uriToByteArray
@@ -61,30 +65,39 @@ fun CategoryTasksScreen(
     navigateBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val navController = LocalNavController.current
+
+    EffectHandler(
+        effects = viewModel.effects,
+        onNewEffect = { effect ->
+           onNewEffect(effect,navController)
+        }
+    )
     CategoryTasksScreenContent(
         state = state,
-        onTabSelected = viewModel::onTabSelected,
         onArrowBackClicked = { navigateBack() },
-        onCategoryTitleChanged = { newTitle -> viewModel.onCategoryTitleChanged(newTitle) },
-        onCategoryImageChanged = { newImage -> viewModel.onChangeImage(newImage) },
-        onDeleteCategory = { viewModel.onDeleteCategory() },
-        onSaveButtonClick = { viewModel.onSaveCategoryChanges() },
-        onToggleEditCategorySheet = { viewModel.toggleEditCategorySheetVisibility() },
-        onToggleDeleteCategorySheet = { /*TODO: show delete category bottom sheet*/ }
+        onToggleDeleteCategorySheet = { /*TODO: show delete category bottom sheet*/ },
+        listener = viewModel,
     )
 }
+
+private fun onNewEffect(
+    effect: CategoryTasksScreenEffect,
+    navController: NavHostController
+) {
+    when (effect) {
+        is CategoryTasksScreenEffect.OnCategoryDeleted -> navController.navigate(Route.CategoriesScreen)
+    }
+}
+
 
 @Composable
 private fun CategoryTasksScreenContent(
     state: CategoryTasksScreenUiState,
-    onTabSelected: (Task.State) -> Unit,
     onArrowBackClicked: () -> Unit,
-    onCategoryTitleChanged: (String) -> Unit,
-    onCategoryImageChanged: (Category.Image) -> Unit,
-    onToggleEditCategorySheet: () -> Unit,
     onToggleDeleteCategorySheet: () -> Unit,
-    onDeleteCategory: () -> Unit,
-    onSaveButtonClick: () -> Unit,
+    listener: CategoriesTasksInteractionListener
 ) {
     val context = LocalContext.current
     val pagerState = rememberPagerState(initialPage = state.selectedTab.ordinal) { 3 }
@@ -93,7 +106,7 @@ private fun CategoryTasksScreenContent(
             uriToByteArray(
                 context,
                 it
-            )?.let { onCategoryImageChanged(Category.Image.ByteArray(it)) }
+            )?.let { listener.onChangeImage(Category.Image.ByteArray(it)) }
         }
     rememberAsyncImagePainter(model = launcher)
 
@@ -105,7 +118,7 @@ private fun CategoryTasksScreenContent(
     LaunchedEffect(pagerState.currentPage) {
         val newTab = Task.State.entries[pagerState.currentPage]
         if (state.selectedTab != newTab) {
-            onTabSelected(newTab)
+            listener.onTabSelected(newTab)
         }
     }
 
@@ -162,14 +175,14 @@ private fun CategoryTasksScreenContent(
             if (!state.category.isPredefinedCategory) {
                 Spacer(modifier = Modifier.weight(1f))
                 IconInBox(icon = R.drawable.pencil_edit_02, onIconClick = {
-                    onToggleEditCategorySheet()
+                    listener.onToggleEditCategorySheetVisibility()
                 }
                 )
             }
         }
         Tabs(
             selectableTabs = tabs,
-            onTabSelected = { tab -> onTabSelected(tab.status) },
+            onTabSelected = { tab -> listener.onTabSelected(tab.status) },
             modifier = Modifier.padding(bottom = 12.dp)
         )
         HorizontalPager(
@@ -206,17 +219,17 @@ private fun CategoryTasksScreenContent(
             }
             AddEditCategoryBottomSheet(
                 state = state.addEditCategorySheetState,
-                onCategoryTitleChanged = onCategoryTitleChanged,
+                onCategoryTitleChanged = listener::onCategoryTitleChanged,
                 onUploadIconClicked = {
                     launcher.launch(
                         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                     )
                 },
                 onDismiss = {
-                    onToggleEditCategorySheet()
+                    listener.onToggleEditCategorySheetVisibility()
                 },
                 onDeleteClick = onToggleDeleteCategorySheet,
-                onSaveClick = onSaveButtonClick,
+                onSaveClick = listener::onSaveCategoryChanges,
             )
         }
     }
