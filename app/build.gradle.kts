@@ -54,71 +54,21 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.androidx.compose.bom))
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    testImplementation(libs.junit)
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.junit.jupiter)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.navigation.compose)
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.bundles.compose)
+    implementation(libs.bundles.koin)
+    implementation(libs.bundles.kotlinx)
+    implementation(libs.bundles.room)
+    implementation(libs.bundles.coil)
+    implementation(libs.bundles.navigation)
 
-
-    //Kotlinx-date-time
-    implementation(libs.kotlinx.datetime)
-
-    //Room
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler)
-
-
-    //material 3
-    implementation(libs.material3)
-    implementation(libs.ui)
-    implementation(libs.androidx.runtime)
-
-
-    // Koin core and Android
-    implementation(libs.koin.android)
-    implementation(libs.koin.androidx.compose)
-    implementation(libs.koin.core)
-
-    //coil
-    implementation(libs.coil.compose)
-    implementation(libs.kotlinx.datetime)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.kotlinx.coroutines.core)
-
-   //Android-specific coroutine support (for Dispatchers.Main, etc.)
-    implementation(libs.kotlinx.coroutines.android)
-
-    // Room testing
-    testImplementation(libs.androidx.room.testing)
-
-    // Google Truth
-    testImplementation (libs.truth)
-    androidTestImplementation(libs.truth)
-
-    // MockK
-    testImplementation(libs.mockk)
-    testImplementation(libs.mockk.android)
-
-    // Coroutines testing
-    testImplementation(libs.kotlinx.coroutines.test)
-    androidTestImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.bundles.junit.test)
+    androidTestImplementation(libs.bundles.junit.test)
+    debugImplementation(libs.bundles.compose.test)
 }
+
 
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
