@@ -24,8 +24,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.baghdad.tudee.ui.composable.DayChip
-import com.baghdad.tudee.ui.composable.dateYearDialog.DateDialog
+import com.baghdad.tudee.designSystem.components.DayChip
+import com.baghdad.tudee.designSystem.components.dateYearDialog.DateDialog
 import com.baghdad.tudee.ui.screens.tasks.TasksInteractionListener
 import com.baghdad.tudee.ui.screens.tasks.TasksUiState
 import kotlinx.datetime.Instant
@@ -117,7 +117,11 @@ fun HorizontalDayChipsRow(
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            state = LazyListState(firstVisibleItemIndex = if(dates.indexOf(selectedDate) < 2) 0 else dates.indexOf(selectedDate)-2)
+            state = LazyListState(
+                firstVisibleItemIndex = if (dates.indexOf(selectedDate) < 2) 0 else dates.indexOf(
+                    selectedDate
+                ) - 2
+            )
         ) {
             items(dates) { date ->
                 val isSelected = date == selectedDate

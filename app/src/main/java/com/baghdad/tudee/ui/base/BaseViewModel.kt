@@ -1,10 +1,9 @@
 package com.baghdad.tudee.ui.base
 
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.baghdad.tudee.ui.composable.SnackbarState
+import com.baghdad.tudee.designSystem.components.SnackbarState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope

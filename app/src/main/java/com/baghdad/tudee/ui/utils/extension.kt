@@ -30,21 +30,19 @@ fun Modifier.insideBorder(
     width: Dp,
     color: Color,
     cornerRadius: Dp = 0.dp
-) = this.
-    drawWithContent {
-        drawContent()
-        val strokeWidth = width.toPx()
-        val radius = cornerRadius.toPx()
+) = this.drawWithContent {
+    drawContent()
+    val strokeWidth = width.toPx()
+    val radius = cornerRadius.toPx()
 
-        drawRoundRect(
-            color = color,
-            style = Stroke(width = strokeWidth),
-            cornerRadius = CornerRadius(radius, radius),
-            size = Size(size.width - strokeWidth, size.height - strokeWidth),
-            topLeft = Offset(strokeWidth/2, strokeWidth/2)
-        )
-    }
-
+    drawRoundRect(
+        color = color,
+        style = Stroke(width = strokeWidth),
+        cornerRadius = CornerRadius(radius, radius),
+        size = Size(size.width - strokeWidth, size.height - strokeWidth),
+        topLeft = Offset(strokeWidth / 2, strokeWidth / 2)
+    )
+}
 
 
 fun HomeScreenUIState.isEmptyTasks(): Boolean {
@@ -59,4 +57,5 @@ fun Modifier.radialGradientBackground(colors: List<Color>) = this.background(
 )
 
 
-fun LocalDate.Companion.now() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+fun LocalDate.Companion.now() =
+    Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date

@@ -21,16 +21,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baghdad.tudee.R
+import com.baghdad.tudee.designSystem.components.button.FloatingActionButton
+import com.baghdad.tudee.designSystem.components.delete_item.ShowDeleteTaskSheet
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Task
-import com.baghdad.tudee.ui.composable.TudeeBottomSheet
-import com.baghdad.tudee.ui.composable.button.FloatingActionButton
-import com.baghdad.tudee.ui.composable.delete_item.ShowDeleteTaskSheet
-import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomSheet
 import com.baghdad.tudee.ui.screens.tasks.components.HorizontalDayChipsSetup
 import com.baghdad.tudee.ui.screens.tasks.components.StatusTabs
 import com.baghdad.tudee.ui.screens.tasks.components.TasksHorizontalPager
+import com.baghdad.tudee.ui.shared.components.TudeeBottomSheet
+import com.baghdad.tudee.ui.shared.components.taskDetailsBottomSheet.TaskDetailsBottomSheet
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 

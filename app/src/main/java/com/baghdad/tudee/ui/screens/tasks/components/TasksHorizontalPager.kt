@@ -2,7 +2,6 @@ package com.baghdad.tudee.ui.screens.tasks.components
 
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.baghdad.tudee.domain.entity.Task
@@ -19,7 +18,7 @@ fun TasksHorizontalPager(
     HorizontalPager(
         state = pagerState,
     ) { currentPage ->
-        when(currentPage){
+        when (currentPage) {
             Task.State.IN_PROGRESS.ordinal -> {
                 TasksList(
                     tasks = uiState.inProgressTasks,
@@ -29,6 +28,7 @@ fun TasksHorizontalPager(
                     modifier = modifier
                 )
             }
+
             Task.State.TODO.ordinal -> {
                 TasksList(
                     tasks = uiState.todoTasks,
@@ -38,6 +38,7 @@ fun TasksHorizontalPager(
                     modifier = modifier
                 )
             }
+
             Task.State.DONE.ordinal -> {
                 TasksList(
                     tasks = uiState.doneTasks,

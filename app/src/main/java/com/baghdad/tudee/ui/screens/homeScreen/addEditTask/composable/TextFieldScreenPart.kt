@@ -14,9 +14,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
+import com.baghdad.tudee.designSystem.components.dateYearDialog.DateDialog
 import com.baghdad.tudee.designSystem.theme.Theme
-import com.baghdad.tudee.ui.composable.TudeeTextField
-import com.baghdad.tudee.ui.composable.dateYearDialog.DateDialog
+import com.baghdad.tudee.ui.shared.components.TudeeTextField
 import com.baghdad.tudee.ui.utils.formatDate
 import com.baghdad.tudee.ui.utils.millisToLocalDate
 import com.baghdad.tudee.ui.utils.onClickTextField

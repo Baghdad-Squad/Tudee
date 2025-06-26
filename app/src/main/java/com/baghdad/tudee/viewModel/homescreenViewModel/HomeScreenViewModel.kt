@@ -1,6 +1,5 @@
 package com.baghdad.tudee.viewModel.homescreenViewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baghdad.tudee.domain.entity.Task
@@ -75,7 +74,7 @@ class HomeScreenViewModel(
     }
 
     override fun onClickSaveTask(task: Task) {
-        if(task.id != 0L) {
+        if (task.id != 0L) {
             updateTask(task)
         } else {
             createTask(task)
@@ -85,7 +84,7 @@ class HomeScreenViewModel(
     private fun updateTask(task: Task) {
         viewModelScope.launch {
             taskService.editTask(task)
-            loadTasksForDate(state.value.selectedDate?: LocalDate.now())
+            loadTasksForDate(state.value.selectedDate ?: LocalDate.now())
             _state.update {
                 it.copy(showAddNewTask = false)
             }
@@ -95,13 +94,14 @@ class HomeScreenViewModel(
     private fun createTask(task: Task) {
         viewModelScope.launch {
             taskService.createTask(task)
-            loadTasksForDate(state.value.selectedDate?: LocalDate.now())
+            loadTasksForDate(state.value.selectedDate ?: LocalDate.now())
 
             _state.update {
                 it.copy(showAddNewTask = false)
             }
         }
     }
+
     private fun loadTasksForDate(selectedDate: LocalDate) {
         viewModelScope.launch {
             taskService.getTasksByDate(selectedDate).collect { tasks ->
@@ -109,7 +109,8 @@ class HomeScreenViewModel(
                 _state.update {
                     it.copy(
                         todoTasks = groupedTasksByState[Task.State.TODO] ?: emptyList(),
-                        inProgressTasks = groupedTasksByState[Task.State.IN_PROGRESS] ?: emptyList(),
+                        inProgressTasks = groupedTasksByState[Task.State.IN_PROGRESS]
+                            ?: emptyList(),
                         doneTasks = groupedTasksByState[Task.State.DONE] ?: emptyList()
                     )
                 }
@@ -352,6 +353,7 @@ class HomeScreenViewModel(
         }
 
     }
+
     private suspend fun handleError(error: Exception) {
         val errorMessage = when (error) {
             is StorageFullException -> error.message.toString()
@@ -385,6 +387,7 @@ class HomeScreenViewModel(
             isError = isError
         )
     }
+
     private fun hideSnackbarMessage() {
         showSnarkMessage(
             message = "",

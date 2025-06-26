@@ -9,15 +9,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImagePainter.State.Empty.painter
-import coil.compose.rememberAsyncImagePainter
-import com.baghdad.tudee.R
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
-import com.baghdad.tudee.ui.composable.TasksEmptyScreen
-import com.baghdad.tudee.ui.screens.tasks.TasksUiState
+import com.baghdad.tudee.ui.shared.components.TasksEmptyScreen
 import com.baghdad.tudee.ui.utils.getCategoryIconPainter
 
 @Composable

@@ -40,17 +40,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.baghdad.tudee.R
+import com.baghdad.tudee.designSystem.components.SnakeBar
+import com.baghdad.tudee.designSystem.components.button.FloatingActionButton
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.domain.entity.Task
-import com.baghdad.tudee.ui.composable.CategoryTaskCard
-import com.baghdad.tudee.ui.composable.SnakeBar
-import com.baghdad.tudee.ui.composable.TasksEmptyScreen
-import com.baghdad.tudee.ui.composable.TopTudeeBar
-import com.baghdad.tudee.ui.composable.TudeeBottomSheet
-import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
-import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomSheet
+import com.baghdad.tudee.ui.shared.components.CategoryTaskCard
+import com.baghdad.tudee.ui.shared.components.TasksEmptyScreen
+import com.baghdad.tudee.ui.shared.components.TopTudeeBar
+import com.baghdad.tudee.ui.shared.components.TudeeBottomSheet
+import com.baghdad.tudee.ui.shared.components.taskDetailsBottomSheet.TaskDetailsBottomSheet
 import com.baghdad.tudee.ui.utils.formatDate
 import com.baghdad.tudee.ui.utils.getCategoryIconPainter
 import com.baghdad.tudee.ui.utils.insideBorder
@@ -353,9 +353,9 @@ fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modi
                                     .padding(bottom = 8.dp)
                                     .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
                                 onClick =
-                                {
-                                    navigateToTaskScreen(Task.State.TODO)
-                                },
+                                    {
+                                        navigateToTaskScreen(Task.State.TODO)
+                                    },
                             )
 
                             LazyRow(
@@ -470,6 +470,7 @@ fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modi
         }
     }
 }
+
 
 @Composable
 private fun TextDateIcon(

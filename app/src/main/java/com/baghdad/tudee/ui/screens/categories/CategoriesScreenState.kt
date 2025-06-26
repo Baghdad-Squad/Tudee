@@ -1,7 +1,7 @@
 package com.baghdad.tudee.ui.screens.categories
 
-import com.baghdad.tudee.ui.composable.bottomSheet.category.AddEditCategorySheetUiState
 import com.baghdad.tudee.ui.model.CategoryUiState
+import com.baghdad.tudee.ui.shared.components.category.AddEditCategorySheetUiState
 
 data class CategoriesScreenState(
     val categories: List<CategoryUiState> = emptyList(),

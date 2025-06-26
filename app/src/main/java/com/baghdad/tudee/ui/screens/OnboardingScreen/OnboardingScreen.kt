@@ -26,11 +26,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
-import com.baghdad.tudee.ui.composable.ProgressBar
-import com.baghdad.tudee.ui.composable.TudeeCard
-import com.baghdad.tudee.ui.composable.button.ButtonDefaults
-import com.baghdad.tudee.ui.composable.button.FloatingActionButton
-import com.baghdad.tudee.ui.composable.button.TextButton
+import com.baghdad.tudee.designSystem.components.ProgressBar
+import com.baghdad.tudee.designSystem.components.button.ButtonDefaults
+import com.baghdad.tudee.designSystem.components.button.FloatingActionButton
+import com.baghdad.tudee.designSystem.components.button.TextButton
+import com.baghdad.tudee.ui.shared.components.TudeeCard
 import kotlinx.coroutines.launch
 
 @Composable

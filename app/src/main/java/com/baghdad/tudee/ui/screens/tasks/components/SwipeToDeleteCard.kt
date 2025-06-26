@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Task
-import com.baghdad.tudee.ui.composable.CategoryTaskCard
+import com.baghdad.tudee.ui.shared.components.CategoryTaskCard
 import kotlin.math.abs
 
 @Composable

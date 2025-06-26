@@ -12,17 +12,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.baghdad.tudee.R
+import com.baghdad.tudee.designSystem.components.AnimatedSnackbar
+import com.baghdad.tudee.designSystem.components.SnackbarState
+import com.baghdad.tudee.designSystem.components.button.FloatingActionButton
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.ui.base.EffectHandler
-import com.baghdad.tudee.ui.composable.AnimatedSnackbar
-import com.baghdad.tudee.ui.composable.SnackbarState
-import com.baghdad.tudee.ui.composable.TudeeScaffold
-import com.baghdad.tudee.ui.composable.bottomSheet.category.AddEditCategoryBottomSheet
-import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.navigation.LocalNavController
 import com.baghdad.tudee.ui.navigation.Route
 import com.baghdad.tudee.ui.screens.categories.component.CategoriesList
 import com.baghdad.tudee.ui.screens.categories.component.CategoriesTopAppBar
+import com.baghdad.tudee.ui.shared.components.TudeeScaffold
+import com.baghdad.tudee.ui.shared.components.category.AddEditCategoryBottomSheet
 import com.baghdad.tudee.ui.utils.image.uriToByteArray
 import org.koin.androidx.compose.koinViewModel
 
@@ -35,7 +35,7 @@ fun CategoriesScreen(
     val navController = LocalNavController.current
     EffectHandler(
         effects = viewModel.effects,
-        onNewEffect  = { effect ->
+        onNewEffect = { effect ->
             onNewEffect(effect, navController)
         }
     )
@@ -51,7 +51,11 @@ private fun onNewEffect(
     navController: NavHostController
 ) {
     when (effect) {
-        is CategoriesScreenEffect.NavigateToCategoryTasks -> navController.navigate(Route.CategoryTasksScreen(effect.categoryId))
+        is CategoriesScreenEffect.NavigateToCategoryTasks -> navController.navigate(
+            Route.CategoryTasksScreen(
+                effect.categoryId
+            )
+        )
     }
 }
 
@@ -64,7 +68,11 @@ private fun CategoriesScreenContent(
     val context = LocalContext.current
     val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            uriToByteArray(context, uri)?.let { interactionListener.onUpdateCategoryImageByteArray(it) }
+            uriToByteArray(context, uri)?.let {
+                interactionListener.onUpdateCategoryImageByteArray(
+                    it
+                )
+            }
         }
     TudeeScaffold(
         modifier = Modifier

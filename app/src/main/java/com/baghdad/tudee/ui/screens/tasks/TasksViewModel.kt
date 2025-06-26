@@ -13,7 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.handleCoroutineException
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
@@ -126,9 +125,14 @@ class TasksViewModel(
     override fun toggleAddEditTaskDialog(initialTaskId: Long?) {
         val initialTask = initialTaskId?.let { taskId ->
             getTaskById(taskId)
-        }?: Task(
+        } ?: Task(
             date = uiState.value.selectedDate ?: LocalDate.now(),
-            id = 0, title = "", description = "", priority = Task.Priority.LOW, categoryId = 0, state = Task.State.TODO
+            id = 0,
+            title = "",
+            description = "",
+            priority = Task.Priority.LOW,
+            categoryId = 0,
+            state = Task.State.TODO
         )
         _uiState.update {
             it.copy(
@@ -148,7 +152,8 @@ class TasksViewModel(
         val taskCategory = _uiState.value.categories.find { it.id == selectedTask?.categoryId }
         _uiState.update {
             it.copy(
-                selectedTaskDetails = selectedTask?.toTaskDetailsState(taskCategory) ?: TaskDetailsState(),
+                selectedTaskDetails = selectedTask?.toTaskDetailsState(taskCategory)
+                    ?: TaskDetailsState(),
                 showTaskDetailsBottomSheet = !_uiState.value.showTaskDetailsBottomSheet
             )
         }
@@ -158,7 +163,7 @@ class TasksViewModel(
         taskId: Long,
         newState: Task.State
     ) {
-        viewModelScope.launch (Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             val updatedTask = getTaskById(taskId)?.copy(state = newState) ?: return@launch
             taskService.editTask(updatedTask)
             toggleTaskDetailsDialog()
@@ -190,7 +195,8 @@ class TasksViewModel(
                 _uiState.update {
                     it.copy(
                         todoTasks = groupedTasksByState[Task.State.TODO] ?: emptyList(),
-                        inProgressTasks = groupedTasksByState[Task.State.IN_PROGRESS] ?: emptyList(),
+                        inProgressTasks = groupedTasksByState[Task.State.IN_PROGRESS]
+                            ?: emptyList(),
                         doneTasks = groupedTasksByState[Task.State.DONE] ?: emptyList()
                     )
                 }
@@ -248,7 +254,7 @@ class TasksViewModel(
 
     override fun onClickSaveTask(task: Task) {
         Log.d("TasksViewModel", "onClickSaveTask: $task")
-        if(task.id != 0L) {
+        if (task.id != 0L) {
             updateTask(task)
         } else {
             createTask(task)
@@ -258,7 +264,7 @@ class TasksViewModel(
     private fun updateTask(task: Task) {
         viewModelScope.launch {
             taskService.editTask(task)
-            loadTasksForDate(uiState.value.selectedDate?: LocalDate.now())
+            loadTasksForDate(uiState.value.selectedDate ?: LocalDate.now())
             _uiState.update {
                 it.copy(showAddNewTask = false)
             }
@@ -268,7 +274,7 @@ class TasksViewModel(
     private fun createTask(task: Task) {
         viewModelScope.launch {
             taskService.createTask(task)
-            loadTasksForDate(uiState.value.selectedDate?: LocalDate.now())
+            loadTasksForDate(uiState.value.selectedDate ?: LocalDate.now())
 
             _uiState.update {
                 it.copy(showAddNewTask = false)

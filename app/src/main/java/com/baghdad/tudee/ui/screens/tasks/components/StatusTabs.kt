@@ -7,12 +7,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.baghdad.tudee.R
+import com.baghdad.tudee.designSystem.components.TabItem
+import com.baghdad.tudee.designSystem.components.Tabs
 import com.baghdad.tudee.domain.entity.Task
-import com.baghdad.tudee.ui.composable.TabItem
-import com.baghdad.tudee.ui.composable.Tabs
-import com.baghdad.tudee.ui.screens.tasks.TasksInteractionListener
 import com.baghdad.tudee.ui.screens.tasks.TasksUiState
-import com.baghdad.tudee.ui.shared.Selectable
+import com.baghdad.tudee.ui.shared.states.Selectable
 
 @Composable
 fun StatusTabs(

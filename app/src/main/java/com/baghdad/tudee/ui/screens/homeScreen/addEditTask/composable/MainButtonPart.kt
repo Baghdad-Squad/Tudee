@@ -10,16 +10,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
+import com.baghdad.tudee.designSystem.components.button.PrimaryButton
+import com.baghdad.tudee.designSystem.components.button.SecondaryButton
 import com.baghdad.tudee.designSystem.theme.Theme
-import com.baghdad.tudee.ui.composable.button.PrimaryButton
-import com.baghdad.tudee.ui.composable.button.SecondaryButton
 
 @Composable
-fun MainButtonPart (isEnable: Boolean, initial: String? = null, onSave: ()-> Unit , onDismiss: ()-> Unit){
+fun MainButtonPart(
+    isEnable: Boolean,
+    initial: String? = null,
+    onSave: () -> Unit,
+    onDismiss: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -30,10 +34,11 @@ fun MainButtonPart (isEnable: Boolean, initial: String? = null, onSave: ()-> Uni
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            val value = if (initial != null) stringResource(R.string.save) else stringResource(R.string.add)
+            val value =
+                if (initial != null) stringResource(R.string.save) else stringResource(R.string.add)
             PrimaryButton(
                 label = value,
-                onClick = {onSave()},
+                onClick = { onSave() },
                 isLoading = false,
                 isEnabled = isEnable,
                 modifier = Modifier

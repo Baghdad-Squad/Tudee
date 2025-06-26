@@ -20,7 +20,7 @@ fun TudeeNavHost(
     navController: NavHostController,
     startDestination: Route,
     modifier: Modifier = Modifier,
-    ) {
+) {
 
     NavHost(
         modifier = modifier,
@@ -28,7 +28,7 @@ fun TudeeNavHost(
         navController = navController
     ) {
         composable<Route.OnboardingScreen> {
-            OnboardingScreen (
+            OnboardingScreen(
                 onNavigateToHome = {
                     navController.navigate(Route.HomeScreen) {
                         popUpTo(Route.OnboardingScreen) {
@@ -44,7 +44,7 @@ fun TudeeNavHost(
                 typeOf<Task.State>() to NavType.EnumType(Task.State::class.java),
             )
 
-        ){ navBackStackEntry ->
+        ) { navBackStackEntry ->
             val state = navBackStackEntry.toRoute<Route.TasksScreen>().taskState
             TasksScreen(
                 initialState = state
@@ -57,11 +57,11 @@ fun TudeeNavHost(
         }
 
         composable<Route.HomeScreen> {
-            HomeScreen(navigateToTaskScreen = {navController.navigate(route = Route.TasksScreen(it))})
+            HomeScreen(navigateToTaskScreen = { navController.navigate(route = Route.TasksScreen(it)) })
         }
 
-        composable<Route.CategoryTasksScreen>{
-             val categoryId = it.toRoute<Route.CategoryTasksScreen>().categoryId
+        composable<Route.CategoryTasksScreen> {
+            val categoryId = it.toRoute<Route.CategoryTasksScreen>().categoryId
             CategoryTasksScreen(
                 categoryId = categoryId,
                 navigateBack = {

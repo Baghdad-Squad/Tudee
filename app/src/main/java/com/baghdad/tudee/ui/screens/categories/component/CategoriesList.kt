@@ -8,8 +8,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.baghdad.tudee.ui.composable.CategoryItem
 import com.baghdad.tudee.ui.model.CategoryUiState
+import com.baghdad.tudee.ui.shared.components.CategoryItem
 import com.baghdad.tudee.ui.utils.getCategoryIconPainter
 import com.baghdad.tudee.ui.utils.getCategoryTitle
 

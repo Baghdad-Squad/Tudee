@@ -1,13 +1,12 @@
 package com.baghdad.tudee.ui.screens.categories
 
-import android.util.Log
 import com.baghdad.tudee.R
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.service.CategoryService
 import com.baghdad.tudee.domain.service.TaskService
 import com.baghdad.tudee.ui.base.BaseViewModel
-import com.baghdad.tudee.ui.composable.bottomSheet.category.toEntity
 import com.baghdad.tudee.ui.model.toUiStates
+import com.baghdad.tudee.ui.shared.components.category.toEntity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
@@ -53,7 +52,7 @@ class CategoriesViewModel(
 
     override fun onAddCategory() {
         tryToExecute<Unit>(
-            function = { categoryService.createCategory(currentState.addCategorySheetState.toEntity())},
+            function = { categoryService.createCategory(currentState.addCategorySheetState.toEntity()) },
             onSuccess = { onAddNewCategorySuccess() },
             onError = ::onAddNewCategoryError
         )
