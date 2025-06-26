@@ -128,16 +128,17 @@ fun SwipeToDeleteCard(
 
         )
         {
-            CategoryTaskCard(
-                title = title,
-                description = description,
-                priorityTask = priorityTask,
-                icon = icon,
-                onClick = onClick,
-                modifier = modifier.graphicsLayer {
-                    scaleX = if (isRtl) 1f else -1f
-                }
-            )
+            Box(Modifier.graphicsLayer {
+                scaleX = if (isRtl) -1f else 1f
+            }) {
+                CategoryTaskCard(
+                    title = title,
+                    description = description,
+                    priorityTask = priorityTask,
+                    icon = icon,
+                    onClick = onClick,
+                )
+            }
         }
     }
 }
