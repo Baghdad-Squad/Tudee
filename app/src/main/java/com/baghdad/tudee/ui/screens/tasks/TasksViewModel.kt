@@ -204,21 +204,30 @@ class TasksViewModel(
     }
 
     private fun loadTasksForDate(selectedDate: LocalDate) {
-        viewModelScope.launch {
-            taskService.getTasksByDate(selectedDate).collect { tasks ->
+        tryToCollect(
+            function = { taskService.getTasksByDate(selectedDate) },
+            onNewValue = { tasks ->
                 val groupedTasksByState = tasks.groupBy { it.state }
                 updateState {
                     it.copy(
-                        it.tasksUiState.copy(
+                        tasksUiState = it.tasksUiState.copy(
                             todoTasks = groupedTasksByState[Task.State.TODO] ?: emptyList(),
                             inProgressTasks = groupedTasksByState[Task.State.IN_PROGRESS]
                                 ?: emptyList(),
-                            doneTasks = groupedTasksByState[Task.State.DONE] ?: emptyList()
+                            doneTasks = groupedTasksByState[Task.State.DONE] ?: emptyList(),
+                            selectedDate = selectedDate
                         )
                     )
                 }
-            }
-        }
+            },
+            onError = ::onLoadTasksForDateError
+        )
+    }
+    private fun onLoadTasksForDateError(error: Throwable) {
+        showSnackbar(
+            messageRes = R.string.an_error_occurred_while_loading_tasks,
+            isSuccess = false
+        )
     }
 
     private fun getCategories() {
@@ -233,10 +242,13 @@ class TasksViewModel(
                     )
                 }
             },
-            onError = { throwable ->
-                Log.e("TasksViewModel", "Error loading categories", throwable)
-                showSnackbar(R.string.tasks, isSuccess = false)
-            }
+            onError = :: onGetCategoriesError
+        )
+    }
+    private fun onGetCategoriesError(error: Throwable) {
+        showSnackbar(
+            messageRes = R.string.an_error_occurred_while_fetching_categories,
+            isSuccess = false
         )
     }
 

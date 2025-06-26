@@ -99,5 +99,6 @@
     <string name="Zero_progress">لا يوجد تقدم؟!</string>
     <string name="an_error_occurred_while_adding_category">حدث خطأ أثناء إضافة الفئة</string>
     <string name="an_error_occurred_while_fetching_categories">حدث خطأ أثناء جلب الفئات</string>
+    <string name="an_error_occurred_while_loading_tasks">حدث خطأ اثناء تحمليل المهام</string>
     <string name="empty_string" />
 </resources>

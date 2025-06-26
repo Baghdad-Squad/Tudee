@@ -23,6 +23,7 @@
     <string name="taskDescription">Solve all exercises from page 45 to 50 in the \ntextbook, Solve all exercises from page 45 to 50 in \nthe textbook.</string>
     <string name="taskTitleExample">Organize Study Desk</string>
     <string name="task_details">Task details</string>
+    <string name="an_error_occurred_while_loading_tasks">an error occurred while loading tasks</string>
     <string name="label">label</string>
     <string name="move_to_in_progress">Move to in progress</string>
     <string name="move_to_done">Move to done</string>
