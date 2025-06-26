@@ -10,7 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Task
 
@@ -31,7 +33,7 @@ fun PriorityChipPart(
             .padding(vertical = 16.dp, horizontal = 16.dp)
     ) {
         Text(
-            text = "Priority",
+            text = stringResource(R.string.priority),
             style = Theme.typography.title.medium.copy(Theme.color.textColor.title)
         )
 
