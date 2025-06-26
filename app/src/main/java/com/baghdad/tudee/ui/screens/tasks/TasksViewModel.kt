@@ -160,16 +160,6 @@ class TasksViewModel(
             toggleTaskDetailsDialog()
         }
     }
-
-    fun onTaskSwipeToDelete(task: Task) {
-        updateState {
-            it.copy(
-                taskToDelete = task,
-                showDeleteSheet = true
-            )
-        }
-    }
-
     override fun onConfirmDelete() {
         currentState.taskToDelete?.let {
             onDeleteTask(it)
@@ -195,19 +185,22 @@ class TasksViewModel(
         tryToCollect(
             function = { taskService.getTasksByDate(selectedDate) },
             onNewValue = { tasks ->
-                val groupedTasksByState = tasks.groupBy { it.state }
-                updateState {
-                    it.copy(
-                        todoTasks = groupedTasksByState[Task.State.TODO] ?: emptyList(),
-                        inProgressTasks = groupedTasksByState[Task.State.IN_PROGRESS]
-                            ?: emptyList(),
-                        doneTasks = groupedTasksByState[Task.State.DONE] ?: emptyList(),
-                        selectedDate = selectedDate
-                    ) // make this should be extracted as a function
-                }
+                updateTasksState(tasks, selectedDate)
             },
             onError = ::onLoadTasksForDateError
         )
+    }
+
+    private fun updateTasksState(tasks: List<Task>, selectedDate: LocalDate) {
+        val groupedTasksByState = tasks.groupBy { it.state }
+        updateState {
+            it.copy(
+                todoTasks = groupedTasksByState[Task.State.TODO] ?: emptyList(),
+                inProgressTasks = groupedTasksByState[Task.State.IN_PROGRESS] ?: emptyList(),
+                doneTasks = groupedTasksByState[Task.State.DONE] ?: emptyList(),
+                selectedDate = selectedDate
+            )
+        }
     }
 
     private fun onLoadTasksForDateError(error: Throwable) {
@@ -313,14 +306,6 @@ class TasksViewModel(
             updateState {
                 it.copy(showAddNewTask = false)
             }
-        }
-    }
-
-    fun setInitialTaskState(taskState: Task.State) {
-        updateState {
-            it.copy(
-                selectedTab = taskState
-            )
         }
     }
 }

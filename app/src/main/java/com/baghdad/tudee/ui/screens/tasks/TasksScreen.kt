@@ -16,16 +16,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Task
-import com.baghdad.tudee.ui.base.EffectHandler
 import com.baghdad.tudee.ui.composable.AnimatedSnackbar
 import com.baghdad.tudee.ui.composable.SnackbarState
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
@@ -33,10 +30,6 @@ import com.baghdad.tudee.ui.composable.TudeeScaffold
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.delete_item.ShowDeleteTaskSheet
 import com.baghdad.tudee.ui.composable.taskDetailsBottomSheet.TaskDetailsBottomSheet
-import com.baghdad.tudee.ui.navigation.LocalNavController
-import com.baghdad.tudee.ui.navigation.Route
-import com.baghdad.tudee.ui.screens.categories.CategoriesScreenEffect
-import com.baghdad.tudee.ui.screens.categories.component.CategoriesTopAppBar
 import com.baghdad.tudee.ui.screens.tasks.components.HorizontalDayChipsSetup
 import com.baghdad.tudee.ui.screens.tasks.components.StatusTabs
 import com.baghdad.tudee.ui.screens.tasks.components.TasksHorizontalPager
