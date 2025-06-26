@@ -106,4 +106,10 @@
     <string name="an_error_occurred_while_updating_the_category">An error occurred while updating the category</string>
     <string name="category_updated_successfully">Category updated successfully</string>
     <string name="tudee">Tudee</string>
+    <string name="storage_is_full">\n</string>
+    <string name="database_is_corrupt">\n</string>
+    <string name="database_exception">\n</string>
+    <string name="unknown_execption" />
+    <string name="task_updated_successfully">Task updated successfully</string>
+    <string name="task_created_successfully">Task created successfully</string>
 </resources>
