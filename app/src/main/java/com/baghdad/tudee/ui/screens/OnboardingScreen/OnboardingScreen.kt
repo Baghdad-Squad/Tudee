@@ -164,7 +164,7 @@ fun SkipButton(
     ) {
         if (pagerState.currentPage < 2) {
             TextButton(
-                label = "Skip",
+                label = stringResource(id = R.string.skip),
                 onClick = onClick,
                 isEnabled = true,
                 contentPadding = PaddingValues(

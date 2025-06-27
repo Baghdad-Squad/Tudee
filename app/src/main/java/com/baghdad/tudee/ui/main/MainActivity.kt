@@ -34,59 +34,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val mainViewModel = koinViewModel<MainViewModel>()
-            val state by mainViewModel.uiState.collectAsStateWithLifecycle()
-            val navController = rememberNavController()
-            CompositionLocalProvider(
-                LocalNavController provides navController
-            ) {
-                TudeeTheme(
-                    isDarkTheme = state.isDarkTheme == true,
-                ) {
-                    AnimatedContent(
-                        targetState = state.isDarkTheme == null || state.isFirstLaunch == null
-                    ) { isLoading ->
-                        if (isLoading) {
-                            SplashScreen()
-                        } else {
-                            AppContent(
-                                isFirstLaunch = state.isFirstLaunch != false,
-                                navController = navController
-                            )
-                        }
-
-                    }
-                }
-            }
-        }
-
+            MainScreen()
     }
-
-    @Composable
-    fun AppContent(
-        isFirstLaunch: Boolean,
-        navController: NavHostController
-    ) {
-        val startDestination = remember(isFirstLaunch) {
-            if (isFirstLaunch) {
-                Route.OnboardingScreen
-            } else {
-                Route.HomeScreen
-            }
-        }
-        Column(
-            modifier = Modifier
-                .background(Theme.color.surfaceColor.surfaceHigh)
-                .navigationBarsPadding()
-                .fillMaxSize()
-        ) {
-            TudeeNavHost(
-                navController = navController,
-                startDestination = startDestination,
-                modifier = Modifier
-                    .weight(1f)
-            )
-            BottomNavigation(navController = navController)
-        }
-    }
+}
 }
