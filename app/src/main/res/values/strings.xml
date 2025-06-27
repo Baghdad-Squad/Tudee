@@ -122,4 +122,5 @@
     <string name="unknown_execption">Unknown error occurred</string>
     <string name="failed_to_update_task">Failed to update task</string>
     <string name="task_not_found">Task not found</string>
+    <string name="skip">Skip</string>
 </resources>

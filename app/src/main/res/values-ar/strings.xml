@@ -110,8 +110,8 @@
     <string name="empty_string" />
     <string name="arrow_icon">سهم الى اليسار</string>
     <string name="task_deleted_successfully">المهمة حذفت بنجاح</string>
-    <string name="edit_task_successfully">تم تعديل التاسك بنجاح</string>
-    <string name="add_task_successfully">تم اضافة التاسك بنجاح</string>
+    <string name="edit_task_successfully">تم تعديل المهمة بنجاح</string>
+    <string name="add_task_successfully">تم اضافة المهمة بنجاح</string>
     <string name="tudee">تادي</string>
     <string name="task_updated_successfully">تم تحديث المهمة بنجاح</string>
     <string name="task_created_successfully">تم انشاء المهمه بنجاح</string>
@@ -123,4 +123,5 @@
     <string name="unknown_execption">حدث خطأ غير معلوم</string>
     <string name="failed_to_update_task">فشل تحديث المهمة</string>
     <string name="task_not_found">لم يتم العثور على المهمة</string>
+    <string name="skip">تخطي</string>
 </resources>
