@@ -18,11 +18,9 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import kotlinx.datetime.LocalDate
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
@@ -43,7 +41,6 @@ class CategoriesViewModelTest {
         taskService = mockk()
         viewModel = CategoriesViewModel(categoryService, taskService)
     }
-
 
 
     @Test
