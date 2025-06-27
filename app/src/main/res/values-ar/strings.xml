@@ -110,4 +110,7 @@
 
     <string name="empty_string" />
     <string name="arrow_icon">سهم الى اليسار</string>
+    <string name="task_deleted_successfully">المهمة حذفت بنجاح</string>
+    <string name="edit_task_successfully">تم تعديل التاسك بنجاح</string>
+    <string name="add_task_successfully">تم اضافة التاسك بنجاح</string>
 </resources>
