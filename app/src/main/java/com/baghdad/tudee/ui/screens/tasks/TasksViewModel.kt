@@ -157,8 +157,7 @@ class TasksViewModel(
         newState: Task.State
     ) {
         tryToExecute(
-            function = { val updatedTask = getTaskById(taskId)?.copy(state = newState)
-                    ?: throw IllegalArgumentException("Task not found")
+            function = { val updatedTask = getTaskById(taskId)!!.copy(state = newState)
                 taskService.editTask(updatedTask)
             },
             onSuccess = {
@@ -187,6 +186,10 @@ class TasksViewModel(
                 loadTasksForDate(currentState.selectedDate ?: LocalDate.now())
             },
             onError = ::onClickSaveTaskError,
+        )
+        showSnackbar(
+            messageRes = R.string.task_deleted_successfully,
+            isSuccess = true
         )
     }
 
@@ -289,9 +292,18 @@ class TasksViewModel(
         try {
             if (task.id != 0L) {
                 updateTask(task)
+                showSnackbar(
+                    messageRes = R.string.edit_task_successfully,
+                    isSuccess = true
+                )
             } else {
                 createTask(task)
+                showSnackbar(
+                    messageRes = R.string.add_task_successfully,
+                    isSuccess = true
+                )
             }
+
         } catch (e: Throwable) {
             onClickSaveTaskError(e)
         }

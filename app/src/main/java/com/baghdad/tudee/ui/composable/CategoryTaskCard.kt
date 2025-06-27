@@ -82,7 +82,8 @@ fun CategoryTaskCard(
                                 painter = painterResource(id = R.drawable.calendar_favorite_01),
                                 contentDescription = stringResource(
                                     R.string.calendar_favorite
-                                )
+                                ),
+                                tint = Theme.color.textColor.body
                             )
                             Text(
                                 text = date,
