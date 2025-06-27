@@ -1,16 +1,22 @@
 package com.baghdad.tudee.ui.screens.categories
 
+import com.baghdad.tudee.R
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.domain.service.CategoryService
 import com.baghdad.tudee.domain.service.TaskService
+import com.baghdad.tudee.viewModel.utils.waitUntilCategoriesLoaded
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -26,22 +32,19 @@ class CategoriesViewModelTest {
     private lateinit var taskService: TaskService
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val testDispatcher = UnconfinedTestDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setup() {
-        Dispatchers.setMain(testDispatcher)
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+
         categoryService = mockk()
         taskService = mockk()
         viewModel = CategoriesViewModel(categoryService, taskService)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-    }
+
 
     @Test
     fun `getCategories should update state with categories`() = runTest {
@@ -57,7 +60,7 @@ class CategoriesViewModelTest {
         // When
         viewModel = CategoriesViewModel(categoryService, taskService)
         viewModel.getCategories()
-        waitUntilCategoriesLoaded(expectedSize = categories.size)
+        waitUntilCategoriesLoaded(expectedSize = categories.size, viewModel = viewModel)
 
         // Then
         assertEquals(categories.size, viewModel.state.value.categories.size)
@@ -78,7 +81,7 @@ class CategoriesViewModelTest {
         // When
 
         viewModel.getCategories()
-        waitUntilCategoriesLoaded(expectedSize = categories.size)
+        waitUntilCategoriesLoaded(expectedSize = categories.size, viewModel = viewModel)
 
 
         // Then
@@ -86,15 +89,6 @@ class CategoriesViewModelTest {
         assertEquals(0, viewModel.state.value.categories.first().taskCount)
         assertEquals(0, viewModel.state.value.categories.last().taskCount)
 
-    }
-
-    suspend fun waitUntilCategoriesLoaded(expectedSize: Int, timeoutMs: Long = 3000) {
-        val start = System.currentTimeMillis()
-        while (System.currentTimeMillis() - start < timeoutMs) {
-            if (viewModel.state.value.categories.size == expectedSize) return
-            delay(50)
-        }
-        throw AssertionError("Timed out waiting for categories. Current: ${viewModel.state.value.categories}")
     }
 
     @Test
@@ -125,7 +119,7 @@ class CategoriesViewModelTest {
             )
             viewModel = CategoriesViewModel(categoryService, taskService)
             viewModel.getCategories()
-            waitUntilCategoriesLoaded(expectedSize = categories.size)
+            waitUntilCategoriesLoaded(expectedSize = categories.size, viewModel = viewModel)
             println(viewModel.state.value.categories)
 
             // Then
@@ -211,4 +205,102 @@ class CategoriesViewModelTest {
     }
 
 
+    @Test
+    fun `onAddCategory when categoryService createCategory succeeds should call onAddNewCategorySuccess`() =
+        runTest {
+            // Given
+            coEvery {
+                categoryService.createCategory(any())
+            } returns Unit
+
+            // When
+            viewModel.onAddCategory()
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            // Then
+            coVerify(exactly = 1) {
+                categoryService.createCategory(any())
+            }
+
+            val snackbarState = viewModel.snackbarState.value
+            assertEquals(R.string.added_category_successfully, snackbarState.messageRes)
+            assertTrue(snackbarState.isSuccess)
+            assertTrue(snackbarState.isVisible)
+        }
+
+    @Test
+    fun `onAddCategory when categoryService createCategory fails should call onAddNewCategoryError`() =
+        runTest {
+            // Given
+            val expectedException = RuntimeException("Network error")
+            coEvery {
+                categoryService.createCategory(any())
+            } throws expectedException
+
+            // When
+            viewModel.onAddCategory()
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            // Then
+            coVerify(exactly = 1) {
+                categoryService.createCategory(any())
+            }
+
+            val snackbarState = viewModel.snackbarState.value
+            assertEquals(R.string.an_error_occurred_while_adding_category, snackbarState.messageRes)
+            assertFalse(snackbarState.isSuccess)
+            assertTrue(snackbarState.isVisible)
+        }
+
+    @Test
+    fun `onCategoryClicked should NavigateToCategoryTasks effect`() = runTest {
+        // Given
+        val categoryId = 123L
+        val collectedEffects = mutableListOf<CategoriesScreenEffect>()
+
+        val collectJob = launch(UnconfinedTestDispatcher()) {
+            viewModel.effects.collect { effect ->
+                collectedEffects.add(effect)
+            }
+        }
+
+        // When
+        viewModel.onCategoryClicked(categoryId)
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        // Then
+        assertEquals(1, collectedEffects.size)
+        val effect = collectedEffects.first()
+        assertTrue(effect is CategoriesScreenEffect.NavigateToCategoryTasks)
+        assertEquals(
+            categoryId,
+            (effect as CategoriesScreenEffect.NavigateToCategoryTasks).categoryId
+        )
+
+        collectJob.cancel()
+    }
+
+    @Test
+    fun `onCategoryClicked when categoryId is null should not emit any effect`() = runTest {
+        // Given
+        val categoryId: Long? = null
+        val collectedEffects = mutableListOf<CategoriesScreenEffect>()
+
+        // Start collecting effects
+        val collectJob = launch(UnconfinedTestDispatcher()) {
+            viewModel.effects.collect { effect ->
+                collectedEffects.add(effect)
+            }
+        }
+
+        // When
+        viewModel.onCategoryClicked(categoryId)
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        // Then
+        assertEquals(0, collectedEffects.size)
+
+        collectJob.cancel()
+    }
 }
+
