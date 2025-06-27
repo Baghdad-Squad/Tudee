@@ -14,7 +14,6 @@ import com.baghdad.tudee.ui.screens.homeScreen.HomeScreenUIState
 import com.baghdad.tudee.ui.screens.homeScreen.SliderState
 import com.baghdad.tudee.ui.screens.homeScreen.TaskDetailsState
 import com.baghdad.tudee.ui.screens.homeScreen.toTask
-import com.baghdad.tudee.ui.screens.tasks.AddEditTaskInteractionListener
 import com.baghdad.tudee.ui.utils.now
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -25,8 +24,7 @@ class HomeScreenViewModel(
     private val appConfigurationService: AppConfigurationService,
     private val taskService: TaskService,
     private val categoryService: CategoryService,
-) : HomeScreenInteraction, BaseViewModel<HomeScreenUIState, HomeScreenEffect>(HomeScreenUIState()),
-    AddEditTaskInteractionListener {
+) : HomeScreenInteraction, BaseViewModel<HomeScreenUIState, HomeScreenEffect>(HomeScreenUIState()){
 
     init {
         getTasks()
@@ -66,7 +64,7 @@ class HomeScreenViewModel(
         }
     }
 
-    override fun onClickSaveTask(task: Task) {
+     fun onClickSaveTask(task: Task) {
         if (task.id != 0L) {
             updateTask(task)
         } else {

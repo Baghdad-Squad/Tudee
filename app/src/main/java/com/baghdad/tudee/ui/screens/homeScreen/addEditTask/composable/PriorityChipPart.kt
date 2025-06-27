@@ -21,11 +21,6 @@ fun PriorityChipPart(
     selectedPriority: Task.Priority?,
     onPrioritySelected: (Task.Priority) -> Unit
 ) {
-    val priorities = listOf(
-        Task.Priority.HIGH,
-        Task.Priority.MEDIUM,
-        Task.Priority.LOW
-    )
 
     Column(
         modifier = Modifier
@@ -41,7 +36,7 @@ fun PriorityChipPart(
             modifier = Modifier.padding(top = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            priorities.forEach { priority ->
+            Task.Priority.entries.forEach { priority ->
                 val isSelected = selectedPriority == priority
                 key(priority) {
                     TaskPriority(

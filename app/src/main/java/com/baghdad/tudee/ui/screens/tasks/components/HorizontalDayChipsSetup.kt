@@ -12,11 +12,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.ui.composable.DayChip
 import com.baghdad.tudee.ui.composable.dateYearDialog.DateDialog
 import com.baghdad.tudee.ui.screens.tasks.TasksInteractionListener
-import com.baghdad.tudee.ui.screens.tasks.TasksUiState
+import com.baghdad.tudee.ui.screens.tasks.TasksScreenState
 import com.baghdad.tudee.ui.utils.getLocalizedDateParts
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
@@ -42,7 +40,7 @@ import java.util.Locale
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun HorizontalDayChipsSetup(
-    uiState: TasksUiState,
+    uiState: TasksScreenState,
     tasksInteractionListener: TasksInteractionListener,
     modifier: Modifier = Modifier
 ) {
