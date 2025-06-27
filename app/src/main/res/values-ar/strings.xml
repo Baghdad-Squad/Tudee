@@ -116,4 +116,11 @@
     <string name="task_updated_successfully">تم تحديث المهمة بنجاح</string>
     <string name="task_created_successfully">تم انشاء المهمه بنجاح</string>
     <string name="no_tasks_in_category_template">لم يتم اضافة مهام في فئة %1$s</string>
+    <string name="database_error">حدث خطأ في قاعدة البيانات</string>
+    <string name="storage_is_full">ذاكرة التخزين ممتلئة</string>
+    <string name="database_is_corrupt">حدث عطب في قاعدة البيانات</string>
+    <string name="database_exception">حدث خطأ في قاعدة البيانات</string>
+    <string name="unknown_execption">حدث خطأ غير معلوم</string>
+    <string name="failed_to_update_task">فشل تحديث المهمة</string>
+    <string name="task_not_found">لم يتم العثور على المهمة</string>
 </resources>
