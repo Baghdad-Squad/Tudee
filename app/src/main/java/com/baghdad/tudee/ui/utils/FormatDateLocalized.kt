@@ -3,8 +3,7 @@ package com.baghdad.tudee.ui.utils
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import java.util.Locale
-
-fun formatDateLocalized(date: LocalDate): String {
+fun getLocalizedDateParts(date: LocalDate): Triple<String, String, String> {
     val locale = Locale.getDefault()
 
     val day = date.dayOfMonth
@@ -19,6 +18,9 @@ fun formatDateLocalized(date: LocalDate): String {
     fun convertToArabicNumbers(input: Int): String {
         return input.toString().map { arabicNumbers[it] ?: it }.joinToString("")
     }
+
+    val dayStr = if (locale.language == "ar") convertToArabicNumbers(day) else day.toString()
+    val yearStr = if (locale.language == "ar") convertToArabicNumbers(year) else year.toString()
 
     val monthName = when (locale.language) {
         "ar" -> when (month) {
@@ -38,9 +40,10 @@ fun formatDateLocalized(date: LocalDate): String {
         else -> month.name.lowercase().replaceFirstChar { it.uppercase() }
     }
 
-    return if (locale.language == "ar") {
-        "${convertToArabicNumbers(day)} $monthName ${convertToArabicNumbers(year)}"
-    } else {
-        "$day $monthName $year"
-    }
+    return Triple(dayStr, monthName, yearStr)
+}
+
+fun formatDateLocalized(date: LocalDate): String {
+    val (dayStr, monthName, yearStr) = getLocalizedDateParts(date)
+    return "$dayStr $monthName $yearStr"
 }

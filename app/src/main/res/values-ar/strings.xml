@@ -107,10 +107,13 @@
     <string name="an_error_occured_while_deleting_the_category">تعذَّر حذف الفئة</string>
     <string name="an_error_occurred_while_updating_the_category">تعذَّر تحديث بيانات الفئة</string>
     <string name="category_updated_successfully">تم تحديث الفئة بنجاح</string>
+    <string name="skip">تخطي</string>
+
 
     <string name="empty_string" />
     <string name="arrow_icon">سهم الى اليسار</string>
     <string name="task_deleted_successfully">المهمة حذفت بنجاح</string>
     <string name="edit_task_successfully">تم تعديل التاسك بنجاح</string>
     <string name="add_task_successfully">تم اضافة التاسك بنجاح</string>
+    <string name="formatted_date">%1$s %2$s %3$s</string>
 </resources>
