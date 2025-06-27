@@ -16,7 +16,7 @@ import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
-class TasksViewModel(
+open class TasksViewModel(
     private val taskService: TaskService,
     private val categoryService: CategoryService
 ) : BaseViewModel<TasksScreenState, Unit>(TasksScreenState()),

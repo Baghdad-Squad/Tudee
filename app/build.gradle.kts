@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.bundles.koin)
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.room)
+    implementation(libs.litert.support.api)
     ksp(libs.bundles.room)
     implementation(libs.bundles.coil)
     implementation(libs.bundles.navigation)

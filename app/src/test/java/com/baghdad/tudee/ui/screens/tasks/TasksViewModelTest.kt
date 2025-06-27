@@ -1,6 +1,17 @@
 package com.baghdad.tudee.ui.screens.tasks
 
-import com.baghdad.tudee.data.service.errorHandling.TestDummyData.Companion.sampleTask
+import com.baghdad.tudee.TestDummyData.Companion.day
+import com.baghdad.tudee.TestDummyData.Companion.day10
+import com.baghdad.tudee.TestDummyData.Companion.day5
+import com.baghdad.tudee.TestDummyData.Companion.dayOfMonth
+import com.baghdad.tudee.TestDummyData.Companion.expectedDaysInFeb
+import com.baghdad.tudee.TestDummyData.Companion.expectedDaysInMonth
+import com.baghdad.tudee.TestDummyData.Companion.id
+import com.baghdad.tudee.TestDummyData.Companion.month
+import com.baghdad.tudee.TestDummyData.Companion.month2
+import com.baghdad.tudee.TestDummyData.Companion.sampleCategory
+import com.baghdad.tudee.TestDummyData.Companion.sampleTask
+import com.baghdad.tudee.TestDummyData.Companion.year
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.domain.service.CategoryService
 import com.baghdad.tudee.domain.service.TaskService
@@ -9,131 +20,149 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.just
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertNotNull
+import junit.framework.TestCase.assertNull
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
-import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
-@ExperimentalCoroutinesApi
 class TasksViewModelTest {
 
-    private val taskService: TaskService = mockk(relaxed = true)
-    private val categoryService: CategoryService = mockk(relaxed = true)
-    private lateinit var viewModel: TasksViewModel
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
-    private val testDispatcher = StandardTestDispatcher()
-    private val testScope = TestScope(testDispatcher)
+    private val taskService = mockk<TaskService>(relaxed = true)
+    private val categoryService = mockk<CategoryService>(relaxed = true)
+
+    private lateinit var viewModel: TasksViewModel
 
 
     @Before
     fun setup() {
-        Dispatchers.setMain(testDispatcher)
-
         coEvery { taskService.getTasksByDate(any()) } returns flowOf(listOf(sampleTask))
-        coEvery { categoryService.getCategories() } returns flowOf(emptyList())
-
-        viewModel = TasksViewModel(taskService, categoryService)
-        testScope.advanceUntilIdle()
+        coEvery { categoryService.getCategories() } returns flowOf(listOf(sampleCategory))
+        viewModel = object : TasksViewModel(taskService, categoryService) {}
     }
 
     @Test
-    fun `onTabSelected updates selectedTab`() = testScope.runTest {
+    fun `loads initial tasks and categories on init`() = runTest {
+        assertEquals(listOf(sampleTask), viewModel.state.value.todoTasks)
+        assertEquals(listOf(sampleCategory), viewModel.state.value.categories)
+    }
+
+    @Test
+    fun `onTabSelected updates selectedTab`() {
         viewModel.onTabSelected(Task.State.DONE)
-        assertEquals(Task.State.DONE, viewModel.uiState.value.selectedTab)
+        assertEquals(Task.State.DONE, viewModel.state.value.selectedTab)
     }
 
     @Test
-    fun `onDateSelectedFromHorizontalRow updates selectedDate and loads tasks`() = testScope.runTest {
-        val date = LocalDate(2024, 6, 15)
+    fun `onDateSelectedFromHorizontalRow updates selectedDate and reloads tasks`() = runTest {
+        val date = LocalDate(year, month, day)
+        coEvery { taskService.getTasksByDate(date) } returns flowOf(listOf(sampleTask))
         viewModel.onDateSelectedFromHorizontalRow(date)
-        assertEquals(date, viewModel.uiState.value.selectedDate)
-        assertEquals(listOf(sampleTask), viewModel.uiState.value.todoTasks)
+        assertEquals(date, viewModel.state.value.selectedDate)
     }
 
     @Test
-    fun `onDatePickedFromDateDialog updates UI state correctly`() = testScope.runTest {
-        val date = LocalDate(2024, 5, 1)
-        viewModel.onDatePickedFromDateDialog(date)
-        assertEquals(date, viewModel.uiState.value.selectedDate)
-        assertEquals(date.month, viewModel.uiState.value.currentMonth)
-        assertEquals(date.year, viewModel.uiState.value.currentYear)
-    }
-
-    @Test
-    fun `onPreviousMonthArrowClick updates to previous month`() = testScope.runTest {
-        val currentMonth = viewModel.uiState.value.currentMonth
-        viewModel.onPreviousMonthArrowClick()
-        val expectedMonth = if (currentMonth == Month.JANUARY) Month.DECEMBER else Month.entries[currentMonth.ordinal - 1]
-        assertEquals(expectedMonth, viewModel.uiState.value.currentMonth)
-    }
-
-    @Test
-    fun `onNextMonthArrowClick updates to next month`() = testScope.runTest {
-        val currentMonth = viewModel.uiState.value.currentMonth
-        viewModel.onNextMonthArrowClick()
-        val expectedMonth = if (currentMonth == Month.DECEMBER) Month.JANUARY else Month.entries[currentMonth.ordinal + 1]
-        assertEquals(expectedMonth, viewModel.uiState.value.currentMonth)
-    }
-
-    @Test
-    fun `toggleAddEditTaskDialog creates new task if id null`() = testScope.runTest {
-        viewModel.toggleAddEditTaskDialog(null)
-        assertTrue(viewModel.uiState.value.showAddNewTask)
-        assertEquals("", viewModel.uiState.value.initialTask?.title)
-    }
-
-    @Test
-    fun `onTaskSwipeToDelete sets taskToDelete and shows sheet`() = testScope.runTest {
-        viewModel.onTaskSwipeToDelete(sampleTask)
-        assertEquals(sampleTask, viewModel.taskToDelete.value)
-        assertTrue(viewModel.showDeleteSheet.value)
-    }
-
-    @Test
-    fun `cancelDelete clears taskToDelete and hides sheet`() = testScope.runTest {
-        viewModel.onTaskSwipeToDelete(sampleTask)
-        viewModel.cancelDelete()
-        assertNull(viewModel.taskToDelete.value)
-        assertFalse(viewModel.showDeleteSheet.value)
-    }
-
-    @Test
-    fun `loadTasksForDate should update UI state with grouped tasks`() = testScope.runTest {
-        val date = LocalDate.parse("2024-06-26")
-        viewModel.onDateSelectedFromHorizontalRow(date)
-        advanceUntilIdle()
-
-        val state = viewModel.uiState.value
-        assertEquals(1, state.todoTasks.size)
-        assertEquals("Test Task", state.todoTasks.first().title)
-    }
-
-
-    @Test
-    fun `onTabSelected should update selected tab in UI state`() = testScope.runTest {
-        viewModel.onTabSelected(Task.State.DONE)
-
-        val state = viewModel.uiState.value
-        assertEquals(Task.State.DONE, state.selectedTab)
-    }
-
-    @Test
-    fun `onDeleteTask should call taskService delete`() = testScope.runTest {
-        coEvery { taskService.deleteTask(sampleTask.id) } just Runs
-
+    fun `onDeleteTask sets taskToDelete and shows delete sheet`() {
         viewModel.onDeleteTask(sampleTask)
-        advanceUntilIdle()
-
-        coVerify { taskService.deleteTask(sampleTask.id) }
+        assertEquals(sampleTask, viewModel.state.value.taskToDelete)
+        assertTrue(viewModel.state.value.showDeleteSheet)
     }
+
+    @Test
+    fun `onConfirmDelete deletes task and hides delete sheet`() = runTest {
+        viewModel.updateState {
+            it.copy(taskToDelete = sampleTask, showDeleteSheet = true)
+        }
+        coEvery { taskService.deleteTask(sampleTask.id) } just Runs
+        viewModel.onConfirmDelete()
+        coVerify { taskService.deleteTask(sampleTask.id) }
+        assertNull(viewModel.state.value.taskToDelete)
+        assertFalse(viewModel.state.value.showDeleteSheet)
+    }
+
+    @Test
+    fun `onClickSaveTask updates existing task`() = runTest {
+        coEvery { taskService.editTask(any()) } just Runs
+        viewModel.onClickSaveTask(sampleTask)
+        coVerify { taskService.editTask(sampleTask) }
+    }
+
+    @Test
+    fun `onClickSaveTask creates new task if id is 0`() = runTest {
+        val newTask = sampleTask.copy(id)
+        coEvery { taskService.createTask(newTask) } just Runs
+        viewModel.onClickSaveTask(newTask)
+        coVerify { taskService.createTask(newTask) }
+    }
+
+    @Test
+    fun `toggleAddEditTaskDialog creates new empty task if id is null`() {
+        viewModel.toggleAddEditTaskDialog(null)
+        val task = viewModel.state.value.initialTask
+        assertNotNull(task)
+        assertEquals(id, task!!.id)
+    }
+
+    @Test
+    fun `updateTaskState changes task state and reloads`(): Unit = runTest {
+        val updated = sampleTask.copy(state = Task.State.DONE)
+        viewModel.updateState { it.copy(todoTasks = listOf(sampleTask)) }
+        coEvery { taskService.editTask(updated) } just Runs
+        viewModel.updateTaskState(sampleTask.id, Task.State.DONE)
+        coVerify { taskService.editTask(updated) }
+    }
+
+    @Test
+    fun `onDatePickedFromDateDialog updates date, month, year, and loads tasks`() = runTest {
+
+        val selectedDate = LocalDate(year, month, day5)
+        coEvery { taskService.getTasksByDate(selectedDate) } returns flowOf(listOf(sampleTask))
+
+        viewModel.onDatePickedFromDateDialog(selectedDate)
+
+        val state = viewModel.state.value
+        assertEquals(selectedDate, state.selectedDate)
+        assertEquals(selectedDate.year, state.currentYear)
+        assertEquals(selectedDate.month, state.currentMonth)
+
+        val expectedDaysInMonth = expectedDaysInMonth
+        assertEquals(expectedDaysInMonth, state.monthDates.size)
+        assertTrue(state.monthDates.contains(LocalDate(year, month, day)))
+        assertTrue(state.monthDates.contains(LocalDate(year, month, expectedDaysInMonth)))
+
+        assertEquals(listOf(sampleTask), state.todoTasks)
+    }
+
+    @Test
+    fun `onDatePickedFromDateDialog should update date state and load tasks`() = runTest {
+
+        val selectedDate = LocalDate(year, month2, day10)
+        val expectedDaysInFeb = expectedDaysInFeb
+        coEvery { taskService.getTasksByDate(selectedDate) } returns flowOf(listOf(sampleTask))
+
+        viewModel.onDatePickedFromDateDialog(selectedDate)
+
+        val state = viewModel.state.value
+
+        assertEquals(selectedDate, state.selectedDate)
+        assertEquals(year, state.currentYear)
+        assertEquals(Month.FEBRUARY, state.currentMonth)
+        assertEquals(expectedDaysInFeb, state.monthDates.size)
+        assertEquals(LocalDate(year, month2, dayOfMonth), state.monthDates.first())
+        assertEquals(LocalDate(year, month2, expectedDaysInFeb), state.monthDates.last())
+
+        assertEquals(listOf(sampleTask), state.todoTasks)
+    }
+
 
 }

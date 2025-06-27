@@ -1,7 +1,8 @@
-package com.baghdad.tudee.data.service.errorHandling
+package com.baghdad.tudee
 
 import com.baghdad.tudee.data.mapper.toEntity
 import com.baghdad.tudee.data.model.TaskDto
+import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
 import kotlinx.datetime.LocalDate
 class TestDummyData() {
@@ -15,6 +16,16 @@ class TestDummyData() {
         val priorty = "LOW"
         val taskID = 1L
         val dbErrorTask = "DB error"
+        val year = 2025
+        val day = 7
+        val month = 1
+        val id  = 0L
+        val expectedDaysInMonth = 31
+        val day5 =5
+        val month2 =2
+        val day10 = 10
+        val dayOfMonth = 1
+        val expectedDaysInFeb  = 28
 
 
 
@@ -65,6 +76,11 @@ class TestDummyData() {
             priority = Task.Priority.LOW,
             categoryId = 10,
             state = Task.State.TODO
+        )
+        val sampleCategory = Category(
+            id = 10,
+            title = "Work",
+            image = Category.Image.Predefined(Category.PredefinedType.WORK)
         )
 
     }
