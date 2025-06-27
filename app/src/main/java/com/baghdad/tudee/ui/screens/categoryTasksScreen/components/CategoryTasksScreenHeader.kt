@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,8 +19,10 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.ui.model.toUiState
 import com.baghdad.tudee.ui.screens.categoryTasksScreen.CategoriesTasksInteractionListener
 import com.baghdad.tudee.ui.screens.categoryTasksScreen.CategoryTasksScreenUiState
+import com.baghdad.tudee.ui.utils.getCategoryTitle
 
 
 @Composable
@@ -34,11 +37,10 @@ fun CategoryTasksScreenHeader(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .statusBarsPadding()
             .padding(
-                top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding(),
-                start = 16.dp,
-                end = 16.dp,
-                bottom = 12.dp
+                vertical = 12.dp,
+                horizontal = 16.dp
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -50,7 +52,7 @@ fun CategoryTasksScreenHeader(
                 scaleX = if (isRtl) -1f else 1f
             })
         Text(
-            text = state.category.title,
+            text = getCategoryTitle(state.category.toUiState()),
             style = Theme.typography.title.large,
             color = Theme.color.textColor.title,
             modifier = Modifier.padding(end = 16.dp)

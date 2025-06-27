@@ -56,6 +56,7 @@ fun DayNightSwitch(
                 shape = RoundedCornerShape(100.dp)
             )
             .background(color = animateBackgroundColor)
+            .noRippleClickable(onClick)
     ) {
         Box(
             modifier = Modifier
@@ -79,7 +80,6 @@ fun DayNightSwitch(
                             .size(32.dp)
                             .align(Alignment.CenterStart)
                             .clip(CircleShape)
-                            .noRippleClickable(onClick = onClick)
                     )
                 }
             }
@@ -101,7 +101,6 @@ fun DayNightSwitch(
                             .size(32.dp)
                             .align(Alignment.CenterEnd)
                             .clip(CircleShape)
-                            .noRippleClickable(onClick = onClick)
                     )
                 }
             }

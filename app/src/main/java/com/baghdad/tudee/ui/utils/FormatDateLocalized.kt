@@ -7,6 +7,7 @@ import java.util.Locale
 
 fun getLocalizedNumber(number: Number): String {
     val formatter = NumberFormat.getInstance(Locale.getDefault())
+    formatter.isGroupingUsed = false
     return formatter.format(number)
 }
 

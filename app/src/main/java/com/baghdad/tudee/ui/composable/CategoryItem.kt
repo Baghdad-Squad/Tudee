@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
+import com.baghdad.tudee.ui.utils.getLocalizedNumber
 import com.baghdad.tudee.ui.utils.noRippleClickable
 
 @Composable
@@ -107,7 +108,7 @@ fun CategoryItem(
                                 .align(Alignment.TopEnd)
                         ) {
                             BasicText(
-                                text = if (count in 0..99) count.toString() else "+99",
+                                text = if (count in 0..99) getLocalizedNumber(count?:0) else "+99",
                                 modifier = Modifier.align(Alignment.Center),
                                 style = Theme.typography.label.small.copy(
                                     color = Theme.color.textColor.hint

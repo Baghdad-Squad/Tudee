@@ -19,8 +19,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.baghdad.tudee.R
@@ -28,6 +31,7 @@ import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.Theme.color
 import com.baghdad.tudee.ui.screens.homeScreen.HomeScreenUIState
 import com.baghdad.tudee.ui.screens.homeScreen.TaskState
+import com.baghdad.tudee.ui.utils.getLocalizedNumber
 import com.baghdad.tudee.ui.utils.insideBorder
 
 @Composable
@@ -39,7 +43,10 @@ fun OverviewCards(
     val yellowAccent = color.status.yellowAccent
     val greenAccent = color.status.greenAccent
 
-    val overViews = remember {
+    val layoutDirection = LocalLayoutDirection.current
+    val isRtl = layoutDirection == LayoutDirection.Rtl
+
+    val overViews = remember(state.todoTasks, state.inProgressTasks, state.doneTasks) {
         listOf(
             OverViewCard(TaskState.TODO, purpleAccent, state.todoTasks.size),
             OverViewCard(
@@ -53,7 +60,7 @@ fun OverviewCards(
 
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -66,12 +73,11 @@ fun OverviewCards(
                 modifier = Modifier
                     .weight(1f)
                     .zIndex(999f)
-                    .height(112.dp)
                     .width(96.dp)
-                    .background(it.background, shape = RoundedCornerShape(20.dp))
+                    .background(it.background, shape = RoundedCornerShape(20.dp)),
             ) {
                 Column(
-                    modifier
+                    Modifier
                         .padding(12.dp)
                         .background(Color.Transparent, shape = RoundedCornerShape(20.dp))
                 ) {
@@ -92,7 +98,8 @@ fun OverviewCards(
                         )
                     }
                     Text(
-                        text = it.count.toString(),
+                        modifier = Modifier.padding(top = 4.dp),
+                        text = getLocalizedNumber(it.count),
                         style = Theme.typography.headline.medium,
                         color = color.textColor.onPrimary,
                     )
@@ -110,7 +117,10 @@ fun OverviewCards(
                     contentDescription = stringResource(R.string.Overview_Card_Background),
                     modifier = Modifier
                         .clip(RoundedCornerShape(topEnd = 20.dp))
-                        .align(Alignment.TopEnd),
+                        .align(Alignment.TopEnd)
+                        .graphicsLayer{
+                            scaleX = if(isRtl) -1f else 1f
+                        },
                     tint = Color.Unspecified
                 )
 

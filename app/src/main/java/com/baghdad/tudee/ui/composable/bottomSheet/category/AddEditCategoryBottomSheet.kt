@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -44,62 +45,67 @@ fun AddEditCategoryBottomSheet(
             }
         }
 
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp)
-                .background(color = Theme.color.surfaceColor.surface)
         ) {
-            Row(
-                modifier = Modifier.padding(bottom = 12.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(titleStringResource),
-                    style = Theme.typography.title.large,
-                    color = Theme.color.textColor.title,
-                    modifier = Modifier.weight(1f)
-                )
+            item {
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .background(color = Theme.color.surfaceColor.surface)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(bottom = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(titleStringResource),
+                            style = Theme.typography.title.large,
+                            color = Theme.color.textColor.title,
+                            modifier = Modifier.weight(1f)
+                        )
 
-                if (state.isEditing) {
-                    NegativeTextButton(
-                        label = stringResource(R.string.delete),
-                        onClick = { onDeleteClick?.invoke() }
+                        if (state.isEditing) {
+                            NegativeTextButton(
+                                label = stringResource(R.string.delete),
+                                onClick = { onDeleteClick?.invoke() }
+                            )
+                        }
+                    }
+
+                    TudeeTextField(
+                        value = state.categoryTitle,
+                        hint = stringResource(R.string.category_title),
+                        onValueChange = onCategoryTitleChanged,
+                        leadingIcon = painterResource(id = R.drawable.ic_menu_circle),
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+
+                    Text(
+                        text = stringResource(R.string.category_image),
+                        style = Theme.typography.title.large,
+                        color = Theme.color.textColor.title
+                    )
+
+                    UploadedImageBox(
+                        isImageUploaded = state.isCategoryImageUploaded,
+                        onUploadImageClicked = onUploadIconClicked,
+                        image = state.categoryImageByteArray?.let { byteArray ->
+                            getCategoryIconPainter(Category.Image.ByteArray(byteArray))
+                        },
+                        modifier = Modifier.padding(top = 8.dp, bottom = 24.dp)
                     )
                 }
+
+                ConfirmationButtonContainer(
+                    isEnabled = state.isActionButtonEnabled,
+                    onActionClick = onSaveClick,
+                    onCancelClick = onDismiss,
+                    actionLabel = stringResource(actionStringResource),
+                    isLoading = state.isLoading
+                )
             }
-
-            TudeeTextField(
-                value = state.categoryTitle,
-                hint = stringResource(R.string.category_title),
-                onValueChange = onCategoryTitleChanged,
-                leadingIcon = painterResource(id = R.drawable.ic_menu_circle),
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
-
-            Text(
-                text = stringResource(R.string.category_image),
-                style = Theme.typography.title.large,
-                color = Theme.color.textColor.title
-            )
-
-            UploadedImageBox(
-                isImageUploaded = state.isCategoryImageUploaded,
-                onUploadImageClicked = onUploadIconClicked,
-                image = state.categoryImageByteArray?.let { byteArray ->
-                    getCategoryIconPainter(Category.Image.ByteArray(byteArray))
-                },
-                modifier = Modifier.padding(top = 8.dp, bottom = 24.dp)
-            )
         }
-
-        ConfirmationButtonContainer(
-            isEnabled = state.isActionButtonEnabled,
-            onActionClick = onSaveClick,
-            onCancelClick = onDismiss,
-            actionLabel = stringResource(actionStringResource),
-            isLoading = state.isLoading
-        )
     }
 }

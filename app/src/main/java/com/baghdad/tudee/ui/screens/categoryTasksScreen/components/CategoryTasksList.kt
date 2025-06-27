@@ -12,6 +12,7 @@ import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import com.baghdad.tudee.ui.screens.categoryTasksScreen.CategoryTasksScreenUiState
 import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.getCategoryIconPainter
+import com.baghdad.tudee.ui.utils.formatDate
 
 @Composable
 fun CategoryTasksList(
@@ -31,7 +32,7 @@ fun CategoryTasksList(
                 priorityTask = task.priority,
                 icon = getCategoryIconPainter(categoryImage = state.category.image),
                 onClick = { /*TODO: Show task details bottom sheet*/ },
-                date = task.date.toString(),
+                date = task.date.formatDate("dd-MM-yyyy"),
                 showDate = true
             )
         }

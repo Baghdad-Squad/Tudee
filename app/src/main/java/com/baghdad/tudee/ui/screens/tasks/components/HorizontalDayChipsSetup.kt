@@ -28,6 +28,8 @@ import com.baghdad.tudee.ui.composable.DayChip
 import com.baghdad.tudee.ui.composable.dateYearDialog.DateDialog
 import com.baghdad.tudee.ui.screens.tasks.TasksInteractionListener
 import com.baghdad.tudee.ui.screens.tasks.TasksScreenState
+import com.baghdad.tudee.ui.utils.getLocalizedNumber
+import com.baghdad.tudee.ui.utils.toLocalizedStringModern
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -53,8 +55,8 @@ fun HorizontalDayChipsSetup(
 
 
     TasksHeader(
-        month = uiState.currentMonth.toString().take(3),
-        year = uiState.currentYear.toString(),
+        month = uiState.currentMonth.toLocalizedStringModern(),
+        year = getLocalizedNumber(uiState.currentYear),
         onNextArrowClicked = { tasksInteractionListener.onNextMonthArrowClick() },
         onPreviousArrowClicked = { tasksInteractionListener.onPreviousMonthArrowClick() },
         onMonthClicked = { showDatePicker = true },

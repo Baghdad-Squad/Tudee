@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.shared.Selectable
+import com.baghdad.tudee.ui.utils.getLocalizedNumber
 import com.baghdad.tudee.ui.utils.noRippleClickable
 
 @Composable
@@ -145,7 +146,7 @@ private fun Badge(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = count.toString(),
+            text = getLocalizedNumber(count),
             maxLines = 1,
             style = Theme.typography.label.medium.copy(
                 color = Theme.color.textColor.body,

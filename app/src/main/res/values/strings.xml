@@ -115,5 +115,9 @@
     <string name="unknown_execption" />
     <string name="task_updated_successfully">Task updated successfully</string>
     <string name="task_created_successfully">Task created successfully</string>
+    <string name="no_tasks_in_category_template">No tasks in %1$s category!</string>
+    <string name="database_error" />
+    <string name="failed_to_update_task">Failed to update task</string>
+    <string name="task_not_found">Task not found</string>
 
 </resources>

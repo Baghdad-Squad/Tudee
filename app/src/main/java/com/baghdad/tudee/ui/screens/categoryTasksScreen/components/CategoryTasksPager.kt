@@ -6,7 +6,9 @@ import androidx.compose.ui.Modifier
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.TasksEmptyScreen
 import com.baghdad.tudee.ui.composable.bottomSheet.category.AddEditCategoryBottomSheet
+import com.baghdad.tudee.ui.model.toUiState
 import com.baghdad.tudee.ui.screens.categoryTasksScreen.CategoryTasksScreenUiState
+import com.baghdad.tudee.ui.utils.getCategoryTitle
 
 
 @Composable
@@ -31,7 +33,7 @@ import com.baghdad.tudee.ui.screens.categoryTasksScreen.CategoryTasksScreenUiSta
         }
 
         if (tasks.isEmpty()) {
-            TasksEmptyScreen()
+            TasksEmptyScreen(canAdd = false, categoryTitle = getCategoryTitle(category = state.category.toUiState()))
         } else {
             CategoryTasksList(tasks = tasks, state = state)
         }

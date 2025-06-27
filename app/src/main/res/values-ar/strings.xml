@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">تودي</string>
+    <string name="app_name">تادي</string>
     <string name="cancel_text">إلغاء</string>
     <string name="ok_text">حسنًا</string>
     <string name="clear_text">مسح</string>
@@ -112,4 +112,5 @@
     <string name="tudee">تادي</string>
     <string name="task_updated_successfully">تم تحديث المهمة بنجاح</string>
     <string name="task_created_successfully">تم انشاء المهمه بنجاح</string>
+    <string name="no_tasks_in_category_template">لم يتم اضافة مهام في فئة %1$s</string>
 </resources>

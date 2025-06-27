@@ -1,6 +1,8 @@
 package com.baghdad.tudee.viewModel.homescreenViewModel
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
+import com.baghdad.tudee.R
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.domain.exception.DatabaseCorruptException
 import com.baghdad.tudee.domain.exception.DatabaseException
@@ -80,7 +82,7 @@ class HomeScreenViewModel(
                 updateState {
                     it.copy(showAddNewTask = false)
                 }
-                showSuccessMessage("Task updated successfully")
+                showSuccessMessage(R.string.task_updated_successfully)
             },
             onError = { error -> handleError(error) }
         )
@@ -93,7 +95,7 @@ class HomeScreenViewModel(
             onSuccess = {
                 loadTasksForDate(state.value.selectedDate ?: LocalDate.now())
                 updateState { it.copy(showAddNewTask = false) }
-                showSuccessMessage("Task created successfully")
+                showSuccessMessage(R.string.task_created_successfully)
 
             },
             onError = { handleError(error = it) },
@@ -171,7 +173,7 @@ class HomeScreenViewModel(
                 taskService.editTask(taskUiState.toTask())
 
                        },
-            onSuccess = {showSuccessMessage("Task updated successfully")},
+            onSuccess = {showSuccessMessage(R.string.task_updated_successfully)},
             onError = { error -> handleError(error) }
         )
         viewModelScope.launch {
@@ -225,7 +227,7 @@ class HomeScreenViewModel(
                     taskService.editTask(updatedTask)
                     updatedTask
                 } else {
-                    updateState { it.copy(errorMessage = "Task not found") }
+                    updateState { it.copy(errorMessage = R.string.task_not_found) }
                     null
                 }
             },
@@ -236,15 +238,15 @@ class HomeScreenViewModel(
                             inProgressTasks = currentState.inProgressTasks - updatedTask,
                             todoTasks = currentState.todoTasks - updatedTask,
                             doneTasks = currentState.doneTasks + updatedTask,
-                            errorMessage = null
+                            errorMessage = R.string.empty_string
                         )
                     }
                 } else {
-                    updateState { it.copy(errorMessage = "Task not found") }
+                    updateState { it.copy(errorMessage = R.string.task_not_found) }
                 }
             },
             onError = { e ->
-                updateState { it.copy(errorMessage = "Failed to update task: ${e.message}") }
+                updateState { it.copy(errorMessage = R.string.failed_to_update_task) }
                 currentState.errorMessage?.let { handleError(e) }
             },
             dispatcher = Dispatchers.IO
@@ -266,15 +268,15 @@ class HomeScreenViewModel(
                         currentState.copy(
                             inProgressTasks = currentState.inProgressTasks - updatedTask,
                             todoTasks = currentState.todoTasks + updatedTask,
-                            errorMessage = null
+                            errorMessage = R.string.empty_string
                         )
                     }
                 } else {
-                    updateState { it.copy(errorMessage = "Task not found") }
+                    updateState { it.copy(errorMessage = R.string.task_not_found) }
                 }
             },
             onError = { e ->
-                updateState { it.copy(errorMessage = "Failed to update task: ${e.message}") }
+                updateState { it.copy(errorMessage = R.string.failed_to_update_task) }
                 currentState.errorMessage?.let { handleError(e) }
             },
             dispatcher = Dispatchers.IO
@@ -296,15 +298,15 @@ class HomeScreenViewModel(
                         currentState.copy(
                             todoTasks = currentState.todoTasks - updatedTask,
                             inProgressTasks = currentState.inProgressTasks + updatedTask,
-                            errorMessage = null
+                            errorMessage = R.string.empty_string
                         )
                     }
                 } else {
-                    updateState { it.copy(errorMessage = "Task not found") }
+                    updateState { it.copy(errorMessage = R.string.task_not_found) }
                 }
             },
             onError = { e ->
-                updateState { it.copy(errorMessage = "Failed to update task: ${e.message}") }
+                updateState { it.copy(errorMessage = R.string.failed_to_update_task)}
                 currentState.errorMessage?.let { handleError(e) }
             },
             dispatcher = Dispatchers.IO
@@ -351,13 +353,13 @@ class HomeScreenViewModel(
         }
     }
 
-    override fun showSnarkMessage(message: String, isVisible: Boolean, isError: Boolean) {
+    override fun showSnarkMessage(@StringRes messageRes: Int, isVisible: Boolean, isError: Boolean) {
         updateState {
             it.copy(
                 showSnackBar = currentState.showSnackBar.copy(
-                    message = message,
+                    messageRes = messageRes,
                     isVisible = isVisible,
-                    isError = isError
+                    isSuccess = !isError
                 )
             )
         }
@@ -402,10 +404,10 @@ class HomeScreenViewModel(
 
     private fun handleError(error: Throwable) {
         val errorMessage = when (error) {
-            is StorageFullException -> error.message.toString()
-            is DatabaseCorruptException -> "Database client info error: ${error.message}"
-            is DatabaseException -> error.message.toString()
-            else -> "An unexpected error occurred: ${error.message}"
+            is StorageFullException -> R.string.storage_is_full
+            is DatabaseCorruptException -> R.string.database_is_corrupt
+            is DatabaseException -> R.string.database_error
+            else -> R.string.unknown_execption
         }
         viewModelScope.launch {
 
@@ -417,10 +419,10 @@ class HomeScreenViewModel(
         }
     }
 
-    private fun showSuccessMessage(message: String) {
+    private fun showSuccessMessage(@StringRes message: Int) {
         viewModelScope.launch {
             showSnackbarMessage(
-                message = message,
+                messageRes = message,
                 isError = false
             )
             delay(3000)
@@ -429,11 +431,12 @@ class HomeScreenViewModel(
     }
 
     private fun showSnackbarMessage(
-        message: String,
+        @StringRes
+        messageRes: Int,
         isError: Boolean,
     ) {
         showSnarkMessage(
-            message = message,
+            messageRes = messageRes,
             isVisible = true,
             isError = isError
         )
@@ -441,7 +444,7 @@ class HomeScreenViewModel(
 
     private fun hideSnackbarMessage() {
         showSnarkMessage(
-            message = "",
+            messageRes = R.string.empty_string,
             isVisible = false,
             isError = false
         )
