@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,6 +29,7 @@ import com.baghdad.tudee.ui.composable.DayChip
 import com.baghdad.tudee.ui.composable.dateYearDialog.DateDialog
 import com.baghdad.tudee.ui.screens.tasks.TasksInteractionListener
 import com.baghdad.tudee.ui.screens.tasks.TasksUiState
+import com.baghdad.tudee.ui.utils.getLocalizedDateParts
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -37,7 +39,7 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun HorizontalDayChipsSetup(
     uiState: TasksUiState,
@@ -107,22 +109,25 @@ fun HorizontalDayChipsRow(
     selectedDate: LocalDate?,
     modifier: Modifier = Modifier
 ) {
+    val initialIndex = if (dates.indexOf(selectedDate) < 2) 0 else dates.indexOf(selectedDate) - 2
+    val listState = rememberLazyListState(initialFirstVisibleItemIndex = initialIndex)
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
-
         LazyRow(
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            state = LazyListState(firstVisibleItemIndex = if(dates.indexOf(selectedDate) < 2) 0 else dates.indexOf(selectedDate)-2)
+            state = listState
         ) {
             items(dates) { date ->
                 val isSelected = date == selectedDate
+                val (dayStr, _, _) = getLocalizedDateParts(date)
+
                 DayChip(
-                    dayNumber = date.dayOfMonth.toString(),
+                    dayNumber = dayStr,
                     dayName = date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
                     isSelected = isSelected,
                     onSelected = {
@@ -131,6 +136,6 @@ fun HorizontalDayChipsRow(
                 )
             }
         }
-
     }
 }
+
