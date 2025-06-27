@@ -35,6 +35,7 @@ import com.baghdad.tudee.ui.screens.homeScreen.addEditTask.AddEditTaskBottomShee
 import com.baghdad.tudee.ui.screens.tasks.components.HorizontalDayChipsSetup
 import com.baghdad.tudee.ui.screens.tasks.components.StatusTabs
 import com.baghdad.tudee.ui.screens.tasks.components.TasksHorizontalPager
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -66,7 +67,7 @@ fun TasksScreenContent(
     initialState: Task.State? = null,
     tasksInteractionListener: TasksInteractionListener,
     snackbarState: SnackbarState,
-    ) {
+) {
 
     val pagerState = rememberPagerState(
         initialPage = initialState?.ordinal ?: state.selectedTab.ordinal
@@ -82,36 +83,12 @@ fun TasksScreenContent(
         modifier = Modifier
             .background(Theme.color.surfaceColor.surface),
         topBar = {
-            Column (
-                modifier = Modifier
-                    .background(Theme.color.surfaceColor.surfaceHigh)
-                    .fillMaxWidth()
-                    .padding(WindowInsets.statusBars.asPaddingValues())
-                    .zIndex(1f)
-            ){
-                Text(
-                    text = stringResource(R.string.tasks),
-                    style = Theme.typography.title.large,
-                    color = Theme.color.textColor.title,
-                    modifier = Modifier.padding(bottom = 20.dp, start = 16.dp),
-                )
-                HorizontalDayChipsSetup(
-                    tasksInteractionListener = tasksInteractionListener,
-                    uiState = state,
-                    modifier = Modifier.padding(bottom = 8.dp),
-                )
-
-                StatusTabs(
-                    uiState = state,
-                    onTabSelected = {
-                        scope.launch {
-                            pagerState.animateScrollToPage(it.ordinal)
-                        }
-                    },
-                    selectedTab = state.selectedTab
-                )
-            }
-
+            TasksScreenTopBar(
+                state = state,
+                listener = tasksInteractionListener,
+                pagerState = pagerState,
+                scope = scope
+            )
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -140,12 +117,9 @@ fun TasksScreenContent(
                 onDeleteTask = tasksInteractionListener::onDeleteTask,
                 pagerState = pagerState,
             )
-
-
-
             if (state.showDeleteSheet && state.taskToDelete != null) {
                 ShowDeleteTaskSheet(
-                    onDeleteConfirmed = tasksInteractionListener:: onConfirmDelete ,
+                    onDeleteConfirmed = tasksInteractionListener::onConfirmDelete,
                     onCancelConfirmed = tasksInteractionListener::onCancelDelete,
                     isLoading = false,
                     isVisible = true
@@ -184,6 +158,45 @@ fun TasksScreenContent(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun TasksScreenTopBar(
+    state: TasksScreenState,
+    listener: TasksInteractionListener,
+    pagerState: androidx.compose.foundation.pager.PagerState,
+    scope: CoroutineScope
+) {
+    Column(
+        modifier = Modifier
+            .background(Theme.color.surfaceColor.surfaceHigh)
+            .fillMaxWidth()
+            .padding(WindowInsets.statusBars.asPaddingValues())
+            .zIndex(1f)
+    ) {
+        Text(
+            text = stringResource(R.string.tasks),
+            style = Theme.typography.title.large,
+            color = Theme.color.textColor.title,
+            modifier = Modifier.padding(bottom = 20.dp, start = 16.dp),
+        )
+
+        HorizontalDayChipsSetup(
+            tasksInteractionListener = listener,
+            uiState = state,
+            modifier = Modifier.padding(bottom = 8.dp),
+        )
+
+        StatusTabs(
+            uiState = state,
+            onTabSelected = {
+                scope.launch {
+                    pagerState.animateScrollToPage(it.ordinal)
+                }
+            },
+            selectedTab = state.selectedTab
+        )
     }
 }
 
