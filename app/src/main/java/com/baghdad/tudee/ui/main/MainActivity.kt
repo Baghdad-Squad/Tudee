@@ -27,9 +27,15 @@ import com.baghdad.tudee.ui.navigation.LocalNavController
 import com.baghdad.tudee.ui.navigation.Route
 import com.baghdad.tudee.ui.navigation.TudeeNavHost
 import com.baghdad.tudee.ui.screens.SplashScreen.SplashScreen
+import com.baghdad.tudee.ui.utils.updateAppLocale
 import org.koin.androidx.compose.koinViewModel
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: android.content.Context?) {
+        val updatedContext = updateAppLocale(newBase!!, Locale.getDefault())
+        super.attachBaseContext(updatedContext)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
