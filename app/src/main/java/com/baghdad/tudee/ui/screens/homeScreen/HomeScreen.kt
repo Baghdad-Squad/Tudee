@@ -197,7 +197,7 @@ private fun BottomSheetHandler(state: HomeScreenUIState, viewModel: HomeScreenVi
             AddEditTaskBottomSheet(
                 initial = state.editTaskState.currentTask,
                 state = state.editTaskState.categories,
-                addEditTaskInteractionListener = viewModel,
+                onClickSaveTask = viewModel::onClickSaveTask,
                 onDismiss = { viewModel.togileEditTaskDialog(null) }
             )
         }
@@ -209,7 +209,7 @@ private fun BottomSheetHandler(state: HomeScreenUIState, viewModel: HomeScreenVi
             AddEditTaskBottomSheet(
                 initial = state.addTaskState.currentTask,
                 state = state.categories,
-                addEditTaskInteractionListener = viewModel,
+                onClickSaveTask = viewModel::onClickSaveTask,
                 onDismiss = {
                     viewModel.toggleAddNewTaskDialog()
                 }

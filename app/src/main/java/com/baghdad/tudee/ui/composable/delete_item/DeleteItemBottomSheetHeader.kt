@@ -28,6 +28,7 @@ fun DeleteItemBottomSheetHeader(
         Text(
             text = title,
             style = Theme.typography.title.large,
+            color = Theme.color.textColor.title,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, top = 12.dp),

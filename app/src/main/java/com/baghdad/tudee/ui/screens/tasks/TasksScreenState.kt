@@ -6,7 +6,12 @@ import com.baghdad.tudee.ui.screens.homeScreen.TaskDetailsState
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 
-data class TasksUiState(
+data class TasksScreenState(
+    val taskToDelete: Task? = null,
+    val showDeleteSheet: Boolean = false,
+    val isLoading: Boolean = true,
+    val isError: Boolean = false,
+    val errorMessage: String? = null,
     val todoTasks : List<Task> = emptyList(),
     val inProgressTasks : List<Task> = emptyList(),
     val doneTasks : List<Task> = emptyList(),
@@ -21,5 +26,3 @@ data class TasksUiState(
     val selectedTaskDetails: TaskDetailsState = TaskDetailsState(),
     val initialTask: Task? = null,
 )
-
-

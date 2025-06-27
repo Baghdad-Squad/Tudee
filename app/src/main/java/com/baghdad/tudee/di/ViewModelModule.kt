@@ -13,7 +13,6 @@ val viewModelModule = module {
     viewModelOf(::HomeScreenViewModel)
     viewModelOf(::TasksViewModel)
     viewModelOf(::MainViewModel)
-    viewModelOf(::TasksViewModel)
     viewModelOf(::CategoriesViewModel)
 
     viewModel { (categoryId: Long) ->

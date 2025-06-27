@@ -6,11 +6,11 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.baghdad.tudee.domain.entity.Task
-import com.baghdad.tudee.ui.screens.tasks.TasksUiState
+import com.baghdad.tudee.ui.screens.tasks.TasksScreenState
 
 @Composable
 fun TasksHorizontalPager(
-    uiState: TasksUiState,
+    uiState: TasksScreenState,
     onTaskClick: (Task) -> Unit,
     onDeleteTask: (Task) -> Unit,
     pagerState: PagerState,
