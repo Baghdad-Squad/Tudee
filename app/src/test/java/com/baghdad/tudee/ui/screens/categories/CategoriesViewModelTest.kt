@@ -283,7 +283,7 @@ class CategoriesViewModelTest {
         val categoryId: Long? = null
         val collectedEffects = mutableListOf<CategoriesScreenEffect>()
 
-        // Start collecting effects
+        
         val collectJob = launch(UnconfinedTestDispatcher()) {
             viewModel.effects.collect { effect ->
                 collectedEffects.add(effect)
