@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.with
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -51,7 +52,7 @@ fun TasksHeader(
         NavigationIcon(
             icon = painterResource(id = R.drawable.ic_left_arrow),
             contentDescription = stringResource(R.string.left_arrow),
-            modifier = Modifier.noRippleClickable { onPreviousArrowClicked() }
+            modifier = Modifier.clip(CircleShape).clickable{ onPreviousArrowClicked() }
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -83,7 +84,7 @@ fun TasksHeader(
         NavigationIcon(
             icon = painterResource(id = R.drawable.ic_right_arrow),
             contentDescription = stringResource(R.string.right_arrow),
-            modifier = Modifier.noRippleClickable { onNextArrowClicked() }
+            modifier = Modifier.clip(CircleShape).clickable{ onNextArrowClicked() }
         )
     }
 }
