@@ -48,7 +48,7 @@ class TasksViewModelTest {
     fun setup() {
         coEvery { taskService.getTasksByDate(any()) } returns flowOf(listOf(sampleTask))
         coEvery { categoryService.getCategories() } returns flowOf(listOf(sampleCategory))
-        viewModel = object : TasksViewModel(taskService, categoryService) {}
+        viewModel = TasksViewModel(taskService, categoryService)
     }
 
     @Test
