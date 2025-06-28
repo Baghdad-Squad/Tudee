@@ -1,6 +1,6 @@
 package com.baghdad.tudee.di
 
-import com.baghdad.tudee.viewModel.homescreenViewModel.HomeScreenViewModel
+import com.baghdad.tudee.ui.screens.homeScreen.HomeScreenViewModel
 import com.baghdad.tudee.ui.main.MainViewModel
 import com.baghdad.tudee.ui.screens.categories.CategoriesViewModel
 import com.baghdad.tudee.ui.screens.categoryTasksScreen.CategoryTasksViewModel
