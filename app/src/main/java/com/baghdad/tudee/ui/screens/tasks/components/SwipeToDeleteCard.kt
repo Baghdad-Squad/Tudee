@@ -117,7 +117,7 @@ fun SwipeToDeleteCard(
                                 onDelete()
                             }
 
-                            offsetX = 0f // Reset after interaction
+                            offsetX = 0f
                         }
                     }
                 }
