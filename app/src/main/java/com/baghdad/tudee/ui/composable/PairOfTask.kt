@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.screens.homeScreen.HomeScreenUIState
 import com.baghdad.tudee.ui.utils.getCategoryIconPainter
-import com.baghdad.tudee.viewModel.homescreenViewModel.HomeScreenViewModel
+import com.baghdad.tudee.ui.screens.homeScreen.HomeScreenViewModel
 
 @Composable
 fun PairOfTask(

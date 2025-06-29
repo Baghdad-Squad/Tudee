@@ -1,4 +1,4 @@
-package com.baghdad.tudee.viewModel.homescreenViewModel
+package com.baghdad.tudee.ui.screens.homeScreen
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
@@ -11,12 +11,8 @@ import com.baghdad.tudee.domain.service.AppConfigurationService
 import com.baghdad.tudee.domain.service.CategoryService
 import com.baghdad.tudee.domain.service.TaskService
 import com.baghdad.tudee.ui.base.BaseViewModel
-import com.baghdad.tudee.ui.screens.homeScreen.HomeScreenEffect
-import com.baghdad.tudee.ui.screens.homeScreen.HomeScreenUIState
-import com.baghdad.tudee.ui.screens.homeScreen.SliderState
-import com.baghdad.tudee.ui.screens.homeScreen.TaskDetailsState
-import com.baghdad.tudee.ui.screens.homeScreen.toTask
 import com.baghdad.tudee.ui.utils.now
+import com.baghdad.tudee.viewModel.homescreenViewModel.HomeScreenInteraction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -353,7 +349,7 @@ class HomeScreenViewModel(
         }
     }
 
-    override fun showSnarkMessage(
+    override fun showSnackMessage(
         @StringRes messageRes: Int,
         isVisible: Boolean,
         isError: Boolean
@@ -439,7 +435,7 @@ class HomeScreenViewModel(
         messageRes: Int,
         isError: Boolean,
     ) {
-        showSnarkMessage(
+        showSnackMessage(
             messageRes = messageRes,
             isVisible = true,
             isError = isError
@@ -447,7 +443,7 @@ class HomeScreenViewModel(
     }
 
     private fun hideSnackbarMessage() {
-        showSnarkMessage(
+        showSnackMessage(
             messageRes = R.string.empty_string,
             isVisible = false,
             isError = false
