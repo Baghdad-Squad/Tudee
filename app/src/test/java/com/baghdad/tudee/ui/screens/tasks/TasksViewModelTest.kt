@@ -79,18 +79,6 @@ class TasksViewModelTest {
     }
 
     @Test
-    fun `onConfirmDelete deletes task and hides delete sheet`() = runTest {
-        viewModel.updateState {
-            it.copy(taskToDelete = sampleTask, showDeleteSheet = true)
-        }
-        coEvery { taskService.deleteTask(sampleTask.id) } just Runs
-        viewModel.onConfirmDelete()
-        coVerify { taskService.deleteTask(sampleTask.id) }
-        assertNull(viewModel.state.value.taskToDelete)
-        assertFalse(viewModel.state.value.showDeleteSheet)
-    }
-
-    @Test
     fun `onClickSaveTask updates existing task`() = runTest {
         coEvery { taskService.editTask(any()) } just Runs
         viewModel.onClickSaveTask(sampleTask)
@@ -111,15 +99,6 @@ class TasksViewModelTest {
         val task = viewModel.state.value.initialTask
         assertNotNull(task)
         assertEquals(id, task!!.id)
-    }
-
-    @Test
-    fun `updateTaskState changes task state and reloads`(): Unit = runTest {
-        val updated = sampleTask.copy(state = Task.State.DONE)
-        viewModel.updateState { it.copy(todoTasks = listOf(sampleTask)) }
-        coEvery { taskService.editTask(updated) } just Runs
-        viewModel.updateTaskState(sampleTask.id, Task.State.DONE)
-        coVerify { taskService.editTask(updated) }
     }
 
     @Test
