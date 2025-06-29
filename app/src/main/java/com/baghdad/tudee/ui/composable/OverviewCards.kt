@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
-import com.baghdad.tudee.designSystem.theme.Theme.color
 import com.baghdad.tudee.ui.screens.homeScreen.HomeScreenUIState
 import com.baghdad.tudee.ui.screens.homeScreen.TaskState
 import com.baghdad.tudee.ui.utils.insideBorder
@@ -35,21 +33,15 @@ fun OverviewCards(
     state: HomeScreenUIState,
     modifier: Modifier = Modifier,
 ) {
-    val purpleAccent = color.status.purpleAccent
-    val yellowAccent = color.status.yellowAccent
-    val greenAccent = color.status.greenAccent
+    val purpleAccent = Theme.color.status.purpleAccent
+    val yellowAccent = Theme.color.status.yellowAccent
+    val greenAccent = Theme.color.status.greenAccent
 
-    val overViews = remember {
-        listOf(
-            OverViewCard(TaskState.TODO, purpleAccent, state.todoTasks.size),
-            OverViewCard(
-                TaskState.IN_PROGRESS,
-                yellowAccent,
-                state.inProgressTasks.size
-            ),
-            OverViewCard(TaskState.DONE, greenAccent, state.doneTasks.size)
-        )
-    }
+    val overViews = listOf(
+        OverViewCard(TaskState.DONE, greenAccent, state.doneTasks.size),
+        OverViewCard(TaskState.IN_PROGRESS, yellowAccent, state.inProgressTasks.size),
+        OverViewCard(TaskState.TODO, purpleAccent, state.todoTasks.size)
+    )
 
 
     Row(
@@ -60,8 +52,6 @@ fun OverviewCards(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         overViews.forEach {
-
-
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -87,19 +77,19 @@ fun OverviewCards(
                     ) {
                         Icon(
                             painter = painterResource(it.taskState.toPainterResource()), contentDescription = it.taskState.toStringResource() ,
-                            tint = color.textColor.onPrimary,
+                            tint = Theme.color.textColor.onPrimary,
                             modifier = Modifier.size(24.dp)
                         )
                     }
                     Text(
                         text = it.count.toString(),
                         style = Theme.typography.headline.medium,
-                        color = color.textColor.onPrimary,
+                        color = Theme.color.textColor.onPrimary,
                     )
                     Text(
                         text = it.taskState.toStringResource(),
                         style = Theme.typography.label.small,
-                        color = color.textColor.onPrimaryCaption,
+                        color = Theme.color.textColor.onPrimaryCaption,
                     )
 
 
