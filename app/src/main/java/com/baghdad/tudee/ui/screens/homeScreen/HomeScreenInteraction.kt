@@ -1,4 +1,4 @@
-package com.baghdad.tudee.viewModel.homescreenViewModel
+package com.baghdad.tudee.ui.screens.homeScreen
 
 import com.baghdad.tudee.domain.entity.Task
 
@@ -13,7 +13,7 @@ interface HomeScreenInteraction {
     fun moveTaskToDone(taskId: Long)
     fun moveTaskToTodo(taskId: Long)
     fun moveTaskToInProgress(taskId: Long)
-    fun showSnarkMessage(message: String, isVisible: Boolean, isError: Boolean)
+    fun showSnackbarMessage(message: String, isVisible: Boolean, isError: Boolean)
     fun getTaskDetailsById(id: Long)
 
 }
