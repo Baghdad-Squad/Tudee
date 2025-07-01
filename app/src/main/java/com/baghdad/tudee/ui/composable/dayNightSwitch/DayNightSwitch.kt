@@ -56,11 +56,14 @@ fun DayNightSwitch(
                 shape = RoundedCornerShape(100.dp)
             )
             .background(color = animateBackgroundColor)
+            .noRippleClickable(onClick = onClick)
+
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(2.dp)
+
         ) {
             AnimatedVisibility(
                 visible = isDay,
@@ -79,7 +82,6 @@ fun DayNightSwitch(
                             .size(32.dp)
                             .align(Alignment.CenterStart)
                             .clip(CircleShape)
-                            .noRippleClickable(onClick = onClick)
                     )
                 }
             }
