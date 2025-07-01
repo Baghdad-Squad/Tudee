@@ -91,69 +91,70 @@ fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modi
 
 
         BottomSheetHandler(state, viewModel)
-        Box(modifier = modifier.fillMaxSize()
-            .background(Theme.color.primaryColor.normal)
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .background(Theme.color.primaryColor.normal)
         ) {
 
-                LazyColumn(
-                    Modifier
-                        .fillMaxSize()
-                        .background(Theme.color.surfaceColor.surface)
-                ) {
-                    item { StatusTasksSection(state, modifier = Modifier.fillParentMaxWidth()) }
+            LazyColumn(
+                Modifier
+                    .fillMaxSize()
+                    .background(Theme.color.surfaceColor.surface)
+            ) {
+                item { StatusTasksSection(state, modifier = Modifier.fillParentMaxWidth()) }
 
-                    if (state.inProgressTasks.isNotEmpty())
-                        item {
-                            HorizontalTaskSection(
-                                name = stringResource(R.string.in_progress),
-                                numberOfItem = state.inProgressTasks.size,
-                                tasks = state.inProgressTasks,
-                                state = state,
-                                viewModel = viewModel,
-                                modifier = Modifier
-                                    .offset(y = -22.dp)
-                                    .fillParentMaxWidth()
-                                    .padding(bottom = 8.dp),
-                                onClick = { navigateToTaskScreen(Task.State.IN_PROGRESS) }
-                            )
-                        }
-                    if (state.todoTasks.isNotEmpty())
-                        item {
-                            HorizontalTaskSection(
-                                name = stringResource(R.string.to_do),
-                                numberOfItem = state.todoTasks.size,
-                                tasks = state.todoTasks,
-                                state = state,
-                                viewModel = viewModel,
-                                modifier = Modifier
-                                    .offset(y = -22.dp)
-                                    .fillParentMaxWidth()
-                                    .padding(bottom = 8.dp),
-                                onClick = { navigateToTaskScreen(Task.State.TODO) }
-                            )
-                        }
-                    if (state.doneTasks.isNotEmpty())
-                        item {
-                            HorizontalTaskSection(
-                                name = stringResource(R.string.done),
-                                numberOfItem = state.doneTasks.size,
-                                tasks = state.doneTasks,
-                                state = state,
-                                viewModel = viewModel,
-                                modifier = Modifier
-                                    .offset(y = -22.dp)
-
-                                    .fillParentMaxWidth()
-                                    .padding(bottom = 8.dp),
-                                onClick = { navigateToTaskScreen(Task.State.DONE) }
-                            )
-                        }
-                    if (state.todoTasks.isEmpty() && state.inProgressTasks.isEmpty() && state.doneTasks.isEmpty()) {
-                        item { TasksEmptyScreen() }
+                if (state.inProgressTasks.isNotEmpty())
+                    item {
+                        HorizontalTaskSection(
+                            name = stringResource(R.string.in_progress),
+                            numberOfItem = state.inProgressTasks.size,
+                            tasks = state.inProgressTasks,
+                            state = state,
+                            viewModel = viewModel,
+                            modifier = Modifier
+                                .offset(y = -22.dp)
+                                .fillParentMaxWidth()
+                                .padding(bottom = 8.dp),
+                            onClick = { navigateToTaskScreen(Task.State.IN_PROGRESS) }
+                        )
                     }
+                if (state.todoTasks.isNotEmpty())
+                    item {
+                        HorizontalTaskSection(
+                            name = stringResource(R.string.to_do),
+                            numberOfItem = state.todoTasks.size,
+                            tasks = state.todoTasks,
+                            state = state,
+                            viewModel = viewModel,
+                            modifier = Modifier
+                                .offset(y = (-22).dp)
+                                .fillParentMaxWidth()
+                                .padding(bottom = 8.dp),
+                            onClick = { navigateToTaskScreen(Task.State.TODO) }
+                        )
+                    }
+                if (state.doneTasks.isNotEmpty())
+                    item {
+                        HorizontalTaskSection(
+                            name = stringResource(R.string.done),
+                            numberOfItem = state.doneTasks.size,
+                            tasks = state.doneTasks,
+                            state = state,
+                            viewModel = viewModel,
+                            modifier = Modifier
+                                .offset(y = (-22).dp)
+                                .fillParentMaxWidth()
+                                .padding(bottom = 8.dp),
+                            onClick = { navigateToTaskScreen(Task.State.DONE) }
+                        )
+                    }
+                if (state.todoTasks.isEmpty() && state.inProgressTasks.isEmpty() && state.doneTasks.isEmpty()) {
+                    item { TasksEmptyScreen() }
                 }
             }
         }
+    }
 
 }
 
