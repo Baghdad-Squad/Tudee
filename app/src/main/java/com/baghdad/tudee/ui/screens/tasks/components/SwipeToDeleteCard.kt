@@ -24,17 +24,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.baghdad.tudee.R
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.domain.entity.Task
 import com.baghdad.tudee.ui.composable.CategoryTaskCard
 import kotlin.math.abs
+
 
 @Composable
 fun SwipeToDeleteCard(
@@ -44,10 +48,12 @@ fun SwipeToDeleteCard(
     icon: Painter,
     modifier: Modifier = Modifier,
     onDelete: () -> Unit,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
-    val maxSwipe = 100f
+    val maxSwipeDistance = 100f
     var offsetX by remember { mutableFloatStateOf(0f) }
+    val layoutDirection = LocalLayoutDirection.current
+    val isRtl = layoutDirection == LayoutDirection.Rtl
 
     val animatedOffsetX by animateFloatAsState(
         targetValue = offsetX,
@@ -58,7 +64,7 @@ fun SwipeToDeleteCard(
     )
 
     Box(
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
             .clip(RoundedCornerShape(16.dp))
@@ -78,8 +84,9 @@ fun SwipeToDeleteCard(
         }
 
         Box(
-            Modifier
+            modifier = Modifier
                 .offset(x = animatedOffsetX.dp)
+                .graphicsLayer { scaleX = if (isRtl) -1f else 1f }
                 .pointerInput(Unit) {
                     awaitPointerEventScope {
                         while (true) {
@@ -99,23 +106,21 @@ fun SwipeToDeleteCard(
 
                                 if (abs(totalDragX) > abs(totalDragY)) {
                                     change.consume()
-                                    val newOffset = offsetX + dragAmount.x
-                                    offsetX = newOffset.coerceIn(-maxSwipe, 0f)
+                                    offsetX =
+                                        (offsetX + dragAmount.x).coerceIn(-maxSwipeDistance, 0f)
                                 }
 
                                 if (!change.pressed) break
                             }
 
-                            if (offsetX <= -maxSwipe * 0.5f) {
+                            if (offsetX <= -maxSwipeDistance * 0.5f) {
                                 onDelete()
-                                offsetX = 0f
-                            } else {
-                                offsetX = 0f
                             }
+
+                            offsetX = 0f
                         }
                     }
                 }
-
         ) {
             CategoryTaskCard(
                 title = title,
@@ -123,6 +128,9 @@ fun SwipeToDeleteCard(
                 priorityTask = priorityTask,
                 icon = icon,
                 onClick = onClick,
+                modifier = Modifier.graphicsLayer {
+                    scaleX = if (isRtl) -1f else 1f
+                }
             )
         }
     }
