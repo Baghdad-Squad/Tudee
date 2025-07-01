@@ -1,4 +1,4 @@
-package com.baghdad.tudee.ui.screens.OnboardingScreen
+package com.baghdad.tudee.ui.screens.Onboarding
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
