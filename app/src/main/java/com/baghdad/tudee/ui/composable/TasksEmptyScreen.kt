@@ -26,7 +26,11 @@ import com.baghdad.tudee.designSystem.theme.Theme
 
 
 @Composable
-fun TasksEmptyScreen(modifier: Modifier = Modifier) {
+fun TasksEmptyScreen(
+    modifier: Modifier = Modifier,
+    canAdd: Boolean = true,
+    categoryTitle: String = ""
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -52,7 +56,9 @@ fun TasksEmptyScreen(modifier: Modifier = Modifier) {
                 ) {
                     TasksEmptyScreenTextBox(
                         modifier = Modifier
-                            .offset(y = -(40).dp, x = (24).dp)
+                            .offset(y = -(40).dp, x = (24).dp),
+                        canAdd = canAdd,
+                        categoryTitle = categoryTitle
                     )
                 }
                 Box(
@@ -68,7 +74,11 @@ fun TasksEmptyScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun TasksEmptyScreenTextBox(modifier: Modifier = Modifier) {
+private fun TasksEmptyScreenTextBox(
+    canAdd: Boolean,
+    categoryTitle: String,
+    modifier: Modifier = Modifier
+) {
     Box(
         modifier = modifier
             .offset(x = -(7).dp, y = (-15).dp)
@@ -88,16 +98,24 @@ fun TasksEmptyScreenTextBox(modifier: Modifier = Modifier) {
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            Text(
-                text = stringResource(R.string.no_tasks_yet),
-                style = Theme.typography.title.small,
-                color = Theme.color.textColor.body
-            )
-            Text(
-                text = stringResource(R.string.empty_tasks_desc),
-                style = Theme.typography.body.small,
-                color = Theme.color.textColor.hint
-            )
+            if(canAdd) {
+                Text(
+                    text = stringResource(R.string.no_tasks_yet),
+                    style = Theme.typography.title.small,
+                    color = Theme.color.textColor.body
+                )
+                Text(
+                    text = stringResource(R.string.empty_tasks_desc),
+                    style = Theme.typography.body.small,
+                    color = Theme.color.textColor.hint
+                )
+            } else {
+                Text(
+                    text = stringResource(R.string.no_tasks_in_category_template, categoryTitle),
+                    style = Theme.typography.title.small,
+                    color = Theme.color.textColor.body
+                )
+            }
         }
     }
 
@@ -122,7 +140,7 @@ private fun TasksEmptyScreenIllustration(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .size(136.dp)
-                .offset( y = (3).dp)
+                .offset(y = (3).dp)
         )
         Icon(
             painter = painterResource(id = R.drawable.progress_indicator),
