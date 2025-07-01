@@ -114,4 +114,5 @@
     <string name="edit_task_successfully">تم تعديل المهمة بنجاح</string>
     <string name="add_task_successfully">تم اضافة المهمة بنجاح</string>
     <string name="formatted_date">%1$s %2$s %3$s</string>
+    <string name="an_error_occurred_while_saving_onboarding">"حدث خطأ ما أثناء حفظ تقدم عملية التوجيه الخاصة بك. "</string>
 </resources>
