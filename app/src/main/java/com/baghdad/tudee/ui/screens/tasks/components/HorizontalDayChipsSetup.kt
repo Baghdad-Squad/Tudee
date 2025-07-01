@@ -50,17 +50,17 @@ fun HorizontalDayChipsSetup(
 
     val dates: List<LocalDate> = uiState.monthDates
 
-    val (_, yearStr, monthStr) = getLocalizedDateParts(
+    val (_,monthName, yearStr) = getLocalizedDateParts(
         LocalDate(uiState.currentYear, uiState.currentMonth, 1)
     )
 
     TasksHeader(
-        month =monthStr,
-        year = if ( Locale.getDefault().displayLanguage== "English") {//.layoutDirection == LayoutDirection.Rtl
-            yearStr.take(3)
+        month = if ( Locale.getDefault().displayLanguage== "English") {
+            monthName.take(3)
         } else {
-            yearStr
+            monthName
         },
+        year = yearStr,
         onNextArrowClicked = { tasksInteractionListener.onNextMonthArrowClick() },
         onPreviousArrowClicked = { tasksInteractionListener.onPreviousMonthArrowClick() },
         onMonthClicked = { showDatePicker = true },
