@@ -12,7 +12,6 @@ class OnboardingViewModel(
     private fun completeOnboarding() {
         tryToExecute(
             function = { 
-                appConfigurationService.setTheme(false)
                 appConfigurationService.setOnboardingCompleted()
             },
             onSuccess = { emitNewEffect(OnboardingScreenEffect.NavigateToHome) },
