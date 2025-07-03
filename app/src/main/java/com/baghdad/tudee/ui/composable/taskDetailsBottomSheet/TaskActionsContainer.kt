@@ -73,7 +73,7 @@ fun TaskActionsContainer(
                 text = buttonText,
                 style = Theme.typography.label.large,
                 color = Theme.color.primaryColor.normal,
-                modifier = Modifier.padding(vertical = 17.5.dp, horizontal = 54.5.dp)
+                modifier = Modifier.padding(vertical = 17.dp, horizontal = 54.dp)
             )
         }
 
