@@ -33,10 +33,10 @@ import com.baghdad.tudee.designSystem.chips.ChipTextWithArrowIcon
 import com.baghdad.tudee.designSystem.theme.Theme
 import com.baghdad.tudee.designSystem.theme.TudeeTheme
 import com.baghdad.tudee.domain.entity.Task
+import com.baghdad.tudee.ui.composable.AnimatedSnackbar
 import com.baghdad.tudee.ui.composable.MoodSliderChangeable
 import com.baghdad.tudee.ui.composable.OverviewCards
 import com.baghdad.tudee.ui.composable.PairOfTask
-import com.baghdad.tudee.ui.composable.SnakeBar
 import com.baghdad.tudee.ui.composable.TasksEmptyScreen
 import com.baghdad.tudee.ui.composable.TopTudeeBar
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
@@ -64,7 +64,7 @@ fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modi
     TudeeScaffold(
         topBar = {
             TopTudeeBar(
-                title = "Tudee",
+                title = stringResource(R.string.tudee),
                 description = stringResource(R.string.Your_personal_task_manager),
                 isDay = state.isDark.not(),
                 onChangeTheme = {
@@ -81,10 +81,8 @@ fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modi
             )
         },
         snackbar = {
-            SnakeBar(
-                message = state.showSnackBar.message,
-                isSuccess = !state.showSnackBar.isError,
-                isVisible = state.showSnackBar.isVisible
+            AnimatedSnackbar(
+                state.showSnackBar
             )
         }
     ) {
@@ -113,7 +111,7 @@ fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modi
                             state = state,
                             viewModel = viewModel,
                             modifier = Modifier
-                                .offset(y = -22.dp)
+                                .offset(y = (-22).dp)
                                 .fillParentMaxWidth()
                                 .padding(bottom = 8.dp),
                             onClick = { navigateToTaskScreen(Task.State.IN_PROGRESS) }
@@ -144,13 +142,14 @@ fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modi
                             viewModel = viewModel,
                             modifier = Modifier
                                 .offset(y = (-22).dp)
+
                                 .fillParentMaxWidth()
                                 .padding(bottom = 8.dp),
                             onClick = { navigateToTaskScreen(Task.State.DONE) }
                         )
                     }
                 if (state.todoTasks.isEmpty() && state.inProgressTasks.isEmpty() && state.doneTasks.isEmpty()) {
-                    item { TasksEmptyScreen() }
+                    item { TasksEmptyScreen(Modifier.padding(top = 24.dp)) }
                 }
             }
         }
