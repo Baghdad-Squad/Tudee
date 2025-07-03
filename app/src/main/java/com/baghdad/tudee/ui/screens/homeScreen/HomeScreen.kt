@@ -37,7 +37,6 @@ import com.baghdad.tudee.ui.composable.AnimatedSnackbar
 import com.baghdad.tudee.ui.composable.MoodSliderChangeable
 import com.baghdad.tudee.ui.composable.OverviewCards
 import com.baghdad.tudee.ui.composable.PairOfTask
-import com.baghdad.tudee.ui.composable.SnakeBar
 import com.baghdad.tudee.ui.composable.TasksEmptyScreen
 import com.baghdad.tudee.ui.composable.TopTudeeBar
 import com.baghdad.tudee.ui.composable.TudeeBottomSheet
@@ -90,8 +89,10 @@ fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modi
 
 
         BottomSheetHandler(state, viewModel)
-        Box(modifier = modifier.fillMaxSize()
-            .background(Theme.color.primaryColor.normal)
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .background(Theme.color.primaryColor.normal)
         ) {
 
             LazyColumn(
@@ -110,7 +111,7 @@ fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modi
                             state = state,
                             viewModel = viewModel,
                             modifier = Modifier
-                                .offset(y = -22.dp)
+                                .offset(y = (-22).dp)
                                 .fillParentMaxWidth()
                                 .padding(bottom = 8.dp),
                             onClick = { navigateToTaskScreen(Task.State.IN_PROGRESS) }
@@ -125,7 +126,7 @@ fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modi
                             state = state,
                             viewModel = viewModel,
                             modifier = Modifier
-                                .offset(y = -22.dp)
+                                .offset(y = (-22).dp)
                                 .fillParentMaxWidth()
                                 .padding(bottom = 8.dp),
                             onClick = { navigateToTaskScreen(Task.State.TODO) }
@@ -140,7 +141,7 @@ fun HomeScreenContent(navigateToTaskScreen: (Task.State) -> Unit, modifier: Modi
                             state = state,
                             viewModel = viewModel,
                             modifier = Modifier
-                                .offset(y = -22.dp)
+                                .offset(y = (-22).dp)
 
                                 .fillParentMaxWidth()
                                 .padding(bottom = 8.dp),
