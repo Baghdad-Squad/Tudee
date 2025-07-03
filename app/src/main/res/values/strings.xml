@@ -123,4 +123,6 @@
     <string name="database_is_corrupt">Database is corrupt</string>
     <string name="database_exception">Unknown error occurred in database</string>
     <string name="unknown_execption">Unknown error occurred</string>
+    <string name="an_error_occurred_while_saving_onboarding">Something went wrong while saving your onboarding progress.</string>
+
 </resources>
