@@ -31,7 +31,10 @@ import com.baghdad.tudee.ui.screens.categoryTasksScreen.CategoryTasksScreenUiSta
         }
 
         if (tasks.isEmpty()) {
-            TasksEmptyScreen()
+            TasksEmptyScreen(
+                canAdd = false,
+                categoryTitle = state.category.title
+            )
         } else {
             CategoryTasksList(tasks = tasks, state = state)
         }

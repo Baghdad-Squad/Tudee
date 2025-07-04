@@ -113,6 +113,7 @@
     <string name="add_task_successfully">Add task successfully.</string>
     <string name="formatted_date">%1$s %2$s %3$s</string>
     <string name="skip">Skip</string>
+    <string name="no_tasks_in_category_template">No tasks in %1$s category!</string>
     <string name="task_updated_successfully">Task updated successfully</string>
     <string name="task_created_successfully">Task created successfully</string>
     <string name="task_not_found">Task not found</string>
