@@ -103,7 +103,6 @@ fun DayNightSwitch(
                             .size(32.dp)
                             .align(Alignment.CenterEnd)
                             .clip(CircleShape)
-                            .noRippleClickable(onClick = onClick)
                     )
                 }
             }
