@@ -113,5 +113,16 @@
     <string name="add_task_successfully">Add task successfully.</string>
     <string name="formatted_date">%1$s %2$s %3$s</string>
     <string name="skip">Skip</string>
+    <string name="task_updated_successfully">Task updated successfully</string>
+    <string name="task_created_successfully">Task created successfully</string>
+    <string name="task_not_found">Task not found</string>
+    <string name="failed_to_update_task">Failed to update task</string>
+    <string name="tudee">\Tudee</string>
+    <string name="database_error">Unknown error occurred in database</string>
+    <string name="storage_is_full">Storage is full</string>
+    <string name="database_is_corrupt">Database is corrupt</string>
+    <string name="database_exception">Unknown error occurred in database</string>
+    <string name="unknown_execption">Unknown error occurred</string>
+    <string name="an_error_occurred_while_saving_onboarding">Something went wrong while saving your onboarding progress.</string>
 
 </resources>

@@ -6,4 +6,5 @@ interface AppConfigurationService {
     suspend fun isDarkTheme(): Flow<Boolean>
     suspend fun setTheme(isDark: Boolean)
     suspend fun isFirstLaunch(): Boolean
+    suspend fun setOnboardingCompleted()
 }

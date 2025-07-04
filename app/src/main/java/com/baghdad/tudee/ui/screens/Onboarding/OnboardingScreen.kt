@@ -1,4 +1,4 @@
-package com.baghdad.tudee.ui.screens.OnboardingScreen
+package com.baghdad.tudee.ui.screens.Onboarding
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -19,29 +19,56 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.baghdad.tudee.R
+import com.baghdad.tudee.ui.base.EffectHandler
 import com.baghdad.tudee.ui.composable.ProgressBar
 import com.baghdad.tudee.ui.composable.TudeeCard
 import com.baghdad.tudee.ui.composable.button.ButtonDefaults
 import com.baghdad.tudee.ui.composable.button.FloatingActionButton
 import com.baghdad.tudee.ui.composable.button.TextButton
-import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun OnboardingScreen(
+    viewModel: OnboardingViewModel = koinViewModel(),
     onNavigateToHome: () -> Unit
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val pagerState = rememberPagerState {
-        3
+    EffectHandler(
+        effects = viewModel.effects,
+        onNewEffect = { effect ->
+            when (effect) {
+                OnboardingScreenEffect.NavigateToHome -> onNavigateToHome()
+            }
+        }
+    )
+
+    OnboardingContent(
+        state = state,
+        onboardingInteractionListener = viewModel
+    )
+}
+
+@Composable
+fun OnboardingContent(
+    state: OnboardingState,
+    onboardingInteractionListener: OnboardingInteractionListener
+) {
+    val pagerState = rememberPagerState { 3 }
+
+    LaunchedEffect(state.currentPage) {
+        pagerState.animateScrollToPage(state.currentPage)
     }
-    val scope = rememberCoroutineScope()
+
     val titleList = listOf(
         stringResource(id = R.string.title_0),
         stringResource(id = R.string.title_1),
@@ -58,9 +85,7 @@ fun OnboardingScreen(
         R.drawable.img_smile_robot
     )
 
-
     OnboardingBackground() {
-
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.fillMaxSize(),
@@ -74,7 +99,6 @@ fun OnboardingScreen(
                         .systemBarsPadding(),
                     verticalArrangement = Arrangement.SpaceBetween,
                 ) {
-
                     item {
                         Box(
                             modifier = Modifier
@@ -82,9 +106,7 @@ fun OnboardingScreen(
                         ) {
                             SkipButton(
                                 pagerState = pagerState,
-                                onClick = {
-                                    onNavigateToHome()
-                                },
+                                onClick = onboardingInteractionListener::onSkipButtonClick,
                                 modifier = Modifier.align(Alignment.TopStart)
                             )
                         }
@@ -113,15 +135,7 @@ fun OnboardingScreen(
 
                             NextButton(
                                 imgRes = R.drawable.arrow_right_double,
-                                onClick = {
-                                    if (pagerState.currentPage < titleList.size - 1) {
-                                        scope.launch {
-                                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                                        }
-                                    } else {
-                                        onNavigateToHome()
-                                    }
-                                },
+                                onClick = onboardingInteractionListener::onNextButtonClick,
                                 modifier = Modifier
                                     .align(Alignment.BottomCenter)
                                     .offset(y = (10).dp)
@@ -151,7 +165,6 @@ fun OnboardingScreen(
     }
 }
 
-
 @Composable
 fun SkipButton(
     pagerState: PagerState,
@@ -178,11 +191,9 @@ fun SkipButton(
     }
 }
 
-
 @Composable
 fun OnboardingImg(
     imgRes: Int,
-
     modifier: Modifier = Modifier
 ) {
     Image(
@@ -193,7 +204,6 @@ fun OnboardingImg(
             .height(260.dp)
     )
 }
-
 
 @Composable
 private fun NextButton(
@@ -208,7 +218,6 @@ private fun NextButton(
     )
 }
 
-
 @Composable
 private fun ProgressIndicator(
     currentScreen: Int,
@@ -221,4 +230,3 @@ private fun ProgressIndicator(
         ProgressBar(currentScreen = currentScreen)
     }
 }
-

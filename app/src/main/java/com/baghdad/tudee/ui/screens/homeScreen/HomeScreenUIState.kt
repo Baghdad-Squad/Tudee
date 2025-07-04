@@ -1,7 +1,9 @@
 package com.baghdad.tudee.ui.screens.homeScreen
 
+import com.baghdad.tudee.R
 import com.baghdad.tudee.domain.entity.Category
 import com.baghdad.tudee.domain.entity.Task
+import com.baghdad.tudee.ui.composable.SnackbarState
 import com.baghdad.tudee.ui.utils.now
 import kotlinx.datetime.LocalDate
 
@@ -9,7 +11,7 @@ data class HomeScreenUIState(
     val inProgressTasks: List<Task> = emptyList(),
     val todoTasks: List<Task> = emptyList(),
     val doneTasks: List<Task> = emptyList(),
-    val errorMessage: String? = null,
+    val errorMessage: Int = R.string.empty_string,
     val sliderState: SliderState = SliderState.NOTHING_IN_YOUR_LIST,
     val taskDetailsState: TaskDetailsState = TaskDetailsState(),
     val addTaskState: TaskUIState = TaskUIState(),
@@ -19,20 +21,11 @@ data class HomeScreenUIState(
     val showAddNewTask: Boolean = false,
     val showEditTask: Boolean = false,
     val showTaskDetails: Boolean = false,
-    val showSnackBar: SnackBarState = SnackBarState(),
+    val showSnackBar: SnackbarState = SnackbarState(),
     val isLoading: Boolean = false,
     val categories: List<Category> = emptyList(),
     val selectedDate: LocalDate? = null,
-    )
-
-
-
-data class SnackBarState(
-    val message: String = "",
-    val isError: Boolean = false,
-    val isVisible: Boolean = false
 )
-
 
 data class TaskUIState(
     val id: Long = 0L,
@@ -44,9 +37,7 @@ data class TaskUIState(
     val categories: List<Category> = emptyList(),
     val state: Task.State = Task.State.TODO,
     val currentTask: Task? = null,
-    )
-
-
+)
 
 
 data class TaskDetailsState(
@@ -68,7 +59,7 @@ fun Task.toTaskDetailsState(category: Category?) = TaskDetailsState(
 )
 
 
-enum class SliderState{
+enum class SliderState {
     STAY_WORKING,
     TADOO,
     ZERO_PROGRESS,
