@@ -7,8 +7,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -39,6 +44,11 @@ fun UploadedImageBox(
         modifier = modifier
             .clip(RoundedCornerShape(16.dp))
             .clickable { onUploadImageClicked() }
+            .widthIn(max = 112.dp)
+            .aspectRatio(
+                1f,
+                matchHeightConstraintsFirst = true
+            )
             .dashedBorder(
                 width = 1.dp,
                 color = Theme.color.textColor.stroke,
@@ -104,11 +114,9 @@ private fun UploadPlaceholder(
 ) {
     Box(
         modifier = Modifier
-            .clip(RoundedCornerShape(16.dp))
             .noRippleClickable(onUploadClick)
     ) {
         Column(
-            modifier = Modifier.padding(32.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
