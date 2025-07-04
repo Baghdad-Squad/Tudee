@@ -39,18 +39,17 @@ fun OverviewCards(
     val yellowAccent = color.status.yellowAccent
     val greenAccent = color.status.greenAccent
 
-    val overViews = remember {
+    val overViews = remember(
+        state.todoTasks,
+        state.inProgressTasks,
+        state.doneTasks,
+        state.isDark) {
         listOf(
+            OverViewCard(TaskState.DONE, greenAccent, state.doneTasks.size),
+            OverViewCard(TaskState.IN_PROGRESS, yellowAccent, state.inProgressTasks.size),
             OverViewCard(TaskState.TODO, purpleAccent, state.todoTasks.size),
-            OverViewCard(
-                TaskState.IN_PROGRESS,
-                yellowAccent,
-                state.inProgressTasks.size
-            ),
-            OverViewCard(TaskState.DONE, greenAccent, state.doneTasks.size)
         )
     }
-
 
     Row(
         modifier = Modifier
@@ -60,8 +59,6 @@ fun OverviewCards(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         overViews.forEach {
-
-
             Box(
                 modifier = Modifier
                     .weight(1f)

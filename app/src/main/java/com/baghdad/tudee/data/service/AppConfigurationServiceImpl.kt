@@ -19,11 +19,10 @@ class AppConfigurationServiceImpl(
 
     override suspend fun isFirstLaunch() = executeWithErrorHandling {
         appConfigurationDao
-            .isFirstLaunch()
-            ?.let { it == true }
-            ?: run {
-                appConfigurationDao.setIsFirstLaunch()
-                true
-            }
+            .isFirstLaunch() != false
+    }
+
+    override suspend fun setOnboardingCompleted() = executeWithErrorHandling {
+        appConfigurationDao.setIsFirstLaunch()
     }
 }
